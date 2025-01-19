@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.common.support
+package com.yourssu.soongpt.common.support.config
 
 import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
