@@ -1,4 +1,4 @@
-name: Kotlin CI with Gradle When PR in a main branch
+name: Kotlin CI with Gradle
 
 on:
   push:
