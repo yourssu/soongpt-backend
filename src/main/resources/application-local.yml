@@ -17,6 +17,9 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  cors:
+    allowed-origins: [ http://localhost:3000 ]
+
 
 logging:
   level:
