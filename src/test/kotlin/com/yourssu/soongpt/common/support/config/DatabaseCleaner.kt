@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.common.support
+package com.yourssu.soongpt.common.support.config
 
 import com.google.common.base.CaseFormat
 import jakarta.persistence.Entity
