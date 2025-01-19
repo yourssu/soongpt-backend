@@ -16,6 +16,7 @@ val jacksonVersion = "2.18.2"
 val h2Version = "2.3.232"
 val mysqlVersion = "9.1.0"
 val junitPlatformVersion = "1.11.4"
+val guavaVersion = "33.3.0-jre"
 
 java {
 	toolchain {
@@ -39,6 +40,8 @@ dependencies {
 
 	runtimeOnly("com.h2database:h2:$h2Version")
 	runtimeOnly("com.mysql:mysql-connector-j:$mysqlVersion")
+
+	implementation("com.google.guava:guava:$guavaVersion")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
