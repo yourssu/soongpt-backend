@@ -17,6 +17,7 @@ val h2Version = "2.3.232"
 val mysqlVersion = "9.1.0"
 val junitPlatformVersion = "1.11.4"
 val guavaVersion = "33.3.0-jre"
+val swaggerVersion = "2.8.3"
 
 java {
 	toolchain {
@@ -42,6 +43,9 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j:$mysqlVersion")
 
 	implementation("com.google.guava:guava:$guavaVersion")
+
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swaggerVersion")
+
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
