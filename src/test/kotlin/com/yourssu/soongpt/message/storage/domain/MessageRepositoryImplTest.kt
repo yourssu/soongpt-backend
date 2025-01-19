@@ -19,20 +19,30 @@ class MessageRepositoryImplTest {
     inner class get_메서드는 {
         private var message: Message? = null
 
-        @BeforeEach
-        fun setUp() {
-            message = messageRepository.save(HELLO_WORLD.toDomain())
-        }
-
         @Nested
         @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
-        inner class 메세지_아이디를_받으면 {
+        inner class 메세지_아이디가_있으면 {
+            @BeforeEach
+            fun setUp() {
+                message = messageRepository.save(HELLO_WORLD.toDomain())
+            }
+
             @Test
             @DisplayName("해당하는 메서드 객체를 반환한다.")
             fun success() {
                 val actual = messageRepository.get(message!!.id!!)
 
-                assertEquals(message!!.id!! , actual.id)
+                assertEquals(message!!.id!!, actual.id)
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
+        inner class 메세지_아이디가_없으면 {
+            @Test
+            @DisplayName("MessageNotFound 예외를 던진다.")
+            fun failure() {
+                assertThrows<MessageNotFoundException> { messageRepository.get(0L) }
             }
         }
     }
