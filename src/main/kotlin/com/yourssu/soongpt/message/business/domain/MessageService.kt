@@ -12,7 +12,7 @@ class MessageService(
     private val messageReader: MessageReader,
 ) {
     @Transactional
-    fun create(command: MessageCreateCommand): MessageResponse {
+    fun create(command: MessageCreatedCommand): MessageResponse {
         val message = messageWriter.save(command.toDomain())
         return MessageResponse.from(message)
     }
