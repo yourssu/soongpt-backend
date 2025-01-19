@@ -1,7 +1,7 @@
 package com.yourssu.soongpt.message.application.domain
 
 import com.yourssu.soongpt.common.application.domain.common.Response
-import com.yourssu.soongpt.message.business.domain.MessageCreateCommand
+import com.yourssu.soongpt.message.business.domain.MessageCreatedCommand
 import com.yourssu.soongpt.message.business.domain.MessageResponse
 import com.yourssu.soongpt.message.business.domain.MessageService
 import jakarta.validation.Valid
@@ -45,8 +45,8 @@ data class MessageCreateRequest(
     @NotBlank
     val content: String,
 ) {
-    fun toCommand(): MessageCreateCommand {
-        return MessageCreateCommand(
+    fun toCommand(): MessageCreatedCommand {
+        return MessageCreatedCommand(
             content = content
         )
     }
