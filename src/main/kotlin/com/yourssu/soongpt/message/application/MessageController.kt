@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.message.application
 
-import com.yourssu.soongpt.common.application.common.Response
+import com.yourssu.soongpt.common.application.common.dto.Response
 import com.yourssu.soongpt.message.business.MessageCreatedCommand
 import com.yourssu.soongpt.message.business.MessageResponse
 import com.yourssu.soongpt.message.business.MessageService
