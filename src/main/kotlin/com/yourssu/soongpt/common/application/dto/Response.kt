@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.common.application.common.dto
+package com.yourssu.soongpt.common.application.dto
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
