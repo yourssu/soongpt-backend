@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.common.support.config
+package com.yourssu.soongpt.common.config.config
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean

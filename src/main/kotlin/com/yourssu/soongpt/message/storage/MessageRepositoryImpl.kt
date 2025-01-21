@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.message.storage
 
-import com.yourssu.soongpt.common.application.common.NotFoundException
+import com.yourssu.soongpt.common.handler.NotFoundException
 import com.yourssu.soongpt.message.implement.Message
 import com.yourssu.soongpt.message.implement.MessageRepository
 import org.springframework.data.jpa.repository.JpaRepository
