@@ -1,10 +1,10 @@
-package com.yourssu.soongpt.message.business.domain
+package com.yourssu.soongpt.message.business
 
 import com.yourssu.soongpt.common.support.config.ApplicationTest
 import com.yourssu.soongpt.common.support.fixture.MessageFixture.HELLO_WORLD
-import com.yourssu.soongpt.message.implement.domain.Message
-import com.yourssu.soongpt.message.implement.domain.MessageReader
-import com.yourssu.soongpt.message.implement.domain.MessageWriter
+import com.yourssu.soongpt.message.implement.Message
+import com.yourssu.soongpt.message.implement.MessageReader
+import com.yourssu.soongpt.message.implement.MessageWriter
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.springframework.beans.factory.annotation.Autowired

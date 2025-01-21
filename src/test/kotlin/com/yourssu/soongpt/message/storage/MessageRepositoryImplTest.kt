@@ -1,9 +1,9 @@
-package com.yourssu.soongpt.message.storage.domain
+package com.yourssu.soongpt.message.storage
 
 import com.yourssu.soongpt.common.support.config.ApplicationTest
 import com.yourssu.soongpt.common.support.fixture.MessageFixture.HELLO_WORLD
-import com.yourssu.soongpt.message.implement.domain.Message
-import com.yourssu.soongpt.message.implement.domain.MessageRepository
+import com.yourssu.soongpt.message.implement.Message
+import com.yourssu.soongpt.message.implement.MessageRepository
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.springframework.beans.factory.annotation.Autowired

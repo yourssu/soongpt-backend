@@ -1,6 +1,6 @@
-package com.yourssu.soongpt.message.storage.domain
+package com.yourssu.soongpt.message.storage
 
-import com.yourssu.soongpt.message.implement.domain.Message
+import com.yourssu.soongpt.message.implement.Message
 import jakarta.persistence.*
 
 @Table(name = "message")

@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.common.application.domain.common
+package com.yourssu.soongpt.common.application.common
 
 import jakarta.validation.ConstraintViolationException
 import org.slf4j.LoggerFactory.getLogger
