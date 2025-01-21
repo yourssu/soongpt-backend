@@ -1,9 +1,9 @@
-package com.yourssu.soongpt.message.application.domain
+package com.yourssu.soongpt.message.application
 
-import com.yourssu.soongpt.common.application.domain.common.Response
-import com.yourssu.soongpt.message.business.domain.MessageCreatedCommand
-import com.yourssu.soongpt.message.business.domain.MessageResponse
-import com.yourssu.soongpt.message.business.domain.MessageService
+import com.yourssu.soongpt.common.application.common.Response
+import com.yourssu.soongpt.message.business.MessageCreatedCommand
+import com.yourssu.soongpt.message.business.MessageResponse
+import com.yourssu.soongpt.message.business.MessageService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import org.jetbrains.annotations.NotNull

@@ -1,8 +1,8 @@
-package com.yourssu.soongpt.message.storage.domain
+package com.yourssu.soongpt.message.storage
 
-import com.yourssu.soongpt.common.application.domain.common.NotFoundException
-import com.yourssu.soongpt.message.implement.domain.Message
-import com.yourssu.soongpt.message.implement.domain.MessageRepository
+import com.yourssu.soongpt.common.application.common.NotFoundException
+import com.yourssu.soongpt.message.implement.Message
+import com.yourssu.soongpt.message.implement.MessageRepository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

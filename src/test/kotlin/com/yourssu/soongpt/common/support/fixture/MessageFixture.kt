@@ -1,7 +1,7 @@
 package com.yourssu.soongpt.common.support.fixture
 
-import com.yourssu.soongpt.message.business.domain.MessageCreatedCommand
-import com.yourssu.soongpt.message.implement.domain.Message
+import com.yourssu.soongpt.message.business.MessageCreatedCommand
+import com.yourssu.soongpt.message.implement.Message
 
 enum class MessageFixture(
     val content: String,

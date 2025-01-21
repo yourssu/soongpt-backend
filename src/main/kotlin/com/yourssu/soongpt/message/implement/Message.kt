@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.message.implement.domain
+package com.yourssu.soongpt.message.implement
 
 class Message (
     val id: Long? = null,

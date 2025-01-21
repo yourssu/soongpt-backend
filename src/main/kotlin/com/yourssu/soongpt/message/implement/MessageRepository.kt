@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.message.implement.domain
+package com.yourssu.soongpt.message.implement
 
 interface MessageRepository {
     fun save(message: Message): Message
