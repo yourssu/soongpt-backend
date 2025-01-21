@@ -40,6 +40,7 @@ class DatabaseCleaner : InitializingBean {
         }
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate()
     }
+
     private fun truncateTableForId(tableName: String) {
         entityManager.createNativeQuery("TRUNCATE TABLE $tableName").executeUpdate()
         entityManager.createNativeQuery(
