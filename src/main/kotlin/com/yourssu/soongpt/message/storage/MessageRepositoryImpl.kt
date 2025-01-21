@@ -1,8 +1,8 @@
 package com.yourssu.soongpt.message.storage
 
-import com.yourssu.soongpt.common.handler.NotFoundException
 import com.yourssu.soongpt.message.implement.Message
 import com.yourssu.soongpt.message.implement.MessageRepository
+import com.yourssu.soongpt.message.storage.exception.MessageNotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -29,5 +29,3 @@ class MessageRepositoryImpl(
 
 interface MessageJpaRepository : JpaRepository<MessageEntity, Long> {
 }
-
-class MessageNotFoundException : NotFoundException(message = "해당하는 메세지가 없습니다.")

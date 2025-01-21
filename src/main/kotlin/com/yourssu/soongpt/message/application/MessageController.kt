@@ -1,20 +1,14 @@
 package com.yourssu.soongpt.message.application
 
 import com.yourssu.soongpt.common.application.common.dto.Response
-import com.yourssu.soongpt.message.business.MessageCreatedCommand
-import com.yourssu.soongpt.message.business.MessageResponse
+import com.yourssu.soongpt.message.application.dto.MessageCreateRequest
+import com.yourssu.soongpt.message.business.dto.MessageResponse
 import com.yourssu.soongpt.message.business.MessageService
 import jakarta.validation.Valid
-import jakarta.validation.constraints.NotBlank
 import org.jetbrains.annotations.NotNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/messages")
@@ -41,13 +35,3 @@ class MessageController(
     }
 }
 
-data class MessageCreateRequest(
-    @NotBlank
-    val content: String,
-) {
-    fun toCommand(): MessageCreatedCommand {
-        return MessageCreatedCommand(
-            content = content
-        )
-    }
-}

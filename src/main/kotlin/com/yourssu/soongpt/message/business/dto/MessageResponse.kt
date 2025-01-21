@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.message.business
+package com.yourssu.soongpt.message.business.dto
 
 import com.yourssu.soongpt.message.implement.Message
 
