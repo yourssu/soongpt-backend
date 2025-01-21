@@ -4,6 +4,7 @@ import com.yourssu.soongpt.common.support.config.ApplicationTest
 import com.yourssu.soongpt.common.support.fixture.MessageFixture.HELLO_WORLD
 import com.yourssu.soongpt.message.implement.Message
 import com.yourssu.soongpt.message.implement.MessageRepository
+import com.yourssu.soongpt.message.storage.exception.MessageNotFoundException
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.springframework.beans.factory.annotation.Autowired
