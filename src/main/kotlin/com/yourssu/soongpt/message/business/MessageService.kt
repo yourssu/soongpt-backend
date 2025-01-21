@@ -1,7 +1,7 @@
-package com.yourssu.soongpt.message.business.domain
+package com.yourssu.soongpt.message.business
 
-import com.yourssu.soongpt.message.implement.domain.MessageReader
-import com.yourssu.soongpt.message.implement.domain.MessageWriter
+import com.yourssu.soongpt.message.implement.MessageReader
+import com.yourssu.soongpt.message.implement.MessageWriter
 import org.springframework.stereotype.Service
 
 @Service
