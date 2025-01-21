@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.message.business
 
+import com.yourssu.soongpt.message.business.dto.MessageResponse
 import com.yourssu.soongpt.message.implement.MessageReader
 import com.yourssu.soongpt.message.implement.MessageWriter
 import org.springframework.stereotype.Service
