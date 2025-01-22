@@ -16,7 +16,7 @@ class DatabaseCleaner : InitializingBean {
     @PersistenceContext
     private lateinit var entityManager: EntityManager
 
-    private var tableNames: List<String>? = null
+    private var tableNames: List<String> = ArrayList()
 
     override fun afterPropertiesSet() {
         tableNames = entityManager.metamodel.entities.stream()
@@ -35,23 +35,27 @@ class DatabaseCleaner : InitializingBean {
     fun execute() {
         entityManager.flush()
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate()
-        for (tableName in tableNames!!) {
-            truncateTableForId(tableName)
+        for (tableName in tableNames) {
+            entityManager.createNativeQuery("TRUNCATE TABLE $tableName").executeUpdate()
         }
+        resetIdentityColumns()
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate()
     }
 
-    private fun truncateTableForId(tableName: String) {
-        entityManager.createNativeQuery("TRUNCATE TABLE $tableName").executeUpdate()
-        entityManager.createNativeQuery(
-            "ALTER TABLE " + tableName + " ALTER COLUMN id RESTART WITH 1"
-        ).executeUpdate()
+    fun resetIdentityColumns() {
+        for ((tableName, columnName) in findIdentities()) {
+            val alterQuery = "ALTER TABLE $tableName ALTER COLUMN $columnName RESTART WITH 1"
+            entityManager.createNativeQuery(alterQuery).executeUpdate()
+        }
     }
 
-    private fun truncateTableForTableId(tableName: String) {
-        entityManager.createNativeQuery("TRUNCATE TABLE $tableName").executeUpdate()
-        entityManager.createNativeQuery(
-            "ALTER TABLE " + tableName + " ALTER COLUMN " + tableName.replace("\"", "") + "_id RESTART WITH 1"
-        ).executeUpdate()
+    private fun findIdentities(): List<Array<*>> {
+        val query = """
+                SELECT table_name, column_name 
+                FROM information_schema.columns 
+                WHERE is_identity = 'YES'
+            """.trimIndent()
+        return entityManager.createNativeQuery(query).resultList
+            .map { it as Array<*> }
     }
 }
