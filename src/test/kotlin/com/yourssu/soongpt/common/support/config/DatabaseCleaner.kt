@@ -22,7 +22,7 @@ class DatabaseCleaner : InitializingBean {
         tableNames = em.metamodel.entities.stream()
             .filter({ e -> e.javaType.getAnnotation(Entity::class.java) != null })
             .map(this::extractTableName)
-            .map({ tableName -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, tableName) })
+            .map { tableName -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, tableName) }
             .collect(Collectors.toList())
     }
 
