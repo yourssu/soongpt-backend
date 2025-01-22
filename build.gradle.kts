@@ -19,6 +19,7 @@ val mysqlVersion = "9.1.0"
 val junitPlatformVersion = "1.11.4"
 val guavaVersion = "33.3.0-jre"
 val swaggerVersion = "2.8.3"
+val querydslVersion = "5.1.0"
 
 java {
 	toolchain {
@@ -36,6 +37,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+
+	implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+	implementation("com.querydsl:querydsl-apt:$querydslVersion")
 
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
