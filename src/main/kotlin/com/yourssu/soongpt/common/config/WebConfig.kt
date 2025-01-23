@@ -17,7 +17,7 @@ class WebConfig {
                 registry.addMapping("/**")
                     .allowedOrigins(*corsProperties.allowedOrigins)
                     .allowedHeaders("*")
-                    .allowedMethods(GET.name(), POST.name(), PUT.name(), DELETE.name())
+                    .allowedMethods(GET.name(), POST.name(), PUT.name(), DELETE.name(), OPTIONS.name())
                     .allowCredentials(true)
             }
         }
