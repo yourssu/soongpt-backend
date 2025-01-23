@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.common.handler
 
+import com.yourssu.soongpt.common.handler.dto.ErrorResponse
 import jakarta.validation.ConstraintViolationException
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.dao.DataIntegrityViolationException
@@ -11,8 +12,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.NoResourceFoundException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @ControllerAdvice
 class ControllerAdvice {
@@ -150,22 +149,6 @@ class ControllerAdvice {
                 )
             )
     }
-}
-
-data class ErrorResponse(
-    val timestamp: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")),
-    val status: Int,
-    val message: String,
-) {
-    companion object {
-        fun from(e: Error): ErrorResponse {
-            return ErrorResponse(
-                status = e.status.value(),
-                message = e.message,
-            )
-        }
-    }
-
 }
 
 abstract class Error(
