@@ -27,7 +27,7 @@ data class Time(
     }
 
     fun toTimeFormat(): String {
-        return "${time / HOUR_TO_MIN}:${time % HOUR_TO_MIN}"
+        return "${time / HOUR_TO_MIN}$TIME_DELIMITER${time % HOUR_TO_MIN}"
     }
 
     fun isOverThan(other: Time): Boolean {
