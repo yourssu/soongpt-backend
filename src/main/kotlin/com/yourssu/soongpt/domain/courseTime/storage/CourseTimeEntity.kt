@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.courseTime.storage
 
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
+import com.yourssu.soongpt.domain.courseTime.implement.Time
 import com.yourssu.soongpt.domain.courseTime.implement.Week
 import jakarta.persistence.*
 
@@ -31,8 +32,8 @@ class CourseTimeEntity (
         fun from(courseTime: CourseTime) = CourseTimeEntity(
             id = courseTime.id,
             week = courseTime.week,
-            startTime = courseTime.startTime,
-            endTime = courseTime.endTime,
+            startTime = courseTime.startTime.time,
+            endTime = courseTime.endTime.time,
             classroom = courseTime.classroom,
             courseId = courseTime.courseId,
         )
@@ -41,8 +42,8 @@ class CourseTimeEntity (
     fun toDomain() = CourseTime(
         id = id,
         week = week,
-        startTime = startTime,
-        endTime = endTime,
+        startTime = Time(startTime),
+        endTime = Time(endTime),
         classroom = classroom,
         courseId = courseId,
     )
