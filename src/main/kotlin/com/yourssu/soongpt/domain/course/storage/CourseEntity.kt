@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.implement.Course
 import jakarta.persistence.*
 
 @Entity
+@Table(name = "course")
 class CourseEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
