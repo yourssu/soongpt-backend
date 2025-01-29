@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.courseTime.implement
 
-import com.yourssu.soongpt.domain.courseTime.implement.exception.InvalidCourseTime
+import com.yourssu.soongpt.domain.courseTime.implement.exception.InvalidCourseTimeException
 
 class CourseTime(
     val id: Long? = null,
@@ -12,7 +12,7 @@ class CourseTime(
 ) {
     init {
         if (startTime.isOverThan(endTime)) {
-            throw InvalidCourseTime()
+            throw InvalidCourseTimeException()
         }
     }
 }
