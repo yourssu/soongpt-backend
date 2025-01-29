@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.courseTime.implement
 
-import com.yourssu.soongpt.domain.courseTime.implement.exception.InvalidCourseTime
+import com.yourssu.soongpt.domain.courseTime.implement.exception.InvalidCourseTimeException
 import org.junit.jupiter.api.*
 import kotlin.test.Test
 
@@ -14,7 +14,7 @@ class CourseTimeTest {
             @Test
             @DisplayName("InvalidCourseTime 예외를 반환한다.")
             fun failure() {
-                assertThrows<InvalidCourseTime> {
+                assertThrows<InvalidCourseTimeException> {
                     CourseTime(
                         week = Week.MONDAY,
                         startTime = Time(1000),
