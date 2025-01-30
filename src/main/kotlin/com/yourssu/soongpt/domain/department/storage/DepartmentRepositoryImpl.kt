@@ -17,6 +17,11 @@ class DepartmentRepositoryImpl(
             .toDomain()
     }
 
+    override fun saveAll(departments: List<Department>): List<Department> {
+        return departmentJpaRepository.saveAll(departments.map { DepartmentEntity.from(it) })
+            .map { it.toDomain() }.toList()
+    }
+
     override fun findByName(name: String): Department? {
         return jpaQueryFactory.selectFrom(departmentEntity)
             .where(departmentEntity.name.eq(name))
