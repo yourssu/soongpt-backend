@@ -1,0 +1,28 @@
+{
+  "lecture": {
+    "category": "이수구분(주전공)",
+    "sub_category": "이수구분(다전공)",
+    "abeek_info": "공학인증",
+    "field": "교과영역",
+    "code": "과목코드",
+    "name": "과목명",
+    "division": "분반",
+    "professor": "교수명",
+    "department": "개설학과",
+    "personeel": "수강인원",
+    "remaining_seats": "여석",
+    "schedule_room": "강의시간(강의실)",
+    "target": "수강대상"
+  },
+  "course": {
+    "category": "이수구분(주전공)",
+    "abeek_info": "공학인증",
+    "field": "교과영역",
+    "code": "과목코드",
+    "name": "과목명",
+    "professor": "교수명",
+    "time_points": "시간/학점",
+    "target": "수강대상",
+    "schedule_room": "강의시간(강의실)"
+  }
+}
