@@ -7,7 +7,7 @@ import kotlin.test.Test
 class CourseTimeTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
-    inner class 생성자_메서드는 {
+    inner class 생성자는 {
         @Nested
         @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
         inner class 시작_시간이_종료_시간보다_늦으면 {
