@@ -16,6 +16,11 @@ class DepartmentGradeRepositoryImpl(
             .toDomain()
     }
 
+    override fun saveAll(departmentGrades: List<DepartmentGrade>): List<DepartmentGrade> {
+        return departmentGradeJpaRepository.saveAll(departmentGrades.map { DepartmentGradeEntity.from(it) })
+            .map { it.toDomain() }
+    }
+
     override fun get(id: Long): DepartmentGrade {
         val departmentGrade = departmentGradeJpaRepository.findByIdOrNull(id)
             ?: throw DepartmentGradeNotFoundException()
