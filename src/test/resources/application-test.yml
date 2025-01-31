@@ -21,7 +21,16 @@ spring:
       path: /h2-console
   cors:
     allowed-origins: [ http://localhost:3000 ]
-
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            loggerLevel: full
+            defaultRequestHeaders:
+              Authorization: Bearer accessToken
+            dismiss404: false
 
 logging:
   level:
@@ -37,3 +46,6 @@ springdoc:
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
+
+slack:
+  channel-id: "ssongpt-channel-id"
