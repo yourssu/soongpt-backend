@@ -20,8 +20,8 @@ class CourseTimeRepositoryImplTest {
         private val courseId = 1L
         @BeforeEach
         fun setUp() {
-            courseTimeRepository.save(TUESDAY_17_19.toCourseTime(courseId))
-            courseTimeRepository.save(MONDAY_17_19.toCourseTime(courseId))
+            courseTimeRepository.save(TUESDAY_17_19.toDomain(courseId))
+            courseTimeRepository.save(MONDAY_17_19.toDomain(courseId))
         }
 
         @Nested
