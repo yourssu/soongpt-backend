@@ -18,7 +18,7 @@ enum class CourseFixture(
         credit = 3,
     );
 
-    fun toDomain(): Course {
+    fun toDomain(courseCode: Int = this.courseCode): Course {
         return Course(
             courseName = courseName,
             professorName = professorName,
