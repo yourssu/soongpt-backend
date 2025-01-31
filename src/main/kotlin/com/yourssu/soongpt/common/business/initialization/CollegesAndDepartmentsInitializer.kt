@@ -7,6 +7,8 @@ import com.yourssu.soongpt.domain.college.implement.CollegeWriter
 import com.yourssu.soongpt.domain.college.storage.QCollegeEntity.collegeEntity
 import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.department.implement.DepartmentWriter
+import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
+import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGradeWriter
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 class CollegesAndDepartmentsInitializer(
     private val collegeWriter: CollegeWriter,
     private val departmentWriter: DepartmentWriter,
+    private val departmentGradeWriter: DepartmentGradeWriter,
     private val jpaQueryFactory: JPAQueryFactory,
     private val properties: CollegeProperties,
 ) : CommandLineRunner {
@@ -35,6 +38,15 @@ class CollegesAndDepartmentsInitializer(
 
     private fun initialize(collegeName: String, departments: List<String>) {
         val college: College = collegeWriter.save(College(name = collegeName))
-        departmentWriter.saveAll(departments.map { Department(collegeId = college.id!!, name = it) })
+        val department = departmentWriter.saveAll(departments.map { Department(collegeId = college.id!!, name = it) })
+        initializeDepartmentGrades(department)
+    }
+
+    private fun initializeDepartmentGrades(departments: List<Department>) {
+        for (grade in 1..4) {
+            departmentGradeWriter.saveAll(departments.map { DepartmentGrade(departmentId = it.id!!, grade = grade) })
+        }
+        departmentGradeWriter.saveAll(departments.filter { it.name.startsWith("건축학부") }
+            .map { DepartmentGrade(departmentId = it.id!!, grade = 5) })
     }
 }
