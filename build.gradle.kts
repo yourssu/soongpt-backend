@@ -20,6 +20,9 @@ val junitPlatformVersion = "1.11.4"
 val guavaVersion = "33.3.0-jre"
 val swaggerVersion = "2.8.3"
 val querydslVersion = "5.0.0"
+val feignVersion = "4.2.0"
+val springCloudVersion = "2024.0.0"
+val mockitoKotlinVersion = "3.2.0"
 
 java {
 	toolchain {
@@ -37,6 +40,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+	
+	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$feignVersion")
+	implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer:$feignVersion")
+
 
 	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
 	implementation("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
@@ -62,12 +69,19 @@ dependencies {
 	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 	testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion")
+	testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
 }
 
 kotlin {
 	compilerOptions {
 		freeCompilerArgs.addAll("-Xjsr305=strict")
+	}
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
 	}
 }
 
