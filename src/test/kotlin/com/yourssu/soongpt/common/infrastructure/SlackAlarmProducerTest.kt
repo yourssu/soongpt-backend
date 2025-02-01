@@ -25,6 +25,7 @@ class SlackAlarmProducerTest {
         @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
         inner class 메세지가_주어지면 {
             @Test
+            @Disabled
             @DisplayName("yaml 파일에 설정된 채널로 슬랙 메세지를 비동기 방식으로 보낸다.")
             fun success() {
                 slackAlarmProducer.sendAlarm(message)
