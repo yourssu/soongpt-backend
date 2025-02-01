@@ -3,6 +3,6 @@
 @department = 소프트웨어학부
 @grade = 1
 ###
-GET localhost:8080/api/courses/major/cores?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
+GET localhost:8080/api/courses/major/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
 Content-Type: application/x-www-form-urlencoded
 ###
