@@ -38,7 +38,7 @@ class CourseServiceTest {
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
-    inner class findByDepartmentNameInMajorCore_메서드는 {
+    inner class findByDepartmentNameInMajorRequired_메서드는 {
         @Nested
         @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
         inner class 학과를_받으면 {
@@ -46,7 +46,7 @@ class CourseServiceTest {
             @BeforeEach
             fun setUp() {
                 initializer.run()
-                val course = courseRepository.save(CourseFixture.MAJOR_CORE.toDomainRandomCourseCode())
+                val course = courseRepository.save(CourseFixture.MAJOR_REQUIRED.toDomainRandomCourseCode())
                 val departmentGrade = jpaQueryFactory.selectFrom(departmentGradeEntity)
                     .innerJoin(departmentEntity)
                     .on(departmentGradeEntity.departmentId.eq(departmentEntity.id))
@@ -61,7 +61,7 @@ class CourseServiceTest {
             @Test
             @DisplayName("해당 학과가 수강대상인 과목 정보를 반환한다.")
             fun success() {
-                val response = courseService.findByDepartmentNameInMajorCore(departmentName)
+                val response = courseService.findByDepartmentNameInMajorRequired(departmentName)
 
                 assertEquals(1, response.size)
             }

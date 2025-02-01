@@ -1,7 +1,7 @@
 package com.yourssu.soongpt.domain.course.storage
 
 import com.yourssu.soongpt.common.support.config.ApplicationTest
-import com.yourssu.soongpt.common.support.fixture.CourseFixture.MAJOR_CORE
+import com.yourssu.soongpt.common.support.fixture.CourseFixture.MAJOR_REQUIRED
 import com.yourssu.soongpt.common.support.fixture.DepartmentFixture.COMPUTER
 import com.yourssu.soongpt.common.support.fixture.DepartmentGradeFixture.FIRST
 import com.yourssu.soongpt.common.support.fixture.TargetFixture
@@ -35,7 +35,7 @@ class CourseRepositoryImplTest {
 
         @BeforeEach
         fun setUp() {
-            val course = courseRepository.save(MAJOR_CORE.toDomainRandomCourseCode())
+            val course = courseRepository.save(MAJOR_REQUIRED.toDomainRandomCourseCode())
             val department = departmentRepository.save(COMPUTER.toDomain(1L))
             departmentId = department.id
             val departmentGrade = departmentGradeRepository.save(FIRST.toDomain(departmentId = departmentId!!))
@@ -55,7 +55,7 @@ class CourseRepositoryImplTest {
             fun success() {
                 val courses = courseRepository.findAllByDepartmentId(
                     departmentId = departmentId!!,
-                    classification = MAJOR_CORE.classification
+                    classification = MAJOR_REQUIRED.classification
                 )
 
                 assertThat(courses).hasSize(1)

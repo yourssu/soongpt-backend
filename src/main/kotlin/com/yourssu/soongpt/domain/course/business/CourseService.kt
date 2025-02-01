@@ -14,9 +14,9 @@ class CourseService(
     private val departmentReader: DepartmentReader,
     private val targetReader: TargetReader,
 ) {
-    fun findByDepartmentNameInMajorCore(departmentName: String): List<CourseResponse> {
+    fun findByDepartmentNameInMajorRequired(departmentName: String): List<CourseResponse> {
         val department = departmentReader.getByName(departmentName)
-        val courses = courseReader.findAllByDepartmentIdInMajorCore(department.id!!)
+        val courses = courseReader.findAllByDepartmentIdInMajorRequired(department.id!!)
         return courses.map {
             val targets = targetReader.findAllBy(courseId = it.id!!, department = department)
             val courseTimes = courseTimeReader.findAllByCourseId(it.id)
