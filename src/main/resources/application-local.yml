@@ -5,6 +5,8 @@ spring:
   config:
     activate:
       on-profile: local
+    import:
+      - data.yml
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -19,12 +21,20 @@ spring:
       path: /h2-console
   cors:
     allowed-origins: [ http://localhost:3000 ]
-
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            loggerLevel: full
+            defaultRequestHeaders:
+              Authorization: Bearer accessToken
+            dismiss404: false
 
 logging:
   level:
     org.springframework: DEBUG
-
 
 springdoc:
   packages-to-scan: com.yourssu.soongpt
@@ -35,3 +45,6 @@ springdoc:
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
+
+slack:
+  channel-id: "ssongpt-channel-id"

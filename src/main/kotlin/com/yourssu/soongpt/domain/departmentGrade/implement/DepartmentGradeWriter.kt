@@ -1,14 +1,15 @@
 package com.yourssu.soongpt.domain.departmentGrade.implement
 
-import com.yourssu.soongpt.domain.department.implement.Department
-import com.yourssu.soongpt.domain.department.implement.DepartmentRepository
 import org.springframework.stereotype.Component
 
 @Component
 class DepartmentGradeWriter(
-    private val departmentRepository: DepartmentRepository,
+    private val departmentRepository: DepartmentGradeRepository,
 ) {
-    fun save(department: Department): Department {
-        return departmentRepository.save(department)
+    fun save(departmentGrade: DepartmentGrade): DepartmentGrade {
+        return departmentRepository.save(departmentGrade)
+    }
+    fun saveAll(departmentGrades: List<DepartmentGrade>): List<DepartmentGrade> {
+        return departmentRepository.saveAll(departmentGrades)
     }
 }

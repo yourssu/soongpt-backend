@@ -23,7 +23,7 @@ enum class CourseTimeFixture(
         classroom = "형남공학관 1004"
     );
 
-    fun toCourseTime(courseId: Long): CourseTime {
+    fun toDomain(courseId: Long): CourseTime {
         return CourseTime(
             week = week,
             startTime = startTime,
