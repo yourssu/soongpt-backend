@@ -9,4 +9,8 @@ class CourseReader(
     fun findAllByDepartmentIdInMajorRequired(departmentId: Long): List<Course> {
         return courseRepository.findAllByDepartmentId(departmentId, Classification.MAJOR_REQUIRED)
     }
+
+    fun findAllByDepartmentIdInMajorElective(departmentId: Long): List<Course> {
+        return courseRepository.findAllByDepartmentId(departmentId, Classification.MAJOR_ELECTIVE)
+    }
 }

@@ -16,6 +16,13 @@ enum class CourseFixture(
         classification = Classification.MAJOR_REQUIRED,
         courseCode = 1,
         credit = 3,
+    ),
+    MAJOR_ELECTIVE(
+        courseName = "전공선택",
+        professorName = "교수명",
+        classification = Classification.MAJOR_ELECTIVE,
+        courseCode = 2,
+        credit = 3,
     );
 
     fun toDomain(courseCode: Int = this.courseCode): Course {

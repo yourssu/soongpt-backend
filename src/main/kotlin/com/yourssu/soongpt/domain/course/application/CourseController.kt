@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.application
 
 import com.yourssu.soongpt.common.business.dto.Response
+import com.yourssu.soongpt.domain.course.application.dto.MajorElectiveCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorRequiredCourseRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.CourseResponse
@@ -19,6 +20,12 @@ class CourseController(
     @GetMapping("/major/required")
     fun getMajorRequiredCourses(@Valid @ModelAttribute request: MajorRequiredCourseRequest): ResponseEntity<Response<List<CourseResponse>>> {
         val response = courseService.findByDepartmentNameInMajorRequired(request.department)
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @GetMapping("/major/elective")
+    fun getMajorElectiveCourses(@Valid @ModelAttribute request: MajorElectiveCourseRequest): ResponseEntity<Response<List<CourseResponse>>> {
+        val response = courseService.findByDepartmentNameInMajorElective(request.department)
         return ResponseEntity.ok().body(Response(result = response))
     }
 }
