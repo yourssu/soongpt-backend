@@ -10,15 +10,15 @@ enum class CourseFixture(
     val courseCode: Int,
     val credit: Int,
 ) {
-    MAJOR_CORE(
+    MAJOR_REQUIRED(
         courseName = "전공필수",
         professorName = "교수명",
-        classification = Classification.MAJOR_CORE,
+        classification = Classification.MAJOR_REQUIRED,
         courseCode = 1,
         credit = 3,
     );
 
-    fun toDomain(): Course {
+    fun toDomain(courseCode: Int = this.courseCode): Course {
         return Course(
             courseName = courseName,
             professorName = professorName,
