@@ -14,3 +14,9 @@ Content-Type: application/x-www-form-urlencoded
 GET localhost:8080/api/courses/major/elective?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
 Content-Type: application/x-www-form-urlencoded
 ###
+
+// 교양 핈 과목 조회
+###
+GET localhost:8080/api/courses/general/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
+Content-Type: application/x-www-form-urlencoded
+###
