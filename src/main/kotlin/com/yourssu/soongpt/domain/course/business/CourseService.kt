@@ -23,4 +23,14 @@ class CourseService(
             CourseResponse.from(course = it, target = targets, courseTimes = courseTimes)
         }
     }
+
+    fun findByDepartmentNameInMajorElective(departmentName: String): List<CourseResponse> {
+        val department = departmentReader.getByName(departmentName)
+        val courses = courseReader.findAllByDepartmentIdInMajorElective(department.id!!)
+        return courses.map {
+            val targets = targetReader.findAllBy(courseId = it.id!!, department = department)
+            val courseTimes = courseTimeReader.findAllByCourseId(it.id)
+            CourseResponse.from(course = it, target = targets, courseTimes = courseTimes)
+        }
+    }
 }

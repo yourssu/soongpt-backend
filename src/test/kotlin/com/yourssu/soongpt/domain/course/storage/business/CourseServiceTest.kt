@@ -67,4 +67,36 @@ class CourseServiceTest {
             }
         }
     }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
+    inner class findByDepartmentNameInMajorElective_메서드는 {
+        @Nested
+        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
+        inner class 학과를_받으면 {
+            val departmentName = "소프트웨어학부"
+            @BeforeEach
+            fun setUp() {
+                initializer.run()
+                val course = courseRepository.save(CourseFixture.MAJOR_ELECTIVE.toDomainRandomCourseCode())
+                val departmentGrade = jpaQueryFactory.selectFrom(departmentGradeEntity)
+                    .innerJoin(departmentEntity)
+                    .on(departmentGradeEntity.departmentId.eq(departmentEntity.id))
+                    .where(departmentEntity.name.eq(departmentName), departmentGradeEntity.grade.eq(4))
+                    .fetchOne()
+                    ?.toDomain()
+                    ?: throw IllegalArgumentException("소프트웨어학부 4학년이 존재하지 않습니다.")
+                targetRepository.save(Target(departmentGradeId = departmentGrade.id!!, courseId = course.id!!))
+                courseTimeRepository.save(CourseTimeFixture.MONDAY_17_19.toDomain(course.id!!))
+            }
+
+            @Test
+            @DisplayName("해당 학과가 수강대상인 과목 정보를 반환한다.")
+            fun success() {
+                val response = courseService.findByDepartmentNameInMajorElective(departmentName)
+
+                assertEquals(1, response.size)
+            }
+        }
+    }
 }

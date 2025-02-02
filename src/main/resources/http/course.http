@@ -1,8 +1,16 @@
-// 전공 필수 과목 조회
+
 @schoolId = 21
 @department = 소프트웨어학부
 @grade = 1
+
+// 전공 필수 과목 조회
 ###
 GET localhost:8080/api/courses/major/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
+Content-Type: application/x-www-form-urlencoded
+###
+
+// 전공 선택 과목 조회
+###
+GET localhost:8080/api/courses/major/elective?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
 Content-Type: application/x-www-form-urlencoded
 ###
