@@ -33,6 +33,13 @@ class CourseRepositoryImpl(
             .fetch()
             .map { it.toDomain() }
     }
+
+    override fun getAll(ids: List<Long>): List<Course> {
+        return jpaQueryFactory.selectFrom(courseEntity)
+            .where(courseEntity.id.`in`(ids))
+            .fetch()
+            .map { it.toDomain() }
+    }
 }
 
 interface CourseJpaRepository : JpaRepository<CourseEntity, Long> {
