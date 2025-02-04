@@ -1,9 +1,9 @@
 package com.yourssu.soongpt.domain.rating.storage
 
 import com.querydsl.jpa.impl.JPAQueryFactory
-import com.yourssu.soongpt.domain.rating.implement.QRatingEntity.ratingEntity
 import com.yourssu.soongpt.domain.rating.implement.Rating
 import com.yourssu.soongpt.domain.rating.implement.RatingRepository
+import com.yourssu.soongpt.domain.rating.storage.QRatingEntity.ratingEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
 
