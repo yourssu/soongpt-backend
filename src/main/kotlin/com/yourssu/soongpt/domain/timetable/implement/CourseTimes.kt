@@ -30,8 +30,12 @@ class CourseTimes(
         return false
     }
 
-    fun hasOverClasses(standard: Time): Boolean {
+    fun hasOverClassesStarted(standard: Time): Boolean {
         return courseTimes.any { standard.isOverThan(it.startTime) }
+    }
+
+    fun hasLessClassesEnded(standard: Time): Boolean {
+        return courseTimes.any { it.endTime.isOverThan(standard) }
     }
 
     fun hasBreaks(minute: Int): Boolean {
