@@ -1,11 +1,10 @@
-package com.yourssu.soongpt.domain.course.storage.business
+package com.yourssu.soongpt.domain.course.business
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.common.business.initialization.CollegesAndDepartmentsInitializer
 import com.yourssu.soongpt.common.support.config.ApplicationTest
 import com.yourssu.soongpt.common.support.fixture.CourseFixture
 import com.yourssu.soongpt.common.support.fixture.CourseTimeFixture
-import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeRepository
 import com.yourssu.soongpt.domain.department.storage.QDepartmentEntity.departmentEntity

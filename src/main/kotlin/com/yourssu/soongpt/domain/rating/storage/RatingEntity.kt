@@ -17,7 +17,7 @@ class RatingEntity(
     val professorName: String,
 
     @Column(name = "star", nullable = false)
-    val star: Int,
+    val star: Double,
 
     @Column(name = "point", nullable = false)
     val point: Double,
