@@ -8,7 +8,6 @@ data class TimetableCourseResponse(
     val courseName: String,
     val professorName: String?,
     val classification: String,
-    val courseCode: Int,
     val credit: Int,
     val courseTime: List<CourseTimeResponse>,
 ) {
@@ -18,7 +17,6 @@ data class TimetableCourseResponse(
                 courseName = course.courseName,
                 professorName = course.professorName,
                 classification = course.classification.name,
-                courseCode = course.courseCode,
                 credit = course.credit,
                 courseTime = courseTimes.map { CourseTimeResponse.from(it) },
             )

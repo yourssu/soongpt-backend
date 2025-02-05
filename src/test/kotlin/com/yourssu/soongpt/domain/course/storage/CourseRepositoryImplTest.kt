@@ -35,7 +35,7 @@ class CourseRepositoryImplTest {
 
         @BeforeEach
         fun setUp() {
-            val course = courseRepository.save(MAJOR_REQUIRED.toDomainRandomCourseCode())
+            val course = courseRepository.save(MAJOR_REQUIRED.toDomain())
             val department = departmentRepository.save(COMPUTER.toDomain(1L))
             departmentId = department.id
             val departmentGrade = departmentGradeRepository.save(FIRST.toDomain(departmentId = departmentId!!))
