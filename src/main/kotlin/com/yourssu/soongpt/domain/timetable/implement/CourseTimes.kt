@@ -55,4 +55,24 @@ class CourseTimes(
         return false
     }
 
+    fun hasContinuousTime(startTimeLimit: Time, endTimeLimit: Time, requiredMinutes: Int): Boolean {
+        for (day in Week.weekdays()) {
+            val classesToday = courseTimes.filter { it.week == day }
+            if (classesToday.isEmpty()) {
+                continue
+            }
+            var lastEndTime = startTimeLimit
+            for (course in classesToday.sortedBy { it.startTime.time }) {
+                if (course.startTime.isOverThan(lastEndTime) && course.startTime.minus(lastEndTime) >= requiredMinutes) {
+                    break
+                }
+                lastEndTime = course.endTime
+            }
+            if (endTimeLimit.isOverThan(lastEndTime) && (endTimeLimit.minus(lastEndTime) >= requiredMinutes)) {
+                break
+            }
+            return false
+        }
+        return true
+    }
 }
