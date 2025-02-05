@@ -21,9 +21,6 @@ class CourseEntity(
     @Enumerated(EnumType.STRING)
     val classification: Classification,
 
-    @Column(unique = true, nullable = false)
-    val courseCode: Int,
-
     @Column(nullable = false)
     val credit: Int,
 ) {
@@ -33,7 +30,6 @@ class CourseEntity(
             courseName = course.courseName,
             professorName = course.professorName,
             classification = course.classification,
-            courseCode = course.courseCode,
             credit = course.credit
         )
     }
@@ -43,7 +39,6 @@ class CourseEntity(
         courseName = courseName,
         professorName = professorName,
         classification = classification,
-        courseCode = courseCode,
         credit = credit
     )
 }
