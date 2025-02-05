@@ -1,7 +1,5 @@
-package com.yourssu.soongpt.domain.timetable.implement
+package com.yourssu.soongpt.domain.course.implement
 
-import com.yourssu.soongpt.domain.course.implement.Course
-import com.yourssu.soongpt.domain.course.implement.Courses
 import org.springframework.stereotype.Component
 
 @Component

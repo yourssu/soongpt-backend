@@ -2,6 +2,7 @@ package com.yourssu.soongpt.domain.timetable.business
 
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.course.implement.Courses
+import com.yourssu.soongpt.domain.course.implement.CoursesFactory
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeReader
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCourseResponse
