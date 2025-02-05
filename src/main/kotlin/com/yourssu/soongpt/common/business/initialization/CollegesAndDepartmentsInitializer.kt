@@ -43,10 +43,8 @@ class CollegesAndDepartmentsInitializer(
     }
 
     private fun initializeDepartmentGrades(departments: List<Department>) {
-        for (grade in 1..4) {
+        for (grade in 1..5) {
             departmentGradeWriter.saveAll(departments.map { DepartmentGrade(departmentId = it.id!!, grade = grade) })
         }
-        departmentGradeWriter.saveAll(departments.filter { it.name.startsWith("건축학부") }
-            .map { DepartmentGrade(departmentId = it.id!!, grade = 5) })
     }
 }
