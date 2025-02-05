@@ -10,7 +10,6 @@
             "courseName": "과목명",
             "professorName": "교수명",
             "classification": "이수구분",
-            "courseCode": 12345,
             "credit": 3,
             "target": [
               "소프트웨어학부1",
@@ -31,7 +30,6 @@
             "courseName": "과목명",
             "professorName": "교수명",
             "classification": "이수구분",
-            "courseCode": 123456,
             "credit": 3,
             "target": [
               "소프트웨어학부1",
@@ -52,7 +50,6 @@
             "courseName": "과목명",
             "professorName": "교수명",
             "classification": "이수구분",
-            "courseCode": 1234567,
             "credit": 3,
             "target": [
               "*"
