@@ -26,7 +26,28 @@ class DepartmentGradeRepositoryImpl(
             ?: throw DepartmentGradeNotFoundException()
         return departmentGrade.toDomain()
     }
+
+    override fun getByDepartmentIdAndGrade(departmentId: Long, grade: Int): DepartmentGrade {
+        val departmentGrade = departmentGradeJpaRepository.findByDepartmentIdAndGrade(departmentId, grade)
+            ?: throw DepartmentGradeNotFoundException()
+        return departmentGrade.toDomain()
+    }
+
+    override fun getAll(): List<DepartmentGrade> {
+        return departmentGradeJpaRepository.findAll().map { it.toDomain() }
+    }
+
+    override fun getByDepartmentId(departmentId: Long): List<DepartmentGrade> {
+        return departmentGradeJpaRepository.findByDepartmentId(departmentId).map { it.toDomain() }
+    }
+
+    override fun getByGrade(grade: Int): List<DepartmentGrade> {
+        return departmentGradeJpaRepository.findByGrade(grade).map { it.toDomain() }
+    }
 }
 
 interface DepartmentGradeJpaRepository : JpaRepository<DepartmentGradeEntity, Long> {
+    fun findByDepartmentIdAndGrade(departmentId: Long, grade: Int): DepartmentGradeEntity?
+    fun findByDepartmentId(departmentId: Long): List<DepartmentGradeEntity>
+    fun findByGrade(grade: Int): List<DepartmentGradeEntity>
 }
