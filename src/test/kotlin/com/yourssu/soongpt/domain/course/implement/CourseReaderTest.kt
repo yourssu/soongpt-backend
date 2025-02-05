@@ -1,21 +1,22 @@
-package com.yourssu.soongpt.domain.course.storage
+package com.yourssu.soongpt.domain.course.implement
 
 import com.yourssu.soongpt.common.support.config.ApplicationTest
 import com.yourssu.soongpt.common.support.fixture.CourseFixture.MAJOR_REQUIRED
 import com.yourssu.soongpt.common.support.fixture.DepartmentFixture.COMPUTER
 import com.yourssu.soongpt.common.support.fixture.DepartmentGradeFixture.FIRST
 import com.yourssu.soongpt.common.support.fixture.TargetFixture
-import com.yourssu.soongpt.domain.course.implement.CourseRepository
+import com.yourssu.soongpt.domain.course.implement.exception.CourseNotFoundException
 import com.yourssu.soongpt.domain.department.implement.DepartmentRepository
 import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGradeRepository
 import com.yourssu.soongpt.domain.target.implement.TargetRepository
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
-import kotlin.test.Test
 
 @ApplicationTest
-class CourseRepositoryImplTest {
+class CourseReaderTest {
+    @Autowired
+    private lateinit var courseReader: CourseReader
+
     @Autowired
     private lateinit var courseRepository: CourseRepository
 
@@ -28,14 +29,18 @@ class CourseRepositoryImplTest {
     @Autowired
     private lateinit var targetRepository: TargetRepository
 
+
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
-    inner class findAllByDepartmentId_메서드는 {
+    inner class findAllByCourseNameInMajorRequired_메서드는 {
         var departmentId: Long? = null
+        var courseName: String? = null
 
         @BeforeEach
         fun setUp() {
             val course = courseRepository.save(MAJOR_REQUIRED.toDomainRandomCourseCode())
+
+            courseName = course.courseName
             val department = departmentRepository.save(COMPUTER.toDomain(1L))
             departmentId = department.id
             val departmentGrade = departmentGradeRepository.save(FIRST.toDomain(departmentId = departmentId!!))
@@ -49,16 +54,31 @@ class CourseRepositoryImplTest {
 
         @Nested
         @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
-        inner class 학과_아이디와_이수구분을_받으면 {
+        inner class 학과이름이_일치하지_않는_경우 {
             @Test
-            @DisplayName("해당하는 과목을 반환한다.")
+            @DisplayName("CourseNotFoundException 예외를 반환한다.")
             fun success() {
-                val courses = courseRepository.findAllByDepartmentId(
-                    departmentId = departmentId!!,
-                    classification = MAJOR_REQUIRED.classification
-                )
+                assertThrows<CourseNotFoundException> {
+                    courseReader.findAllByCourseNameInMajorRequired(
+                        departmentId = departmentId!!,
+                        courseName = "일치하지 않는 과목 이름",
+                    )
+                }
+            }
+        }
 
-                assertThat(courses).hasSize(1)
+        @Nested
+        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
+        inner class 수강대상이_일치하지_않는_경우 {
+            @Test
+            @DisplayName("CourseNotFoundException 예외를 반환한다.")
+            fun success() {
+                assertThrows<CourseNotFoundException> {
+                    courseReader.findAllByCourseNameInMajorRequired(
+                        departmentId = 0L,
+                        courseName = courseName!!,
+                    )
+                }
             }
         }
     }

@@ -1,11 +1,11 @@
-package com.yourssu.soongpt.domain.course.storage
+package com.yourssu.soongpt.domain.course
 
 import com.querydsl.jpa.impl.JPAQueryFactory
+import com.yourssu.soongpt.domain.course.QCourseEntity.courseEntity
 import com.yourssu.soongpt.domain.course.implement.Classification
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
-import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
-import com.yourssu.soongpt.domain.course.storage.exception.CourseNotFoundException
+import com.yourssu.soongpt.domain.course.implement.Courses
 import com.yourssu.soongpt.domain.departmentGrade.storage.QDepartmentGradeEntity.departmentGradeEntity
 import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
 import org.springframework.data.jpa.repository.JpaRepository
@@ -46,8 +46,8 @@ class CourseRepositoryImpl(
         departmentId: Long,
         courseName: String,
         classification: Classification
-    ): Course {
-        return jpaQueryFactory.selectFrom(courseEntity)
+    ): Courses {
+        val courses = jpaQueryFactory.selectFrom(courseEntity)
             .innerJoin(targetEntity)
             .on(courseEntity.id.eq(targetEntity.courseId))
             .innerJoin(departmentGradeEntity)
@@ -57,9 +57,9 @@ class CourseRepositoryImpl(
                 courseEntity.courseName.eq(courseName),
                 courseEntity.classification.eq(classification)
             )
-            .fetchOne()
-            ?.toDomain()
-            ?: throw CourseNotFoundException(courseName = courseName)
+            .fetch()
+            .map { it.toDomain() }
+        return Courses(courses)
     }
 }
 
