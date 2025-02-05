@@ -35,6 +35,24 @@ class CourseTimes(
     }
 
     fun hasBreaks(minute: Int): Boolean {
-        TODO("Not yet implemented")
+        for (i in courseTimes.indices) {
+            for (j in i + 1 until courseTimes.size) {
+                if (courseTimes[i].week != courseTimes[j].week) {
+                    continue
+                }
+                if ((courseTimes[j].startTime.isOverThan(courseTimes[i].endTime)) &&
+                    courseTimes[i].endTime.addMinute(minute).isOverThan(courseTimes[j].startTime)
+                ) {
+                    return true
+                }
+                if (courseTimes[i].startTime.isOverThan(courseTimes[j].endTime) &&
+                    courseTimes[j].endTime.addMinute(minute).isOverThan(courseTimes[i].startTime)
+                ) {
+                    return true
+                }
+            }
+        }
+        return false
     }
+
 }
