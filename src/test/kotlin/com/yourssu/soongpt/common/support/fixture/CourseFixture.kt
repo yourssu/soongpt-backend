@@ -19,28 +19,17 @@ enum class CourseFixture(
         courseName = "전공선택",
         professorName = "교수명",
         classification = Classification.MAJOR_ELECTIVE,
-        courseCode = 2,
         credit = 3,
     ),
     GENERAL_REQUIRED(
         courseName = "교양필수",
         professorName = "교수명",
         classification = Classification.GENERAL_REQUIRED,
-        courseCode = 3,
         credit = 3,
     )
     ;
 
     fun toDomain(): Course {
-        return Course(
-            courseName = courseName,
-            professorName = professorName,
-            classification = classification,
-            credit = credit,
-        )
-    }
-
-    fun toDomainRandomCourseCode() : Course {
         return Course(
             courseName = courseName,
             professorName = professorName,
