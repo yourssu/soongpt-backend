@@ -4,8 +4,7 @@ class Rating(
     val id: Long? = null,
     val courseName: String,
     val professorName: String,
-    val courseCode: String,
-    val star: Double = 3.91,
+    val star: Int,
     var point: Double = 50.0,
 ) {
 }

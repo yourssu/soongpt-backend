@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 	kotlin("plugin.jpa") version "1.9.25"
 	kotlin("kapt") version "1.9.25"
+	kotlin("plugin.serialization") version "1.5.0"
 }
 
 group = "com.yourssu"
@@ -71,6 +72,8 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
+
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0")
 }
 
 kotlin {

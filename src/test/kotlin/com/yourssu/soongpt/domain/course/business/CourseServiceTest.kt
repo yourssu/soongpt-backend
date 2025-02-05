@@ -45,7 +45,7 @@ class CourseServiceTest {
             @BeforeEach
             fun setUp() {
                 initializer.run()
-                val course = courseRepository.save(CourseFixture.MAJOR_REQUIRED.toDomainRandomCourseCode())
+                val course = courseRepository.save(CourseFixture.MAJOR_REQUIRED.toDomain())
                 val departmentGrade = jpaQueryFactory.selectFrom(departmentGradeEntity)
                     .innerJoin(departmentEntity)
                     .on(departmentGradeEntity.departmentId.eq(departmentEntity.id))
@@ -77,7 +77,7 @@ class CourseServiceTest {
             @BeforeEach
             fun setUp() {
                 initializer.run()
-                val course = courseRepository.save(CourseFixture.MAJOR_ELECTIVE.toDomainRandomCourseCode())
+                val course = courseRepository.save(CourseFixture.MAJOR_ELECTIVE.toDomain())
                 val departmentGrade = jpaQueryFactory.selectFrom(departmentGradeEntity)
                     .innerJoin(departmentEntity)
                     .on(departmentGradeEntity.departmentId.eq(departmentEntity.id))
@@ -109,7 +109,7 @@ class CourseServiceTest {
             @BeforeEach
             fun setUp() {
                 initializer.run()
-                val course = courseRepository.save(CourseFixture.GENERAL_REQUIRED.toDomainRandomCourseCode())
+                val course = courseRepository.save(CourseFixture.GENERAL_REQUIRED.toDomain())
                 val departmentGrade = jpaQueryFactory.selectFrom(departmentGradeEntity)
                     .innerJoin(departmentEntity)
                     .on(departmentGradeEntity.departmentId.eq(departmentEntity.id))

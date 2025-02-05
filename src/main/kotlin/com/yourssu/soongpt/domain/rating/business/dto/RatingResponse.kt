@@ -14,7 +14,6 @@ data class RatingResponse(
             return RatingResponse(
                 course = rating.courseName,
                 professor = rating.professorName,
-                courseCode = rating.courseCode,
                 star = rating.star,
                 point = rating.point,
             )
