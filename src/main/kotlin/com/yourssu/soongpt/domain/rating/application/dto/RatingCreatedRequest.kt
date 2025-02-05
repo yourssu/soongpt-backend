@@ -6,7 +6,7 @@ data class RatingCreatedRequest(
     val course: String,
     val professor: String,
     val courseCode: String,
-    val star: Int,
+    val star: Double,
 ) {
     fun toCommand(): RatingCreatedCommand {
         return RatingCreatedCommand(

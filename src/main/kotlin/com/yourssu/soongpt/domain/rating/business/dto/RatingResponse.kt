@@ -6,7 +6,7 @@ data class RatingResponse(
     val course: String,
     val professor: String,
     val courseCode: String,
-    val star: Int,
+    val star: Double,
     val point: Double,
 ) {
     companion object {
