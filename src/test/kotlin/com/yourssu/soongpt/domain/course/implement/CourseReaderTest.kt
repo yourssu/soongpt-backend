@@ -38,7 +38,7 @@ class CourseReaderTest {
 
         @BeforeEach
         fun setUp() {
-            val course = courseRepository.save(MAJOR_REQUIRED.toDomainRandomCourseCode())
+            val course = courseRepository.save(MAJOR_REQUIRED.toDomain())
 
             courseName = course.courseName
             val department = departmentRepository.save(COMPUTER.toDomain(1L))

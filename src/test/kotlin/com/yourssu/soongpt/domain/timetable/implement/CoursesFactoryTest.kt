@@ -10,10 +10,13 @@ class CoursesFactoryTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
     inner class generateTimetableCandidates_메서드는 {
-        val courses = Courses(listOf(
-            CourseFixture.MAJOR_REQUIRED.toDomainRandomCourseCode(),
-            CourseFixture.MAJOR_ELECTIVE.toDomainRandomCourseCode(),
-        ))
+        val courses = Courses(
+            listOf(
+                CourseFixture.MAJOR_REQUIRED.toDomain(),
+                CourseFixture.MAJOR_ELECTIVE.toDomain(),
+            )
+        )
+
         @Nested
         @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
         inner class 과목_그룹들을_받으면 {
