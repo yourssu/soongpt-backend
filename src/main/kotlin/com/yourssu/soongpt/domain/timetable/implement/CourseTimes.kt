@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.timetable.implement
 
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
+import com.yourssu.soongpt.domain.courseTime.implement.Time
 import com.yourssu.soongpt.domain.courseTime.implement.Week
 
 class CourseTimes(
@@ -27,5 +28,13 @@ class CourseTimes(
             }
         }
         return false
+    }
+
+    fun hasOverClasses(standard: Time): Boolean {
+        return courseTimes.any { standard.isOverThan(it.startTime) }
+    }
+
+    fun hasBreaks(minute: Int): Boolean {
+        TODO("Not yet implemented")
     }
 }
