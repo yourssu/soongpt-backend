@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.domain.course.storage.exception
+package com.yourssu.soongpt.domain.course.implement.exception
 
 import com.yourssu.soongpt.common.handler.NotFoundException
 
