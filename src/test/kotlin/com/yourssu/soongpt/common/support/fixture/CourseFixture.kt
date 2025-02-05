@@ -30,7 +30,7 @@ enum class CourseFixture(
         classification = Classification.GENERAL_REQUIRED,
         courseCode = 3,
         credit = 3,
-    )
+    ),
     ;
 
     fun toDomain(courseCode: Int = this.courseCode): Course {
