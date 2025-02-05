@@ -33,4 +33,8 @@ data class Time(
     fun isOverThan(other: Time, minute: Int = 0): Boolean {
         return time + minute > other.time
     }
+
+    fun addMinute(minute: Int): Time {
+        return Time(time + minute)
+    }
 }
