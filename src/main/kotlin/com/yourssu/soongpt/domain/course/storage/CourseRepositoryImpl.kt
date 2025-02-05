@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.implement.Classification
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
+import com.yourssu.soongpt.domain.course.storage.exception.CourseNotFoundException
 import com.yourssu.soongpt.domain.departmentGrade.storage.QDepartmentGradeEntity.departmentGradeEntity
 import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
 import org.springframework.data.jpa.repository.JpaRepository
@@ -39,6 +40,26 @@ class CourseRepositoryImpl(
             .where(courseEntity.id.`in`(ids))
             .fetch()
             .map { it.toDomain() }
+    }
+
+    override fun findByDepartmentIdAndCourseName(
+        departmentId: Long,
+        courseName: String,
+        classification: Classification
+    ): Course {
+        return jpaQueryFactory.selectFrom(courseEntity)
+            .innerJoin(targetEntity)
+            .on(courseEntity.id.eq(targetEntity.courseId))
+            .innerJoin(departmentGradeEntity)
+            .on(targetEntity.departmentGradeId.eq(departmentGradeEntity.id))
+            .where(
+                departmentGradeEntity.departmentId.eq(departmentId),
+                courseEntity.courseName.eq(courseName),
+                courseEntity.classification.eq(classification)
+            )
+            .fetchOne()
+            ?.toDomain()
+            ?: throw CourseNotFoundException(courseName = courseName)
     }
 }
 
