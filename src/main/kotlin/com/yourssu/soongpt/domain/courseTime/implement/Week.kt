@@ -10,4 +10,10 @@ enum class Week(
     FRIDAY("fri"),
     SATURDAY("sat"),
     SUNDAY("sun");
+
+    companion object {
+        fun weekdays(): List<Week> {
+            return listOf(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)
+        }
+    }
 }

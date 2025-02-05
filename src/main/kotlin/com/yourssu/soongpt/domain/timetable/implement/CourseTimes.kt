@@ -21,7 +21,7 @@ class CourseTimes(
     }
 
     fun hasFreeDay(): Boolean {
-        for (day in Week.entries) {
+        for (day in Week.weekdays()) {
             if (courseTimes.none { it.week == day }) {
                 return true
             }
