@@ -26,7 +26,6 @@ class DepartmentGradeReader(
     }
 
     fun getByDepartmentIdsAndGrades(parsedTarget: ParsedTarget): List<DepartmentGrade> {
-        println("grade : ${parsedTarget.grade}, includedDepartments : ${parsedTarget.includedDepartments}, excludedDepartments : ${parsedTarget.excludedDepartments}")
         // 제외 대상 학과 이름에 해당하는 학과 id 집합을 미리 계산(없으면 빈 집합)
         val excludeDeptIds: Set<Long> = if (parsedTarget.excludedDepartments.isNotEmpty()) {
             parsedTarget.excludedDepartments
