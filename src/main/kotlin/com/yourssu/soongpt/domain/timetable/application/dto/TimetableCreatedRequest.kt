@@ -25,6 +25,9 @@ data class TimetableCreatedRequest(
 
     @field:NotNull
     val generalRequiredCourses: List<String>,
+
+    @field:Range(min = 0, max = 22, message = "전필 희망 학점은 최대 22학점입니다.")
+    val generalElectiveCredit: Int
 ) {
     fun toCommand(): TimetableCreatedCommand {
         return TimetableCreatedCommand(
@@ -34,6 +37,7 @@ data class TimetableCreatedRequest(
             majorRequiredCourses = majorRequiredCourses,
             majorElectiveCourses = majorElectiveCourses,
             generalRequiredCourses = generalRequiredCourses,
+            generalElectiveCredit = generalElectiveCredit,
         )
     }
 }
