@@ -10,11 +10,11 @@ import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeReader
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeWriter
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGradeReader
+import com.yourssu.soongpt.domain.target.implement.Target
 import com.yourssu.soongpt.domain.target.implement.TargetReader
+import com.yourssu.soongpt.domain.target.implement.TargetWriter
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import com.yourssu.soongpt.domain.target.implement.Target
-import com.yourssu.soongpt.domain.target.implement.TargetWriter
 
 @Service
 class CourseService(

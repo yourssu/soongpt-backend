@@ -26,7 +26,7 @@ enum class CourseFixture(
         professorName = "교수명",
         classification = Classification.GENERAL_REQUIRED,
         credit = 3,
-    )
+    ),
     ;
 
     fun toDomain(): Course {
