@@ -30,7 +30,7 @@ data class Time(
         return "${time / HOUR_TO_MIN}$TIME_DELIMITER${time % HOUR_TO_MIN}"
     }
 
-    fun isOverThan(other: Time): Boolean {
-        return time > other.time
+    fun isOverThan(other: Time, minute: Int = 0): Boolean {
+        return time + minute > other.time
     }
 }
