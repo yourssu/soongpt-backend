@@ -96,7 +96,6 @@ class CourseService(
                     }
                 }
 
-
                 val target = course.target?.let { targetMapper.getMappedTarget(it) } ?: throw
                 IllegalArgumentException("변환한 타겟" +
                         "이 null임, 원본 타겟 : ${course.target.orEmpty()}")
