@@ -37,4 +37,8 @@ data class Time(
     fun addMinute(minute: Int): Time {
         return Time(time + minute)
     }
+
+    fun minus(other: Time): Int {
+        return time - other.time
+    }
 }
