@@ -28,7 +28,7 @@ spring:
             connectTimeout: 5000
             loggerLevel: full
             defaultRequestHeaders:
-              Authorization: ${AUTH_TOKEN}
+              Authorization: Bearer ${AUTH_TOKEN}
             dismiss404: false
 
 logging:
