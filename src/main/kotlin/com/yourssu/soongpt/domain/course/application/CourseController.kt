@@ -7,6 +7,7 @@ import com.yourssu.soongpt.domain.course.application.dto.CreateCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorRequiredCourseRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.CourseResponse
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -39,6 +40,7 @@ class CourseController(
         return ResponseEntity.ok().body(Response(result = response))
     }
 
+    @Hidden
     @PostMapping
     fun createCourses(@RequestBody courses: List<CreateCourseRequest>): ResponseEntity<String> {
         courseService.createCourses(courses)
