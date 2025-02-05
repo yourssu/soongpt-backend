@@ -39,6 +39,26 @@ class CourseService(
         }
     }
 
+    fun findByDepartmentNameInMajorElective(departmentName: String): List<CourseResponse> {
+        val department = departmentReader.getByName(departmentName)
+        val courses = courseReader.findAllByDepartmentIdInMajorElective(department.id!!)
+        return courses.map {
+            val targets = targetReader.findAllBy(courseId = it.id!!, department = department)
+            val courseTimes = courseTimeReader.findAllByCourseId(it.id)
+            CourseResponse.from(course = it, target = targets, courseTimes = courseTimes)
+        }
+    }
+
+    fun findByDepartmentNameInGeneralRequired(departmentName: String): List<CourseResponse> {
+        val department = departmentReader.getByName(departmentName)
+        val courses = courseReader.findAllByDepartmentIdInGeneralRequired(department.id!!)
+        return courses.map {
+            val targets = targetReader.findAllBy(courseId = it.id!!, department = department)
+            val courseTimes = courseTimeReader.findAllByCourseId(it.id)
+            CourseResponse.from(course = it, target = targets, courseTimes = courseTimes)
+        }
+    }
+
     @Transactional
     fun createCourses(courses: List<CreateCourseRequest>) {
         courses.forEach { course ->
