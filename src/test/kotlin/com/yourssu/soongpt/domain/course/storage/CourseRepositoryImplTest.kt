@@ -6,6 +6,7 @@ import com.yourssu.soongpt.common.support.fixture.DepartmentFixture.COMPUTER
 import com.yourssu.soongpt.common.support.fixture.DepartmentGradeFixture.FIRST
 import com.yourssu.soongpt.common.support.fixture.TargetFixture
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
+import com.yourssu.soongpt.domain.course.storage.exception.CourseNotFoundException
 import com.yourssu.soongpt.domain.department.implement.DepartmentRepository
 import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGradeRepository
 import com.yourssu.soongpt.domain.target.implement.TargetRepository
@@ -59,6 +60,61 @@ class CourseRepositoryImplTest {
                 )
 
                 assertThat(courses).hasSize(1)
+            }
+        }
+    }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
+    inner class findByDepartmentIdAndCourseName_메서드는 {
+        var departmentId: Long? = null
+        var courseName: String? = null
+
+        @BeforeEach
+        fun setUp() {
+            val course = courseRepository.save(MAJOR_REQUIRED.toDomainRandomCourseCode())
+
+            courseName = course.courseName
+            val department = departmentRepository.save(COMPUTER.toDomain(1L))
+            departmentId = department.id
+            val departmentGrade = departmentGradeRepository.save(FIRST.toDomain(departmentId = departmentId!!))
+            targetRepository.save(
+                TargetFixture.TARGET1.toDomain(
+                    departmentGradeId = departmentGrade.id!!,
+                    courseId = course.id!!
+                )
+            )
+        }
+
+        @Nested
+        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
+        inner class 학과이름이_일치하지_않는_경우 {
+            @Test
+            @DisplayName("CourseNotFoundException 예외를 반환한다.")
+            fun success() {
+                assertThrows<CourseNotFoundException> {
+                    courseRepository.findByDepartmentIdAndCourseName(
+                        departmentId = departmentId!!,
+                        courseName = "일치하지 않는 과목 이름",
+                        classification = MAJOR_REQUIRED.classification,
+                    )
+                }
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
+        inner class 수강대상이_일치하지_않는_경우 {
+            @Test
+            @DisplayName("CourseNotFoundException 예외를 반환한다.")
+            fun success() {
+                assertThrows<CourseNotFoundException> {
+                    courseRepository.findByDepartmentIdAndCourseName(
+                        departmentId = 0L,
+                        courseName = courseName!!,
+                        classification = MAJOR_REQUIRED.classification,
+                    )
+                }
             }
         }
     }
