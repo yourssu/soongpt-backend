@@ -28,6 +28,10 @@ class DepartmentRepositoryImpl(
             .fetchOne()
             ?.toDomain()
     }
+
+    override fun findAll(): List<Department> {
+        return departmentJpaRepository.findAll().map { it.toDomain() }
+    }
 }
 
 interface DepartmentJpaRepository : JpaRepository<DepartmentEntity, Long> {

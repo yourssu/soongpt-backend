@@ -16,9 +16,6 @@ class RatingEntity(
     @Column(name = "professor_name", nullable = true)
     val professorName: String,
 
-    @Column(name = "course_code", nullable = false)
-    val courseCode: String,
-
     @Column(name = "star", nullable = false)
     val star: Double,
 
@@ -30,7 +27,6 @@ class RatingEntity(
             return RatingEntity(
                 courseName = rating.courseName,
                 professorName = rating.professorName,
-                courseCode = rating.courseCode,
                 star = rating.star,
                 point = rating.point,
             )
@@ -42,7 +38,6 @@ class RatingEntity(
             id = id,
             courseName = courseName,
             professorName = professorName,
-            courseCode = courseCode,
             star = star,
             point = point,
         )
