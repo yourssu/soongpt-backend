@@ -32,14 +32,13 @@ class TimetableService(
         val majorElectiveCourses =
             command.majorElectiveCourses.map { courseReader.findAllByCourseNameInMajorElective(department.id!!, it) }
         val generalRequiredCourses =
-            command.generalRequiredCourses.map {
-                courseReader.findAllByCourseNameInGeneralRequired(
-                    department.id!!,
-                    it
-                )
+            command.generalRequiredCourses.map { courseReader.findAllByCourseNameInGeneralRequired(department.id!!, it)
             }
+
         val coursesCandidates =
             coursesFactory.generateTimetableCandidates(majorRequiredCourses + majorElectiveCourses + generalRequiredCourses)
+        coursesFactory.validateEmpty(coursesCandidates)
+
         val responses = ArrayList<TimetableResponse>()
         for (courses in coursesCandidates) {
             val timetable = timetableWriter.save(Timetable(tag = Tag.DEFAULT))

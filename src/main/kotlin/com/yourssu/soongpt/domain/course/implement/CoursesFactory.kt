@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.implement
 
+import com.yourssu.soongpt.domain.course.implement.exception.InvalidTimetableRequestException
 import org.springframework.stereotype.Component
 
 @Component
@@ -12,5 +13,11 @@ class CoursesFactory {
                 courses.courses.map { course -> currentCombination + course }
             }
         }.map { Courses(it) }
+    }
+
+    fun validateEmpty(timetableCandidates: List<Courses>) {
+        if (timetableCandidates.isEmpty()) {
+            throw InvalidTimetableRequestException()
+        }
     }
 }
