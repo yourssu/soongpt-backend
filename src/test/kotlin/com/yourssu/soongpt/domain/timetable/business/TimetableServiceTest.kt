@@ -39,7 +39,7 @@ class TimetableServiceTest(
 
         @BeforeEach
         fun setUp() {
-            val course = courseWriter.save(CourseFixture.MAJOR_REQUIRED.toDomainRandomCourseCode())
+            val course = courseWriter.save(CourseFixture.MAJOR_REQUIRED.toDomain())
             val timetable = timetableWriter.save(TimetableFixture.DEFAULT.toDomain())
             courseTimeWriter.save(CourseTimeFixture.MONDAY_17_19.toDomain(course.id!!))
             timetableId = timetable.id
