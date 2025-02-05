@@ -6,7 +6,7 @@ class RatingCreatedCommand(
     val course: String,
     val professor: String,
     val courseCode: String,
-    val star: Int,
+    val star: Double,
 ) {
     fun toRating(): Rating {
         return Rating(
