@@ -22,7 +22,7 @@ class TimetableService(
     private val courseTimeReader: CourseTimeReader,
     private val departmentReader: DepartmentReader,
     private val courseReader: CourseReader,
-    private val coursesFactory: CoursesFactory,
+    private val timetableCandidateFactory: TimetableCandidateFactory,
 ) {
     @Transactional
     fun createTimetable(command: TimetableCreatedCommand): TimetableResponses {
@@ -32,22 +32,22 @@ class TimetableService(
         val majorElectiveCourses =
             command.majorElectiveCourses.map { courseReader.findAllByCourseNameInMajorElective(department.id!!, it) }
         val generalRequiredCourses =
-            command.generalRequiredCourses.map { courseReader.findAllByCourseNameInGeneralRequired(department.id!!, it)
+            command.generalRequiredCourses.map {
+                courseReader.findAllByCourseNameInGeneralRequired(department.id!!, it)
             }
 
-        val coursesCandidates =
-            coursesFactory.generateTimetableCandidates(majorRequiredCourses + majorElectiveCourses + generalRequiredCourses)
-        coursesFactory.validateEmpty(coursesCandidates)
+        val coursesCandidates = CoursesFactory(majorRequiredCourses + majorElectiveCourses + generalRequiredCourses).generateTimetableCandidates()
+        val timetableCandidates = timetableCandidateFactory.createTimetableCandidates(coursesCandidates).filterTagStrategy()
 
         val responses = ArrayList<TimetableResponse>()
-        for (courses in coursesCandidates) {
-            val timetable = timetableWriter.save(Timetable(tag = Tag.DEFAULT))
-            saveTimetableCourses(courses, timetable)
+        for (timetableCandidate in timetableCandidates.values) {
+            val timetable = timetableWriter.save(Timetable(tag = timetableCandidate.tag))
+            saveTimetableCourses(timetableCandidate.courses, timetable)
             responses.add(
                 TimetableResponse(
                     timetable.id!!,
                     timetable.tag.name,
-                    toTimetableCourseResponses(courses)
+                    toTimetableCourseResponses(timetableCandidate.courses)
                 )
             )
         }
@@ -55,10 +55,10 @@ class TimetableService(
     }
 
     private fun toTimetableCourseResponses(courses: Courses) =
-        courses.courses.map { TimetableCourseResponse.from(it, courseTimeReader.findAllByCourseId(it.id!!)) }
+        courses.values.map { TimetableCourseResponse.from(it, courseTimeReader.findAllByCourseId(it.id!!)) }
 
     private fun saveTimetableCourses(courses: Courses, timetable: Timetable) {
-        for (course in courses.courses) {
+        for (course in courses.values) {
             timetableCourseWriter.save(TimetableCourse(timetableId = timetable.id!!, courseId = course.id!!))
         }
     }

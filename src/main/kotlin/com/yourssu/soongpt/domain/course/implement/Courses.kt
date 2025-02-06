@@ -1,13 +1,17 @@
 package com.yourssu.soongpt.domain.course.implement
 
 class Courses(
-    val courses: List<Course>,
+    val values: List<Course>,
 ) {
     fun isEmpty(): Boolean {
-        return courses.isEmpty()
+        return values.isEmpty()
     }
 
     fun unpackNameAndProfessor(): List<Pair<String, String>> {
-        return courses.map { it.courseName to it.professorName!! }
+        return values.map { it.courseName to it.professorName!! }
+    }
+
+    fun getAllIds(): List<Long> {
+        return values.map { it.id!! }
     }
 }

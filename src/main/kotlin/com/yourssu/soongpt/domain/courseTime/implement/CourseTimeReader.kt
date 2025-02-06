@@ -9,4 +9,8 @@ class CourseTimeReader(
     fun findAllByCourseId(courseId: Long): List<CourseTime> {
         return courseTimeRepository.findAllByCourseId(courseId)
     }
+
+    fun findAllByCourseIds(courseIds: List<Long>): List<CourseTime> {
+        return courseIds.flatMap { courseTimeRepository.findAllByCourseId(it) }
+    }
 }
