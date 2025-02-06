@@ -3,6 +3,7 @@ package com.yourssu.soongpt.domain.timetable.implement
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.course.implement.Courses
 import com.yourssu.soongpt.domain.course.implement.Courses.Companion.calculateAvailableMajorElective
+import com.yourssu.soongpt.domain.course.implement.Courses.Companion.validateCreditRule
 import com.yourssu.soongpt.domain.course.implement.CoursesFactory
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeReader
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
@@ -26,6 +27,7 @@ class TimeTableFactory(
     fun createTimetable(command: TimetableCreatedCommand): TimetableCandidates {
         val department = departmentReader.getByName(command.departmentName)
         val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
+
         val majorRequiredCourses =
             command.majorRequiredCourses.map { courseReader.findAllByCourseNameInMajorRequired(department.id, it) }
         val majorElectiveCourses =
@@ -34,6 +36,12 @@ class TimeTableFactory(
             command.generalRequiredCourses.map {
                 courseReader.findAllByCourseNameInGeneralRequired(department.id, it)
             }
+        validateCreditRule(
+            majorRequiredCourses = majorRequiredCourses,
+            generalRequiredCourses = generalRequiredCourses,
+            majorElectiveCredit = command.majorElectiveCredit,
+            generalElectiveCredit = command.generalElectiveCredit,
+        )
 
         val coursesCandidates = CoursesFactory(majorRequiredCourses + majorElectiveCourses + generalRequiredCourses)
             .generateTimetableCandidates()

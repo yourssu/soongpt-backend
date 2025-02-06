@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.implement
 
+import com.yourssu.soongpt.domain.course.implement.exception.ViolatedTotalCreditRuleException
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCreatedCommand
 import com.yourssu.soongpt.domain.timetable.implement.exception.ViolatedMajorElectiveCreditException
 
@@ -17,6 +18,18 @@ class Courses(
                 throw ViolatedMajorElectiveCreditException()
             }
             return availableMajorElectiveCredit
+        }
+
+        fun validateCreditRule(
+            majorRequiredCourses: List<Courses>,
+            generalRequiredCourses: List<Courses>,
+            majorElectiveCredit: Int,
+            generalElectiveCredit: Int,
+            ) {
+            val total = majorRequiredCourses.sumOf { it.getFirstCredit() } + generalRequiredCourses.sumOf { it.getFirstCredit() } + majorElectiveCredit + generalElectiveCredit
+            if (total > 22) {
+                throw ViolatedTotalCreditRuleException(total.toString())
+            }
         }
     }
 
