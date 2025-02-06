@@ -60,7 +60,7 @@ class CourseServiceTest {
             @Test
             @DisplayName("해당 학과가 수강대상인 과목 정보를 반환한다.")
             fun success() {
-                val response = courseService.findByDepartmentNameInMajorRequired(departmentName)
+                val response = courseService.findByDepartmentNameInMajorRequired(FoundDepartmentCommand(departmentName, 4))
 
                 assertEquals(1, response.size)
             }
@@ -92,7 +92,7 @@ class CourseServiceTest {
             @Test
             @DisplayName("해당 학과가 수강대상인 과목 정보를 반환한다.")
             fun success() {
-                val response = courseService.findByDepartmentNameInMajorElective(departmentName)
+                val response = courseService.findByDepartmentNameInMajorElective(FoundDepartmentCommand(departmentName, 4))
 
                 assertEquals(1, response.size)
             }
@@ -124,7 +124,7 @@ class CourseServiceTest {
             @Test
             @DisplayName("해당 학과가 수강대상인 과목 정보를 반환한다.")
             fun success() {
-                val response = courseService.findByDepartmentNameInGeneralRequired(departmentName)
+                val response = courseService.findByDepartmentNameInGeneralRequired(FoundDepartmentCommand(departmentName, 4))
 
                 assertEquals(1, response.size)
             }
