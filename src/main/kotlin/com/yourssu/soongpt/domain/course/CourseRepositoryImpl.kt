@@ -21,16 +21,10 @@ class CourseRepositoryImpl(
             .toDomain()
     }
 
-    override fun findAllByDepartmentId(departmentId: Long, classification: Classification): List<Course> {
+    override fun findAllByDepartmentGradeId(departmentGradeId: Long, classification: Classification): List<Course> {
         return jpaQueryFactory.selectFrom(courseEntity)
             .innerJoin(targetEntity)
-            .on(courseEntity.id.eq(targetEntity.courseId))
-            .innerJoin(departmentGradeEntity)
-            .on(targetEntity.departmentGradeId.eq(departmentGradeEntity.id))
-            .where(
-                departmentGradeEntity.departmentId.eq(departmentId),
-                courseEntity.classification.eq(classification)
-            )
+            .on(courseEntity.id.eq(targetEntity.courseId), targetEntity.departmentGradeId.eq(departmentGradeId), courseEntity.classification.eq(classification))
             .fetch()
             .map { it.toDomain() }
     }
