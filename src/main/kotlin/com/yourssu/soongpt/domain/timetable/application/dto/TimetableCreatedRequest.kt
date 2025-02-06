@@ -38,9 +38,10 @@ data class TimetableCreatedRequest(
             departmentName = department,
             grade = grade,
             isChapel = isChapel,
-            majorRequiredCourses = majorRequiredCourses,
-            majorElectiveCourses = majorElectiveCourses,
-            generalRequiredCourses = generalRequiredCourses,
+            majorRequiredCourses = majorRequiredCourses.distinct(),
+            majorElectiveCourses = majorElectiveCourses.distinct(),
+            generalRequiredCourses = generalRequiredCourses.distinct(),
+            majorElectiveCredit = majorElectiveCredit,
             generalElectiveCredit = generalElectiveCredit,
         )
     }
