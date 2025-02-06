@@ -19,6 +19,10 @@ class CourseReader(
         return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.GENERAL_REQUIRED)
     }
 
+    fun findAllByDepartmentGradeIdInGeneralElective(departmentGradeId: Long): List<Course> {
+        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.GENERAL_ELECTIVE)
+    }
+
     fun findAllByCourseNameInMajorRequired(departmentId: Long, courseName: String): Courses {
         return findAllByCourseName(departmentId, courseName, Classification.MAJOR_REQUIRED)
     }
