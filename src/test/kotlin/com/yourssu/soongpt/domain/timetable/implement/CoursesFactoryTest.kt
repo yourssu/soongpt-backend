@@ -23,10 +23,9 @@ class CoursesFactoryTest {
             @Test
             @DisplayName("각 그룹에서 과목을 모두 선택한 집합들의 리스트를 반환한다.")
             fun success() {
-                val coursesFactory = CoursesFactory()
-                val courseCandidates = listOf(courses, courses)
+                val coursesFactory = CoursesFactory(listOf(courses, courses))
 
-                val actual = coursesFactory.generateTimetableCandidates(courseCandidates)
+                val actual = coursesFactory.generateTimetableCandidates()
                 assertThat(actual).hasSize(4)
             }
         }

@@ -24,5 +24,9 @@ enum class Week(
                 else -> throw IllegalArgumentException("알 수 없는 요일 : $name")
             }
         }
+
+        fun weekdays(): List<Week> {
+            return listOf(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)
+        }
     }
 }
