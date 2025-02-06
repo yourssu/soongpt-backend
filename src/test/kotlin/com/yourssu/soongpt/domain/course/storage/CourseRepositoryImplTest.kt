@@ -31,14 +31,14 @@ class CourseRepositoryImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
     inner class findAllByDepartmentId_메서드는 {
-        var departmentId: Long? = null
+        var departmentGradeId: Long? = null
 
         @BeforeEach
         fun setUp() {
             val course = courseRepository.save(MAJOR_REQUIRED.toDomain())
             val department = departmentRepository.save(COMPUTER.toDomain(1L))
-            departmentId = department.id
-            val departmentGrade = departmentGradeRepository.save(FIRST.toDomain(departmentId = departmentId!!))
+            val departmentGrade = departmentGradeRepository.save(FIRST.toDomain(departmentId = department.id!!))
+            departmentGradeId = departmentGrade.id
             targetRepository.save(
                 TargetFixture.TARGET1.toDomain(
                     departmentGradeId = departmentGrade.id!!,
@@ -53,8 +53,8 @@ class CourseRepositoryImplTest {
             @Test
             @DisplayName("해당하는 과목을 반환한다.")
             fun success() {
-                val courses = courseRepository.findAllByDepartmentId(
-                    departmentId = departmentId!!,
+                val courses = courseRepository.findAllByDepartmentGradeId(
+                    departmentGradeId = departmentGradeId!!,
                     classification = MAJOR_REQUIRED.classification
                 )
 
