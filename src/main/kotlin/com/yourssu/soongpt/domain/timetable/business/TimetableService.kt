@@ -10,6 +10,7 @@ import com.yourssu.soongpt.domain.timetable.implement.TimetableCandidateFactory
 import com.yourssu.soongpt.domain.timetable.implement.TimetableCourseReader
 import com.yourssu.soongpt.domain.timetable.implement.TimetableReader
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class TimetableService(
@@ -19,6 +20,7 @@ class TimetableService(
     private val timetableCandidateFactory: TimetableCandidateFactory,
     private val timeTableFactory: TimeTableFactory,
 ) {
+    @Transactional
     fun createTimetable(command: TimetableCreatedCommand): TimetableResponses {
         val timetables = timeTableFactory.createTimetable(command)
         val responses = timetableCandidateFactory.issueTimetables(timetables)
