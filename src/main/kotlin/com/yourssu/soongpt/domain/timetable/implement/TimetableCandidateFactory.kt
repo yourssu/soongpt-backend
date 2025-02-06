@@ -16,4 +16,11 @@ class TimetableCandidateFactory(
             )
         })
     }
+
+    fun extendTimetableCandidates(timetableCandidates: TimetableCandidates, addCourses: List<Courses>): TimetableCandidates {
+        return timetableCandidates.extendCourses(addCourses.map {
+            Pair(it, CourseTimes(courseTimeReader.findAllByCourseIds(it.getAllIds()))
+            )
+        })
+    }
 }
