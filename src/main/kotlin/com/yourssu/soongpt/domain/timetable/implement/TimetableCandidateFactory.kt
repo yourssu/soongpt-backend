@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeReader
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCourseResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class TimetableCandidateFactory(
@@ -28,6 +29,7 @@ class TimetableCandidateFactory(
         })
     }
 
+    @Transactional
     fun issueTimetables(timetableCandidates: TimetableCandidates): ArrayList<TimetableResponse> {
         val responses = ArrayList<TimetableResponse>()
         for (timetableCandidate in timetableCandidates.values) {
