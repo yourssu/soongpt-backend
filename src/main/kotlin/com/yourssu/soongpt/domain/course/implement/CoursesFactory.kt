@@ -3,10 +3,10 @@ package com.yourssu.soongpt.domain.course.implement
 import com.yourssu.soongpt.domain.course.implement.exception.InvalidTimetableRequestException
 
 class CoursesFactory(
-    private val coursesCandidates: List<Courses>,
+    private val values: List<Courses>,
 ) {
     fun generateTimetableCandidates(): List<Courses> {
-        val timetableCandidates = coursesCandidates.fold(listOf(emptyList<Course>())) { acc, courses ->
+        val timetableCandidates = values.fold(listOf(emptyList<Course>())) { acc, courses ->
             acc.flatMap { currentCombination ->
                 courses.values.map { course -> currentCombination + course }
             }
@@ -22,7 +22,7 @@ class CoursesFactory(
     }
 
     fun districtDuplicatedCourses(target: List<Courses>): CoursesFactory {
-        return CoursesFactory(coursesCandidates.filter { courses ->
+        return CoursesFactory(values.filter { courses ->
             target.map { it.unpackNameAndProfessor().first().first != courses.unpackNameAndProfessor().first().first }
                 .reduce(Boolean::and)
         })
@@ -31,7 +31,7 @@ class CoursesFactory(
     fun allCases(): CoursesFactory {
         val combinations = mutableListOf<List<Course>>(emptyList())
 
-        for (courses in coursesCandidates) {
+        for (courses in values) {
             val newCombinations = mutableListOf<List<Course>>()
             for (currentCombination in combinations) {
                 for (course in courses.values) {
@@ -47,6 +47,6 @@ class CoursesFactory(
 
 
     fun filterLessThanTotalCredit(standard: Int): List<Courses> {
-        return coursesCandidates.filter { it.totalCredit() < standard }
+        return values.filter { it.totalCredit() < standard }
     }
 }
