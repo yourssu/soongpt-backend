@@ -7,6 +7,10 @@ import com.yourssu.soongpt.domain.courseTime.implement.Week
 class CourseTimes(
     private val courseTimes: List<CourseTime>
 ) {
+    fun extend(courseTimes: CourseTimes): CourseTimes {
+        return CourseTimes(this.courseTimes + courseTimes.courseTimes)
+    }
+
     fun hasOverlappingCourseTimes(): Boolean {
         for (i in courseTimes.indices) {
             for (j in i + 1 until courseTimes.size) {
