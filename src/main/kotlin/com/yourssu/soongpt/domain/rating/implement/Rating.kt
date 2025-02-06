@@ -5,6 +5,9 @@ class Rating(
     val courseName: String,
     val professorName: String,
     val star: Double,
-    var point: Double = 50.0,
+    var point: Double = INIT,
 ) {
+    companion object {
+        const val INIT = 50.0
+    }
 }
