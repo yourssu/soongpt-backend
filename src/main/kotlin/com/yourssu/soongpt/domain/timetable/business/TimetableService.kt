@@ -6,7 +6,6 @@ import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCreatedCommand
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponses
 import com.yourssu.soongpt.domain.timetable.implement.TimeTableFactory
-import com.yourssu.soongpt.domain.timetable.implement.TimetableCandidateFactory
 import com.yourssu.soongpt.domain.timetable.implement.TimetableCourseReader
 import com.yourssu.soongpt.domain.timetable.implement.TimetableReader
 import org.springframework.stereotype.Service
@@ -17,13 +16,12 @@ class TimetableService(
     private val timetableReader: TimetableReader,
     private val timetableCourseReader: TimetableCourseReader,
     private val courseTimeReader: CourseTimeReader,
-    private val timetableCandidateFactory: TimetableCandidateFactory,
     private val timeTableFactory: TimeTableFactory,
 ) {
     @Transactional
     fun createTimetable(command: TimetableCreatedCommand): TimetableResponses {
         val timetables = timeTableFactory.createTimetable(command)
-        val responses = timetableCandidateFactory.issueTimetables(timetables)
+        val responses = timeTableFactory.issueTimetables(timetables)
         return TimetableResponses(responses)
     }
 
