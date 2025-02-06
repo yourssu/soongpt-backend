@@ -20,7 +20,7 @@ class RatingRepositoryImpl(
         return jpaQueryFactory.selectFrom(ratingEntity)
             .where(ratingEntity.courseName.like(courseName))
             .where(ratingEntity.professorName.eq(professorName))
-            .fetchOne()
+            .fetchFirst()
             ?.toDomain()
     }
 }
