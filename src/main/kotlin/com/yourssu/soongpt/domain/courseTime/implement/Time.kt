@@ -27,7 +27,7 @@ data class Time(
     }
 
     fun toTimeFormat(): String {
-        val hours = time / HOUR_TO_MIN
+        val hours = (time / HOUR_TO_MIN).toString().padStart(2, '0')
         val minutes = (time % HOUR_TO_MIN).toString().padStart(2, '0')
         return "$hours$TIME_DELIMITER$minutes"
     }
