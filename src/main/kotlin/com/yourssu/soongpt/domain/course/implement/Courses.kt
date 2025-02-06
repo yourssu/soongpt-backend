@@ -1,8 +1,25 @@
 package com.yourssu.soongpt.domain.course.implement
 
+import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCreatedCommand
+import com.yourssu.soongpt.domain.timetable.implement.exception.ViolatedMajorElectiveCreditException
+
 class Courses(
     val values: List<Course>,
 ) {
+    companion object {
+        fun calculateAvailableMajorElective(
+            command: TimetableCreatedCommand,
+            majorElectiveCourses: List<Courses>
+        ): Int {
+            val availableMajorElectiveCredit =
+                command.majorElectiveCredit - majorElectiveCourses.sumOf { it.getFirstCredit() }
+            if (availableMajorElectiveCredit < 0) {
+                throw ViolatedMajorElectiveCreditException()
+            }
+            return availableMajorElectiveCredit
+        }
+    }
+
     fun isEmpty(): Boolean {
         return values.isEmpty()
     }
