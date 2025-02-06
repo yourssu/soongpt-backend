@@ -1,3 +1,4 @@
+@host = localhost:9000
 
 @schoolId = 21
 @department = 소프트웨어학부
@@ -5,18 +6,18 @@
 
 // 전공 필수 과목 조회
 ###
-GET localhost:8080/api/courses/major/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
+GET {{host}}/api/courses/major/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
 Content-Type: application/x-www-form-urlencoded
 ###
 
 // 전공 선택 과목 조회
 ###
-GET localhost:8080/api/courses/major/elective?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
+GET {{host}}/api/courses/major/elective?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
 Content-Type: application/x-www-form-urlencoded
 ###
 
-// 교양 핈 과목 조회
+// 교양 필수 과목 조회
 ###
-GET localhost:8080/api/courses/general/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
+GET {{host}}/api/courses/general/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
 Content-Type: application/x-www-form-urlencoded
 ###

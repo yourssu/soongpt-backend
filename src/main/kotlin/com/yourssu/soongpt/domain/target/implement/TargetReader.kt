@@ -17,11 +17,11 @@ class TargetReader(
         return targets.map { formatTargetDisplayName(department, it) }
     }
 
-    private fun findAllByCourseId(courseId: Long): List<Target> {
-        return targetRepository.findAllByCourseId(courseId)
+    fun formatTargetDisplayName(department: Department, departmentGrade: DepartmentGrade): String {
+        return "${department.name}${departmentGrade.grade}"
     }
 
-    private fun formatTargetDisplayName(department: Department, departmentGrade: DepartmentGrade): String {
-        return "${department.name}${departmentGrade.grade}"
+    private fun findAllByCourseId(courseId: Long): List<Target> {
+        return targetRepository.findAllByCourseId(courseId)
     }
 }

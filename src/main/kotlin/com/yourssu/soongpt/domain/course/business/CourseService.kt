@@ -29,33 +29,33 @@ class CourseService(
     private val targetWriter: TargetWriter,
     private val targetMapper: TargetMapper
 ) {
-    fun findByDepartmentNameInMajorRequired(departmentName: String): List<CourseResponse> {
-        val department = departmentReader.getByName(departmentName)
-        val courses = courseReader.findAllByDepartmentIdInMajorRequired(department.id!!)
+    fun findByDepartmentNameInMajorRequired(command: FoundDepartmentCommand): List<CourseResponse> {
+        val department = departmentReader.getByName(command.departmentName)
+        val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
+        val courses = courseReader.findAllByDepartmentGradeIdInMajorRequired(departmentGrade.id!!)
         return courses.map {
-            val targets = targetReader.findAllBy(courseId = it.id!!, department = department)
-            val courseTimes = courseTimeReader.findAllByCourseId(it.id)
-            CourseResponse.from(course = it, target = targets, courseTimes = courseTimes)
+            val courseTimes = courseTimeReader.findAllByCourseId(it.id!!)
+            CourseResponse.from(course = it, target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)), courseTimes = courseTimes)
         }
     }
 
-    fun findByDepartmentNameInMajorElective(departmentName: String): List<CourseResponse> {
-        val department = departmentReader.getByName(departmentName)
-        val courses = courseReader.findAllByDepartmentIdInMajorElective(department.id!!)
+    fun findByDepartmentNameInMajorElective(command: FoundDepartmentCommand): List<CourseResponse> {
+        val department = departmentReader.getByName(command.departmentName)
+        val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
+        val courses = courseReader.findAllByDepartmentGradeIdInMajorElective(departmentGrade.id!!)
         return courses.map {
-            val targets = targetReader.findAllBy(courseId = it.id!!, department = department)
-            val courseTimes = courseTimeReader.findAllByCourseId(it.id)
-            CourseResponse.from(course = it, target = targets, courseTimes = courseTimes)
+            val courseTimes = courseTimeReader.findAllByCourseId(it.id!!)
+            CourseResponse.from(course = it, target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)), courseTimes = courseTimes)
         }
     }
 
-    fun findByDepartmentNameInGeneralRequired(departmentName: String): List<CourseResponse> {
-        val department = departmentReader.getByName(departmentName)
-        val courses = courseReader.findAllByDepartmentIdInGeneralRequired(department.id!!)
+    fun findByDepartmentNameInGeneralRequired(command: FoundDepartmentCommand): List<CourseResponse> {
+        val department = departmentReader.getByName(command.departmentName)
+        val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
+        val courses = courseReader.findAllByDepartmentGradeIdInGeneralRequired(departmentGrade.id!!)
         return courses.map {
-            val targets = targetReader.findAllBy(courseId = it.id!!, department = department)
-            val courseTimes = courseTimeReader.findAllByCourseId(it.id)
-            CourseResponse.from(course = it, target = targets, courseTimes = courseTimes)
+            val courseTimes = courseTimeReader.findAllByCourseId(it.id!!)
+            CourseResponse.from(course = it, target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)), courseTimes = courseTimes)
         }
     }
 

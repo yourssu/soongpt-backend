@@ -7,16 +7,16 @@ import org.springframework.stereotype.Component
 class CourseReader(
     private val courseRepository: CourseRepository,
 ) {
-    fun findAllByDepartmentIdInMajorRequired(departmentId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentId(departmentId, Classification.MAJOR_REQUIRED)
+    fun findAllByDepartmentGradeIdInMajorRequired(departmentGradeId: Long): List<Course> {
+        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.MAJOR_REQUIRED)
     }
 
-    fun findAllByDepartmentIdInMajorElective(departmentId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentId(departmentId, Classification.MAJOR_ELECTIVE)
+    fun findAllByDepartmentGradeIdInMajorElective(departmentGradeId: Long): List<Course> {
+        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.MAJOR_ELECTIVE)
     }
 
-    fun findAllByDepartmentIdInGeneralRequired(departmentId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentId(departmentId, Classification.GENERAL_REQUIRED)
+    fun findAllByDepartmentGradeIdInGeneralRequired(departmentGradeId: Long): List<Course> {
+        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.GENERAL_REQUIRED)
     }
 
     fun findAllByCourseNameInMajorRequired(departmentId: Long, courseName: String): Courses {

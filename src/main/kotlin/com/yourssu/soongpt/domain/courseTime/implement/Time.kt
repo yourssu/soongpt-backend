@@ -27,7 +27,9 @@ data class Time(
     }
 
     fun toTimeFormat(): String {
-        return "${time / HOUR_TO_MIN}$TIME_DELIMITER${time % HOUR_TO_MIN}"
+        val hours = time / HOUR_TO_MIN
+        val minutes = (time % HOUR_TO_MIN).toString().padStart(2, '0')
+        return "$hours$TIME_DELIMITER$minutes"
     }
 
     fun isOverThan(other: Time, minute: Int = 0): Boolean {
