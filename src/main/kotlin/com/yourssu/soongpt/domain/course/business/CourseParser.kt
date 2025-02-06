@@ -18,14 +18,7 @@ class CourseParser(
             val tokens = group.split("-").map { it.trim() }
             if (tokens.isEmpty()) continue
             val classificationStr = tokens[0]
-            val classification = when (classificationStr) {
-                "전필", "전기" -> Classification.MAJOR_REQUIRED
-                "전선" -> Classification.MAJOR_ELECTIVE
-                "교필" -> Classification.GENERAL_REQUIRED
-                "교선" -> Classification.GENERAL_ELECTIVE
-                "채플" -> Classification.CHAPEL
-                else -> continue
-            }
+            val classification = Classification.fromName(classificationStr) ?: continue
             val deptIds = if (tokens.size > 1) {
                 departmentReader.getMatchingDepartments(tokens[1]).mapNotNull { it.id }
             } else {
@@ -158,16 +151,7 @@ class CourseParser(
     }
 
     private fun parseWeek(day: String): Week {
-        return when(day) {
-            "월" -> Week.MONDAY
-            "화" -> Week.TUESDAY
-            "수" -> Week.WEDNESDAY
-            "목" -> Week.THURSDAY
-            "금" -> Week.FRIDAY
-            "토" -> Week.SATURDAY
-            "일" -> Week.SUNDAY
-            else -> throw IllegalArgumentException("알 수 없는 요일 : $day")
-        }
+        return Week.fromName(day)
     }
 
     private fun parseClassroom(schedule: String): String? {

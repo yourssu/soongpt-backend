@@ -9,6 +9,7 @@ import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.CourseResponse
 import io.swagger.v3.oas.annotations.Hidden
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
@@ -44,6 +45,6 @@ class CourseController(
     @PostMapping
     fun createCourses(@RequestBody courses: List<CreateCourseRequest>): ResponseEntity<String> {
         courseService.createCourses(courses)
-        return ResponseEntity.ok("과목 정보 저장 완료")
+        return ResponseEntity.status(HttpStatus.CREATED).body("과목 정보 저장 완료")
     }
 }
