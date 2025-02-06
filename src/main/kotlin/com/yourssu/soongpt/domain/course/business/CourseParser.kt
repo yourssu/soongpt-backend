@@ -40,6 +40,7 @@ class CourseParser(
         return professor?.split("\n")
             ?.map { it.trim() }
             ?.filter { it.isNotEmpty() }
+            ?.takeIf { it.isNotEmpty() }
             ?.joinToString(", ")
             ?.let { "$it 교수님" }
             ?: ""
