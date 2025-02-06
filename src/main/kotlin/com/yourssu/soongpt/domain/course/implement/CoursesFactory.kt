@@ -29,12 +29,22 @@ class CoursesFactory(
     }
 
     fun allCases(): CoursesFactory {
-        return CoursesFactory(coursesCandidates.fold(listOf(emptyList<Course>())) { acc, courses ->
-            acc.flatMap { currentCombination ->
-                acc + courses.values.map { course -> currentCombination + course }
+        val combinations = mutableListOf<List<Course>>(emptyList())
+
+        for (courses in coursesCandidates) {
+            val newCombinations = mutableListOf<List<Course>>()
+            for (currentCombination in combinations) {
+                for (course in courses.values) {
+                    newCombinations.add(currentCombination + course)
+                }
             }
-        }.map { Courses(it) })
+            combinations.addAll(newCombinations)
+        }
+
+        return CoursesFactory(combinations.map { Courses(it) })
     }
+
+
 
     fun filterLessThanTotalCredit(standard: Int): List<Courses> {
         return coursesCandidates.filter { it.totalCredit() < standard }
