@@ -49,24 +49,27 @@ class TimeTableFactory(
             .generateTimetableCandidates()
         val step2 = timetableCandidateFactory.createTimetableCandidatesWithRule(step1)
 
+        val majorElectives = Courses(courseReader.findAllByDepartmentGradeIdInMajorElective(departmentGrade.id!!))
         val availableMajorElectiveCredit = calculateAvailableMajorElective(command, majorElectiveCourses)
+        val ratingsStep3 = ratingReader.findAllPointPairs(majorElectives)
         val addMajorElectives =
-            CoursesFactory(Courses(courseReader.findAllByDepartmentGradeIdInMajorElective(departmentGrade.id!!)).groupByCourseNames()).districtDuplicatedCourses(
-                majorElectiveCourses
-            )
-                .allCases()
-                .filterLessThanTotalCredit(availableMajorElectiveCredit)
-        val step3 = timetableCandidateFactory.extendWithDifferentGrade(step2, addMajorElectives ,departmentGrade)
+            CoursesFactory(majorElectives.groupByCourseNames())
+                .districtDuplicatedCourses(majorElectiveCourses)
+                .allCasesLessThan(availableMajorElectiveCredit)
+        val majorCourseScorePairs = CoursesFactory(addMajorElectives).sortByRatingAverage(ratingsStep3, 20)
+        val step3 = timetableCandidateFactory.extendWithRatings(step2, majorCourseScorePairs, 0)
+        val step3N = timetableCandidateFactory.pickTopNEachTag(step3, 5)
 
         val generalElectives = Courses(courseReader.findAllByDepartmentGradeIdInGeneralElective(departmentGrade.id))
-        val ratings = ratingReader.findAllPointPairs(generalElectives)
+        val ratingsStep4 = ratingReader.findAllPointPairs(generalElectives)
         val addGeneralElectives =
             CoursesFactory(generalElectives.groupByCourseNames())
                 .allCasesLessThan(command.generalElectiveCredit)
-        val second = CoursesFactory(addGeneralElectives).sortByRatingAverage(ratings).subList(0, 1)
-        val step4 = timetableCandidateFactory.extendWithRatings(step3, second)
+        val generalCourseScorePairs = CoursesFactory(addGeneralElectives).sortByRatingAverage(ratingsStep4, 20)
+        val step4 = timetableCandidateFactory.extendWithRatings(step3N, generalCourseScorePairs)
+        val step4N = timetableCandidateFactory.pickTopNEachTag(step4, 5)
 
-        return step4
+        return step4N
     }
 
     @Transactional
