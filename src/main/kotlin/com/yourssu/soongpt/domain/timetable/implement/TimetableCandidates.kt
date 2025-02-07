@@ -14,7 +14,7 @@ class TimetableCandidates(
             values.map {
                 it.generateNewTimetableCandidate(courses, courseTimes, score)
             }
-        } + values).filterRules()
+        } + values)
     }
 
     private fun timetableRules(timetableCandidate: TimetableCandidate): Boolean {
