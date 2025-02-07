@@ -3,7 +3,6 @@ package com.yourssu.soongpt.domain.course.business
 import jakarta.annotation.PostConstruct
 import kotlinx.serialization.json.Json
 import org.springframework.stereotype.Component
-import java.io.File
 
 @Component
 class TargetMapper {
@@ -17,13 +16,20 @@ class TargetMapper {
     }
 
     private fun createMapping(beforeFile: String, afterFile: String): Map<String, String> {
-        val rawBefore = File(beforeFile).readText()
-        val rawAfter = File(afterFile).readText()
+        val rawBefore = readJsonFile(beforeFile)
+        val rawAfter = readJsonFile(afterFile)
 
         val beforeList: List<String> = Json.decodeFromString(rawBefore)
         val afterList: List<String> = Json.decodeFromString(rawAfter)
 
         return beforeList.zip(afterList).toMap()
+    }
+
+    private fun readJsonFile(fileName: String): String {
+        return this::class.java.classLoader
+            .getResource(fileName)
+            ?.readText()
+            ?: throw IllegalStateException("Required JSON file not found")
     }
 
     fun getMappedTarget(beforeTarget: String): String? {
