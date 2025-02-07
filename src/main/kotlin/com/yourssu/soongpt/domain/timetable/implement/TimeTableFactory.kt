@@ -77,14 +77,15 @@ class TimeTableFactory(
     @Transactional
     fun issueTimetables(timetableCandidates: TimetableCandidates): List<TimetableResponse> {
         val responses = ArrayList<TimetableResponse>()
-        for (timetableCandidate in timetableCandidates.values) {
-            val timetable = timetableWriter.save(Timetable(tag = timetableCandidate.tag))
-            saveTimetableCourses(timetableCandidate.courses, timetable)
+        for (step in timetableCandidates.values) {
+            val timetable = timetableWriter.save(Timetable(tag = step.tag))
+            saveTimetableCourses(step.courses, timetable)
             responses.add(
                 TimetableResponse(
-                    timetable.id!!,
-                    timetable.tag.name,
-                    toTimetableCourseResponses(timetableCandidate.courses)
+                    timetableId = timetable.id!!,
+                    tag = timetable.tag.name,
+                    score = step.score,
+                    courses = toTimetableCourseResponses(step.courses)
                 )
             )
         }
