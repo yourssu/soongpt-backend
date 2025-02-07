@@ -43,7 +43,7 @@ class TimetableCandidateFactory(
             .map { timetables -> timetables.value.sortedByDescending { it.score }.take(n) }.flatten())
     }
 
-    fun pickFinalTimetables(step4N: TimetableCandidates): TimetableCandidates {
-        return step4N.pickTopNOfFinalScores(TAKEN_TIMETABLE, MAXIMUM_TAG_LIMIT)
+    fun pickFinalTimetables(step: TimetableCandidates): TimetableCandidates {
+        return step.pickTopNOfFinalScores(TAKEN_TIMETABLE, MAXIMUM_TAG_LIMIT)
     }
 }
