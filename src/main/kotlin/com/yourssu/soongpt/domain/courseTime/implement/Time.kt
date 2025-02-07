@@ -7,6 +7,7 @@ private const val HOUR_TO_MIN = 60
 private const val DAY_TO_HOUR = 24
 
 private const val MORNING_HOUR = 11
+private const val EVENING_MIN = 18 * HOUR_TO_MIN + 30
 
 data class Time(
     val time: Int,
@@ -23,6 +24,10 @@ data class Time(
 
         fun getMorningTime(): Time {
             return Time(MORNING_HOUR * HOUR_TO_MIN)
+        }
+
+        fun getEveningTime(): Time {
+            return Time(EVENING_MIN)
         }
     }
 
