@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component
 class TimetableCandidateFactory(
     private val courseTimeReader: CourseTimeReader,
 ) {
-    fun createTimetableCandidates(coursesCandidates: List<Courses>): TimetableCandidates {
+    fun createTimetableCandidatesWithRule(coursesCandidates: List<Courses>): TimetableCandidates {
         return TimetableCandidates(coursesCandidates.flatMap {
             TimetableCandidate.fromAllTags(
                 courses = it,
                 coursesTimes = CourseTimes(courseTimeReader.findAllByCourseIds(it.getAllIds())),
             )
-        })
+        }).filterRules()
     }
 
-    fun extendTimetableCandidates(timetableCandidates: TimetableCandidates, addCourses: List<Courses>): TimetableCandidates {
+    fun extendTimetableCandidatesWithRule(timetableCandidates: TimetableCandidates, addCourses: List<Courses>): TimetableCandidates {
         return timetableCandidates.extendCourses(addCourses.map {
             Pair(it, CourseTimes(courseTimeReader.findAllByCourseIds(it.getAllIds()))
             )
