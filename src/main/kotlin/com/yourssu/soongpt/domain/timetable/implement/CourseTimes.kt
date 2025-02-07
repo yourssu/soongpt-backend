@@ -49,12 +49,12 @@ class CourseTimes(
                     continue
                 }
                 if ((courseTimes[j].startTime.isOverThan(courseTimes[i].endTime)) &&
-                    courseTimes[i].endTime.addMinute(minute).isOverThan(courseTimes[j].startTime)
+                    !courseTimes[i].endTime.addMinute(minute).isOverThan(courseTimes[j].startTime)
                 ) {
                     return true
                 }
                 if (courseTimes[i].startTime.isOverThan(courseTimes[j].endTime) &&
-                    courseTimes[j].endTime.addMinute(minute).isOverThan(courseTimes[i].startTime)
+                    !courseTimes[j].endTime.addMinute(minute).isOverThan(courseTimes[i].startTime)
                 ) {
                     return true
                 }
