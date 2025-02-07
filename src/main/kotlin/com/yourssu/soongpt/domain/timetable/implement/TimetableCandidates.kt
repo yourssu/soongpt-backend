@@ -9,10 +9,10 @@ class TimetableCandidates(
         return TimetableCandidates(values.filter { timetableRules(it) })
     }
 
-    fun extendCourses(addCourses: List<Pair<Courses, CourseTimes>>): TimetableCandidates {
-        return TimetableCandidates(addCourses.flatMap { (courses, courseTimes) ->
+    fun extendCourses(addCourses: List<Triple<Courses, CourseTimes, Int>>): TimetableCandidates {
+        return TimetableCandidates(addCourses.flatMap { (courses, courseTimes, score) ->
             values.map {
-                it.generateNewTimetableCandidate(courses, courseTimes)
+                it.generateNewTimetableCandidate(courses, courseTimes, score)
             }
         } + values).filterRules()
     }
