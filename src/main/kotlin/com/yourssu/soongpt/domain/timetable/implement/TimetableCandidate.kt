@@ -6,6 +6,7 @@ class TimetableCandidate(
     val courses: Courses,
     private val coursesTimes: CourseTimes,
     val tag: Tag,
+    private val score: Int = 0,
 ) {
     companion object {
         fun fromAllTags(courses: Courses, coursesTimes: CourseTimes): List<TimetableCandidate> {
@@ -30,11 +31,13 @@ class TimetableCandidate(
     fun generateNewTimetableCandidate(
         courses: Courses,
         courseTimes: CourseTimes,
+        score: Int,
     ): TimetableCandidate {
         return TimetableCandidate(
             courses = this.courses.extend(courses),
             coursesTimes = this.coursesTimes.extend(courseTimes),
             tag = tag,
+            score = this.score + score,
         )
     }
 }
