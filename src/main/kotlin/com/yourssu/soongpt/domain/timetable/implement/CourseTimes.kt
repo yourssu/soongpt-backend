@@ -83,4 +83,8 @@ class CourseTimes(
         }
         return true
     }
+
+    fun countMorningClasses(): Int {
+        return courseTimes.count { Time.getMorningTime().isOverThan(it.startTime) }
+    }
 }

@@ -56,15 +56,15 @@ class TimeTableFactory(
             )
                 .allCases()
                 .filterLessThanTotalCredit(availableMajorElectiveCredit)
-        val step3 = timetableCandidateFactory.extendTimetableCandidatesWithRule(step2, addMajorElectives)
+        val step3 = timetableCandidateFactory.extendWithDifferentGrade(step2, addMajorElectives ,departmentGrade)
 
         val generalElectives = Courses(courseReader.findAllByDepartmentGradeIdInGeneralElective(departmentGrade.id))
         val ratings = ratingReader.findAllPointPairs(generalElectives)
         val addGeneralElectives =
             CoursesFactory(generalElectives.groupByCourseNames())
                 .allCasesLessThan(command.generalElectiveCredit)
-        val second = CoursesFactory(addGeneralElectives).sortByRatingAverage(ratings)
-        val step4 = timetableCandidateFactory.extendTimetableCandidates(step3, second)
+        val second = CoursesFactory(addGeneralElectives).sortByRatingAverage(ratings).subList(0, 1)
+        val step4 = timetableCandidateFactory.extendWithRatings(step3, second)
 
         return step4
     }
