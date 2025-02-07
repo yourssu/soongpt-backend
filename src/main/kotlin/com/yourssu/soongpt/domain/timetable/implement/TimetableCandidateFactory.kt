@@ -25,7 +25,7 @@ class TimetableCandidateFactory(
 
     fun extendWithDifferentGrade(timetableCandidates: TimetableCandidates, addCourses: List<Courses>, departmentGrade: DepartmentGrade): TimetableCandidates {
         return timetableCandidates.extendCourses(addCourses.map {
-            Triple(it, CourseTimes(courseTimeReader.findAllByCourseIds(it.getAllIds())), countDifferentGrades(departmentGrade, it))
+            Triple(it, CourseTimes(courseTimeReader.findAllByCourseIds(it.getAllIds())), -countDifferentGrades(departmentGrade, it))
         })
     }
 
@@ -36,7 +36,7 @@ class TimetableCandidateFactory(
     fun extendWithRatings(timetableCandidates: TimetableCandidates, addCourses: List<Pair<Courses, Double>>): TimetableCandidates {
         return timetableCandidates.extendCourses(addCourses.map { (courses, score) ->
             val courseTimes = courseTimeReader.findAllByCourseIds(courses.getAllIds())
-        Triple(courses, CourseTimes(courseTimes), score.toInt() + countMorningClasses(CourseTimes(courseTimes)))
+        Triple(courses, CourseTimes(courseTimes), score.toInt() - countMorningClasses(CourseTimes(courseTimes)))
         })
     }
 
