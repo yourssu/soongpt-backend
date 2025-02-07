@@ -18,7 +18,7 @@ class WebConfig {
                     .allowedOrigins(*corsProperties.allowedOrigins)
                     .allowedHeaders("*")
                     .allowedMethods(GET.name(), POST.name(), PUT.name(), DELETE.name(), OPTIONS.name())
-                    .allowCredentials(true)
+                    .allowCredentials(false)
             }
         }
     }
