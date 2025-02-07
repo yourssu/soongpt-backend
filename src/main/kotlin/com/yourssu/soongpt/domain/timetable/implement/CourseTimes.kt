@@ -3,6 +3,7 @@ package com.yourssu.soongpt.domain.timetable.implement
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
 import com.yourssu.soongpt.domain.courseTime.implement.Time
 import com.yourssu.soongpt.domain.courseTime.implement.Week
+import com.yourssu.soongpt.domain.timetable.implement.strategy.FreeDayTagStrategy
 
 class CourseTimes(
     private val courseTimes: List<CourseTime>
@@ -48,14 +49,7 @@ class CourseTimes(
                 if (courseTimes[i].week != courseTimes[j].week) {
                     continue
                 }
-                if ((courseTimes[j].startTime.isOverThan(courseTimes[i].endTime)) &&
-                    !courseTimes[i].endTime.addMinute(minute).isOverThan(courseTimes[j].startTime)
-                ) {
-                    return true
-                }
-                if (courseTimes[i].startTime.isOverThan(courseTimes[j].endTime) &&
-                    !courseTimes[j].endTime.addMinute(minute).isOverThan(courseTimes[i].startTime)
-                ) {
+                if (isOverlapping(i, j, minute)) {
                     return true
                 }
             }
@@ -86,5 +80,41 @@ class CourseTimes(
 
     fun countMorningClasses(): Int {
         return courseTimes.count { Time.getMorningTime().isOverThan(it.startTime) }
+    }
+
+    fun countEveningClasses(): Int {
+        return courseTimes.count { Time.getMorningTime().isOverThan(it.startTime) }
+    }
+
+    fun countOneClassPerDay(): Int {
+        return Week.weekdays().count { day -> courseTimes.count { it.week == day } == 1 }
+    }
+
+    fun countFreeDayScore(): Int {
+        return Week.weekdays()
+            .filter { courseTimes.none() }
+            .sumOf { FreeDayTagStrategy.getFreeDayScore(it) }
+    }
+
+    fun countBreaks(minute: Int): Int {
+        var score = 0
+        for (i in courseTimes.indices) {
+            for (j in i + 1 until courseTimes.size) {
+                if (courseTimes[i].week != courseTimes[j].week) {
+                    continue
+                }
+                if (isOverlapping(i, j, minute)) {
+                    score += 1
+                }
+            }
+        }
+        return score
+    }
+
+    private fun isOverlapping(i: Int, j: Int, minute: Int): Boolean {
+        return ((courseTimes[j].startTime.isOverThan(courseTimes[i].endTime)) &&
+                !courseTimes[i].endTime.addMinute(minute).isOverThan(courseTimes[j].startTime) ||
+                (courseTimes[i].startTime.isOverThan(courseTimes[j].endTime) &&
+                        !courseTimes[j].endTime.addMinute(minute).isOverThan(courseTimes[i].startTime)))
     }
 }

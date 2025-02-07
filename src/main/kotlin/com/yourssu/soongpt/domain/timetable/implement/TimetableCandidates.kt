@@ -20,4 +20,13 @@ class TimetableCandidates(
     private fun timetableRules(timetableCandidate: TimetableCandidate): Boolean {
         return timetableCandidate.isCorrect() && timetableCandidate.isCorrectCreditRule() && timetableCandidate.hasOverlappingCourseTimes()
     }
+
+    fun pickTopNOfFinalScores(n: Int, maximumTagLimit: Int): TimetableCandidates {
+        return TimetableCandidates(values.groupBy { it.tag }
+            .map { timetables -> timetables.value
+                .sortedByDescending { it.calculateFinalScore() }
+                .take(maximumTagLimit)
+            }.flatten()
+            .take(n))
+    }
 }

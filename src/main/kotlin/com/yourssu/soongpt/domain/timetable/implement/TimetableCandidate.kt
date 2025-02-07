@@ -1,6 +1,11 @@
 package com.yourssu.soongpt.domain.timetable.implement
 
 import com.yourssu.soongpt.domain.course.implement.Courses
+import com.yourssu.soongpt.domain.timetable.implement.strategy.FreeDayTagStrategy
+import com.yourssu.soongpt.domain.timetable.implement.strategy.NoEveningClassesStrategy
+import com.yourssu.soongpt.domain.timetable.implement.strategy.NoLongBreaksStrategy.Companion.BREAKS_MINUTE
+import com.yourssu.soongpt.domain.timetable.implement.strategy.NoLongBreaksStrategy.Companion.BREAKS_SCORE
+import com.yourssu.soongpt.domain.timetable.implement.strategy.NoMorningClassesStrategy.Companion.MORNING_CLASSES_SCORE
 
 class TimetableCandidate(
     val courses: Courses,
@@ -39,5 +44,30 @@ class TimetableCandidate(
             tag = tag,
             score = this.score + score,
         )
+    }
+
+    fun calculateFinalScore(): Int {
+        return score + calculateMorningScore() + calculateBreaksScore() + calculateEveningClassesScore() +
+                calculateOneClassPerDayScore() + calculateFreeDayScore()
+    }
+
+    private fun calculateMorningScore(): Int {
+        return coursesTimes.countMorningClasses() * MORNING_CLASSES_SCORE
+    }
+
+    private fun calculateBreaksScore(): Int {
+        return coursesTimes.countBreaks(BREAKS_MINUTE) * BREAKS_SCORE
+    }
+
+    private fun calculateEveningClassesScore(): Int {
+        return coursesTimes.countEveningClasses() * NoEveningClassesStrategy.EVENING_CLASSES_SCORE
+    }
+
+    private fun calculateOneClassPerDayScore(): Int {
+        return coursesTimes.countOneClassPerDay() * FreeDayTagStrategy.ONE_CLASS_PER_DAY_SCORE
+    }
+
+    private fun calculateFreeDayScore(): Int {
+        return coursesTimes.countFreeDayScore()
     }
 }
