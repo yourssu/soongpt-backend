@@ -36,6 +36,6 @@ class TimetableCandidateFactory(
 
     fun pickTopNEachTag(timetableCandidates: TimetableCandidates, n: Int): TimetableCandidates {
         return TimetableCandidates(timetableCandidates.values.groupBy { it.tag }
-            .map { it.value.sortedByDescending { it.score }.take(n) }.flatten())
+            .map { timetables -> timetables.value.sortedByDescending { it.score }.take(n) }.flatten())
     }
 }
