@@ -2,14 +2,18 @@ package com.yourssu.soongpt.domain.timetable.implement
 
 import com.yourssu.soongpt.domain.course.implement.Courses
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeReader
+import com.yourssu.soongpt.domain.timetable.implement.strategy.NoMorningClassesStrategy.Companion.MORNING_CLASSES_SCORE
 import org.springframework.stereotype.Component
 
-private const val MORNING_CLASSES_SCORE = 10
 
 @Component
 class TimetableCandidateFactory(
     private val courseTimeReader: CourseTimeReader,
 ) {
+    companion object {
+        private const val TAKEN_TIMETABLE = 5
+        private const val MAXIMUM_TAG_LIMIT = 2
+    }
     fun createTimetableCandidatesWithRule(coursesCandidates: List<Courses>): TimetableCandidates {
         return TimetableCandidates(coursesCandidates.flatMap {
             TimetableCandidate.fromAllTags(
@@ -26,7 +30,7 @@ class TimetableCandidateFactory(
     ): TimetableCandidates {
         return timetableCandidates.extendCourses(addCourses.map { (courses, score) ->
             val courseTimes = courseTimeReader.findAllByCourseIds(courses.getAllIds())
-            Triple(courses, CourseTimes(courseTimes), score.toInt() - countMorningClasses(CourseTimes(courseTimes), morningClassesScore))
+            Triple(courses, CourseTimes(courseTimes), score.toInt() + countMorningClasses(CourseTimes(courseTimes), morningClassesScore))
         }).filterRules()
     }
 
@@ -37,5 +41,9 @@ class TimetableCandidateFactory(
     fun pickTopNEachTag(timetableCandidates: TimetableCandidates, n: Int): TimetableCandidates {
         return TimetableCandidates(timetableCandidates.values.groupBy { it.tag }
             .map { timetables -> timetables.value.sortedByDescending { it.score }.take(n) }.flatten())
+    }
+
+    fun pickFinalTimetables(step4N: TimetableCandidates): TimetableCandidates {
+        return step4N.pickTopNOfFinalScores(TAKEN_TIMETABLE, MAXIMUM_TAG_LIMIT)
     }
 }
