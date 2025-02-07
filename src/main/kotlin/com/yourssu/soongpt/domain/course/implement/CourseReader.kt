@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.implement
 
 import com.yourssu.soongpt.domain.course.implement.exception.CourseNotFoundException
+import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
 import org.springframework.stereotype.Component
 
 @Component
@@ -9,6 +10,10 @@ class CourseReader(
 ) {
     fun findAllByDepartmentGradeIdInMajorRequired(departmentGradeId: Long): List<Course> {
         return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.MAJOR_REQUIRED)
+    }
+
+    fun findAllByDepartmentIdInMajorElective(departmentId: Long): List<Pair<Course, List<DepartmentGrade>>> {
+        return courseRepository.findAllByDepartmentId(departmentId, Classification.MAJOR_ELECTIVE)
     }
 
     fun findAllByDepartmentGradeIdInMajorElective(departmentGradeId: Long): List<Course> {

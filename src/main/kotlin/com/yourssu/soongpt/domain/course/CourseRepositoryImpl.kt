@@ -6,6 +6,7 @@ import com.yourssu.soongpt.domain.course.implement.Classification
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.Courses
+import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
 import com.yourssu.soongpt.domain.departmentGrade.storage.QDepartmentGradeEntity.departmentGradeEntity
 import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
 import org.springframework.data.jpa.repository.JpaRepository
@@ -21,10 +22,30 @@ class CourseRepositoryImpl(
             .toDomain()
     }
 
+    override fun findAllByDepartmentId(
+        departmentId: Long,
+        classification: Classification
+    ): List<Pair<Course, List<DepartmentGrade>>> {
+        return jpaQueryFactory.select(courseEntity, departmentGradeEntity)
+            .from(courseEntity)
+            .innerJoin(targetEntity)
+            .on(courseEntity.id.eq(targetEntity.courseId))
+            .innerJoin(departmentGradeEntity)
+            .on(targetEntity.departmentGradeId.eq(departmentGradeEntity.id))
+            .where(
+                courseEntity.classification.eq(classification),
+                departmentGradeEntity.departmentId.eq(departmentId)
+            )
+            .fetch()
+            .groupBy { it.get(courseEntity)!! }
+            .map { (course, departmentGrades) -> course.toDomain() to departmentGrades.map { it.get(departmentGradeEntity)!!.toDomain() } }
+    }
+
     override fun findAllByDepartmentGradeId(departmentGradeId: Long, classification: Classification): List<Course> {
         return jpaQueryFactory.selectFrom(courseEntity)
             .innerJoin(targetEntity)
-            .on(courseEntity.id.eq(targetEntity.courseId), targetEntity.departmentGradeId.eq(departmentGradeId), courseEntity.classification.eq(classification))
+            .on(courseEntity.id.eq(targetEntity.courseId))
+            .where(targetEntity.departmentGradeId.eq(departmentGradeId), courseEntity.classification.eq(classification))
             .fetch()
             .map { it.toDomain() }
     }
