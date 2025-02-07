@@ -35,7 +35,11 @@ class CourseService(
         val courses = courseReader.findAllByDepartmentGradeIdInMajorRequired(departmentGrade.id!!)
         return courses.map {
             val courseTimes = courseTimeReader.findAllByCourseId(it.id!!)
-            CourseResponse.from(course = it, target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)), courseTimes = courseTimes)
+            CourseResponse.from(
+                course = it,
+                target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)),
+                courseTimes = courseTimes
+            )
         }
     }
 
@@ -55,7 +59,11 @@ class CourseService(
         val courses = courseReader.findAllByDepartmentGradeIdInGeneralRequired(departmentGrade.id!!)
         return courses.map {
             val courseTimes = courseTimeReader.findAllByCourseId(it.id!!)
-            CourseResponse.from(course = it, target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)), courseTimes = courseTimes)
+            CourseResponse.from(
+                course = it,
+                target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)),
+                courseTimes = courseTimes
+            )
         }
     }
 
@@ -63,9 +71,11 @@ class CourseService(
     fun createCourses(courses: List<CreateCourseRequest>) {
         courses.forEach { course ->
             try {
-                val classification = course.category?.let { targetMapper.getMappedClassification(it) } ?: throw
-                IllegalArgumentException("변환한 이수구분" +
-                        "이 null임, 원본 이수구분 : ${course.category.orEmpty()}")
+                val classification =
+                    course.category?.let { targetMapper.getMappedClassification(it) } ?: throw IllegalArgumentException(
+                        "변환한 이수구분" +
+                                "이 null임, 원본 이수구분 : ${course.category.orEmpty()}"
+                    )
                 val parsedClassifications = courseParser.parseClassifications(classification)
                 if (parsedClassifications.isEmpty()) {
                     println("허용되지 않는 이수구분 : ${course.category.orEmpty()}")
@@ -96,9 +106,10 @@ class CourseService(
                     }
                 }
 
-                val target = course.target?.let { targetMapper.getMappedTarget(it) } ?: throw
-                IllegalArgumentException("변환한 타겟" +
-                        "이 null임, 원본 타겟 : ${course.target.orEmpty()}")
+                val target = course.target?.let { targetMapper.getMappedTarget(it) } ?: throw IllegalArgumentException(
+                    "변환한 타겟" +
+                            "이 null임, 원본 타겟 : ${course.target.orEmpty()}"
+                )
                 val parsedTargets = courseParser.parseTarget(target)
                 parsedTargets.forEach { parsedTarget ->
                     val deptGrades = departmentGradeReader.getByDepartmentIdsAndGrades(parsedTarget)
@@ -109,11 +120,13 @@ class CourseService(
                         } else {
                             parsedClassifications.entries.find { (_, deptIds) ->
                                 if (deptIds.isEmpty()) true else deptIds.contains(deptId)
-                            }?.key ?: throw IllegalArgumentException("이수구분 매칭이 되지 않은 타겟 : 이수구분 - ${course.category.orEmpty()}, 타겟 학과 ID -" +
-                                " ${deptId}")
+                            }?.key ?: throw IllegalArgumentException(
+                                "이수구분 매칭이 되지 않은 타겟 : 이수구분 - ${course.category.orEmpty()}, 타겟 학과 ID -" +
+                                        " ${deptId}"
+                            )
                         }
-                        val assignedCourseId = classificationToCourse[matchedClassification]?.id ?:
-                            throw IllegalStateException("매칭된 이수구분-${matchedClassification}에 해당하는 과목이 존재하지 않음")
+                        val assignedCourseId = classificationToCourse[matchedClassification]?.id
+                            ?: throw IllegalStateException("매칭된 이수구분-${matchedClassification}에 해당하는 과목이 존재하지 않음")
                         val targetDomain = Target(
                             departmentGradeId = deptGrade.id!!,
                             courseId = assignedCourseId
