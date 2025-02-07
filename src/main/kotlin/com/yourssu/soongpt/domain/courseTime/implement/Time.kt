@@ -6,6 +6,8 @@ private const val TIME_DELIMITER = ":"
 private const val HOUR_TO_MIN = 60
 private const val DAY_TO_HOUR = 24
 
+private const val MORNING_HOUR = 11
+
 data class Time(
     val time: Int,
 ) {
@@ -17,6 +19,10 @@ data class Time(
             } catch (e: Exception) {
                 throw InvalidTimeFormatException()
             }
+        }
+
+        fun getMorningTime(): Time {
+            return Time(MORNING_HOUR * HOUR_TO_MIN)
         }
     }
 
