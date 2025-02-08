@@ -18,7 +18,10 @@ class TimetableCandidates(
     }
 
     private fun timetableRules(timetableCandidate: TimetableCandidate): Boolean {
-        return timetableCandidate.isCorrect() && timetableCandidate.isCorrectCreditRule() && timetableCandidate.hasOverlappingCourseTimes()
+        val isCorrect = timetableCandidate.isCorrect()
+        val isCorrectCreditRule = timetableCandidate.isCorrectCreditRule()
+        val hasOverlappingCourseTimes = timetableCandidate.hasOverlappingCourseTimes()
+        return isCorrect && isCorrectCreditRule && !hasOverlappingCourseTimes
     }
 
     fun pickTopNOfFinalScores(n: Int, maximumTagLimit: Int): TimetableCandidates {
