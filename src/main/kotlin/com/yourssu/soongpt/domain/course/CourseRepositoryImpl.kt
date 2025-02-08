@@ -38,7 +38,13 @@ class CourseRepositoryImpl(
             )
             .fetch()
             .groupBy { it.get(courseEntity)!! }
-            .map { (course, departmentGrades) -> course.toDomain() to departmentGrades.map { it.get(departmentGradeEntity)!!.toDomain() } }
+            .map { (course, departmentGrades) ->
+                course.toDomain() to departmentGrades.map {
+                    it.get(
+                        departmentGradeEntity
+                    )!!.toDomain()
+                }
+            }
     }
 
     override fun findAllByDepartmentGradeId(departmentGradeId: Long, classification: Classification): List<Course> {
@@ -75,6 +81,18 @@ class CourseRepositoryImpl(
             .fetch()
             .map { it.toDomain() }
         return Courses(courses)
+    }
+
+    override fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course> {
+        return jpaQueryFactory.selectFrom(courseEntity)
+            .innerJoin(targetEntity)
+            .on(courseEntity.id.eq(targetEntity.courseId))
+            .where(
+                targetEntity.departmentGradeId.eq(departmentGradeId),
+                courseEntity.classification.eq(Classification.CHAPEL)
+            )
+            .fetch()
+            .map { it.toDomain() }
     }
 }
 
