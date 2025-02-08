@@ -21,7 +21,20 @@ enum class CourseTimeFixture(
         startTime = Time.of("17:00"),
         endTime = Time.of("19:00"),
         classroom = "형남공학관 1004"
-    );
+    ),
+    TUESDAY_18_20(
+        week = Week.TUESDAY,
+        startTime = Time.of("18:00"),
+        endTime = Time.of("20:00"),
+        classroom = "형남공학관 1004"
+    ),
+    WEDNESDAY_17_19(
+        week = Week.WEDNESDAY,
+        startTime = Time.of("17:00"),
+        endTime = Time.of("19:00"),
+        classroom = "형남공학관 1004"
+    ),
+    ;
 
     fun toDomain(courseId: Long): CourseTime {
         return CourseTime(
