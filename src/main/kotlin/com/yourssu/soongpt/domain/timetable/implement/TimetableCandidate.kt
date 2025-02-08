@@ -19,6 +19,12 @@ class TimetableCandidate(
                 TimetableCandidate(courses, coursesTimes, tag)
             }
         }
+
+        fun empty(): List<TimetableCandidate> {
+            return Tag.entries.map { tag ->
+                TimetableCandidate(Courses(emptyList()), CourseTimes(emptyList()), tag)
+            }
+        }
     }
 
     fun isCorrect(): Boolean {

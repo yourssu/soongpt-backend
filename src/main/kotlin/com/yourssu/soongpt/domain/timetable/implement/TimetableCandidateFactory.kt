@@ -15,12 +15,16 @@ class TimetableCandidateFactory(
         private const val MAXIMUM_TAG_LIMIT = 2
     }
     fun createTimetableCandidatesWithRule(coursesCandidates: List<Courses>): TimetableCandidates {
-        return TimetableCandidates(coursesCandidates.flatMap {
+        val timetableCandidates= TimetableCandidates(coursesCandidates.flatMap {
             TimetableCandidate.fromAllTags(
                 courses = it,
                 coursesTimes = CourseTimes(courseTimeReader.findAllByCourseIds(it.getAllIds())),
             )
         }).filterRules()
+        if (timetableCandidates.values.isEmpty()) {
+            return TimetableCandidates(TimetableCandidate.empty())
+        }
+        return timetableCandidates
     }
 
     fun extendWithRatings(
