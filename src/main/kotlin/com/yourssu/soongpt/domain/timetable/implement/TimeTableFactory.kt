@@ -38,6 +38,12 @@ class TimeTableFactory(
             command.generalRequiredCourses.map {
                 courseReader.findAllByCourseNameInGeneralRequired(department.id, it)
             }
+        val chapels =
+//            if (command.isChapel) courseReader.findChapelsByDepartmentGradeId(departmentGrade.id!!)
+//                .map { Courses(listOf(it)) }
+//            else
+                emptyList<Courses>()
+
         validateCreditRule(
             majorRequiredCourses = majorRequiredCourses,
             generalRequiredCourses = generalRequiredCourses,
@@ -45,7 +51,7 @@ class TimeTableFactory(
             generalElectiveCredit = command.generalElectiveCredit,
         )
 
-        val step1 = CoursesFactory(majorRequiredCourses + majorElectiveCourses + generalRequiredCourses)
+        val step1 = CoursesFactory(majorRequiredCourses + majorElectiveCourses + generalRequiredCourses + chapels)
             .generateTimetableCandidates()
         val step2 = timetableCandidateFactory.createTimetableCandidatesWithRule(step1)
 

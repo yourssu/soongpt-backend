@@ -40,6 +40,10 @@ class CourseReader(
        return findAllByCourseName(departmentId, courseName, Classification.GENERAL_REQUIRED)
     }
 
+    fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course> {
+        return courseRepository.findChapelsByDepartmentGradeId(departmentGradeId)
+    }
+
     private fun findAllByCourseName(departmentId: Long, courseName: String, classification: Classification): Courses {
         val courses = courseRepository.findByDepartmentIdAndCourseName(departmentId, courseName, classification)
         if (courses.isEmpty()) {
