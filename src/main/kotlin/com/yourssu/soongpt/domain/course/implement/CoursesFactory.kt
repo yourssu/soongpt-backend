@@ -13,6 +13,9 @@ class CoursesFactory(
     }
 
     fun districtDuplicatedCourses(target: List<Courses>): CoursesFactory {
+        if (target.isEmpty()) {
+            return this
+        }
         return CoursesFactory(values.filter { courses ->
             target.map { it.unpackNameAndProfessor().first().first != courses.unpackNameAndProfessor().first().first }
                 .reduce(Boolean::and)
