@@ -5,10 +5,6 @@ import com.yourssu.soongpt.domain.course.implement.Courses
 class TimetableCandidates(
     val values: List<TimetableCandidate>
 ) {
-    companion object {
-        const val TAG_CANDIDATES_SIZE = 5
-    }
-
     fun filterRules(): TimetableCandidates {
         return TimetableCandidates(values.filter { timetableRules(it) })
     }
