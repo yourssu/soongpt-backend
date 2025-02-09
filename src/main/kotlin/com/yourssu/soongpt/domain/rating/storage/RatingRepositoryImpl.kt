@@ -30,7 +30,9 @@ class RatingRepositoryImpl(
         val predicates = pairs.map {
             ratingEntity.courseName.eq(it.second).and(ratingEntity.professorName.eq(it.third))
         }
-
+        if (predicates.isEmpty()) {
+            return results
+        }
         val ratings = jpaQueryFactory.selectFrom(ratingEntity)
             .where(predicates.reduce { acc, predicate -> acc.or(predicate) })
             .fetch()
