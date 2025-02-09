@@ -20,15 +20,16 @@ class TimetableController(
 ) {
     @PostMapping
     fun createTimetable(@RequestBody request: TimetableCreatedRequest): ResponseEntity<Response<TimetableResponses>> {
-        logger.info { "createTimetable request: ${mapper.writeValueAsString(request)}" }
+        logger.info { "POST /api/timetables request: ${mapper.writeValueAsString(request)}" }
         val responses = timetableService.createTimetable(request.toCommand())
-        logger.info { "createTimetable response: ${mapper.writeValueAsString(responses)}" }
+        logger.info { "POST /api/timetables response: ${mapper.writeValueAsString(responses)}" }
         return ResponseEntity.ok(Response(result = responses))
     }
 
 
     @GetMapping("/{id}")
     fun getTimetable(@PathVariable id: Long): ResponseEntity<Response<TimetableResponse>> {
+        logger.info { "GET /api/timetables/$id request" }
         val response = timetableService.getTimeTable(id)
         return ResponseEntity.ok(Response(result = response))
     }
