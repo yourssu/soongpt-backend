@@ -32,10 +32,6 @@ spring:
               Authorization: Bearer accessToken
             dismiss404: false
 
-logging:
-  level:
-    org.springframework: DEBUG
-
 springdoc:
   packages-to-scan: com.yourssu.soongpt
   default-consumes-media-type: application/json;charset=UTF-8

@@ -31,13 +31,6 @@ spring:
               Authorization: Bearer ${AUTH_TOKEN}
             dismiss404: false
 
-logging:
-  level:
-    org:
-      springframework:
-        boot:
-          autoconfigure: ERROR
-
 springdoc:
   packages-to-scan: com.yourssu.soongpt
   default-consumes-media-type: application/json;charset=UTF-8
