@@ -14,7 +14,7 @@ class RatingReader(
         val pointPairs = mutableMapOf<Long, Double>()
         for (course in courses.values) {
             val find = ratings.find {
-                it.courseName.contains(course.courseName) && it.professorName == (course.professorName?.replace(" 교수님", "") ?: "")
+                it.courseName == course.courseName && it.professorName == course.professorName
             }
             pointPairs[course.id!!] = find?.point ?: INIT
         }
@@ -24,12 +24,12 @@ class RatingReader(
     private fun findAllBy(courses: Courses): List<Rating> {
         val ratings = mutableListOf<Rating>()
         for (course in courses.values) {
-            val find = ratingRepository.findByCourseNameAndProfessorName(
+            val rating = ratingRepository.findByCourseNameAndProfessorName(
                 course.courseName,
-                course.professorName?.replace(" 교수님", "") ?: ""
+                course.professorName?: ""
             )
-            if (find != null) {
-                ratings.add(find)
+            if (rating != null) {
+                ratings.add(rating)
             }
         }
         return ratings
