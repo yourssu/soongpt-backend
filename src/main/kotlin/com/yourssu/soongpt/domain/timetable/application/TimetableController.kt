@@ -18,16 +18,16 @@ class TimetableController(
 ) {
     @PostMapping
     fun createTimetable(@RequestBody request: TimetableCreatedRequest): ResponseEntity<Response<TimetableResponses>> {
+        logger.info { "createTimetable request: $request" }
         val responses = timetableService.createTimetable(request.toCommand())
-        logger.info { "createTimetable request: $request\n" +
-                "createTimetable response: $responses" }
-        return ResponseEntity.ok(Response(result=responses))
+        logger.info { "createTimetable response: $responses" }
+        return ResponseEntity.ok(Response(result = responses))
     }
 
 
     @GetMapping("/{id}")
     fun getTimetable(@PathVariable id: Long): ResponseEntity<Response<TimetableResponse>> {
         val response = timetableService.getTimeTable(id)
-        return ResponseEntity.ok(Response(result=response))
+        return ResponseEntity.ok(Response(result = response))
     }
 }
