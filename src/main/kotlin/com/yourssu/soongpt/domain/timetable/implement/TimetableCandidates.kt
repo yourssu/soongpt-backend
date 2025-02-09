@@ -41,13 +41,13 @@ class TimetableCandidates(
                 .sortedByDescending { it.calculateFinalScore() }
                 .take(n)
                 .toList())
-        if (validateMinimumTimetablePolicy(result)) {
+        if (validateMinimumTimetablePolicy(result, maximumTagLimit)) {
             return TimetableCandidates(result.values + values.filter { it.tag == Tag.DEFAULT }
-                .take(TAG_CANDIDATES_SIZE - result.values.size))
+                .take((maximumTagLimit - result.values.size).coerceAtLeast(0)))
         }
         return result
     }
 
-    private fun validateMinimumTimetablePolicy(result: TimetableCandidates) =
-        result.values.size < TAG_CANDIDATES_SIZE
+    private fun validateMinimumTimetablePolicy(result: TimetableCandidates, maximumTagLimit: Int) =
+        result.values.size < maximumTagLimit
 }
