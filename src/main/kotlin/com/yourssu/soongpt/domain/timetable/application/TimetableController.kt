@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.timetable.application
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.timetable.application.dto.TimetableCreatedRequest
 import com.yourssu.soongpt.domain.timetable.business.TimetableService
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 private val logger = KotlinLogging.logger {}
+private val mapper = ObjectMapper()
 
 @RestController
 @RequestMapping("/api/timetables")
@@ -18,9 +20,9 @@ class TimetableController(
 ) {
     @PostMapping
     fun createTimetable(@RequestBody request: TimetableCreatedRequest): ResponseEntity<Response<TimetableResponses>> {
-        logger.info { "createTimetable request: $request" }
+        logger.info { "createTimetable request: ${mapper.writeValueAsString(request)}" }
         val responses = timetableService.createTimetable(request.toCommand())
-        logger.info { "createTimetable response: $responses" }
+        logger.info { "createTimetable response: ${mapper.writeValueAsString(responses)}" }
         return ResponseEntity.ok(Response(result = responses))
     }
 
