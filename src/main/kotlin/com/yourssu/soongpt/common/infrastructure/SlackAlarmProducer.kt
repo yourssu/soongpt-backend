@@ -13,9 +13,10 @@ class SlackAlarmProducer(
     private val slackAlarmFeignClient: SlackAlarmFeignClient,
     private val slackProperties: SlackProperties,
 ) {
-    @Async
+    @Async("threadPoolTaskExecutor")
     fun sendAlarm(message: String) {
         try {
+            logger.info { "Sending alarm to slack!!" }
             slackAlarmFeignClient.sendAlarm(SlackAlarmRequest(channel = slackProperties.channelId, text = message))
             logger.info { "Sent alarm to slack!!" }
         } catch (e: Exception) {
