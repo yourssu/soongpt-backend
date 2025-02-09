@@ -1,8 +1,8 @@
 package com.yourssu.soongpt.common.handler
 
 import com.yourssu.soongpt.common.handler.dto.ErrorResponse
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.ConstraintViolationException
-import org.slf4j.LoggerFactory.getLogger
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,52 +13,53 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
+private val logger = KotlinLogging.logger {}
+
 @ControllerAdvice
 class ControllerAdvice {
     companion object {
-        private val logger = getLogger(ControllerAdvice::class.java)
         private const val VALIDATION_DEFAULT_ERROR_MESSAGE = "Unknown validation error"
         private const val INVALID_REQUEST_DELIMITER = ", "
     }
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
-        logger.error(InternalServerError().message, e)
+        logger.error { e }
         return ResponseEntity.internalServerError()
             .body(ErrorResponse.from(InternalServerError()))
     }
 
     @ExceptionHandler(BadRequestException::class)
     fun handleBadRequest(e: BadRequestException): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.badRequest()
             .body(ErrorResponse.from(e))
     }
 
     @ExceptionHandler(NotFoundException::class)
     fun handleNotFound(e: NotFoundException): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(e.status)
             .body(ErrorResponse.from(e))
     }
 
     @ExceptionHandler(UnauthorizedException::class)
     fun handleUnauthorized(e: UnauthorizedException): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(e.status)
             .body(ErrorResponse.from(e))
     }
 
     @ExceptionHandler(ForbiddenException::class)
     fun handleForbidden(e: ForbiddenException): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(e.status)
             .body(ErrorResponse.from(e))
     }
 
     @ExceptionHandler(ConflictException::class)
     fun handleConflict(e: ConflictException): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(e.status)
             .body(ErrorResponse.from(e))
     }
@@ -84,7 +85,7 @@ class ControllerAdvice {
     fun handleValidateException(
         e: ConstraintViolationException
     ): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(
                 ErrorResponse(
@@ -98,7 +99,7 @@ class ControllerAdvice {
     fun noResourceFoundException(
         e: NoResourceFoundException
     ): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(e.statusCode)
             .body(
                 ErrorResponse(
@@ -112,7 +113,7 @@ class ControllerAdvice {
     fun handleDuplicateKeyException(
         e: DataIntegrityViolationException
     ): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(HttpStatus.CONFLICT)
             .body(
                 ErrorResponse(
@@ -126,7 +127,7 @@ class ControllerAdvice {
     fun handleMethodNotAllowed(
         e: HttpRequestMethodNotSupportedException
     ): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
             .body(
                 ErrorResponse(
@@ -140,7 +141,7 @@ class ControllerAdvice {
     fun handleHttpMessageNotReadableException(
         e: HttpMessageNotReadableException
     ): ResponseEntity<ErrorResponse> {
-        logger.error(e.message, e)
+        logger.error { e }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(
                 ErrorResponse(
