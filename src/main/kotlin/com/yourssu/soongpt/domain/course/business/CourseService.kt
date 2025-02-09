@@ -33,37 +33,44 @@ class CourseService(
         val department = departmentReader.getByName(command.departmentName)
         val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
         val courses = courseReader.findAllByDepartmentGradeIdInMajorRequired(departmentGrade.id!!)
-        return courses.map {
+        return filterNotEmptyCourseTimes(courses.map {
             val courseTimes = courseTimeReader.findAllByCourseId(it.id!!)
             CourseResponse.from(
                 course = it,
                 target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)),
                 courseTimes = courseTimes
             )
-        }
+        })
     }
 
     fun findByDepartmentNameInMajorElective(command: FoundDepartmentCommand): List<CourseResponse> {
         val department = departmentReader.getByName(command.departmentName)
         val courses = courseReader.findAllByDepartmentIdInMajorElective(department.id!!)
-        return courses.map {(course, departmentGrades) ->
+        return filterNotEmptyCourseTimes(courses.map { (course, departmentGrades) ->
             val courseTimes = courseTimeReader.findAllByCourseId(course.id!!)
-            CourseResponse.from(course = course, target = departmentGrades.map { targetReader.formatTargetDisplayName(department, it) } , courseTimes = courseTimes)
-        }
+            CourseResponse.from(
+                course = course,
+                target = departmentGrades.map { targetReader.formatTargetDisplayName(department, it) },
+                courseTimes = courseTimes)
+        })
     }
 
     fun findByDepartmentNameInGeneralRequired(command: FoundDepartmentCommand): List<CourseResponse> {
         val department = departmentReader.getByName(command.departmentName)
         val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
         val courses = courseReader.findAllByDepartmentGradeIdInGeneralRequired(departmentGrade.id!!)
-        return courses.map {
+        return filterNotEmptyCourseTimes(courses.map {
             val courseTimes = courseTimeReader.findAllByCourseId(it.id!!)
             CourseResponse.from(
                 course = it,
                 target = listOf(targetReader.formatTargetDisplayName(department, departmentGrade)),
                 courseTimes = courseTimes
             )
-        }
+        })
+    }
+
+    private fun filterNotEmptyCourseTimes(courses: List<CourseResponse>): List<CourseResponse> {
+        return courses.filter { it.courseTime.isNotEmpty() }
     }
 
     @Transactional
