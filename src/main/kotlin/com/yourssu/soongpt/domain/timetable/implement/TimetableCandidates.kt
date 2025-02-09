@@ -5,6 +5,10 @@ import com.yourssu.soongpt.domain.course.implement.Courses
 class TimetableCandidates(
     val values: List<TimetableCandidate>
 ) {
+    companion object {
+        const val TAG_CANDIDATES_SIZE = 5
+    }
+
     fun filterRules(): TimetableCandidates {
         return TimetableCandidates(values.filter { timetableRules(it) })
     }
@@ -25,11 +29,25 @@ class TimetableCandidates(
     }
 
     fun pickTopNOfFinalScores(n: Int, maximumTagLimit: Int): TimetableCandidates {
-        return TimetableCandidates(values.groupBy { it.tag }
-            .map { timetables -> timetables.value
+        val result = TimetableCandidates(
+            values.groupBy { it.tag }
+                .asSequence()
+                .filter { it.key != Tag.DEFAULT }
+                .map { timetables ->
+                    timetables.value
+                        .sortedByDescending { it.calculateFinalScore() }
+                        .take(maximumTagLimit)
+                }.flatten()
                 .sortedByDescending { it.calculateFinalScore() }
-                .take(maximumTagLimit)
-            }.flatten()
-            .take(n))
+                .take(n)
+                .toList())
+        if (validateMinimumTimetablePolicy(result)) {
+            return TimetableCandidates(result.values + values.filter { it.tag == Tag.DEFAULT }
+                .take(TAG_CANDIDATES_SIZE - result.values.size))
+        }
+        return result
     }
+
+    private fun validateMinimumTimetablePolicy(result: TimetableCandidates) =
+        result.values.size < TAG_CANDIDATES_SIZE
 }
