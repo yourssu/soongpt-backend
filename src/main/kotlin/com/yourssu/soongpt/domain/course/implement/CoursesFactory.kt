@@ -35,7 +35,7 @@ class CoursesFactory(
         return CoursesFactory(combinations.map { Courses(it) })
     }
 
-    fun allCasesLessThan(standard: Int): List<Courses> {
+    fun allCasesLessThan(standard: Int, taken: Int): List<Courses> {
         val combinations = mutableListOf<List<Course>>(emptyList())
         for (courses in values) {
             val newCombinations = mutableListOf<List<Course>>()
@@ -51,6 +51,7 @@ class CoursesFactory(
         }
 
         return combinations.map { Courses(it) }
+            .take(taken)
     }
 
     fun filterLessThanTotalCredit(standard: Int): List<Courses> {
