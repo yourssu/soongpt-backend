@@ -1,7 +1,5 @@
 package com.yourssu.soongpt.domain.course.implement
 
-import com.yourssu.soongpt.domain.course.implement.exception.InvalidTimetableRequestException
-
 class CoursesFactory(
     private val values: List<Courses>,
 ) {
@@ -11,14 +9,7 @@ class CoursesFactory(
                 courses.values.map { course -> currentCombination + course }
             }
         }.map { Courses(it) }
-        validateEmpty(timetableCandidates)
         return timetableCandidates
-    }
-
-    private fun validateEmpty(timetableCandidates: List<Courses>) {
-        if (timetableCandidates.isEmpty()) {
-            throw InvalidTimetableRequestException()
-        }
     }
 
     fun districtDuplicatedCourses(target: List<Courses>): CoursesFactory {
