@@ -2,6 +2,7 @@ package com.yourssu.soongpt.domain.timetable.implement
 
 import com.yourssu.soongpt.domain.course.implement.Courses
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeReader
+import com.yourssu.soongpt.domain.timetable.implement.exception.TimetableCreatedBadRequestException
 import com.yourssu.soongpt.domain.timetable.implement.strategy.NoMorningClassesStrategy.Companion.MORNING_CLASSES_SCORE
 import org.springframework.stereotype.Component
 
@@ -15,16 +16,27 @@ class TimetableCandidateFactory(
         private const val MAXIMUM_TAG_LIMIT = 2
     }
     fun createTimetableCandidatesWithRule(coursesCandidates: List<Courses>): TimetableCandidates {
+        if (validateEmptyCase(coursesCandidates)) {
+            return TimetableCandidates(TimetableCandidate.empty())
+        }
         val timetableCandidates= TimetableCandidates(coursesCandidates.flatMap {
             TimetableCandidate.fromAllTags(
                 courses = it,
                 coursesTimes = CourseTimes(courseTimeReader.findAllByCourseIds(it.getAllIds())),
             )
         }).filterRules()
-        if (timetableCandidates.values.isEmpty()) {
-            return TimetableCandidates(TimetableCandidate.empty())
-        }
+        validateNoneTimetableCases(timetableCandidates)
         return timetableCandidates
+    }
+
+    private fun validateNoneTimetableCases(timetableCandidates: TimetableCandidates) {
+        if (timetableCandidates.values.isEmpty()) {
+            throw TimetableCreatedBadRequestException()
+        }
+    }
+
+    private fun validateEmptyCase(coursesCandidates: List<Courses>): Boolean {
+        return coursesCandidates.isEmpty()
     }
 
     fun extendWithRatings(
