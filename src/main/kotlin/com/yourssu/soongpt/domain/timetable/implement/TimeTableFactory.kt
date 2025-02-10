@@ -53,18 +53,18 @@ class TimeTableFactory(
                 .districtDuplicatedCourses(majorElectiveCourses)
                 .allCasesLessThan(availableMajorElectiveCredit, 100)
         val ratingsStep3 = ratingReader.findAllPointPairs(Courses(addMajorElectives.map { it.values }.flatten()))
-        val majorCourseScorePairs = CoursesFactory(addMajorElectives).sortByRatingAverage(ratingsStep3, 20)
+        val majorCourseScorePairs = CoursesFactory(addMajorElectives).sortByRatingAverage(ratingsStep3)
         val step3 = timetableCandidateFactory.extendWithRatings(step2, majorCourseScorePairs, 0)
-        val step3N = timetableCandidateFactory.pickTopNEachTag(step3, 5)
+        val step3N = timetableCandidateFactory.pickTopNEachTag(step3, 10)
 
         val generalElectives = Courses(courseReader.findAllByDepartmentGradeIdInGeneralElective(departmentGrade.id))
         val addGeneralElectives =
             CoursesFactory(generalElectives.groupByCourseNames())
-                .allCasesLessThan(command.generalElectiveCredit, 100)
+                .allCasesLessThan(command.generalElectiveCredit, 200)
         val ratingsStep4 = ratingReader.findAllPointPairs(Courses(addGeneralElectives.map { it.values }.flatten()))
-        val generalCourseScorePairs = CoursesFactory(addGeneralElectives).sortByRatingAverage(ratingsStep4, 20)
+        val generalCourseScorePairs = CoursesFactory(addGeneralElectives).sortByRatingAverage(ratingsStep4)
         val step4 = timetableCandidateFactory.extendWithRatings(step3N, generalCourseScorePairs)
-        val step4N = timetableCandidateFactory.pickTopNEachTag(step4, 5)
+        val step4N = timetableCandidateFactory.pickTopNEachTag(step4, 20)
 
         val step5 = timetableCandidateFactory.pickFinalTimetables(step4N)
 
