@@ -61,12 +61,12 @@ class CoursesFactory(
         return values.filter { it.totalCredit() < standard }
     }
 
-    fun sortByRatingAverage(ratings: Map<Long, Double>, taken: Int): List<Pair<Courses, Double>> {
+    fun sortByRatingAverage(ratings: Map<Long, Double>): List<Pair<Courses, Double>> {
         return values.sortedWith(
             compareBy(
             { courses -> -courses.totalCredit() },
             { courses -> -(courses.values.sumOf { course -> ratings[course.id]!! } / courses.values.size) },
-            { courses -> -courses.values.size })).take(taken)
+            { courses -> -courses.values.size }))
             .map { Pair(it, it.values.sumOf { course -> ratings[course.id]!! } / it.values.size) }
     }
 }
