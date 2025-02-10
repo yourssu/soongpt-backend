@@ -33,7 +33,7 @@ class CourseReaderTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores::class)
     inner class findAllByCourseNameInMajorRequired_메서드는 {
-        var departmentId: Long? = null
+        var departmentGradeId: Long? = null
         var courseName: String? = null
 
         @BeforeEach
@@ -42,8 +42,8 @@ class CourseReaderTest {
 
             courseName = course.courseName
             val department = departmentRepository.save(COMPUTER.toDomain(1L))
-            departmentId = department.id
-            val departmentGrade = departmentGradeRepository.save(FIRST.toDomain(departmentId = departmentId!!))
+            val departmentGrade = departmentGradeRepository.save(FIRST.toDomain(departmentId = department.id!!))
+            departmentGradeId = departmentGrade.id
             targetRepository.save(
                 TargetFixture.TARGET1.toDomain(
                     departmentGradeId = departmentGrade.id!!,
@@ -60,7 +60,7 @@ class CourseReaderTest {
             fun success() {
                 assertThrows<CourseNotFoundException> {
                     courseReader.findAllByCourseNameInMajorRequired(
-                        departmentId = departmentId!!,
+                        departmentGradeId = departmentGradeId!!,
                         courseName = "일치하지 않는 과목 이름",
                     )
                 }
@@ -75,7 +75,7 @@ class CourseReaderTest {
             fun success() {
                 assertThrows<CourseNotFoundException> {
                     courseReader.findAllByCourseNameInMajorRequired(
-                        departmentId = 0L,
+                        departmentGradeId = 0L,
                         courseName = courseName!!,
                     )
                 }

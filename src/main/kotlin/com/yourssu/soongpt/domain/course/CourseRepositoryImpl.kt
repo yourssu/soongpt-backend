@@ -83,6 +83,24 @@ class CourseRepositoryImpl(
         return Courses(courses)
     }
 
+    override fun findByDepartmentGradeIdAndCourseName(
+        departmentGradeId: Long,
+        courseName: String,
+        classification: Classification
+    ): Courses {
+        val courses = jpaQueryFactory.selectFrom(courseEntity)
+            .innerJoin(targetEntity)
+            .on(courseEntity.id.eq(targetEntity.courseId))
+            .where(
+               targetEntity.departmentGradeId.eq(departmentGradeId),
+                courseEntity.courseName.eq(courseName),
+                courseEntity.classification.eq(classification)
+            )
+            .fetch()
+            .map { it.toDomain() }
+        return Courses(courses)
+    }
+
     override fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course> {
         return jpaQueryFactory.selectFrom(courseEntity)
             .innerJoin(targetEntity)

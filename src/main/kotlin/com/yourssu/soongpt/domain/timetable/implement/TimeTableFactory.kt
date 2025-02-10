@@ -6,7 +6,9 @@ import com.yourssu.soongpt.domain.course.implement.Courses.Companion.calculateAv
 import com.yourssu.soongpt.domain.course.implement.Courses.Companion.validateCreditRule
 import com.yourssu.soongpt.domain.course.implement.CoursesFactory
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeReader
+import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
+import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
 import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGradeReader
 import com.yourssu.soongpt.domain.rating.implement.RatingReader
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCourseResponse
@@ -28,22 +30,11 @@ class TimeTableFactory(
 ) {
     fun createTimetable(command: TimetableCreatedCommand): TimetableCandidates {
         val department = departmentReader.getByName(command.departmentName)
-        val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
-
-        val majorRequiredCourses =
-            command.majorRequiredCourses.map { courseReader.findAllByCourseNameInMajorRequired(department.id, it) }
-        val majorElectiveCourses =
-            command.majorElectiveCourses.map { courseReader.findAllByCourseNameInMajorElective(department.id, it) }
-        val generalRequiredCourses =
-            command.generalRequiredCourses.map {
-                courseReader.findAllByCourseNameInGeneralRequired(department.id, it)
-            }
-        val chapels =
-//            if (command.isChapel) courseReader.findChapelsByDepartmentGradeId(departmentGrade.id!!)
-//                .map { Courses(listOf(it)) }
-//            else
-                emptyList<Courses>()
-
+        val departmentGrade =
+            departmentGradeReader.getByDepartmentIdAndGrade(departmentId = department.id!!, grade = command.grade)
+        val (majorRequiredCourses, majorElectiveCourses, generalRequiredCourses)
+                = findSelectedCourses(command, departmentGrade, department)
+        val chapels = emptyList<Courses>()
         validateCreditRule(
             majorRequiredCourses = majorRequiredCourses,
             generalRequiredCourses = generalRequiredCourses,
@@ -78,6 +69,35 @@ class TimeTableFactory(
         val step5 = timetableCandidateFactory.pickFinalTimetables(step4N)
 
         return step5
+    }
+
+    private fun findSelectedCourses(
+        command: TimetableCreatedCommand,
+        departmentGrade: DepartmentGrade,
+        department: Department,
+    ): Triple<List<Courses>, List<Courses>, List<Courses>> {
+        val majorRequiredCourses =
+            command.majorRequiredCourses.map {
+                courseReader.findAllByCourseNameInMajorRequired(
+                    departmentGradeId = departmentGrade.id!!,
+                    courseName = it
+                )
+            }
+        val majorElectiveCourses =
+            command.majorElectiveCourses.map {
+                courseReader.findAllByCourseNameInMajorElective(
+                    departmentId = department.id!!,
+                    courseName = it
+                )
+            }
+        val generalRequiredCourses =
+            command.generalRequiredCourses.map {
+                courseReader.findAllByCourseNameInGeneralRequired(
+                    departmentGradeId = departmentGrade.id!!,
+                    courseName = it
+                )
+            }
+        return Triple(majorRequiredCourses, majorElectiveCourses, generalRequiredCourses)
     }
 
     @Transactional
