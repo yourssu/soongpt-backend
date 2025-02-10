@@ -8,6 +8,7 @@ import com.yourssu.soongpt.domain.timetable.business.TimetableService
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponses
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -32,7 +33,8 @@ class TimetableController(
 //                    ?: -TAKEN_TIMETABLE) / TAKEN_TIMETABLE
 //            ))
         logger.info { "POST /api/timetables response: ${mapper.writeValueAsString(responses)}" }
-        return ResponseEntity.ok(Response(result = responses))
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(Response(result = responses))
     }
 
 
