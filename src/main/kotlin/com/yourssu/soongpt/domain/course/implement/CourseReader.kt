@@ -28,16 +28,16 @@ class CourseReader(
         return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.GENERAL_ELECTIVE)
     }
 
-    fun findAllByCourseNameInMajorRequired(departmentId: Long, courseName: String): Courses {
-        return findAllByCourseName(departmentId, courseName, Classification.MAJOR_REQUIRED)
+    fun findAllByCourseNameInMajorRequired(departmentGradeId: Long, courseName: String): Courses {
+        return findAllByCourseNameGrade(departmentGradeId, courseName, Classification.MAJOR_REQUIRED)
     }
 
     fun findAllByCourseNameInMajorElective(departmentId: Long, courseName: String): Courses {
         return findAllByCourseName(departmentId, courseName, Classification.MAJOR_ELECTIVE)
     }
 
-    fun findAllByCourseNameInGeneralRequired(departmentId: Long, courseName: String): Courses {
-       return findAllByCourseName(departmentId, courseName, Classification.GENERAL_REQUIRED)
+    fun findAllByCourseNameInGeneralRequired(departmentGradeId: Long, courseName: String): Courses {
+        return findAllByCourseNameGrade(departmentGradeId, courseName, Classification.GENERAL_REQUIRED)
     }
 
     fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course> {
@@ -51,4 +51,14 @@ class CourseReader(
         }
         return courses
     }
+
+    private fun findAllByCourseNameGrade(departmentGradeId: Long, courseName: String, classification: Classification): Courses {
+        val courses = courseRepository.findByDepartmentGradeIdAndCourseName(departmentGradeId, courseName, classification)
+        if (courses.isEmpty()) {
+            throw CourseNotFoundException(courseName = courseName)
+        }
+        return courses
+    }
 }
+
+
