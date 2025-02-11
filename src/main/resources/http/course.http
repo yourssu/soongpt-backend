@@ -1,8 +1,8 @@
 @host = localhost:9000
 
 @schoolId = 21
-@department = 소프트웨어학부
-@grade = 1
+@department = 컴퓨터학부
+@grade = 2
 
 // 전공 필수 과목 조회
 ###

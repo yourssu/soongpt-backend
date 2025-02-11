@@ -6,12 +6,12 @@ Content-Type: application/json
 
 {
   "schoolId": 21,
-  "department": "소프트웨어학부",
-  "grade": 3,
-  "is_chapel": false,
-  "majorRequiredCourses": ["리눅스시스템관리"],
-  "majorElectiveCourses": ["(공통)물리1및실험"],
-  "generalRequiredCourses": ["[비판적사고와표현]비판적사고와학술적글쓰기"],
+  "department": "컴퓨터학부",
+  "grade": 1,
+  "isChapel": true,
+  "majorRequiredCourses": [],
+  "majorElectiveCourses": [],
+  "generalRequiredCourses": [],
   "majorElectiveCredit": 9,
   "generalElectiveCredit": 5
 }

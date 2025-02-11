@@ -34,7 +34,7 @@ class TimeTableFactory(
             departmentGradeReader.getByDepartmentIdAndGrade(departmentId = department.id!!, grade = command.grade)
         val (majorRequiredCourses, majorElectiveCourses, generalRequiredCourses)
                 = findSelectedCourses(command, departmentGrade, department)
-        val chapels = emptyList<Courses>()
+        val chapels = findChapel(command.isChapel, departmentGrade)
         validateCreditRule(
             majorRequiredCourses = majorRequiredCourses,
             generalRequiredCourses = generalRequiredCourses,
@@ -98,6 +98,13 @@ class TimeTableFactory(
                 )
             }
         return Triple(majorRequiredCourses, majorElectiveCourses, generalRequiredCourses)
+    }
+
+    private fun findChapel(isNecessary: Boolean, departmentGrade: DepartmentGrade): List<Courses> {
+        if (isNecessary) {
+            return listOf(Courses(courseReader.findChapelsByDepartmentGradeId(departmentGrade.id!!)))
+        }
+        return emptyList()
     }
 
     @Transactional
