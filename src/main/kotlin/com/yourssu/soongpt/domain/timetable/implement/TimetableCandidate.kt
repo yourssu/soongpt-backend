@@ -76,4 +76,13 @@ class TimetableCandidate(
     private fun calculateFreeDayScore(): Int {
         return coursesTimes.countFreeDayScore()
     }
+
+    fun coursesHashed(): String {
+        return courses.getAllIds().sorted()
+            .joinToString()
+    }
+
+    fun copy(tag: Tag = this.tag, score: Int = this.score): TimetableCandidate {
+        return TimetableCandidate(courses, coursesTimes, tag, score)
+    }
 }

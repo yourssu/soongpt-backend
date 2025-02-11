@@ -12,9 +12,11 @@ class TimetableCandidateFactory(
     private val courseTimeReader: CourseTimeReader,
 ) {
     companion object {
-        const val TAKEN_TIMETABLE = 5
-        private const val MAXIMUM_TAG_LIMIT = 2
+        private const val MAXIMUM_TAG_LIMIT = 3
+        private const val MAXIMUM_PER_TAG = 1
+        private const val TOTAL = 5
     }
+
     fun createTimetableCandidatesWithRule(coursesCandidates: List<Courses>): TimetableCandidates {
         if (validateEmptyCase(coursesCandidates)) {
             return TimetableCandidates(TimetableCandidate.empty())
@@ -60,6 +62,10 @@ class TimetableCandidateFactory(
     }
 
     fun pickFinalTimetables(step: TimetableCandidates): TimetableCandidates {
-        return step.pickTopNOfFinalScores(TAKEN_TIMETABLE, MAXIMUM_TAG_LIMIT)
+        return step.pickTopNOfFinalScores(
+            maximumTagLimit = MAXIMUM_TAG_LIMIT,
+            maximumPerTag = MAXIMUM_PER_TAG,
+            total = TOTAL
+        )
     }
 }

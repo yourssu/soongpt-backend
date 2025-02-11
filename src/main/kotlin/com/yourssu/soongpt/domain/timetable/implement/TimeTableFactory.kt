@@ -121,7 +121,7 @@ class TimeTableFactory(
                 TimetableResponse(
                     timetableId = timetable.id!!,
                     tag = timetable.tag.name,
-                    score = step.score,
+                    score = step.calculateFinalScore(),
                     courses = toTimetableCourseResponses(step.courses)
                 )
             )
