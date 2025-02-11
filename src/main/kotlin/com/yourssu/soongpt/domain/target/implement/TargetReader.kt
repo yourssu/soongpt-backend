@@ -8,16 +8,11 @@ import org.springframework.stereotype.Component
 class TargetReader(
     private val targetRepository: TargetRepository,
 ) {
-    fun isTarget(courseId: Long, departmentGrade: DepartmentGrade): Boolean {
-        return findAllByCourseId(courseId)
-            .any { it.departmentGradeId == departmentGrade.id }
-    }
-
     fun formatTargetDisplayName(department: Department, departmentGrade: DepartmentGrade): String {
         return "${department.name}${departmentGrade.grade}"
     }
 
-    private fun findAllByCourseId(courseId: Long): List<Target> {
-        return targetRepository.findAllByCourseId(courseId)
+    fun findAllByCourseId(courseId: Long): List<String> {
+        return targetRepository.findAllByCourseIdToDisplayName(courseId)
     }
 }

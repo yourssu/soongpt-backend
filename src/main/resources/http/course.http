@@ -21,3 +21,8 @@ Content-Type: application/x-www-form-urlencoded
 GET {{host}}/api/courses/general/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
 Content-Type: application/x-www-form-urlencoded
 ###
+
+// 과목 단일 조회
+###
+GET {{host}}/api/courses?courseId=2709,2710
+###

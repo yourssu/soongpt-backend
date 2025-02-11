@@ -145,4 +145,11 @@ class CourseService(
             }
         }
     }
+
+    fun findById(courseId: Long): CourseResponse {
+        val course = courseReader.getById(courseId)
+        val courseTimes = courseTimeReader.findAllByCourseId(courseId)
+        val target = targetReader.findAllByCourseId(courseId)
+        return CourseResponse.from(course, target, courseTimes)
+    }
 }

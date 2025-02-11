@@ -10,4 +10,5 @@ interface CourseRepository {
     fun findByDepartmentIdAndCourseName(departmentId: Long, courseName: String, classification: Classification): Courses
     fun findByDepartmentGradeIdAndCourseName(departmentGradeId: Long, courseName: String, classification: Classification): Courses
     fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course>
+    fun get(courseId: Long): Course
 }
