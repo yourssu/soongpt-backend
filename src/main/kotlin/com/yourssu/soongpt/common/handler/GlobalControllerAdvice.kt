@@ -3,6 +3,7 @@ package com.yourssu.soongpt.common.handler
 import com.yourssu.soongpt.common.handler.dto.ErrorResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.ConstraintViolationException
+import org.springframework.dao.DataAccessResourceFailureException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.NoResourceFoundException
+
 
 private val logger = KotlinLogging.logger {}
 
@@ -147,6 +149,18 @@ class ControllerAdvice {
                 ErrorResponse(
                     status = HttpStatus.BAD_REQUEST.value(),
                     message = "잘못된 RequestBody입니다. {{ ${e.message} }}"
+                )
+            )
+    }
+
+    @ExceptionHandler(DataAccessResourceFailureException::class)
+    fun handleDataAccessException(e: DataAccessResourceFailureException): ResponseEntity<ErrorResponse> {
+        logger.error { e }
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+            .body(
+                ErrorResponse(
+                    status = HttpStatus.SERVICE_UNAVAILABLE.value(),
+                    message = "데이터베이스에 접근할 수 없습니다. {{ ${e.message} }}"
                 )
             )
     }
