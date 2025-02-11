@@ -53,7 +53,7 @@ class TimetableCandidates(
                 break
             }
             if (result.count { it.tag == candidate.tag } < maximumPerTag &&
-                result.none { it.coursesHashed() == candidate.coursesHashed() }
+                result.none { it.calculateFinalScore() == candidate.calculateFinalScore() }
             ) {
                 result.add(candidate)
             }
