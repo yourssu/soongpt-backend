@@ -101,10 +101,14 @@ class TimeTableFactory(
     }
 
     private fun findChapel(isNecessary: Boolean, departmentGrade: DepartmentGrade): List<Courses> {
-        if (isNecessary) {
-            return listOf(Courses(courseReader.findChapelsByDepartmentGradeId(departmentGrade.id!!)))
+        if(!isNecessary) {
+            return emptyList()
         }
-        return emptyList()
+        val courses = Courses(courseReader.findChapelsByDepartmentGradeId(departmentGrade.id!!))
+        if (courses.isEmpty()) {
+            return emptyList()
+        }
+        return listOf(courses)
     }
 
     @Transactional

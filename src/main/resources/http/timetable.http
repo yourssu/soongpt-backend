@@ -5,15 +5,20 @@ POST {{host}}/api/timetables
 Content-Type: application/json
 
 {
-  "schoolId": 21,
-  "department": "컴퓨터학부",
-  "grade": 1,
+  "schoolId": 23,
+  "department": "AI융합학부",
+  "grade": 3,
   "isChapel": true,
-  "majorRequiredCourses": [],
-  "majorElectiveCourses": [],
+  "majorRequiredCourses": [
+    "운영체제"
+  ],
+  "majorElectiveCourses": [
+    "서버프로그래밍",
+    "로봇공학개론"
+  ],
   "generalRequiredCourses": [],
-  "majorElectiveCredit": 9,
-  "generalElectiveCredit": 5
+  "majorElectiveCredit": 6,
+  "generalElectiveCredit": 2
 }
 
 ###
