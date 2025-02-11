@@ -24,22 +24,56 @@ class TimetableCandidates(
         return isCorrect && isCorrectCreditRule && !hasOverlappingCourseTimes
     }
 
-    fun pickTopNOfFinalScores(n: Int, maximumTagLimit: Int): TimetableCandidates {
-        val result = TimetableCandidates(
-            values.groupBy { it.tag }
-                .asSequence()
-                .filter { it.key != Tag.DEFAULT }
-                .map { timetables ->
-                    timetables.value
-                        .sortedByDescending { it.calculateFinalScore() }
-                        .take(maximumTagLimit)
-                }.flatten()
-                .sortedByDescending { it.calculateFinalScore() }
-                .take(n)
-                .toList())
-        if (validateMinimumTimetablePolicy(result, maximumTagLimit)) {
-            return TimetableCandidates(result.values + values.filter { it.tag == Tag.DEFAULT }
-                .take((maximumTagLimit - result.values.size).coerceAtLeast(0)))
+    fun pickTopNOfFinalScores(maximumTagLimit: Int, maximumPerTag: Int, total: Int): TimetableCandidates {
+        val candidates = values.filter { it.tag != Tag.DEFAULT }
+            .sortedWith(
+                compareBy(
+                    { -it.calculateFinalScore() },
+                    { it.tag.ordinal }
+                )
+            )
+            .toList()
+        val timetablesByTag = pickByTags(
+            maximumTagLimit = maximumTagLimit,
+            maximumPerTag = maximumPerTag,
+            candidates = candidates
+        )
+        val result = pickByScore(total, timetablesByTag, candidates)
+        return TimetableCandidates(result)
+    }
+
+    private fun pickByTags(
+        maximumTagLimit: Int,
+        maximumPerTag: Int,
+        candidates: List<TimetableCandidate>
+    ): List<TimetableCandidate> {
+        val result = ArrayList<TimetableCandidate>()
+        for (candidate in candidates) {
+            if (result.size >= maximumTagLimit) {
+                break
+            }
+            if (result.count { it.tag == candidate.tag } < maximumPerTag &&
+                result.none { it.coursesHashed() == candidate.coursesHashed() }
+            ) {
+                result.add(candidate)
+            }
+        }
+        return result
+    }
+
+    private fun pickByScore(
+        maximum: Int,
+        preResult: List<TimetableCandidate>,
+        candidates: List<TimetableCandidate>
+    ): List<TimetableCandidate> {
+        val result = ArrayList<TimetableCandidate>(preResult)
+        for (candidate in candidates) {
+            if (result.size >= maximum) {
+                break
+            }
+            if (result.none { it.calculateFinalScore() == candidate.calculateFinalScore() }) {
+                result.add(candidate.copy(tag = Tag.DEFAULT))
+            }
         }
         return result
     }

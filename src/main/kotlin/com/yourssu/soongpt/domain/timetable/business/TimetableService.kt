@@ -28,7 +28,7 @@ class TimetableService(
     fun getTimeTable(id: Long): TimetableResponse {
         val timetable = timetableReader.get(id)
         val courses = timetableCourseReader.findAllCourseByTimetableId(id)
-        val response = courses.map { TimetableCourseResponse.from(it, courseTimeReader.findAllByCourseId(it.id!!)) }
-        return TimetableResponse.from(timetable, response)
+        val courseResponses = courses.map { TimetableCourseResponse.from(it, courseTimeReader.findAllByCourseId(it.id!!)) }
+        return TimetableResponse.from(timetable, courseResponses)
     }
 }
