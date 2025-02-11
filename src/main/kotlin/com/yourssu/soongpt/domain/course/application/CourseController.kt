@@ -47,6 +47,14 @@ class CourseController(
         return ResponseEntity.ok().body(Response(result = response))
     }
 
+    @GetMapping
+    fun getCourse(@RequestParam courseId: List<Long>): ResponseEntity<Response<List<CourseResponse>>> {
+        logger.info { "GET /api/courses request: ${mapper.writeValueAsString(courseId)}" }
+        val responses = courseId.map { courseService.findById(it) }
+        logger.info { "GET /api/courses response: ${mapper.writeValueAsString(responses)}" }
+        return ResponseEntity.ok().body(Response(result = responses))
+    }
+
     @Hidden
     @PostMapping
     fun createCourses(@RequestBody courses: List<CreateCourseRequest>): ResponseEntity<String> {

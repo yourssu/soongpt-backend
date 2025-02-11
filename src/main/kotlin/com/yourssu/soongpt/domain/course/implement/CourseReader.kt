@@ -59,6 +59,10 @@ class CourseReader(
         }
         return courses
     }
+
+    fun getById(courseId: Long): Course {
+        return courseRepository.get(courseId)
+    }
 }
 
 
