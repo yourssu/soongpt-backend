@@ -60,7 +60,7 @@ class TimeTableFactory(
         val generalElectives = Courses(courseReader.findAllByDepartmentGradeIdInGeneralElective(departmentGrade.id))
         val addGeneralElectives =
             CoursesFactory(generalElectives.groupByCourseNames())
-                .allCasesLessThan(command.generalElectiveCredit, 200)
+                .allCasesLessThan(command.generalElectiveCredit, 100)
         val ratingsStep4 = ratingReader.findAllPointPairs(Courses(addGeneralElectives.map { it.values }.flatten()))
         val generalCourseScorePairs = CoursesFactory(addGeneralElectives).sortByRatingAverage(ratingsStep4)
         val step4 = timetableCandidateFactory.extendWithRatings(step3N, generalCourseScorePairs)
