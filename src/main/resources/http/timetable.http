@@ -1,4 +1,4 @@
-@host = api.soongpt.yourssu.com
+@host = localhost:9000
 
 ###
 POST {{host}}/api/timetables
