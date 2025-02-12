@@ -33,13 +33,17 @@ jobs:
           echo ${{ secrets.APPLICATION_YML_DEV_MODE }} | base64 --decode > ./src/main/resources/application.yml
           ./gradlew clean build
 
-      - name: Deploy to EC2
-        env:
-          PRIVATE_KEY: ${{ secrets.YOURSSU_SECRET}}
-          HOST: ${{ secrets.YOURSSU_STG_HOST }}
+      - name: Add EC2 to known_hosts
         run: |
-          echo "$PRIVATE_KEY" > private_key.pem
-          chmod 600 private_key.pem
+          ssh-keyscan -H ${{ secrets.YOURSSU_STG_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Set up SSH agent
+        run: |
+          eval $(ssh-agent -s)
+          echo "$PRIVATE_KEY" | tr -d '\r' | ssh-add -
+
+      - name: Deploy to EC2
+        run: |
           mv build/libs/soongpt-0.0.1-SNAPSHOT.jar yourssu-soongpt-application.jar
-          scp -i private_key.pem yourssu-soongpt-application.jar ubuntu@$HOST:/ssumgo/soongpt-api
-          ssh -i private_key.pem ubuntu@$HOST "/home/ubuntu/soongpt-api/run.sh"
+          scp yourssu-soongpt-application.jar ubuntu@${{ secrets.YOURSSU_STG_HOST }}:/ssumgo/soongpt-api
+          ssh ubuntu@${{ secrets.YOURSSU_STG_HOST }} "/home/ubuntu/soongpt-api/run.sh"
