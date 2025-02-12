@@ -1,8 +1,14 @@
 package com.yourssu.soongpt.domain.course.implement
 
+import kotlin.random.Random
+
 class CoursesFactory(
     private val values: List<Courses>,
 ) {
+    companion object {
+        private const val MAX_RATING = 80.0
+    }
+
     fun generateTimetableCandidates(): List<Courses> {
         val timetableCandidates = values.fold(listOf(emptyList<Course>())) { acc, courses ->
             acc.flatMap { currentCombination ->
@@ -59,16 +65,16 @@ class CoursesFactory(
         return combinations.map { Courses(it) }
     }
 
-    fun filterLessThanTotalCredit(standard: Int): List<Courses> {
-        return values.filter { it.totalCredit() < standard }
-    }
-
     fun sortByRatingAverage(ratings: Map<Long, Double>): List<Pair<Courses, Double>> {
         return values.sortedWith(
             compareBy(
-            { courses -> -courses.totalCredit() },
-            { courses -> -(courses.values.sumOf { course -> ratings[course.id]!! } / courses.values.size) },
-            { courses -> -courses.values.size }))
-            .map { Pair(it, it.values.sumOf { course -> ratings[course.id]!! } / it.values.size) }
+                { courses -> -courses.totalCredit() },
+                { courses -> -(courses.values.sumOf { course -> ratings[course.id]!!.coerceAtMost(MAX_RATING) } / courses.values.size) },
+                { Random.nextInt(10) },
+                { courses -> -courses.values.size })
+        )
+            .map {
+                Pair(it, it.values.sumOf { course -> ratings[course.id]!!.coerceAtMost(MAX_RATING) } / it.values.size)
+            }
     }
 }
