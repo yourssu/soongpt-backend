@@ -13,7 +13,7 @@ class SlackMessageProducer(
                 "--------------------------\n" +
                 "\uD83D\uDC64 학번 : %s\n" +
                 "\uD83D\uDCF1 학과 : %s\n" +
-                "\uD83D\uDC65 누적 시간표 생성 횟수: %s회"
+                "\uD83D\uDC65 누적 시간표 생성 개수: %s회"
     }
 
     fun sendTimetableCreatedMessage(request: TimetableCreatedAlarmRequest) {
