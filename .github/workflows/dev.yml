@@ -38,4 +38,6 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-          ssh -i yourssu.pem ${{ secrets.YOURSSU_STG_USER }}@${{ secrets.YOURSSU_STG_HOST }} "/home/ubuntu/soongpt-api/run.sh"
+          mv build/libs/soongpt-0.0.1-SNAPSHOT.jar yourssu-soongpt-application.jar
+          scp -o StrictHostKeyChecking=no -i private_key.pem yourssu-soongpt-application.jar $USER@$HOST:/ssumgo/soongpt-api
+          ssh -i private_key.pem $USER@$HOST "/home/ubuntu/soongpt-api/run.sh"
