@@ -6,7 +6,7 @@ class CoursesFactory(
     private val values: List<Courses>,
 ) {
     companion object {
-        private const val MAX_RATING = 80.0
+        private const val MAX_RATING = 70.0
     }
 
     fun generateTimetableCandidates(): List<Courses> {
