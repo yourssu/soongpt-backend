@@ -73,7 +73,7 @@ class ControllerAdvice {
         val errorMessage = bindingResult.fieldErrors
             .map { it.defaultMessage ?: VALIDATION_DEFAULT_ERROR_MESSAGE }
             .joinToString(INVALID_REQUEST_DELIMITER) { "Invalid Input: [$it]" }
-        logger.error(errorMessage, bindingResult)
+        logger.error { errorMessage }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(
                 ErrorResponse(
