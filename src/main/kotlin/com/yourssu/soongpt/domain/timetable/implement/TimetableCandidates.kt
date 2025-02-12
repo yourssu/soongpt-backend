@@ -25,7 +25,7 @@ class TimetableCandidates(
     }
 
     fun pickTopNOfFinalScores(maximumTagLimit: Int, maximumPerTag: Int, total: Int): TimetableCandidates {
-        val candidates = values.filter { it.tag != Tag.DEFAULT }
+        val candidates = values
             .sortedWith(
                 compareBy(
                     { -it.totalCredit() },
@@ -49,7 +49,7 @@ class TimetableCandidates(
         candidates: List<TimetableCandidate>
     ): List<TimetableCandidate> {
         val result = ArrayList<TimetableCandidate>()
-        for (candidate in candidates) {
+        for (candidate in candidates.filter { it.tag != Tag.DEFAULT }) {
             if (result.size >= maximumTagLimit) {
                 break
             }
