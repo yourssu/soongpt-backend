@@ -1,24 +1,36 @@
-@host = localhost:9000
+@host = api.soongpt.yourssu.com
 
 ###
 POST {{host}}/api/timetables
 Content-Type: application/json
 
 {
-  "schoolId": 23,
-  "department": "AI융합학부",
-  "grade": 3,
-  "isChapel": true,
+  "schoolId": 21,
+  "department": "소프트웨어학부",
+  "grade": 2,
   "majorRequiredCourses": [
-    "운영체제"
+    "자료구조"
   ],
   "majorElectiveCourses": [
-    "서버프로그래밍",
-    "로봇공학개론"
+    "컴퓨터구조",
+    "객체지향프로그래밍및실습",
+    "선형대수"
   ],
-  "generalRequiredCourses": [],
-  "majorElectiveCredit": 6,
-  "generalElectiveCredit": 2
+  "generalRequiredCourses": [
+    "[글로벌소통과언어]CTE for IT, Engineering&Natura"
+  ],
+  "majorElectiveCredit": 9,
+  "generalElectiveCredit": 6,
+  "chapel": true
 }
+###
+
+
+
+
+@timeTableId = 10000
+###
+GET {{host}}/api/timetables/{{timeTableId}}
+Content-Type: application/json
 
 ###
