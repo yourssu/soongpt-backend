@@ -14,7 +14,7 @@ class TimetableCandidateFactory(
     companion object {
         private const val MAXIMUM_TAG_LIMIT = 3
         private const val MAXIMUM_PER_TAG = 1
-        private const val TOTAL = 5
+        const val TOTAL = 5
     }
 
     fun createTimetableCandidatesWithRule(coursesCandidates: List<Courses>): TimetableCandidates {
