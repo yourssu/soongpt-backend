@@ -13,7 +13,7 @@ class TimetableCandidateFactory(
 ) {
     companion object {
         private const val MAXIMUM_TAG_LIMIT = 3
-        private const val MAXIMUM_PER_TAG = 3
+        private const val MAXIMUM_PER_TAG = 1
         private const val TOTAL = 5
     }
 
@@ -58,7 +58,13 @@ class TimetableCandidateFactory(
 
     fun pickTopNEachTag(timetableCandidates: TimetableCandidates, n: Int): TimetableCandidates {
         return TimetableCandidates(timetableCandidates.values.groupBy { it.tag }
-            .map { timetables -> timetables.value.sortedByDescending { it.score }.take(n) }.flatten())
+            .map { timetables -> timetables.value.sortedWith(
+                compareBy(
+                    { -it.totalCredit() },
+                    { -it.calculateFinalScore() },
+                )
+            )
+                .take(n) }.flatten())
     }
 
     fun pickFinalTimetables(step: TimetableCandidates): TimetableCandidates {
