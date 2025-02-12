@@ -3,10 +3,12 @@ package com.yourssu.soongpt.domain.timetable.application
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.common.infrastructure.SlackMessageProducer
+import com.yourssu.soongpt.common.infrastructure.dto.TimetableCreatedAlarmRequest
 import com.yourssu.soongpt.domain.timetable.application.dto.TimetableCreatedRequest
 import com.yourssu.soongpt.domain.timetable.business.TimetableService
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponses
+import com.yourssu.soongpt.domain.timetable.implement.TimetableCandidateFactory.Companion.TOTAL
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,13 +27,14 @@ class TimetableController(
     fun createTimetable(@RequestBody request: TimetableCreatedRequest): ResponseEntity<Response<TimetableResponses>> {
         logger.info { "POST /api/timetables request: ${mapper.writeValueAsString(request)}" }
         val responses = timetableService.createTimetable(request.toCommand())
-//        slackMessageProducer.sendTimetableCreatedMessage(
-//            TimetableCreatedAlarmRequest(
-//                schoolId = request.schoolId,
-//                departmentName = request.department,
-//                times = (responses.timetables.lastOrNull()?.timetableId?.toInt()
-//                    ?: -TAKEN_TIMETABLE) / TAKEN_TIMETABLE
-//            ))
+        slackMessageProducer.sendTimetableCreatedMessage(
+            TimetableCreatedAlarmRequest(
+                schoolId = request.schoolId,
+                departmentName = request.department,
+                times = (responses.timetables.lastOrNull()?.timetableId?.toInt()
+                    ?: -TOTAL) / TOTAL
+            )
+        )
         logger.info { "POST /api/timetables response: ${mapper.writeValueAsString(responses)}" }
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(Response(result = responses))
