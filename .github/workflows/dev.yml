@@ -1,0 +1,41 @@
+name: Dev - Kotlin CI/CD with Gradle
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Clean Build with Gradle(with Test)
+        run: ./gradlew clean build
+
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.YOURSSU_SECRET}}
+          HOST: ${{ secrets.YOURSSU_STG_HOST }}
+          USER: ${{ secrets.YOURSSU_STG_USER }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -i yourssu.pem ${{ secrets.YOURSSU_STG_USER }}@${{ secrets.YOURSSU_STG_HOST }} "/home/ubuntu/soongpt-api/run.sh"
