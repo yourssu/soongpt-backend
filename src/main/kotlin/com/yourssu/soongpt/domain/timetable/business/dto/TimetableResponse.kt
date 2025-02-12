@@ -6,6 +6,7 @@ data class TimetableResponse(
     val timetableId: Long,
     val tag: String,
     var score: Int?,
+    val totalCredit: Int,
     val courses: List<TimetableCourseResponse>,
 ) {
     companion object {
@@ -15,6 +16,7 @@ data class TimetableResponse(
                 tag = timetable.tag.name,
                 score = score,
                 courses = courses,
+                totalCredit = courses.sumOf { it.credit }
             )
         }
     }

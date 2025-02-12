@@ -118,11 +118,10 @@ class TimeTableFactory(
             val timetable = timetableWriter.save(Timetable(tag = step.tag))
             saveTimetableCourses(step.courses, timetable)
             responses.add(
-                TimetableResponse(
-                    timetableId = timetable.id!!,
-                    tag = timetable.tag.name,
-                    score = step.calculateFinalScore(),
-                    courses = toTimetableCourseResponses(step.courses)
+                TimetableResponse.from(
+                    timetable = timetable,
+                    courses = toTimetableCourseResponses(step.courses),
+                    score = step.calculateFinalScore()
                 )
             )
         }
