@@ -29,7 +29,7 @@ class TargetMapper {
         return this::class.java.classLoader
             .getResource(fileName)
             ?.readText()
-            ?: throw IllegalStateException("Required JSON file not found")
+            ?: "[]"
     }
 
     fun getMappedTarget(beforeTarget: String): String? {
