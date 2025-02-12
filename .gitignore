@@ -6,6 +6,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### 과목 분류 데이터 ###
+/src/main/resources/*.json
+
 ### STS ###
 .apt_generated
 .classpath
