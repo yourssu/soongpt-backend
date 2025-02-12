@@ -43,6 +43,12 @@
     <!-- prod  -->
     <springProfile name="prod">
         <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    <!-- dev  -->
+    <springProfile name="dev">
+        <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
         </root>
