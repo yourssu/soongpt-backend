@@ -2,7 +2,7 @@ package com.yourssu.soongpt.domain.timetable.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.soongpt.common.business.dto.Response
-import com.yourssu.soongpt.common.infrastructure.SlackMessageProducer
+import com.yourssu.soongpt.common.infrastructure.MessageProducer
 import com.yourssu.soongpt.common.infrastructure.dto.TimetableCreatedAlarmRequest
 import com.yourssu.soongpt.domain.timetable.application.dto.TimetableCreatedRequest
 import com.yourssu.soongpt.domain.timetable.business.TimetableService
@@ -20,7 +20,7 @@ private val mapper = ObjectMapper()
 @RequestMapping("/api/timetables")
 class TimetableController(
     private val timetableService: TimetableService,
-    private val slackMessageProducer: SlackMessageProducer,
+    private val slackMessageProducer: MessageProducer,
 ) {
     @PostMapping
     fun createTimetable(@RequestBody request: TimetableCreatedRequest): ResponseEntity<Response<TimetableResponses>> {
