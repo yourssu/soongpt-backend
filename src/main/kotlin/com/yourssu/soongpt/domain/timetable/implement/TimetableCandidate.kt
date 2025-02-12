@@ -85,4 +85,8 @@ class TimetableCandidate(
     fun copy(tag: Tag = this.tag, score: Int = this.score): TimetableCandidate {
         return TimetableCandidate(courses, coursesTimes, tag, score)
     }
+
+    fun totalCredit(): Int {
+        return courses.totalCredit()
+    }
 }

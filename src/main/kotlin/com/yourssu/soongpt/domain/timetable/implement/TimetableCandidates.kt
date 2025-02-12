@@ -28,6 +28,7 @@ class TimetableCandidates(
         val candidates = values.filter { it.tag != Tag.DEFAULT }
             .sortedWith(
                 compareBy(
+                    { -it.totalCredit() },
                     { -it.calculateFinalScore() },
                     { it.tag.ordinal }
                 )
