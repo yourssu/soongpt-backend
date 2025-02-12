@@ -8,7 +8,6 @@ import com.yourssu.soongpt.domain.timetable.application.dto.TimetableCreatedRequ
 import com.yourssu.soongpt.domain.timetable.business.TimetableService
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponses
-import com.yourssu.soongpt.domain.timetable.implement.TimetableCandidateFactory.Companion.TOTAL
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -31,8 +30,7 @@ class TimetableController(
             TimetableCreatedAlarmRequest(
                 schoolId = request.schoolId,
                 departmentName = request.department,
-                times = (responses.timetables.lastOrNull()?.timetableId?.toInt()
-                    ?: -TOTAL) / TOTAL
+                times = (responses.timetables.lastOrNull()?.timetableId ?: -1L).toInt()
             )
         )
         logger.info { "POST /api/timetables response: ${mapper.writeValueAsString(responses)}" }
