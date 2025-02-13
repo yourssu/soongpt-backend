@@ -9,13 +9,14 @@ class CoursesFactory(
         private const val MAX_RATING = 70.0
     }
 
-    fun generateTimetableCandidates(): List<Courses> {
+    fun generateTimetableCandidates(): Pair<List<Courses>, Courses> {
         val timetableCandidates = values.fold(listOf(emptyList<Course>())) { acc, courses ->
             acc.flatMap { currentCombination ->
                 courses.values.map { course -> currentCombination + course }
             }
         }.map { Courses(it) }
-        return timetableCandidates
+        val courses = Courses(values.flatMap { it.values })
+        return Pair(timetableCandidates, courses)
     }
 
     fun districtDuplicatedCourses(target: List<Courses>): CoursesFactory {
