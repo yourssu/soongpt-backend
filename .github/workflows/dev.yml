@@ -28,10 +28,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Clean Build with Gradle (with Test)
-        run: |
+        run: ./gradlew clean build
+#       run:|
+#          ./gradlew clean build
 #          echo ${{ secrets.APPLICATION_DEV_YML }} | base64 --decode > ./src/main/resources/application-dev.yml
 #          echo ${{ secrets.APPLICATION_YML_DEV_MODE }} | base64 --decode > ./src/main/resources/application.yml
-          ./gradlew clean build
+
 
 #      - name: Deploy to EC2
 #        env:
