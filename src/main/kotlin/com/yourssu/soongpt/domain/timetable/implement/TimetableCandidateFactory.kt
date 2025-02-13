@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.timetable.implement
 
 import com.yourssu.soongpt.domain.course.implement.Courses
+import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeReader
 import com.yourssu.soongpt.domain.timetable.implement.exception.TimetableCreatedBadRequestException
 import com.yourssu.soongpt.domain.timetable.implement.strategy.NoMorningClassesStrategy.Companion.MORNING_CLASSES_SCORE
@@ -17,14 +18,20 @@ class TimetableCandidateFactory(
         const val TOTAL = 5
     }
 
-    fun createTimetableCandidatesWithRule(coursesCandidates: List<Courses>): TimetableCandidates {
+    fun createTimetableCandidatesWithRule(coursesCandidates: List<Courses>, courses: Courses): TimetableCandidates {
         if (validateEmptyCase(coursesCandidates)) {
             return TimetableCandidates(TimetableCandidate.empty())
+        }
+        val courseTimes = HashMap<Long, List<CourseTime>>()
+        for (courseId in courses.getAllIds()) {
+            courseTimes[courseId] = courseTimeReader.findAllByCourseId(courseId)
         }
         val timetableCandidates= TimetableCandidates(coursesCandidates.flatMap {
             TimetableCandidate.fromAllTags(
                 courses = it,
-                coursesTimes = CourseTimes(courseTimeReader.findAllByCourseIds(it.getAllIds())),
+                coursesTimes = CourseTimes(it.getAllIds()
+                    .map { courseId -> courseTimes[courseId]?: listOf() }
+                    .flatten()),
             )
         }).filterRules()
         validateNoneTimetableCases(timetableCandidates)

@@ -25,7 +25,7 @@ class CoursesFactoryTest {
             fun success() {
                 val coursesFactory = CoursesFactory(listOf(courses, courses))
 
-                val actual = coursesFactory.generateTimetableCandidates()
+                val actual = coursesFactory.generateTimetableCandidates().first
                 assertThat(actual).hasSize(4)
             }
         }
