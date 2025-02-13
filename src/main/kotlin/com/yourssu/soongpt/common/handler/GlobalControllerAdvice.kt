@@ -3,7 +3,6 @@ package com.yourssu.soongpt.common.handler
 import com.yourssu.soongpt.common.handler.dto.ErrorResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.ConstraintViolationException
-import org.springframework.dao.DataAccessResourceFailureException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,6 +11,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
 
@@ -146,14 +146,16 @@ class ControllerAdvice {
             )
     }
 
-    @ExceptionHandler(DataAccessResourceFailureException::class)
-    fun handleDataAccessException(e: DataAccessResourceFailureException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    fun handleArgumentTypeMismatchException(
+        e: MethodArgumentTypeMismatchException
+    ): ResponseEntity<ErrorResponse> {
         logger.error { e }
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(
                 ErrorResponse(
-                    status = HttpStatus.SERVICE_UNAVAILABLE.value(),
-                    message = "데이터베이스에 접근할 수 없습니다. {{ ${e.message} }}"
+                    status = HttpStatus.BAD_REQUEST.value(),
+                    message = "잘못된 타입의 요청입니다. {{ ${e.message} }}"
                 )
             )
     }
