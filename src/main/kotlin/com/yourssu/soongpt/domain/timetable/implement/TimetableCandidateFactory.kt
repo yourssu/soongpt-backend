@@ -69,6 +69,8 @@ class TimetableCandidateFactory(
                 compareBy(
                     { -it.totalCredit() },
                     { -it.calculateFinalScore() },
+                    { it.tag },
+                    { it.courses.values.size }
                 )
             )
                 .take(n) }.flatten())

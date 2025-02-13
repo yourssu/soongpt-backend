@@ -30,7 +30,8 @@ class TimetableCandidates(
                 compareBy(
                     { -it.totalCredit() },
                     { -it.calculateFinalScore() },
-                    { it.tag.ordinal }
+                    { it.tag.ordinal },
+                    { it.courses.values.size }
                 )
             )
             .toList()
