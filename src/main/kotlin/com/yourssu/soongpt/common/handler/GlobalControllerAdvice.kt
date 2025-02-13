@@ -24,13 +24,6 @@ class ControllerAdvice {
         private const val INVALID_REQUEST_DELIMITER = ", "
     }
 
-    @ExceptionHandler(Exception::class)
-    fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
-        logger.error { e }
-        return ResponseEntity.internalServerError()
-            .body(ErrorResponse.from(InternalServerError()))
-    }
-
     @ExceptionHandler(BadRequestException::class)
     fun handleBadRequest(e: BadRequestException): ResponseEntity<ErrorResponse> {
         logger.error { e }
