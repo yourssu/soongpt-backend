@@ -29,22 +29,6 @@ class CoursesFactory(
         })
     }
 
-    fun allCases(): CoursesFactory {
-        val combinations = mutableListOf<List<Course>>(emptyList())
-
-        for (courses in values) {
-            val newCombinations = mutableListOf<List<Course>>()
-            for (currentCombination in combinations) {
-                for (course in courses.values) {
-                    newCombinations.add(currentCombination + course)
-                }
-            }
-            combinations.addAll(newCombinations)
-        }
-
-        return CoursesFactory(combinations.map { Courses(it) })
-    }
-
     fun allCasesLessThan(standard: Int, taken: Int): List<Courses> {
         val combinations = mutableListOf<List<Course>>(emptyList())
         for (courses in values) {
@@ -71,7 +55,7 @@ class CoursesFactory(
             compareBy(
                 { courses -> -courses.totalCredit() },
                 { courses -> -(courses.values.sumOf { course -> ratings[course.id]!!.coerceAtMost(MAX_RATING) } / courses.values.size) },
-                { Random.nextInt(10) },
+                { Random.nextInt(20) },
                 { courses -> -courses.values.size })
         )
             .map {
