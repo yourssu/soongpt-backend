@@ -1,7 +1,7 @@
 # soongpt-backend
 
-[![Dev - Tests](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-ci.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-ci.yml)  
-[![Dev - CI/CD without Tests](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-cd.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-cd.yml)
+[![Dev - Test](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-pr.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-pr.yml)  
+[![Dev - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-push.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-push.yml)
 
-[![Prod - Tests](https://github.com/yourssu/soongpt-backend/actions/workflows/prod-ci.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/prod-ci.yml)  
-[![Prod - CI/CD with Tests](https://github.com/yourssu/soongpt-backend/actions/workflows/prod.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/prod.yml)  
+[![Prod - Test](https://github.com/yourssu/soongpt-backend/actions/workflows/main-pr.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/main-pr.yml)  
+[![Prod - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/main-push.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/main-push.yml)    
