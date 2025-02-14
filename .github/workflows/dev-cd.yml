@@ -1,4 +1,4 @@
-name: Dev - CI/CD without Tests
+name: Dev - Build and Deploy
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Prod - Tests
+name: Prod - Test
 
 on:
   pull_request:
