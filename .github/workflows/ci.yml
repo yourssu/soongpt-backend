@@ -1,10 +1,10 @@
-name: Kotlin CI with Gradle
+name: Dev - Run Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   build-and-deploy:
@@ -28,4 +28,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Clean Build with Gradle(with Test)
-        run: ./gradlew clean build
+
+        run: |
+          echo ${{ secrets.APPLICATION_DEV_YML }} | base64 --decode > ./src/main/resources/application-dev.yml
+          echo ${{ secrets.APPLICATION_YML_DEV_MODE }} | base64 --decode > ./src/main/resources/application.yml
+          ./gradlew clean build
