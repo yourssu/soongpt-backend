@@ -1,8 +1,8 @@
-name: Prod - Build and Deploy to EC2
+name: Dev - Build and Deploy to EC2
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   build-and-deploy:
@@ -25,15 +25,15 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Clean Build with Gradle (with Tests)
+      - name: Clean Build with Gradle (without Testing)
         run: |
-          echo ${{ secrets.APPLICATION_PROD_YML }} | base64 --decode > ./src/main/resources/application-prod.yml
+          echo ${{ secrets.APPLICATION_DEV_YML }} | base64 --decode > ./src/main/resources/application-dev.yml
           ./gradlew clean build
 
       - name: Deploy to EC2
         env:
           PRIVATE_KEY: ${{ secrets.YOURSSU_SECRET }}
-          HOST: ${{ secrets.YOURSSU_PROD_HOST }}
+          HOST: ${{ secrets.YOURSSU_STG_HOST }}
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
