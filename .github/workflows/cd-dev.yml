@@ -33,6 +33,4 @@ jobs:
           ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
           echo "$PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-          mv build/libs/soongpt-0.0.1-SNAPSHOT.jar yourssu-soongpt-application.jar
-          scp -i private_key.pem yourssu-soongpt-application.jar ubuntu@$HOST:/home/ubuntu/soongpt-api
           ssh -i private_key.pem ubuntu@$HOST "/home/ubuntu/soongpt-api/run.sh"
