@@ -25,7 +25,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Clean Build with Gradle (without Test)
+      - name: Clean Build with Gradle (with Tests)
         run: |
           echo ${{ secrets.APPLICATION_PROD_YML }} | base64 --decode > ./src/main/resources/application-prod.yml
           ./gradlew clean build
