@@ -1,4 +1,4 @@
-name: Prod - CI/CD with Tests
+name: Prod - Tests
 
 on:
   pull_request:
