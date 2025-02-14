@@ -1,4 +1,4 @@
-name: Prod - Build
+name: Prod - Build and Deploy to EC2
 
 on:
   push:
