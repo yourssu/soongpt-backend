@@ -6,7 +6,7 @@ data class TimetableResponse(
     val timetableId: Long,
     val tag: String,
     var score: Int?,
-    val totalCredit: Int,
+    val totalCredit: Double,
     val courses: List<TimetableCourseResponse>,
 ) {
     companion object {
