@@ -1,4 +1,4 @@
-@host = localhost:9000
+@host = localhost:9001
 
 ###
 POST {{host}}/api/timetables
@@ -21,7 +21,7 @@ Content-Type: application/json
   ],
   "majorElectiveCredit": 9,
   "generalElectiveCredit": 6,
-  "chapel": true
+  "isChapel": true
 }
 ###
 
