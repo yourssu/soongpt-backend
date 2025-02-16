@@ -13,6 +13,7 @@ import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGradeReade
 import com.yourssu.soongpt.domain.target.implement.Target
 import com.yourssu.soongpt.domain.target.implement.TargetReader
 import com.yourssu.soongpt.domain.target.implement.TargetWriter
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -29,6 +30,7 @@ class CourseService(
     private val targetWriter: TargetWriter,
     private val targetMapper: TargetMapper
 ) {
+    @Cacheable(value = ["courseCache"], key = "'majorRequired'.concat(#command.departmentName).concat(#command.grade)")
     fun findByDepartmentNameInMajorRequired(command: FoundDepartmentCommand): List<CourseResponse> {
         val department = departmentReader.getByName(command.departmentName)
         val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
@@ -43,6 +45,7 @@ class CourseService(
         })
     }
 
+    @Cacheable(value = ["courseCache"], key = "'MajorElective'.concat(#command.departmentName).concat(#command.grade)")
     fun findByDepartmentNameInMajorElective(command: FoundDepartmentCommand): List<CourseResponse> {
         val department = departmentReader.getByName(command.departmentName)
         val courses = courseReader.findAllByDepartmentIdInMajorElective(department.id!!)
@@ -55,6 +58,7 @@ class CourseService(
         })
     }
 
+    @Cacheable(value = ["courseCache"], key = "'GeneralRequired'.concat(#command.departmentName).concat(#command.grade)")
     fun findByDepartmentNameInGeneralRequired(command: FoundDepartmentCommand): List<CourseResponse> {
         val department = departmentReader.getByName(command.departmentName)
         val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
