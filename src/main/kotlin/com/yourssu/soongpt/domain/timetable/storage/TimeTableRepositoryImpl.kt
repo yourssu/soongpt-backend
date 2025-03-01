@@ -20,6 +20,10 @@ class TimetableRepositoryImpl(
             .orElseThrow { TimetableNotFoundException() }
             .toDomain()
     }
+
+    override fun count(): Long {
+        return timetableJpaRepository.count()
+    }
 }
 
 interface TimetableJpaRepository: JpaRepository<TimetableEntity, Long> {

@@ -8,6 +8,7 @@ import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponses
 import com.yourssu.soongpt.domain.timetable.implement.TimeTableFactory
 import com.yourssu.soongpt.domain.timetable.implement.TimetableCourseReader
 import com.yourssu.soongpt.domain.timetable.implement.TimetableReader
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,6 +19,8 @@ class TimetableService(
     private val courseTimeReader: CourseTimeReader,
     private val timeTableFactory: TimeTableFactory,
 ) {
+    val maximumTimetableId = timetableReader.count()
+
     @Transactional
     fun createTimetable(command: TimetableCreatedCommand): TimetableResponses {
         val timetables = timeTableFactory.createTimetable(command)
@@ -25,6 +28,7 @@ class TimetableService(
         return TimetableResponses(responses)
     }
 
+    @Cacheable(value = ["timetableCache"], key = "#id")
     fun getTimeTable(id: Long): TimetableResponse {
         val timetable = timetableReader.get(id)
         val courses = timetableCourseReader.findAllCourseByTimetableId(id)

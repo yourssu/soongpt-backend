@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.common.infrastructure.MessageProducer
 import com.yourssu.soongpt.common.infrastructure.dto.TimetableCreatedAlarmRequest
+import com.yourssu.soongpt.common.support.RandomNumberGenerator
 import com.yourssu.soongpt.domain.timetable.application.dto.TimetableCreatedRequest
 import com.yourssu.soongpt.domain.timetable.business.TimetableService
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
@@ -38,11 +39,15 @@ class TimetableController(
             .body(Response(result = responses))
     }
 
-
     @GetMapping("/{id}")
     fun getTimetable(@PathVariable id: Long): ResponseEntity<Response<TimetableResponse>> {
-        logger.info { "GET /api/timetables/$id request" }
         val response = timetableService.getTimeTable(id)
+        return ResponseEntity.ok(Response(result = response))
+    }
+
+    @GetMapping
+    fun getRandomTimetable(): ResponseEntity<Response<TimetableResponse>> {
+        val response = timetableService.getTimeTable(RandomNumberGenerator.generateRandomNumber(timetableService.maximumTimetableId))
         return ResponseEntity.ok(Response(result = response))
     }
 }

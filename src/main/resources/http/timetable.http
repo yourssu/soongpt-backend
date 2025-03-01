@@ -26,9 +26,13 @@ Content-Type: application/json
 ###
 
 
+###
+GET {{host}}/api/timetables
+Content-Type: application/json
 
+###
 
-@timeTableId = 10000
+@timeTableId = 100
 ###
 GET {{host}}/api/timetables/{{timeTableId}}
 Content-Type: application/json
