@@ -16,6 +16,7 @@ class CacheConfig {
         cacheManager.setCaches(
             listOf(
                 ConcurrentMapCache("courseCache"),
+                ConcurrentMapCache("timetableCache"),
             )
         )
         return cacheManager
