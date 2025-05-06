@@ -71,6 +71,23 @@ class TimeTableFactory(
         return step5
     }
 
+//    fun createTimetable2(command: TimetableCreatedCommand): TimetableCandidates {
+//        val department = departmentReader.getByName(command.departmentName)
+//        val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(departmentId = department.id!!, grade = command.grade)
+//        val (majorRequiredCourses, majorElectiveCourses, generalRequiredCourses)
+//                = findSelectedCourses(command, departmentGrade, department)
+//        val chapels = findChapel(command.isChapel, departmentGrade)
+//        validateCreditRule(
+//            majorRequiredCourses = majorRequiredCourses,
+//            generalRequiredCourses = generalRequiredCourses,
+//            majorElectiveCredit = command.majorElectiveCredit,
+//            generalElectiveCredit = command.generalElectiveCredit,)
+//        val step1 = CoursesFactory(majorRequiredCourses + majorElectiveCourses + generalRequiredCourses + chapels)
+//            .generateTimetableCandidates()
+//        val step2 = timetableCandidateFactory.createTimetableCandidatesWithRule(step1.first, step1.second)
+//
+//    }
+
     private fun findSelectedCourses(
         command: TimetableCreatedCommand,
         departmentGrade: DepartmentGrade,
