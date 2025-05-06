@@ -88,7 +88,7 @@ class CourseService(
                     )
                 val parsedClassifications = courseParser.parseClassifications(classification)
                 if (parsedClassifications.isEmpty()) {
-                    println("허용되지 않는 이수구분 : ${course.category.orEmpty()}")
+                    println("허용되지 않는 이수구분 : ${course.category}")
                     return@forEach
                 }
 
@@ -101,6 +101,7 @@ class CourseService(
                     val courseDomain = Course(
                         courseName = course.name,
                         professorName = professorName,
+                        courseCode = course.code?.toIntOrNull(),
                         classification = classification,
                         credit = credit
                     )
@@ -131,7 +132,7 @@ class CourseService(
                             parsedClassifications.entries.find { (_, deptIds) ->
                                 if (deptIds.isEmpty()) true else deptIds.contains(deptId)
                             }?.key ?: throw IllegalArgumentException(
-                                "이수구분 매칭이 되지 않은 타겟 : 이수구분 - ${course.category.orEmpty()}, 타겟 학과 ID -" +
+                                "이수구분 매칭이 되지 않은 타겟 : 이수구분 - ${course.category}, 타겟 학과 ID -" +
                                         " ${deptId}"
                             )
                         }
