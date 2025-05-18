@@ -1,4 +1,4 @@
-# getGeneralElectiveCourse (GET /api/courses/general/elective)
+# getGeneralRequiredCourse (GET /api/courses/general/required)
 
 ## Request
 
@@ -22,7 +22,7 @@
 | `name`       | string               | Course name                                        |
 | `professor`  | string               | Name of the professor in charge                    |
 | `code`       | string               | Unique 10-digit course code                        |
-| `category`   | string               | Course category (e.g., GENERAL_ELECTIVE)           |
+| `category`   | string               | Course category (e.g., GENERAL_REQUIRED)           |
 | `credit`     | string               | Number of credits                                  |
 | `target`     | string               | Target students for the course                     |
 | `courseTime` | CourseTimeResponse[] | Array of course schedule and classroom information |
@@ -47,7 +47,7 @@
       "name": "컴퓨터미적분활용",
       "professor": "김민수",
       "code": "5678901234",
-      "category": "GENERAL_ELECTIVE",
+      "category": "GENERAL_REQUIRED",
       "credit": "3",
       "target": "전체학년",
       "courseTime": [
@@ -70,7 +70,7 @@
       "name": "컴퓨터학개론",
       "professor": "이수정",
       "code": "6789012345",
-      "category": "GENERAL_ELECTIVE",
+      "category": "GENERAL_REQUIRED",
       "credit": "3",
       "target": "1학년",
       "courseTime": [
