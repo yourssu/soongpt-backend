@@ -63,3 +63,4 @@ jobs:
           
           scp -i yourssu.pem .env ubuntu@$HOST:/home/ubuntu/soongpt-api
           ssh -i yourssu.pem ubuntu@$HOST "chmod 600 /home/ubuntu/soongpt-api/.env && /home/ubuntu/soongpt-api/run.sh"
+          ssh -i /home/ubuntu/soongpt-api/observer_run.sh"          
