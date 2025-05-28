@@ -1,0 +1,65 @@
+name: Dev - Build and Deploy to EC2
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    defaults:
+      run:
+        working-directory: ./
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Clean Build with Gradle (with Testing)
+        run: |
+          ./gradlew clean build
+
+      - name: Deploy to EC2
+        env:
+          YOURSSU_PEM: ${{ secrets.YOURSSU_PEM }}
+          HOST: ${{ vars.HOST_URL }}
+
+          SERVER_PORT: ${{ vars.SERVER_PORT }}
+          CORS_ALLOWED_ORIGIN: ${{ vars.CORS_ALLOWED_ORIGIN }}
+
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+          SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL_ID }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+          echo "$YOURSSU_PEM" > yourssu.pem
+          chmod 600 yourssu.pem
+          mv build/libs/soongpt-0.0.1-SNAPSHOT.jar yourssu-soongpt-application.jar
+          scp -i yourssu.pem yourssu-soongpt-application.jar ubuntu@$HOST:/home/ubuntu/soongpt-api
+          
+          echo "SERVER_PORT=$SERVER_PORT" >> .env
+          echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> .env
+          
+          echo "DB_URL=$DB_URL" >> .env
+          echo "DB_USERNAME=$DB_USERNAME" >> .env
+          echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+          
+          echo "SLACK_CHANNEL_ID=$SLACK_CHANNEL_ID" >> .env
+          
+          scp -i yourssu.pem .env ubuntu@$HOST:/home/ubuntu/soongpt-api
+          ssh -i yourssu.pem ubuntu@$HOST "chmod 600 /home/ubuntu/soongpt-api/.env && /home/ubuntu/soongpt-api/run.sh"

@@ -1,0 +1,35 @@
+server:
+  port: ${SERVER_PORT}
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import:
+      - optional:file:.env[.properties]
+      - data.yml
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      max-lifetime: 175000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGIN}
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            loggerLevel: full
+            defaultRequestHeaders:
+              Authorization: Bearer accessToken
+            dismiss404: false
+
+slack:
+  channel-id: ${SLACK_CHANNEL_ID}
