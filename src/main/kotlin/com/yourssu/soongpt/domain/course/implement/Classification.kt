@@ -12,11 +12,11 @@ enum class Classification(
     companion object {
         fun fromName(name: String): Classification? {
             return when (name) {
-                "전필", "전기" -> Classification.MAJOR_REQUIRED
-                "전선" -> Classification.MAJOR_ELECTIVE
-                "교필" -> Classification.GENERAL_REQUIRED
-                "교선" -> Classification.GENERAL_ELECTIVE
-                "채플" -> Classification.CHAPEL
+                "전필", "전기" -> MAJOR_REQUIRED
+                "전선" -> MAJOR_ELECTIVE
+                "교필" -> GENERAL_REQUIRED
+                "교선" -> GENERAL_ELECTIVE
+                "채플" -> CHAPEL
                 else -> null
             }
         }
