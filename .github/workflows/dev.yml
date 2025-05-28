@@ -34,7 +34,7 @@ jobs:
       - name: Deploy to EC2
         env:
           YOURSSU_PEM: ${{ secrets.YOURSSU_PEM }}
-          HOST: ${{ vars.HOST_URL }}
+          HOST_URL: ${{ vars.HOST_URL }}
 
           SERVER_PORT: ${{ vars.SERVER_PORT }}
           CORS_ALLOWED_ORIGIN: ${{ vars.CORS_ALLOWED_ORIGIN }}
@@ -43,14 +43,16 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-          SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL_ID }}
+          PROJECT_NAME: ${{ vars.PROJECT_NAME }}
+
+          SLACK_CHANNEL_ID: ${{ vars.SLACK_CHANNEL_ID }}
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+          ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
           echo "$YOURSSU_PEM" > yourssu.pem
           chmod 600 yourssu.pem
-          mv build/libs/soongpt-0.0.1-SNAPSHOT.jar yourssu-soongpt-application.jar
-          scp -i yourssu.pem yourssu-soongpt-application.jar ubuntu@$HOST:/home/ubuntu/soongpt-api
+          mv build/libs/$PROJECT_NAME-0.0.1-SNAPSHOT.jar yourssu-$PROJECT_NAME-application.jar
+          scp -i yourssu.pem yourssu-$PROJECT_NAME-application.jar ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api
           
           echo "SERVER_PORT=$SERVER_PORT" >> .env
           echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> .env
@@ -61,6 +63,6 @@ jobs:
           
           echo "SLACK_CHANNEL_ID=$SLACK_CHANNEL_ID" >> .env
           
-          scp -i yourssu.pem .env ubuntu@$HOST:/home/ubuntu/soongpt-api
-          ssh -i yourssu.pem ubuntu@$HOST "chmod 600 /home/ubuntu/soongpt-api/.env && /home/ubuntu/soongpt-api/run.sh"
-          ssh -i /home/ubuntu/soongpt-api/observer_run.sh"          
+          scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api
+          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod 600 /home/ubuntu/$PROJECT_NAME-api/.env && /home/ubuntu/$PROJECT_NAME-api/run.sh"
+          ssh -i yourssu.pem ubuntu@$HOST_URL "/home/ubuntu/$PROJECT_NAME-api/observer_run.sh"          
