@@ -14,6 +14,9 @@ class CourseEntity(
     @Column(nullable = false)
     val courseName: String,
 
+    @Column(nullable = true, unique = true)
+    val courseCode: Int?,
+
     @Column(nullable = true)
     val professorName: String?,
 
@@ -28,9 +31,10 @@ class CourseEntity(
         fun from(course: Course) = CourseEntity(
             id = course.id,
             courseName = course.courseName,
+            courseCode = course.courseCode,
             professorName = course.professorName,
             classification = course.classification,
-            credit = course.credit
+            credit = course.credit,
         )
     }
 
@@ -39,6 +43,7 @@ class CourseEntity(
         courseName = courseName,
         professorName = professorName,
         classification = classification,
-        credit = credit
+        credit = credit,
+        courseCode = courseCode,
     )
 }

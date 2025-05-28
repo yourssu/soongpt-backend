@@ -52,6 +52,10 @@ class CourseReader(
         return courses
     }
 
+    fun findAll(): Courses {
+        return courseRepository.findAll()
+    }
+
     private fun findAllByCourseNameGrade(departmentGradeId: Long, courseName: String, classification: Classification): Courses {
         val courses = courseRepository.findByDepartmentGradeIdAndCourseName(departmentGradeId, courseName, classification)
         if (courses.isEmpty()) {

@@ -119,6 +119,10 @@ class CourseRepositoryImpl(
             .orElseThrow { throw CourseNotFoundException(courseId.toString()) }
             .toDomain()
     }
+
+    override fun findAll(): Courses {
+        return Courses(courseJpaRepository.findAll().map { it.toDomain() })
+    }
 }
 
 interface CourseJpaRepository : JpaRepository<CourseEntity, Long> {
