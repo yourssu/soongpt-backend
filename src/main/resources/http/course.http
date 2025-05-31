@@ -1,12 +1,10 @@
-@host = localhost:9000
-
 @schoolId = 21
-@department = 컴퓨터학부
-@grade = 2
+@department = 소프트웨어학부
+@grade = 3
 
 // 전공 필수 과목 조회
 ###
-GET {{host}}/api/courses/major/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
+GET {{host}}/api/v2/courses/major/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
 Content-Type: application/x-www-form-urlencoded
 ###
 
