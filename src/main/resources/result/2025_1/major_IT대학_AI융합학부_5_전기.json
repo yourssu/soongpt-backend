@@ -1,0 +1,94 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.1",
+    "category": "전기-AI융합",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.1",
+    "name": "(공통)물리1및실험",
+    "division": null,
+    "professor": "김남미\n이재구",
+    "department": "물리학과",
+    "time_points": "4.0/3.0",
+    "personeel": "25",
+    "remaining_seats": "0",
+    "target": "전체학년 기계,화공,전기,건축학부,신소재,정통전,전자정보공학부-IT융합,전자정보공학부-전자공학,AI융합,물리,화학,의생명,소프트,컴퓨터",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "조만식기념관 12123",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "조만식기념관 12123",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.2",
+    "category": "전기-AI융합",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.2",
+    "name": "(공통)물리1및실험",
+    "division": null,
+    "professor": "김남미\n이동재",
+    "department": "물리학과",
+    "time_points": "4.0/3.0",
+    "personeel": "25",
+    "remaining_seats": "0",
+    "target": "전체학년 기계,화공,전기,건축학부,신소재,정통전,전자정보공학부-IT융합,전자정보공학부-전자공학,AI융합,물리,화학,의생명,소프트,컴퓨터",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "조만식기념관 12124",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "조만식기념관 12124",
+        "courseCode": 0
+      }
+    ]
+  }
+]

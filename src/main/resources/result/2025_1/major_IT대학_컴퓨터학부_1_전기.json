@@ -1,0 +1,236 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.16",
+    "category": "전기-컴퓨터",
+    "sub_category": "복선-컴퓨터",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.16",
+    "name": "컴퓨터수학1",
+    "division": "(공통-재수강)",
+    "professor": "최종선",
+    "department": "컴퓨터학부",
+    "time_points": "3.0/3.0",
+    "personeel": "50",
+    "remaining_seats": "0",
+    "target": "전체학년 컴퓨터",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "정보과학관 21201",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "정보과학관 21201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.18",
+    "category": "전기-컴퓨터",
+    "sub_category": "복선-컴퓨터",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.18",
+    "name": "프로그래밍1및실습",
+    "division": "(공통-재수강)",
+    "professor": "송현주",
+    "department": "컴퓨터학부",
+    "time_points": "4.0/3.0",
+    "personeel": "44",
+    "remaining_seats": "6",
+    "target": "전체학년 컴퓨터",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "정보과학관 21101 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "정보과학관 21101 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "정보과학관 21101 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "정보과학관 21101 (실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.25",
+    "category": "전기-컴퓨터",
+    "sub_category": "복선-컴퓨터",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.25",
+    "name": "컴퓨터수학1",
+    "division": "(가반)",
+    "professor": "최종선",
+    "department": "컴퓨터학부",
+    "time_points": "3.0/3.0",
+    "personeel": "48",
+    "remaining_seats": "2",
+    "target": "1학년 컴퓨터 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21203 (김재상강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21203 (김재상강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.26",
+    "category": "전기-컴퓨터",
+    "sub_category": "복선-컴퓨터",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.26",
+    "name": "컴퓨터수학1",
+    "division": "(나반)",
+    "professor": "최종선",
+    "department": "컴퓨터학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "11",
+    "target": "1학년 컴퓨터 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "정보과학관 21203 (김재상강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "정보과학관 21203 (김재상강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.29",
+    "category": "전기-컴퓨터",
+    "sub_category": "복선-컴퓨터",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.29",
+    "name": "프로그래밍1및실습",
+    "division": "(가반)",
+    "professor": "김익수",
+    "department": "컴퓨터학부",
+    "time_points": "4.0/3.0",
+    "personeel": "47",
+    "remaining_seats": "3",
+    "target": "1학년 컴퓨터 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:20",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "14:30",
+        "endTime": "15:20",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:30",
+        "endTime": "14:20",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "14:30",
+        "endTime": "15:20",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.30",
+    "category": "전기-컴퓨터",
+    "sub_category": "복선-컴퓨터",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.30",
+    "name": "프로그래밍1및실습",
+    "division": "(나반)",
+    "professor": "김익수",
+    "department": "컴퓨터학부",
+    "time_points": "4.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "13",
+    "target": "1학년 컴퓨터 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

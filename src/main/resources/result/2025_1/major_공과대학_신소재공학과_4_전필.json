@@ -1,0 +1,102 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.52",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.52",
+    "name": "졸업논문1",
+    "division": null,
+    "professor": "곽영제",
+    "department": "신소재공학과",
+    "time_points": "1.0/1.0",
+    "personeel": "18",
+    "remaining_seats": "22",
+    "target": "4학년 신소재",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "형남공학관 05321 (조춘구강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.53",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.53",
+    "name": "졸업논문1",
+    "division": null,
+    "professor": "정재우",
+    "department": "신소재공학과",
+    "time_points": "1.0/1.0",
+    "personeel": "18",
+    "remaining_seats": "22",
+    "target": "4학년 신소재",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "형남공학관 05B124",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.54",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.54",
+    "name": "졸업논문1",
+    "division": null,
+    "professor": "신근영",
+    "department": "신소재공학과",
+    "time_points": "1.0/1.0",
+    "personeel": "29",
+    "remaining_seats": "11",
+    "target": "4학년 신소재",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "형남공학관 05322 (임경희강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.55",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.55",
+    "name": "졸업논문1",
+    "division": null,
+    "professor": "신재만",
+    "department": "신소재공학과",
+    "time_points": "1.0/1.0",
+    "personeel": "26",
+    "remaining_seats": "14",
+    "target": "4학년 신소재",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "형남공학관 05113",
+        "courseCode": 0
+      }
+    ]
+  }
+]

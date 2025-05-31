@@ -1,0 +1,572 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.1",
+    "category": "전기-신소재",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.1",
+    "name": "(공통)물리1및실험",
+    "division": null,
+    "professor": "김남미\n이재구",
+    "department": "물리학과",
+    "time_points": "4.0/3.0",
+    "personeel": "25",
+    "remaining_seats": "0",
+    "target": "전체학년 기계,화공,전기,건축학부,신소재,정통전,전자정보공학부-IT융합,전자정보공학부-전자공학,AI융합,물리,화학,의생명,소프트,컴퓨터",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "조만식기념관 12123",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "조만식기념관 12123",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.2",
+    "category": "전기-신소재",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.2",
+    "name": "(공통)물리1및실험",
+    "division": null,
+    "professor": "김남미\n이동재",
+    "department": "물리학과",
+    "time_points": "4.0/3.0",
+    "personeel": "25",
+    "remaining_seats": "0",
+    "target": "전체학년 기계,화공,전기,건축학부,신소재,정통전,전자정보공학부-IT융합,전자정보공학부-전자공학,AI융합,물리,화학,의생명,소프트,컴퓨터",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "조만식기념관 12124",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "조만식기념관 12124",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.3",
+    "category": "전기-신소재",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.3",
+    "name": "화학1및실험",
+    "division": "(공통-재수강)",
+    "professor": "박연실",
+    "department": "화학과",
+    "time_points": "4.0/3.0",
+    "personeel": "19",
+    "remaining_seats": "6",
+    "target": "전체학년 화학,물리,의생명시스템,신소재,전기,화공,산업·정보",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "베어드홀 01213 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "베어드홀 01213 (일반화학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.14",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.14",
+    "name": "기초공학수학1",
+    "division": null,
+    "professor": "이상민",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "49",
+    "remaining_seats": "1",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "문화관 03309",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "문화관 03309",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.15",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.15",
+    "name": "기초공학수학1",
+    "division": null,
+    "professor": "정은경",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "11",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "미래관 20203",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "문화관 03208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.16",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.16",
+    "name": "물리1및실험",
+    "division": null,
+    "professor": "김남미",
+    "department": "신소재공학과",
+    "time_points": "4.0/3.0",
+    "personeel": "23",
+    "remaining_seats": "0",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "백마관 07317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "백마관 07317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "조만식기념관 12123",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "조만식기념관 12123",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.17",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.17",
+    "name": "물리1및실험",
+    "division": null,
+    "professor": "김남미\n이동재",
+    "department": "신소재공학과",
+    "time_points": "4.0/3.0",
+    "personeel": "25",
+    "remaining_seats": "0",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "백마관 07317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "백마관 07317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "조만식기념관 12124",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "조만식기념관 12124",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.18",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.18",
+    "name": "물리1및실험",
+    "division": null,
+    "professor": "최현희",
+    "department": "신소재공학과",
+    "time_points": "4.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "0",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "조만식기념관 12123",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "조만식기념관 12123",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.19",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.19",
+    "name": "물리1및실험",
+    "division": null,
+    "professor": "김수경\n최현희",
+    "department": "신소재공학과",
+    "time_points": "4.0/3.0",
+    "personeel": "16",
+    "remaining_seats": "4",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "조만식기념관 12124",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "조만식기념관 12124",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.22",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.22",
+    "name": "화학1및실험",
+    "division": null,
+    "professor": "남궁미옥\n김자헌",
+    "department": "신소재공학과",
+    "time_points": "4.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "0",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "미래관 20402",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "미래관 20402",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "베어드홀 01213 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "베어드홀 01213 (일반화학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "화학1및실험",
+    "division": null,
+    "professor": "남궁미옥\n신익수",
+    "department": "신소재공학과",
+    "time_points": "4.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "0",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "미래관 20402",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "미래관 20402",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "베어드홀 01214 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "베어드홀 01214 (일반화학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.24",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.24",
+    "name": "화학1및실험",
+    "division": null,
+    "professor": "남궁미옥\n양진국",
+    "department": "신소재공학과",
+    "time_points": "4.0/3.0",
+    "personeel": "21",
+    "remaining_seats": "0",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "베어드홀 01213 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "베어드홀 01213 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "백마관 07403",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "백마관 07403",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.25",
+    "category": "전기-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.25",
+    "name": "화학1및실험",
+    "division": null,
+    "professor": "남궁미옥\n강원철",
+    "department": "신소재공학과",
+    "time_points": "4.0/3.0",
+    "personeel": "21",
+    "remaining_seats": "0",
+    "target": "1학년 신소재 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "베어드홀 01214 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "베어드홀 01214 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "백마관 07403",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "백마관 07403",
+        "courseCode": 0
+      }
+    ]
+  }
+]

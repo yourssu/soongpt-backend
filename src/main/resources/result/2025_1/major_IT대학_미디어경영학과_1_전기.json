@@ -1,0 +1,116 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.6",
+    "category": "전기-미디어경영",
+    "sub_category": "복선-미디어경영/부선-미디어경영",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.6",
+    "name": "미디어제작",
+    "division": null,
+    "professor": "이장원",
+    "department": "미디어경영학과",
+    "time_points": "3.0/3.0",
+    "personeel": "48",
+    "remaining_seats": "0",
+    "target": "1학년 미디어경영",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.7",
+    "category": "전기-미디어경영",
+    "sub_category": "복선-미디어경영/부선-미디어경영",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.7",
+    "name": "컴퓨터시스템",
+    "division": null,
+    "professor": "정기철",
+    "department": "미디어경영학과",
+    "time_points": "3.0/3.0",
+    "personeel": "50",
+    "remaining_seats": "0",
+    "target": "1학년 미디어경영",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "정보과학관 21501",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.8",
+    "category": "전기-미디어경영",
+    "sub_category": "복필-미디어경영/부선-미디어경영",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.8",
+    "name": "프로그래밍1",
+    "division": null,
+    "professor": "임영환",
+    "department": "미디어경영학과",
+    "time_points": "3.0/3.0",
+    "personeel": "33",
+    "remaining_seats": "7",
+    "target": "1학년 미디어경영",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.9",
+    "category": "전기-미디어경영",
+    "sub_category": "복필-미디어경영/부선-미디어경영",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.9",
+    "name": "프로그래밍1",
+    "division": null,
+    "professor": "정기철",
+    "department": "미디어경영학과",
+    "time_points": "3.0/3.0",
+    "personeel": "17",
+    "remaining_seats": "23",
+    "target": "1학년 미디어경영",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "정보과학관 21502 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "정보과학관 21502 (실습실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

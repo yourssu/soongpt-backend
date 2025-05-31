@@ -1,0 +1,66 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.19",
+    "category": "전필-AI융합",
+    "sub_category": "복필-AI융합/부선-AI융합/융선-AI로봇융합/융선-스마트자동차융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.19",
+    "name": "고급AI수학",
+    "division": null,
+    "professor": "최종수",
+    "department": "AI융합학부",
+    "time_points": "3.0/3.0",
+    "personeel": "60",
+    "remaining_seats": "0",
+    "target": "2학년 AI융합학부,스마트자동차융합,AI로봇융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "문화관 03307",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "문화관 03307",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.20",
+    "category": "전필-AI융합",
+    "sub_category": "복필-AI융합/부선-AI융합/융선-AI로봇융합/융선-스마트자동차융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.20",
+    "name": "고급AI수학",
+    "division": null,
+    "professor": "최종수",
+    "department": "AI융합학부",
+    "time_points": "3.0/3.0",
+    "personeel": "58",
+    "remaining_seats": "1",
+    "target": "2학년 AI융합학부,스마트자동차융합,AI로봇융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "문화관 03307",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "문화관 03307",
+        "courseCode": 0
+      }
+    ]
+  }
+]

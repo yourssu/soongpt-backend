@@ -1,0 +1,66 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.4",
+    "category": "전기-금융경제",
+    "sub_category": "복필-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.4",
+    "name": "경제원론1",
+    "division": null,
+    "professor": "김현숙",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "20",
+    "remaining_seats": "20",
+    "target": "1학년 금융경제(타학과 수강 불가) (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "토",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.5",
+    "category": "전기-금융경제",
+    "sub_category": "복필-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.5",
+    "name": "경제원론1",
+    "division": null,
+    "professor": "김종철",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "1학년 금융경제(타학과 수강 불가) (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      },
+      {
+        "week": "토",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      }
+    ]
+  }
+]

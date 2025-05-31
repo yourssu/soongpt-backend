@@ -1,0 +1,158 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.41",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.41",
+    "name": "신소재공학실험1",
+    "division": null,
+    "professor": "곽영제",
+    "department": "신소재공학과",
+    "time_points": "3.0/2.0",
+    "personeel": "20",
+    "remaining_seats": "0",
+    "target": "3학년 신소재",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "형남공학관 05723",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "형남공학관 05723",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "형남공학관 05321 (조춘구강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.42",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.42",
+    "name": "신소재공학실험1",
+    "division": null,
+    "professor": "정재우",
+    "department": "신소재공학과",
+    "time_points": "3.0/2.0",
+    "personeel": "20",
+    "remaining_seats": "0",
+    "target": "3학년 신소재",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "형남공학관 05723",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "형남공학관 05723",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "17:00",
+        "endTime": "17:50",
+        "classroom": "형남공학관 05321 (조춘구강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.43",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.43",
+    "name": "신소재공학실험1",
+    "division": null,
+    "professor": "신근영",
+    "department": "신소재공학과",
+    "time_points": "3.0/2.0",
+    "personeel": "19",
+    "remaining_seats": "1",
+    "target": "3학년 신소재",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "형남공학관 05723",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "형남공학관 05723",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "형남공학관 05B124",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.44",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.44",
+    "name": "신소재공학실험1",
+    "division": null,
+    "professor": "신재만",
+    "department": "신소재공학과",
+    "time_points": "3.0/2.0",
+    "personeel": "15",
+    "remaining_seats": "5",
+    "target": "3학년 신소재",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "형남공학관 05723",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "형남공학관 05723",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "17:00",
+        "endTime": "17:50",
+        "classroom": "형남공학관 05321 (조춘구강의실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

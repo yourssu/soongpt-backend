@@ -1,0 +1,98 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.4",
+    "category": "전필-금융학부",
+    "sub_category": "복필-금융학부/부선-금융학부/연계1-융합창업/융선-ICT유통물류융합/융선-문화서비스산업융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.4",
+    "name": "Entrepreneurship",
+    "division": "(공통-재수강)",
+    "professor": "김영수",
+    "department": "벤처중소기업학과",
+    "time_points": "3.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "16",
+    "target": "전체학년 벤처중소, 경영학부, 회계학과, 금융학부, 융합창업연계, ICT유통물류융합, 문화서비스산업융합",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02208",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.9",
+    "category": "전필-금융학부",
+    "sub_category": "복필-금융학부/부선-금융학부/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.9",
+    "name": "재무관리",
+    "division": "(공통-재수강)",
+    "professor": "황정호",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "44",
+    "remaining_seats": "0",
+    "target": "전체학년 경영학부,회계학과,금융학부,사회적기업혁신융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "교육관 06303",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "교육관 06303",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.10",
+    "category": "전필-금융학부",
+    "sub_category": "복필-금융학부/부선-금융학부/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.10",
+    "name": "재무관리",
+    "division": "(공통-재수강)",
+    "professor": "김은지",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "전체학년 경영학부,회계학과,금융학부,사회적기업혁신융합",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "교육관 06301",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "교육관 06301",
+        "courseCode": 0
+      }
+    ]
+  }
+]

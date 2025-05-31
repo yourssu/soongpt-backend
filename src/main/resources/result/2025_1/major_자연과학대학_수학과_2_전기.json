@@ -1,0 +1,34 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.17",
+    "category": "전기-수학",
+    "sub_category": "복선-수학/부선-수학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.17",
+    "name": "미적분학1",
+    "division": "(공통-재수강)",
+    "professor": "송윤정",
+    "department": "수학과",
+    "time_points": "3.0/3.0",
+    "personeel": "12",
+    "remaining_seats": "28",
+    "target": "2학년 수학, 물리, 화학, 통계보험, 의생명시스템\n3학년 수학, 물리, 화학, 통계보험, 의생명시스템\n4학년 수학, 물리, 화학, 통계보험, 의생명시스템\n5학년 수학, 물리, 화학, 통계보험, 의생명시스템",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "문화관 03111 (토론식강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "진리관 11516",
+        "courseCode": 0
+      }
+    ]
+  }
+]

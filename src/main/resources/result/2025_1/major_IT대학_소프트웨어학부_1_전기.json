@@ -1,0 +1,378 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "리눅스시스템관리",
+    "division": "(공통-재수강)",
+    "professor": "최형광",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "43",
+    "remaining_seats": "7",
+    "target": "전체학년 소프트",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.18",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.18",
+    "name": "프로그래밍기초및실습",
+    "division": "(공통-재수강)",
+    "professor": "김익수",
+    "department": "소프트웨어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "28",
+    "remaining_seats": "2",
+    "target": "전체학년 소프트",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "19:00",
+        "endTime": "19:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "19:00",
+        "endTime": "19:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.22",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "BSM-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.22",
+    "name": "확률및통계",
+    "division": "(공통-재수강)",
+    "professor": "이남용",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "19",
+    "remaining_seats": "29",
+    "target": "전체학년 소프트",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20308",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21501",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "리눅스시스템관리",
+    "division": "(가반)",
+    "professor": "최형광",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "10",
+    "target": "1학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.24",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.24",
+    "name": "리눅스시스템관리",
+    "division": "(나반)",
+    "professor": "최형광",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "8",
+    "target": "1학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.25",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.25",
+    "name": "프로그래밍기초및실습",
+    "division": null,
+    "professor": "김익수",
+    "department": "소프트웨어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "29",
+    "remaining_seats": "1",
+    "target": "1학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:30",
+        "endTime": "16:20",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:20",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.26",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.26",
+    "name": "프로그래밍기초및실습",
+    "division": null,
+    "professor": "김익수",
+    "department": "소프트웨어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "29",
+    "remaining_seats": "1",
+    "target": "1학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.27",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.27",
+    "name": "프로그래밍기초및실습",
+    "division": null,
+    "professor": "김익수",
+    "department": "소프트웨어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "20",
+    "remaining_seats": "10",
+    "target": "1학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "정보과학관 21305 (이철희실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.28",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "BSM-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.28",
+    "name": "확률및통계",
+    "division": "(가반)",
+    "professor": "이남용",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "11",
+    "target": "1학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "정보과학관 21304",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.29",
+    "category": "전기-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "BSM-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.29",
+    "name": "확률및통계",
+    "division": "(나반)",
+    "professor": "이남용",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "13",
+    "target": "1학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "정보과학관 21304",
+        "courseCode": 0
+      }
+    ]
+  }
+]
