@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.domain.course
+package com.yourssu.soongpt.domain.course.storage
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.course.QCourseEntity.courseEntity
@@ -18,10 +18,6 @@ class CourseRepositoryImpl(
     private val courseJpaRepository: CourseJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
 ) : CourseRepository {
-    override fun save(course: Course): Course {
-        return courseJpaRepository.save(CourseEntity.from(course))
-            .toDomain()
-    }
 
     override fun findAllByDepartmentId(
         departmentId: Long,

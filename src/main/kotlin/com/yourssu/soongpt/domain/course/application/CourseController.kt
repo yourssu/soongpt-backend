@@ -2,16 +2,13 @@ package com.yourssu.soongpt.domain.course.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.soongpt.common.business.dto.Response
-import com.yourssu.soongpt.domain.course.application.dto.CreateCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.GeneralRequiredCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorElectiveCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorRequiredCourseRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.CourseResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.swagger.v3.oas.annotations.Hidden
 import jakarta.validation.Valid
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -53,12 +50,5 @@ class CourseController(
         val responses = courseId.map { courseService.findById(it) }
         logger.info { "GET /api/courses response: ${mapper.writeValueAsString(responses)}" }
         return ResponseEntity.ok().body(Response(result = responses))
-    }
-
-    @Hidden
-    @PostMapping
-    fun createCourses(@RequestBody courses: List<CreateCourseRequest>): ResponseEntity<String> {
-        courseService.createCourses(courses)
-        return ResponseEntity.status(HttpStatus.CREATED).body("과목 정보 저장 완료")
     }
 }
