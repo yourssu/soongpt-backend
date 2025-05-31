@@ -1,4 +1,4 @@
-package com.yourssu.soongpt.domain.course
+package com.yourssu.soongpt.domain.course.storage
 
 import com.yourssu.soongpt.domain.course.implement.Classification
 import com.yourssu.soongpt.domain.course.implement.Course
