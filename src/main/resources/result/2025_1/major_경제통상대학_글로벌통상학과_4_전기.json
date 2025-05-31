@@ -1,0 +1,438 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.4",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.4",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "한주영",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "61",
+    "remaining_seats": "0",
+    "target": "전체학년 글로벌통상;순수외국인입학생 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.5",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.5",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "이정아",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "47",
+    "remaining_seats": "0",
+    "target": "전체학년 글로벌통상;순수외국인입학생 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "교육관 06302",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "교육관 06302",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.15",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.15",
+    "name": "국제통상개론",
+    "division": null,
+    "professor": "박창기",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "60",
+    "remaining_seats": "0",
+    "target": "전체학년 글로벌통상;순수외국인입학생 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "백마관 07218",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "백마관 07403",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.16",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.16",
+    "name": "국제통상개론",
+    "division": null,
+    "professor": "고상훈",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "57",
+    "remaining_seats": "3",
+    "target": "전체학년 글로벌통상;순수외국인입학생 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.28",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.28",
+    "name": "통계학",
+    "division": null,
+    "professor": "하현호",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "49",
+    "remaining_seats": "0",
+    "target": "전체학년 글로벌통상;순수외국인입학생 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "진리관 11309",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "진리관 11309",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.29",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.29",
+    "name": "통계학",
+    "division": null,
+    "professor": "하현호",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "52",
+    "remaining_seats": "0",
+    "target": "전체학년 글로벌통상;순수외국인입학생 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02108",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02108",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.34",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.34",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "김현진",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "1학년 글로벌통상\n2학년 글로벌통상\n3학년 글로벌통상\n4학년 글로벌통상",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.35",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.35",
+    "name": "국제통상개론",
+    "division": "(팀티칭)",
+    "professor": "허해관\n이인구\n정지윤",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "1학년 글로벌통상\n2학년 글로벌통상\n3학년 글로벌통상\n4학년 글로벌통상",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.36",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.36",
+    "name": "국제통상개론",
+    "division": "(팀티칭)",
+    "professor": "허해관\n이인구\n정지윤",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "1학년 글로벌통상\n2학년 글로벌통상\n3학년 글로벌통상\n4학년 글로벌통상",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02110",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02110",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02110",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02110",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02110",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02110",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.37",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.37",
+    "name": "국제통상개론",
+    "division": "(팀티칭)",
+    "professor": "허해관\n이인구\n정지윤",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "1학년 글로벌통상\n2학년 글로벌통상\n3학년 글로벌통상\n4학년 글로벌통상",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.40",
+    "category": "전기-글로벌통상",
+    "sub_category": "복선-글로벌통상/부선-글로벌통상",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.40",
+    "name": "통계학",
+    "division": null,
+    "professor": "하현호",
+    "department": "글로벌통상학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "1학년 글로벌통상\n2학년 글로벌통상\n3학년 글로벌통상\n4학년 글로벌통상",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "진리관 11309",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "진리관 11309",
+        "courseCode": 0
+      }
+    ]
+  }
+]

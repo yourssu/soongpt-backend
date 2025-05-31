@@ -1,0 +1,684 @@
+[
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.4",
+    "name": "(전선)두드림Ⅰ-3",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "6.0/3.0",
+    "personeel": "29",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.5",
+    "name": "(전선)두드림Ⅱ-6",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "12.0/6.0",
+    "personeel": "8",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.6",
+    "name": "(전선)두드림Ⅲ-3",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "6.0/3.0",
+    "personeel": "4",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.7",
+    "name": "국내장기현장실습(3)Ⅰ",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "3.0/3.0",
+    "personeel": "6",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.8",
+    "name": "국내장기현장실습",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "65",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.9",
+    "name": "전공심화전문가양성교육(3)",
+    "division": null,
+    "professor": "",
+    "department": "진로취업팀",
+    "time_points": "3.0/3.0",
+    "personeel": "1",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.10",
+    "name": "전공심화전문가양성교육(6)",
+    "division": null,
+    "professor": "",
+    "department": "진로취업팀",
+    "time_points": "6.0/6.0",
+    "personeel": "12",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "창업기업실습",
+    "division": null,
+    "professor": "허공회",
+    "department": "창업교육·지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "8",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "해외장기현장실습(3)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "3.0/3.0",
+    "personeel": "1",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.13",
+    "name": "해외장기현장실습(6)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "2",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "고급공학수학1",
+    "division": null,
+    "professor": "김선제",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "0",
+    "target": "2학년 전기",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "안익태기념관 04403",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.24",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.24",
+    "name": "고급공학수학1",
+    "division": null,
+    "professor": "김선제",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "43",
+    "remaining_seats": "0",
+    "target": "2학년 전기",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20303",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.25",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.25",
+    "name": "고급공학수학1",
+    "division": null,
+    "professor": "김선제",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "43",
+    "remaining_seats": "0",
+    "target": "2학년 전기",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "안익태기념관 04403",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.26",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.26",
+    "name": "고급프로그래밍",
+    "division": null,
+    "professor": "문원식",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "2학년 전기",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "안익태기념관 04403",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "형남공학관 05B124",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.34",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.34",
+    "name": "디지털시스템",
+    "division": null,
+    "professor": "최우진",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "44",
+    "remaining_seats": "0",
+    "target": "2학년 전기",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05322 (임경희강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.35",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.35",
+    "name": "디지털시스템",
+    "division": null,
+    "professor": "최우진",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "2학년 전기",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "형남공학관 05322 (임경희강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.36",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.36",
+    "name": "디지털시스템",
+    "division": null,
+    "professor": "윤성국",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "17",
+    "remaining_seats": "23",
+    "target": "2학년 전기",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05322 (임경희강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.37",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.37",
+    "name": "디지털시스템",
+    "division": null,
+    "professor": "윤성국",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "32",
+    "remaining_seats": "8",
+    "target": "2학년 전기",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "형남공학관 05322 (임경희강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.38",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.38",
+    "name": "전자기학",
+    "division": null,
+    "professor": "염정덕",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "2학년 전기,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "형남공학관 05322 (임경희강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "문화관 03208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.39",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.39",
+    "name": "전자기학",
+    "division": null,
+    "professor": "염정덕",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "2학년 전기,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "형남공학관 05322 (임경희강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "문화관 03208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.40",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.40",
+    "name": "전자기학",
+    "division": null,
+    "professor": "노영수",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "19",
+    "remaining_seats": "21",
+    "target": "2학년 전기,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "안익태기념관 04404",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "문화관 03208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.41",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.41",
+    "name": "전자기학",
+    "division": null,
+    "professor": "노영수",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "2학년 전기,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "형남공학관 05322 (임경희강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "문화관 03208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.42",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.42",
+    "name": "회로이론",
+    "division": null,
+    "professor": "송경빈",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "2학년 전기,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "문화관 03208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.43",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.43",
+    "name": "회로이론",
+    "division": null,
+    "professor": "송경빈",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "16",
+    "target": "2학년 전기,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "문화관 03208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.44",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.44",
+    "name": "회로이론",
+    "division": null,
+    "professor": "임성훈",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "32",
+    "remaining_seats": "8",
+    "target": "2학년 전기,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "문화관 03208",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "문화관 03206",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.45",
+    "category": "전선-전기",
+    "sub_category": "복선-전기/부선-전기/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.45",
+    "name": "회로이론",
+    "division": null,
+    "professor": "윤성국",
+    "department": "전기공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "2학년 전기,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02208",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      }
+    ]
+  }
+]

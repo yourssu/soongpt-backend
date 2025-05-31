@@ -1,0 +1,27 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.14",
+    "category": "전필-물리",
+    "sub_category": "복선-물리/부선-물리",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.14",
+    "name": "기초물리응용1",
+    "division": null,
+    "professor": "이동렬",
+    "department": "물리학과",
+    "time_points": "1.0/1.0",
+    "personeel": "42",
+    "remaining_seats": "8",
+    "target": "1학년 물리",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:20",
+        "classroom": "조만식기념관 12311",
+        "courseCode": 0
+      }
+    ]
+  }
+]

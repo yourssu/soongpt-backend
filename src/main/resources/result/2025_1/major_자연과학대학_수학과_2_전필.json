@@ -1,0 +1,66 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.19",
+    "category": "전필-수학",
+    "sub_category": "복필-수학/부선-수학/융선-정보보호융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.19",
+    "name": "선형대수1",
+    "division": null,
+    "professor": "정주영",
+    "department": "수학과",
+    "time_points": "3.0/3.0",
+    "personeel": "49",
+    "remaining_seats": "1",
+    "target": "2학년 수학, 정보보호융합",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "벤처중소기업센터 10511",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "조만식기념관 12330",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.20",
+    "category": "전필-수학",
+    "sub_category": "복필-수학/부선-수학/융선-정보보호융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.20",
+    "name": "해석개론1",
+    "division": null,
+    "professor": "한정민",
+    "department": "수학과",
+    "time_points": "3.0/3.0",
+    "personeel": "49",
+    "remaining_seats": "6",
+    "target": "2학년 수학, 정보보호융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      }
+    ]
+  }
+]

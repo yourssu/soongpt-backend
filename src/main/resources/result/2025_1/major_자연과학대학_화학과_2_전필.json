@@ -1,0 +1,126 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.19",
+    "category": "전필-화학",
+    "sub_category": "복선-화학/부선-화학/융선-인공지능반도체융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.19",
+    "name": "물리화학1",
+    "division": null,
+    "professor": "강위경",
+    "department": "화학과",
+    "time_points": "3.0/3.0",
+    "personeel": "43",
+    "remaining_seats": "0",
+    "target": "2학년 화학, 인공지능반도체융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02318",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.22",
+    "category": "전필-화학",
+    "sub_category": "복필-화학/부선-화학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.22",
+    "name": "분석화학실험",
+    "division": null,
+    "professor": "신익수",
+    "department": "화학과",
+    "time_points": "4.0/2.0",
+    "personeel": "23",
+    "remaining_seats": "2",
+    "target": "2학년 화학",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "베어드홀 01108",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "베어드홀 01108",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "베어드홀 01108",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "베어드홀 01108",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전필-화학",
+    "sub_category": "복필-화학/부선-화학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "분석화학실험",
+    "division": null,
+    "professor": "양진국",
+    "department": "화학과",
+    "time_points": "4.0/2.0",
+    "personeel": "20",
+    "remaining_seats": "5",
+    "target": "2학년 화학",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "베어드홀 01108",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "베어드홀 01108",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "베어드홀 01108",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "베어드홀 01108",
+        "courseCode": 0
+      }
+    ]
+  }
+]

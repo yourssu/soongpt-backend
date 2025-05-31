@@ -1,0 +1,126 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전기-수학",
+    "sub_category": "복선-수학/부선-수학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "미적분학1",
+    "division": null,
+    "professor": "이상욱",
+    "department": "수학과",
+    "time_points": "3.0/3.0",
+    "personeel": "35",
+    "remaining_seats": "5",
+    "target": "1학년 수학 (대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "진리관 11516",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.13",
+    "category": "전기-수학",
+    "sub_category": "복선-수학/부선-수학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.13",
+    "name": "화학1및실험",
+    "division": null,
+    "professor": "장상목",
+    "department": "수학과",
+    "time_points": "4.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "1",
+    "target": "1학년 수학",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "벤처중소기업센터 10511",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "벤처중소기업센터 10511",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "베어드홀 01213 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "베어드홀 01213 (일반화학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.14",
+    "category": "전기-수학",
+    "sub_category": "복선-수학/부선-수학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.14",
+    "name": "화학1및실험",
+    "division": null,
+    "professor": "주상우\n장상목",
+    "department": "수학과",
+    "time_points": "4.0/3.0",
+    "personeel": "20",
+    "remaining_seats": "5",
+    "target": "1학년 수학",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "벤처중소기업센터 10511",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "벤처중소기업센터 10511",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "베어드홀 01214 (일반화학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "베어드홀 01214 (일반화학실험실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

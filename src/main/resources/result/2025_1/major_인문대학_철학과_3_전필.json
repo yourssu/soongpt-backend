@@ -1,0 +1,34 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전필-철학",
+    "sub_category": "복필-철학/부선-철학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "한국철학사",
+    "division": null,
+    "professor": "선병삼",
+    "department": "철학과",
+    "time_points": "3.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "16",
+    "target": "3학년 철학",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "조만식기념관 12406",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "조만식기념관 12406",
+        "courseCode": 0
+      }
+    ]
+  }
+]

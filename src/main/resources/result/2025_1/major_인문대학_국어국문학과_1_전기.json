@@ -1,0 +1,194 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전기-국문",
+    "sub_category": "복선-국문/부선-국문",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "국어연구의기초",
+    "division": null,
+    "professor": "오충연",
+    "department": "국어국문학과",
+    "time_points": "3.0/3.0",
+    "personeel": "36",
+    "remaining_seats": "4",
+    "target": "1학년 국문",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "미래관 20205",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "미래관 20403",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.12",
+    "category": "전기-국문",
+    "sub_category": "복선-국문/부선-국문",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "국어연구의기초",
+    "division": null,
+    "professor": "유근선",
+    "department": "국어국문학과",
+    "time_points": "3.0/3.0",
+    "personeel": "27",
+    "remaining_seats": "33",
+    "target": "1학년 국문;순수외국인입학생",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "조만식기념관 12312",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "조만식기념관 12312",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.13",
+    "category": "전기-국문",
+    "sub_category": "복선-국문/부선-국문",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.13",
+    "name": "문학이란무엇인가",
+    "division": null,
+    "professor": "박동억",
+    "department": "국어국문학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "1학년 국문",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "조만식기념관 12312",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "조만식기념관 12312",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.14",
+    "category": "전기-국문",
+    "sub_category": "복선-국문/부선-국문",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.14",
+    "name": "문학이란무엇인가",
+    "division": null,
+    "professor": "송상덕",
+    "department": "국어국문학과",
+    "time_points": "3.0/3.0",
+    "personeel": "34",
+    "remaining_seats": "26",
+    "target": "1학년 국문;순수외국인입학생",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20201",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.15",
+    "category": "전기-국문",
+    "sub_category": "복선-국문/부선-국문",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.15",
+    "name": "전공한문의기초",
+    "division": null,
+    "professor": "강지희",
+    "department": "국어국문학과",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "3",
+    "target": "1학년 국문",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "교육관 06202",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "교육관 06202",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.16",
+    "category": "전기-국문",
+    "sub_category": "복선-국문/부선-국문",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.16",
+    "name": "전공한문의기초",
+    "division": null,
+    "professor": "강지희",
+    "department": "국어국문학과",
+    "time_points": "3.0/3.0",
+    "personeel": "22",
+    "remaining_seats": "38",
+    "target": "1학년 국문;순수외국인입학생",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12312",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "조만식기념관 12312",
+        "courseCode": 0
+      }
+    ]
+  }
+]

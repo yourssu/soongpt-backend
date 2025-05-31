@@ -1,0 +1,34 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.14",
+    "category": "전필-의생명시스템",
+    "sub_category": "복필-의생명시스템/부선-의생명시스템/융선-빅데이터컴퓨팅융합/융선-지식재산융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.14",
+    "name": "생명정보개론",
+    "division": null,
+    "professor": "이제근",
+    "department": "의생명시스템학부",
+    "time_points": "3.0/3.0",
+    "personeel": "69",
+    "remaining_seats": "0",
+    "target": "1학년 의생명시스템, 빅데이터컴퓨팅융합, 지식재산융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "백마관 07117",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "백마관 07116",
+        "courseCode": 0
+      }
+    ]
+  }
+]

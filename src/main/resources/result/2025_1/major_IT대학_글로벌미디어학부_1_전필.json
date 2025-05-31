@@ -1,0 +1,34 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.5",
+    "category": "전필-글로벌미디어",
+    "sub_category": "복필-글로벌미디어/부선-글로벌미디어",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.5",
+    "name": "UX/UI디자인",
+    "division": "(공통-재수강)",
+    "professor": "박재완",
+    "department": "글로벌미디어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "전체학년 글로벌미디어",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  }
+]

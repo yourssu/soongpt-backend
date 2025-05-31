@@ -1,0 +1,66 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.7",
+    "category": "전기-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.7",
+    "name": "경제통계",
+    "division": null,
+    "professor": "장성연",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "51",
+    "remaining_seats": "4",
+    "target": "2학년 금융경제(타학과 수강 불가) (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.10",
+    "category": "전기-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.10",
+    "name": "회계원리",
+    "division": null,
+    "professor": "조용생",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "59",
+    "remaining_seats": "0",
+    "target": "2학년 금융경제(타학과 수강 불가) (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      }
+    ]
+  }
+]

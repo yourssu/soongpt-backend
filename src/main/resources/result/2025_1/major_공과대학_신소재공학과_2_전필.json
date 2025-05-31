@@ -1,0 +1,258 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.26",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.26",
+    "name": "고급공학수학1",
+    "division": null,
+    "professor": "정영진",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "51",
+    "remaining_seats": "1",
+    "target": "2학년 신소재",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05B124",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "형남공학관 05B124",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.27",
+    "category": "전필-신소재",
+    "sub_category": "복선-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.27",
+    "name": "고급공학수학1",
+    "division": null,
+    "professor": "홍철재",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "61",
+    "remaining_seats": "1",
+    "target": "2학년 신소재",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12327",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "진리관 11522 (이효계강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.31",
+    "category": "전필-신소재",
+    "sub_category": "복필-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.31",
+    "name": "물리화학",
+    "division": null,
+    "professor": "곽영제",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "44",
+    "remaining_seats": "0",
+    "target": "2학년 신소재",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "형남공학관 05321 (조춘구강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "형남공학관 05112 (배명진강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.32",
+    "category": "전필-신소재",
+    "sub_category": "복필-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.32",
+    "name": "물리화학",
+    "division": null,
+    "professor": "정재우",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "2학년 신소재",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "형남공학관 05B124",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "형남공학관 05B124",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.33",
+    "category": "전필-신소재",
+    "sub_category": "복필-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.33",
+    "name": "물리화학",
+    "division": null,
+    "professor": "신재만",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "31",
+    "remaining_seats": "9",
+    "target": "2학년 신소재",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "안익태기념관 04404",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "형남공학관 05113",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.34",
+    "category": "전필-신소재",
+    "sub_category": "복필-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.34",
+    "name": "유기화학1",
+    "division": null,
+    "professor": "조승현",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "0",
+    "target": "2학년 신소재",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "형남공학관 05321 (조춘구강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20203",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.35",
+    "category": "전필-신소재",
+    "sub_category": "복필-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.35",
+    "name": "유기화학1",
+    "division": null,
+    "professor": "조승현",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "31",
+    "remaining_seats": "9",
+    "target": "2학년 신소재",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "미래관 20303",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.36",
+    "category": "전필-신소재",
+    "sub_category": "복필-신소재/부선-신소재",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.36",
+    "name": "유기화학1",
+    "division": null,
+    "professor": "조승현",
+    "department": "신소재공학과",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "0",
+    "target": "2학년 신소재",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20203",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "미래관 20203",
+        "courseCode": 0
+      }
+    ]
+  }
+]

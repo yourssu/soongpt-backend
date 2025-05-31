@@ -1,0 +1,176 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.54",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.54",
+    "name": "에너지변환실험",
+    "division": null,
+    "professor": "임성훈",
+    "department": "전기공학부",
+    "time_points": "3.0/1.0",
+    "personeel": "22",
+    "remaining_seats": "2",
+    "target": "3학년 전기",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.55",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.55",
+    "name": "에너지변환실험",
+    "division": "(팀티칭)",
+    "professor": "이춘구\n남태양",
+    "department": "전기공학부",
+    "time_points": "3.0/1.0",
+    "personeel": "23",
+    "remaining_seats": "1",
+    "target": "3학년 전기",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.56",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.56",
+    "name": "에너지변환실험",
+    "division": null,
+    "professor": "박민기",
+    "department": "전기공학부",
+    "time_points": "3.0/1.0",
+    "personeel": "24",
+    "remaining_seats": "0",
+    "target": "3학년 전기",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.57",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.57",
+    "name": "에너지변환실험",
+    "division": null,
+    "professor": "박민기",
+    "department": "전기공학부",
+    "time_points": "3.0/1.0",
+    "personeel": "20",
+    "remaining_seats": "4",
+    "target": "3학년 전기",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.58",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.58",
+    "name": "에너지변환실험",
+    "division": null,
+    "professor": "박민기",
+    "department": "전기공학부",
+    "time_points": "3.0/1.0",
+    "personeel": "24",
+    "remaining_seats": "0",
+    "target": "3학년 전기",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05532",
+        "courseCode": 0
+      }
+    ]
+  }
+]

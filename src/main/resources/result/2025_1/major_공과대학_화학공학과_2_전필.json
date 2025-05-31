@@ -1,0 +1,194 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.29",
+    "category": "전필-화공",
+    "sub_category": "복필-화공/부선-화공",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.29",
+    "name": "화공기초실험1",
+    "division": null,
+    "professor": "강범구",
+    "department": "화학공학과",
+    "time_points": "2.0/1.0",
+    "personeel": "19",
+    "remaining_seats": "1",
+    "target": "2학년 화공",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.30",
+    "category": "전필-화공",
+    "sub_category": "복필-화공/부선-화공",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.30",
+    "name": "화공기초실험1",
+    "division": null,
+    "professor": "강범구",
+    "department": "화학공학과",
+    "time_points": "2.0/1.0",
+    "personeel": "19",
+    "remaining_seats": "1",
+    "target": "2학년 화공",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "19:00",
+        "endTime": "19:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.31",
+    "category": "전필-화공",
+    "sub_category": "복필-화공/부선-화공",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.31",
+    "name": "화공기초실험1",
+    "division": null,
+    "professor": "강범구",
+    "department": "화학공학과",
+    "time_points": "2.0/1.0",
+    "personeel": "20",
+    "remaining_seats": "0",
+    "target": "2학년 화공",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "19:00",
+        "endTime": "19:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.32",
+    "category": "전필-화공",
+    "sub_category": "복필-화공/부선-화공",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.32",
+    "name": "화공기초실험1",
+    "division": null,
+    "professor": "엄기원",
+    "department": "화학공학과",
+    "time_points": "2.0/1.0",
+    "personeel": "21",
+    "remaining_seats": "0",
+    "target": "2학년 화공",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.33",
+    "category": "전필-화공",
+    "sub_category": "복필-화공/부선-화공",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.33",
+    "name": "화공기초실험1",
+    "division": null,
+    "professor": "엄기원",
+    "department": "화학공학과",
+    "time_points": "2.0/1.0",
+    "personeel": "21",
+    "remaining_seats": "0",
+    "target": "2학년 화공",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "19:00",
+        "endTime": "19:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.34",
+    "category": "전필-화공",
+    "sub_category": "복필-화공/부선-화공",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.34",
+    "name": "화공기초실험1",
+    "division": null,
+    "professor": "엄기원",
+    "department": "화학공학과",
+    "time_points": "2.0/1.0",
+    "personeel": "18",
+    "remaining_seats": "2",
+    "target": "2학년 화공",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "18:00",
+        "endTime": "18:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "19:00",
+        "endTime": "19:50",
+        "classroom": "형남공학관 05914 (환경공학실험실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

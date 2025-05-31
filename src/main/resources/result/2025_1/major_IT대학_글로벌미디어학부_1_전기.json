@@ -1,0 +1,452 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.4",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복선-글로벌미디어/부선-글로벌미디어/융선-뉴미디어콘텐츠융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.4",
+    "name": "Art & Technology",
+    "division": "(공통-재수강)",
+    "professor": "전석",
+    "department": "글로벌미디어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "16",
+    "remaining_seats": "24",
+    "target": "전체학년 글로벌미디어,뉴미디어콘텐츠융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "정보과학관 21403",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "정보과학관 21403",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.12",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복필-글로벌미디어/부선-글로벌미디어",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "프로그래밍1및실습",
+    "division": "(공통-재수강)",
+    "professor": "박진호",
+    "department": "글로벌미디어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "14",
+    "remaining_seats": "26",
+    "target": "전체학년 글로벌미디어",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "12:30",
+        "endTime": "13:20",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:20",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.15",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복선-글로벌미디어/부선-글로벌미디어/융선-뉴미디어콘텐츠융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.15",
+    "name": "Art & Technology",
+    "division": null,
+    "professor": "정기철",
+    "department": "글로벌미디어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "1학년 글로벌미디어,뉴미디어콘텐츠융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.16",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복선-글로벌미디어/부선-글로벌미디어/융선-뉴미디어콘텐츠융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.16",
+    "name": "Art & Technology",
+    "division": null,
+    "professor": "정기철",
+    "department": "글로벌미디어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "33",
+    "remaining_seats": "7",
+    "target": "1학년 글로벌미디어,뉴미디어콘텐츠융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.17",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복선-글로벌미디어/부선-글로벌미디어/융선-뉴미디어콘텐츠융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.17",
+    "name": "Art & Technology",
+    "division": null,
+    "professor": "정기철",
+    "department": "글로벌미디어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "36",
+    "remaining_seats": "4",
+    "target": "1학년 글로벌미디어,뉴미디어콘텐츠융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.18",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복선-글로벌미디어/부선-글로벌미디어",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.18",
+    "name": "기초조형및실습",
+    "division": null,
+    "professor": "김규정",
+    "department": "글로벌미디어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "1학년 글로벌미디어",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:20",
+        "classroom": "정보과학관 21601",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "14:30",
+        "endTime": "15:20",
+        "classroom": "정보과학관 21601",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "정보과학관 21502 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "정보과학관 21502 (실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.19",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복선-글로벌미디어/부선-글로벌미디어",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.19",
+    "name": "기초조형및실습",
+    "division": null,
+    "professor": "김규정",
+    "department": "글로벌미디어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "30",
+    "remaining_seats": "10",
+    "target": "1학년 글로벌미디어",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:30",
+        "endTime": "16:20",
+        "classroom": "정보과학관 21601",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:20",
+        "classroom": "정보과학관 21601",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "정보과학관 21502 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "정보과학관 21502 (실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.20",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복선-글로벌미디어/부선-글로벌미디어",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.20",
+    "name": "기초조형및실습",
+    "division": null,
+    "professor": "윤인정",
+    "department": "글로벌미디어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "30",
+    "remaining_seats": "10",
+    "target": "1학년 글로벌미디어",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "17:00",
+        "endTime": "17:50",
+        "classroom": "정보과학관 21508 (디지털미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복필-글로벌미디어/부선-글로벌미디어",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "프로그래밍1및실습",
+    "division": null,
+    "professor": "류제철",
+    "department": "글로벌미디어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "27",
+    "remaining_seats": "13",
+    "target": "1학년 글로벌미디어",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "정보과학관 21503 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "정보과학관 21503 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "정보과학관 21503 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "정보과학관 21503 (실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.24",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복필-글로벌미디어/부선-글로벌미디어",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.24",
+    "name": "프로그래밍1및실습",
+    "division": null,
+    "professor": "황우섭",
+    "department": "글로벌미디어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "1학년 글로벌미디어",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "정보과학관 21503 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "정보과학관 21503 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "정보과학관 21503 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "17:00",
+        "endTime": "17:50",
+        "classroom": "정보과학관 21503 (실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.25",
+    "category": "전기-글로벌미디어",
+    "sub_category": "복필-글로벌미디어/부선-글로벌미디어",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.25",
+    "name": "프로그래밍1및실습",
+    "division": null,
+    "professor": "박진호",
+    "department": "글로벌미디어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "34",
+    "remaining_seats": "6",
+    "target": "1학년 글로벌미디어",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:20",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "11:30",
+        "endTime": "12:20",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  }
+]

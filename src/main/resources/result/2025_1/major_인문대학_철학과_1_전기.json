@@ -1,0 +1,66 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전기-철학",
+    "sub_category": "복선-철학/부선-철학/융선-뉴미디어콘텐츠융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "문화와철학",
+    "division": null,
+    "professor": "박준상",
+    "department": "철학과",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "1학년 철학, 뉴미디어콘텐츠",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "조만식기념관 12326 (조해자강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "조만식기념관 12326 (조해자강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.12",
+    "category": "전기-철학",
+    "sub_category": "복필-철학/부선-철학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "철학입문",
+    "division": null,
+    "professor": "김선욱",
+    "department": "철학과",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "0",
+    "target": "1학년 철학",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "조만식기념관 12326 (조해자강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "조만식기념관 12326 (조해자강의실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

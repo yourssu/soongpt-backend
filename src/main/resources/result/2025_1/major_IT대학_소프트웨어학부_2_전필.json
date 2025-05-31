@@ -1,0 +1,176 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.13",
+    "category": "전필-소프트",
+    "sub_category": "복선-소프트/융선-빅데이터융합/융선-정보보호융합",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.13",
+    "name": "자료구조",
+    "division": "(공통-재수강)",
+    "professor": "심경민",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "13",
+    "target": "전체학년 소프트",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "정보과학관 21203 (김재상강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "정보과학관 21203 (김재상강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.19",
+    "category": "전필-소프트",
+    "sub_category": "복선-소프트",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.19",
+    "name": "프로그래밍응용및실습",
+    "division": "(공통-재수강)",
+    "professor": "김익수",
+    "department": "소프트웨어학부",
+    "time_points": "4.0/3.0",
+    "personeel": "11",
+    "remaining_seats": "19",
+    "target": "전체학년 소프트",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "15:30",
+        "endTime": "16:20",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:20",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:30",
+        "endTime": "16:20",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:30",
+        "endTime": "17:20",
+        "classroom": "정보과학관 21205 (실습실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.35",
+    "category": "전필-소프트",
+    "sub_category": "복선-소프트/융선-빅데이터융합/융선-정보보호융합",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.35",
+    "name": "자료구조",
+    "division": null,
+    "professor": "정진홍",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "50",
+    "remaining_seats": "0",
+    "target": "2학년 소프트,빅데이터융합,정보보호융합 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "정보과학관 21304",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21304",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.36",
+    "category": "전필-소프트",
+    "sub_category": "복선-소프트/융선-빅데이터융합/융선-정보보호융합",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.36",
+    "name": "자료구조",
+    "division": null,
+    "professor": "정진홍",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "25",
+    "remaining_seats": "25",
+    "target": "2학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "정보과학관 21304",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "정보과학관 21304",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.37",
+    "category": "전필-소프트",
+    "sub_category": "복선-소프트/융선-빅데이터융합/융선-정보보호융합",
+    "abeek_info": "공학주제-소프트공인증/인필-소프트공인증",
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.37",
+    "name": "자료구조",
+    "division": null,
+    "professor": "이주호",
+    "department": "소프트웨어학부",
+    "time_points": "3.0/3.0",
+    "personeel": "48",
+    "remaining_seats": "2",
+    "target": "2학년 소프트 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "정보과학관 21601",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21601",
+        "courseCode": 0
+      }
+    ]
+  }
+]

@@ -1,0 +1,66 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전기-기독교",
+    "sub_category": "복선-기독교/부선-기독교",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "문화속신학읽기",
+    "division": null,
+    "professor": "이용주",
+    "department": "기독교학과",
+    "time_points": "3.0/3.0",
+    "personeel": "33",
+    "remaining_seats": "7",
+    "target": "1학년 기독교",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "미래관 20205",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "미래관 20205",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.12",
+    "category": "전기-기독교",
+    "sub_category": "복필-기독교/부선-기독교",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "영어성경강독",
+    "division": null,
+    "professor": "김회권",
+    "department": "기독교학과",
+    "time_points": "3.0/3.0",
+    "personeel": "31",
+    "remaining_seats": "9",
+    "target": "1학년 기독교",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "진리관 11303",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "진리관 11403",
+        "courseCode": 0
+      }
+    ]
+  }
+]

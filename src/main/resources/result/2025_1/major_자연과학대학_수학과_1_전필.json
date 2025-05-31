@@ -1,0 +1,48 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.12",
+    "category": "전필-수학",
+    "sub_category": "복선-수학/부선-수학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "프로그래밍및실습",
+    "division": null,
+    "professor": "강소영",
+    "department": "수학과",
+    "time_points": "4.0/3.0",
+    "personeel": "44",
+    "remaining_seats": "1",
+    "target": "1학년 수학",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "베어드홀 01424",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "베어드홀 01424",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "베어드홀 01424",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "베어드홀 01424",
+        "courseCode": 0
+      }
+    ]
+  }
+]

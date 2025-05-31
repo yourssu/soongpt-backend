@@ -1,0 +1,130 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.17",
+    "category": "전필-행정학부",
+    "sub_category": "복선-행정학부/부선-행정학부",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.17",
+    "name": "공공데이터분석과통계",
+    "division": null,
+    "professor": "나명환",
+    "department": "행정학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "2학년 행정학부",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "조만식기념관 12530 (경제학과겸임교수강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "조만식기념관 12530 (경제학과겸임교수강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.18",
+    "category": "전필-행정학부",
+    "sub_category": "복선-행정학부/부선-행정학부",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.18",
+    "name": "공공데이터분석과통계",
+    "division": null,
+    "professor": "나명환",
+    "department": "행정학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "2학년 행정학부",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "조만식기념관 12329",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12329",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.22",
+    "category": "전필-행정학부",
+    "sub_category": "복선-행정학부/부선-행정학부/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.22",
+    "name": "행정이론",
+    "division": null,
+    "professor": "강인성",
+    "department": "행정학부",
+    "time_points": "3.0/3.0",
+    "personeel": "21",
+    "remaining_seats": "19",
+    "target": "2학년 행정학부,사회적기업과사회혁신융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "조만식기념관 12406",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "조만식기념관 12406",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전필-행정학부",
+    "sub_category": "복선-행정학부/부선-행정학부/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "행정이론",
+    "division": null,
+    "professor": "강인성",
+    "department": "행정학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "2학년 행정학부,사회적기업과사회혁신융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "조만식기념관 12407",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12407",
+        "courseCode": 0
+      }
+    ]
+  }
+]

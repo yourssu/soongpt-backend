@@ -1,0 +1,278 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.72",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.72",
+    "name": "전기전자종합설계",
+    "division": null,
+    "professor": "염정덕",
+    "department": "전기공학부",
+    "time_points": "4.0/3.0",
+    "personeel": "20",
+    "remaining_seats": "5",
+    "target": "4학년 전기",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:20",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "14:30",
+        "endTime": "15:20",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.73",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.73",
+    "name": "전기전자종합설계",
+    "division": null,
+    "professor": "임성훈",
+    "department": "전기공학부",
+    "time_points": "4.0/3.0",
+    "personeel": "21",
+    "remaining_seats": "4",
+    "target": "4학년 전기",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:20",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "11:30",
+        "endTime": "12:20",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.74",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.74",
+    "name": "전기전자종합설계",
+    "division": null,
+    "professor": "박종후",
+    "department": "전기공학부",
+    "time_points": "4.0/3.0",
+    "personeel": "22",
+    "remaining_seats": "3",
+    "target": "4학년 전기",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.75",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.75",
+    "name": "전기전자종합설계",
+    "division": null,
+    "professor": "배원규",
+    "department": "전기공학부",
+    "time_points": "4.0/3.0",
+    "personeel": "19",
+    "remaining_seats": "6",
+    "target": "4학년 전기",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "15:30",
+        "endTime": "16:20",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "16:30",
+        "endTime": "17:20",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.76",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.76",
+    "name": "전기전자종합설계",
+    "division": null,
+    "professor": "민선기",
+    "department": "전기공학부",
+    "time_points": "4.0/3.0",
+    "personeel": "19",
+    "remaining_seats": "6",
+    "target": "4학년 전기",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "09:30",
+        "endTime": "10:20",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:30",
+        "endTime": "11:20",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.77",
+    "category": "전필-전기",
+    "sub_category": "복필-전기/부선-전기",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.77",
+    "name": "전기전자종합설계",
+    "division": null,
+    "professor": "박병권",
+    "department": "전기공학부",
+    "time_points": "4.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "1",
+    "target": "4학년 전기",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "15:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:00",
+        "endTime": "16:50",
+        "classroom": "형남공학관 05517",
+        "courseCode": 0
+      }
+    ]
+  }
+]

@@ -1,0 +1,149 @@
+[
+  {
+    "syllabus": null,
+    "category": "전선-금융경제",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.1",
+    "name": "(전선)두드림Ⅲ-3",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "6.0/3.0",
+    "personeel": "4",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.2",
+    "name": "해외장기현장실습(3)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "3.0/3.0",
+    "personeel": "1",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.3",
+    "name": "해외장기현장실습(6)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "2",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.17",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.17",
+    "name": "금융경제학세미나",
+    "division": null,
+    "professor": "황정호",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "46",
+    "remaining_seats": "5",
+    "target": "4학년 금융경제(금융경제학과 및 경제학과만 수강 가능)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.18",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.18",
+    "name": "투자심리와행동경제학",
+    "division": null,
+    "professor": "이시헌",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "53",
+    "remaining_seats": "2",
+    "target": "4학년 금융경제",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.19",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.19",
+    "name": "한국경제론",
+    "division": null,
+    "professor": "박인수",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "25",
+    "remaining_seats": "30",
+    "target": "4학년 금융경제(금융경제학과 및 경제학과만 수강 가능)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      }
+    ]
+  }
+]

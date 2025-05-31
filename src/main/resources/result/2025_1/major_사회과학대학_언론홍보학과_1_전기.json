@@ -1,0 +1,258 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.9",
+    "category": "전기-언론홍보",
+    "sub_category": "복필-언론홍보/부선-언론홍보",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.9",
+    "name": "매스미디어의이해",
+    "division": null,
+    "professor": "박웅기",
+    "department": "언론홍보학과",
+    "time_points": "3.0/3.0",
+    "personeel": "43",
+    "remaining_seats": "0",
+    "target": "전체학년 언론홍보, 외국인 유학생",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "조만식기념관 12204",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "조만식기념관 12204",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.10",
+    "category": "전기-언론홍보",
+    "sub_category": "복필-언론홍보/부선-언론홍보",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.10",
+    "name": "매스미디어의이해",
+    "division": null,
+    "professor": "박웅기",
+    "department": "언론홍보학과",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "0",
+    "target": "전체학년 언론홍보",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12209",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "조만식기념관 12209",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전기-언론홍보",
+    "sub_category": "복선-언론홍보/부선-언론홍보",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "연구조사방법론",
+    "division": null,
+    "professor": "김효숙",
+    "department": "언론홍보학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "전체학년 언론홍보",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "조만식기념관 12209",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "조만식기념관 12209",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.18",
+    "category": "전기-언론홍보",
+    "sub_category": "복선-언론홍보/부선-언론홍보",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.18",
+    "name": "커뮤니케이션의이해",
+    "division": null,
+    "professor": "박웅기",
+    "department": "언론홍보학과",
+    "time_points": "3.0/3.0",
+    "personeel": "44",
+    "remaining_seats": "0",
+    "target": "전체학년 언론홍보;순수외국인입학생",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12524 (안재국강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "조만식기념관 12524 (안재국강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.21",
+    "category": "전기-언론홍보",
+    "sub_category": "복필-언론홍보/부선-언론홍보",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.21",
+    "name": "매스미디어의이해",
+    "division": null,
+    "professor": "박웅기",
+    "department": "언론홍보학과",
+    "time_points": "3.0/3.0",
+    "personeel": "44",
+    "remaining_seats": "0",
+    "target": "1학년 언론홍보, 내국인 전용강좌",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "벤처중소기업센터 10512",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "벤처중소기업센터 10512",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.22",
+    "category": "전기-언론홍보",
+    "sub_category": "복선-언론홍보/부선-언론홍보",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.22",
+    "name": "연구조사방법론",
+    "division": null,
+    "professor": "김효숙",
+    "department": "언론홍보학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "1학년 언론홍보, 내국인 전용강좌, 타학과 학생 수강 제한",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "조만식기념관 12328",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "조만식기념관 12328",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전기-언론홍보",
+    "sub_category": "복선-언론홍보/부선-언론홍보",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "연구조사방법론",
+    "division": null,
+    "professor": "김효숙",
+    "department": "언론홍보학과",
+    "time_points": "3.0/3.0",
+    "personeel": "45",
+    "remaining_seats": "0",
+    "target": "1학년 언론홍보, 타학과 학생 수강 제한;순수외국인입학생",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "조만식기념관 12525 (박영립강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "조만식기념관 12525 (박영립강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.24",
+    "category": "전기-언론홍보",
+    "sub_category": "복선-언론홍보/부선-언론홍보",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.24",
+    "name": "커뮤니케이션의이해",
+    "division": null,
+    "professor": "박웅기",
+    "department": "언론홍보학과",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "0",
+    "target": "1학년 언론홍보, 내국인 전용강좌",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12209",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "조만식기념관 12209",
+        "courseCode": 0
+      }
+    ]
+  }
+]

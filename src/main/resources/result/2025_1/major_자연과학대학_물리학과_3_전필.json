@@ -1,0 +1,34 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.28",
+    "category": "전필-물리",
+    "sub_category": "복필-물리/부선-물리/융선-양자나노융합/융선-인공지능반도체융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.28",
+    "name": "양자역학1",
+    "division": null,
+    "professor": "박세영",
+    "department": "물리학과",
+    "time_points": "3.0/3.0",
+    "personeel": "31",
+    "remaining_seats": "9",
+    "target": "3학년 물리, 양자나노융합, 인공지능반도체융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12311",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "조만식기념관 12311",
+        "courseCode": 0
+      }
+    ]
+  }
+]

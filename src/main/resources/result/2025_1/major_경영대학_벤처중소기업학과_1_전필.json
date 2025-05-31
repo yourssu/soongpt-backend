@@ -1,0 +1,866 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.4",
+    "category": "전필-벤처중소",
+    "sub_category": "복필-벤처중소/부선-벤처중소/연계1-융합창업/융선-ICT유통물류융합/융선-문화서비스산업융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.4",
+    "name": "Entrepreneurship",
+    "division": "(공통-재수강)",
+    "professor": "김영수",
+    "department": "벤처중소기업학과",
+    "time_points": "3.0/3.0",
+    "personeel": "24",
+    "remaining_seats": "16",
+    "target": "전체학년 벤처중소, 경영학부, 회계학과, 금융학부, 융합창업연계, ICT유통물류융합, 문화서비스산업융합",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02208",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.5",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.5",
+    "name": "경영수리와통계",
+    "division": "(공통-재수강)",
+    "professor": "안태호",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "전체학년 경영학부, 벤처중소, 회계학과",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02101",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02101",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.6",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.6",
+    "name": "경영수리와통계",
+    "division": "(공통-재수강)",
+    "professor": "김갑식",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "3",
+    "target": "전체학년 경영학부, 벤처중소, 회계학과",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "조만식기념관 12207 (박명복강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "조만식기념관 12207 (박명복강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.7",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.7",
+    "name": "경영수리와통계",
+    "division": "(공통-재수강)",
+    "professor": "조윤재",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "36",
+    "remaining_seats": "4",
+    "target": "전체학년 경영학부, 벤처중소, 회계학과",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02316",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02316",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.8",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.8",
+    "name": "경영수리와통계",
+    "division": "(공통-재수강)",
+    "professor": "송광석",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "27",
+    "remaining_seats": "13",
+    "target": "전체학년 경영학부, 벤처중소, 회계학과",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.9",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.9",
+    "name": "경영수리와통계",
+    "division": "(공통-재수강)",
+    "professor": "김홍진",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "전체학년 경영학부, 벤처중소, 회계학과",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02101",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02101",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.10",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.10",
+    "name": "경영수리와통계",
+    "division": "(공통-재수강)",
+    "professor": "김명겸",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "18",
+    "remaining_seats": "22",
+    "target": "전체학년 경영학부, 벤처중소, 회계학과",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02210",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02210",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "경영학의이해",
+    "division": "(공통-재수강)",
+    "professor": "우주연",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "3",
+    "target": "전체학년 경영학부, 벤처중소, 회계학과",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02207",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02208",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.17",
+    "category": "전필-벤처중소",
+    "sub_category": "복필-벤처중소/부선-벤처중소/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.17",
+    "name": "조직행동론",
+    "division": "(공통-재수강)",
+    "professor": "강연희",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "3",
+    "target": "전체학년 경영학부, 벤처중소, 사회적기업혁신융합",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "조만식기념관 12207 (박명복강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "조만식기념관 12207 (박명복강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.18",
+    "category": "전필-벤처중소",
+    "sub_category": "복필-벤처중소/부선-벤처중소/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.18",
+    "name": "조직행동론",
+    "division": "(공통-재수강)",
+    "professor": "고혜원",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "전체학년 경영학부, 벤처중소, 사회적기업혁신융합",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02316",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02316",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.22",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/연계2-융합창업/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.22",
+    "name": "회계원리",
+    "division": "(공통-재수강)",
+    "professor": "장홍석",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "47",
+    "remaining_seats": "3",
+    "target": "전체학년 경영학부,벤처중소,회계학과,사회적기업과사회혁신융합",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02210",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02210",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/연계2-융합창업/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "회계원리",
+    "division": "(공통-재수강)",
+    "professor": "윤회",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "49",
+    "remaining_seats": "1",
+    "target": "전체학년 경영학부,벤처중소,회계학과,사회적기업과사회혁신융합",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.24",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.24",
+    "name": "회계원리",
+    "division": "(공통-재수강)",
+    "professor": "장홍석",
+    "department": "벤처중소기업학과",
+    "time_points": "3.0/3.0",
+    "personeel": "46",
+    "remaining_seats": "4",
+    "target": "전체학년 벤처중소, 경영학부, 회계학과,사회적기업과사회혁신융합",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02210",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "숭덕경상관 02210",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.25",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/연계2-융합창업/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.25",
+    "name": "회계원리",
+    "division": "(공통-재수강)",
+    "professor": "이광진",
+    "department": "회계학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "전체학년 벤처중소,경영학부,회계학과,융합창업연계,사회적기업과사회혁신융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "문화관 03314",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "문화관 03314",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.26",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.26",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "김현순",
+    "department": "벤처중소기업학과",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "1학년 벤처중소, 경영학부, 회계학과 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "숭덕경상관 02316",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "숭덕경상관 02316",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.27",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.27",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "정원준",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "44",
+    "remaining_seats": "0",
+    "target": "1학년 경영학부,벤처중소,회계학과 (대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "조만식기념관 12326 (조해자강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "조만식기념관 12326 (조해자강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.28",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.28",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "조경훈",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "43",
+    "remaining_seats": "2",
+    "target": "1학년 경영학부,벤처중소,회계학과 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "교육관 06303",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "교육관 06303",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.29",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.29",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "이형수",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "3",
+    "target": "1학년 경영학부,벤처중소,회계학과 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "미래관 20405",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "미래관 20405",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.30",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.30",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "박승연",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "22",
+    "remaining_seats": "23",
+    "target": "1학년 경영학부,벤처중소,회계학과 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "숭덕경상관 02317",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.31",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.31",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "진민정",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "13",
+    "remaining_seats": "32",
+    "target": "1학년 경영학부,벤처중소,회계학과 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02211",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02211",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.32",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.32",
+    "name": "경영학의이해",
+    "division": null,
+    "professor": "김태연",
+    "department": "회계학과",
+    "time_points": "3.0/3.0",
+    "personeel": "43",
+    "remaining_seats": "0",
+    "target": "1학년 회계학과,경영학부,벤처중소 (대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "교육관 06303",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "교육관 06303",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.33",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/연계2-융합창업/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.33",
+    "name": "회계원리",
+    "division": null,
+    "professor": "김용수",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "1학년 경영학부,벤처중소,사회적기업혁신융합 (대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "문화관 03312",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "문화관 03312",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.34",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/연계2-융합창업/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.34",
+    "name": "회계원리",
+    "division": null,
+    "professor": "손재성",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "1학년 경영학부,벤처중소,사회적기업혁신융합 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "미래관 20405",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "미래관 20405",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.35",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/연계2-융합창업/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.35",
+    "name": "회계원리",
+    "division": null,
+    "professor": "이시내",
+    "department": "경영학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "1학년 경영학부,벤처중소,사회적기업혁신융합 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "문화관 03314",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "문화관 03314",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.36",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.36",
+    "name": "회계원리",
+    "division": null,
+    "professor": "이광진",
+    "department": "벤처중소기업학과",
+    "time_points": "3.0/3.0",
+    "personeel": "15",
+    "remaining_seats": "25",
+    "target": "1학년 벤처중소, 경영학부 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.37",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/연계2-융합창업/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.37",
+    "name": "회계원리",
+    "division": null,
+    "professor": "윤회",
+    "department": "회계학과",
+    "time_points": "3.0/3.0",
+    "personeel": "32",
+    "remaining_seats": "8",
+    "target": "1학년 경영학부,벤처중소,사회적기업과사회혁신융합 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.38",
+    "category": "전필-벤처중소",
+    "sub_category": "복선-벤처중소/부선-벤처중소/연계2-융합창업/융선-사회적기업혁신융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.38",
+    "name": "회계원리",
+    "division": null,
+    "professor": "한종철",
+    "department": "회계학과",
+    "time_points": "3.0/3.0",
+    "personeel": "26",
+    "remaining_seats": "14",
+    "target": "1학년 경영학부,벤처중소,사회적기업과사회혁신융합 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "미래관 20405",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "미래관 20405",
+        "courseCode": 0
+      }
+    ]
+  }
+]

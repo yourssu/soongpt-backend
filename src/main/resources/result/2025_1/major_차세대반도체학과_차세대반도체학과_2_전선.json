@@ -1,0 +1,77 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.1",
+    "category": "전선-차세대반도체",
+    "sub_category": "복선-차세대/부선-차세대/심선-차세대반도체심화/연선-차세대반도체연계/융선-차세대반도체융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.1",
+    "name": "디지털논리회로",
+    "division": null,
+    "professor": "김효섭",
+    "department": "차세대반도체학과",
+    "time_points": "3.0/3.0",
+    "personeel": "23",
+    "remaining_seats": "17",
+    "target": "2학년 전체\n3학년 전체\n4학년 전체",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "문화관 03407",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.2",
+    "category": "전선-차세대반도체",
+    "sub_category": "복선-차세대/부선-차세대/연선-차세대반도체연계/융선-차세대반도체융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.2",
+    "name": "반도체개발프로세스",
+    "division": null,
+    "professor": "김성식",
+    "department": "차세대반도체학과",
+    "time_points": "3.0/3.0",
+    "personeel": "49",
+    "remaining_seats": "3",
+    "target": "2학년 전체\n3학년 전체\n4학년 전체",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "벤처중소기업센터 10311",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.3",
+    "category": "전선-차세대반도체",
+    "sub_category": "복선-차세대/부선-차세대/심선-차세대반도체심화/연선-차세대반도체연계/융선-차세대반도체융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.3",
+    "name": "전기회로",
+    "division": null,
+    "professor": "문지욱",
+    "department": "차세대반도체학과",
+    "time_points": "3.0/3.0",
+    "personeel": "15",
+    "remaining_seats": "25",
+    "target": "2학년 전체\n3학년 전체\n4학년 전체",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "베어드홀 01324 (물리전산실습실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

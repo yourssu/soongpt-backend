@@ -1,0 +1,66 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.12",
+    "category": "전필-컴퓨터",
+    "sub_category": "복선-컴퓨터/융선-ICT유통물류융합/융선-빅데이터컴퓨팅융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "자료구조",
+    "division": "(공통-재수강)",
+    "professor": "송현주",
+    "department": "컴퓨터학부",
+    "time_points": "3.0/3.0",
+    "personeel": "47",
+    "remaining_seats": "3",
+    "target": "전체학년",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21201",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21204 (김선행강의실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.19",
+    "category": "전필-컴퓨터",
+    "sub_category": "복선-컴퓨터/융선-ICT유통물류융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.19",
+    "name": "프로그래밍언어",
+    "division": "(공통-재수강)",
+    "professor": "양승민",
+    "department": "컴퓨터학부",
+    "time_points": "3.0/3.0",
+    "personeel": "51",
+    "remaining_seats": "0",
+    "target": "전체학년 컴퓨터",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21204 (김선행강의실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21204 (김선행강의실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

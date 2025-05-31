@@ -1,0 +1,407 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.25",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부필-기계/융선-지식재산융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.25",
+    "name": "고체역학",
+    "division": null,
+    "professor": "이원",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "2학년 기계 ,지식재산융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "형남공학관 05111",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "형남공학관 05111",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.26",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부필-기계/융선-지식재산융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.26",
+    "name": "고체역학",
+    "division": null,
+    "professor": "이원",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "2학년 기계, 지식재산융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "형남공학관 05111",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "형남공학관 05111",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.27",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부필-기계/융선-지식재산융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.27",
+    "name": "고체역학",
+    "division": null,
+    "professor": "박성훈",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "1",
+    "target": "2학년 기계, 지식재산융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "안익태기념관 04405",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "안익태기념관 04405",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.31",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부선-기계",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.31",
+    "name": "동역학",
+    "division": null,
+    "professor": "조원익",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "2학년 기계",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.32",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부선-기계",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.32",
+    "name": "동역학",
+    "division": null,
+    "professor": "이동훈",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "2학년 기계",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.33",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부선-기계",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.33",
+    "name": "동역학",
+    "division": null,
+    "professor": "이동훈",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "3",
+    "target": "2학년 기계",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.34",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부선-기계/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.34",
+    "name": "열역학",
+    "division": null,
+    "professor": "홍지우",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "49",
+    "remaining_seats": "1",
+    "target": "2학년 기계,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.35",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부선-기계/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.35",
+    "name": "열역학",
+    "division": null,
+    "professor": "홍지우",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "13",
+    "target": "2학년 기계,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05113",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "형남공학관 05116",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.36",
+    "category": "전필-기계",
+    "sub_category": "복선-기계/부선-기계/융선-에너지공학융합",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.36",
+    "name": "열역학",
+    "division": null,
+    "professor": "이상훈",
+    "department": "기계공학부",
+    "time_points": "3.0/3.0",
+    "personeel": "39",
+    "remaining_seats": "1",
+    "target": "2학년 기계,에너지공학융합",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "안익태기념관 04405",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "안익태기념관 04405",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.37",
+    "category": "전필-기계",
+    "sub_category": "복필-기계/부선-기계",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.37",
+    "name": "전산기계제도",
+    "division": null,
+    "professor": "최장기",
+    "department": "기계공학부",
+    "time_points": "3.0/2.0",
+    "personeel": "25",
+    "remaining_seats": "15",
+    "target": "2학년 기계",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "13:30",
+        "endTime": "14:20",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "14:30",
+        "endTime": "15:20",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "15:30",
+        "endTime": "16:20",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.38",
+    "category": "전필-기계",
+    "sub_category": "복필-기계/부선-기계",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.38",
+    "name": "전산기계제도",
+    "division": null,
+    "professor": "최장기",
+    "department": "기계공학부",
+    "time_points": "3.0/2.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "2학년 기계",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "09:00",
+        "endTime": "09:50",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "10:00",
+        "endTime": "10:50",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "11:00",
+        "endTime": "11:50",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.39",
+    "category": "전필-기계",
+    "sub_category": "복필-기계/부선-기계",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.39",
+    "name": "전산기계제도",
+    "division": null,
+    "professor": "최장기",
+    "department": "기계공학부",
+    "time_points": "3.0/2.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "2학년 기계",
+    "courseTime": [
+      {
+        "week": "금",
+        "startTime": "12:00",
+        "endTime": "12:50",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "13:00",
+        "endTime": "13:50",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      },
+      {
+        "week": "금",
+        "startTime": "14:00",
+        "endTime": "14:50",
+        "classroom": "형남공학관 05420 (기계공학과제도실",
+        "courseCode": 0
+      }
+    ]
+  }
+]

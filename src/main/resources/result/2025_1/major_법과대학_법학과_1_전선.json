@@ -1,0 +1,366 @@
+[
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.1",
+    "name": "(전선)두드림Ⅰ-3",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "6.0/3.0",
+    "personeel": "29",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.2",
+    "name": "(전선)두드림Ⅱ-6",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "12.0/6.0",
+    "personeel": "8",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.3",
+    "name": "(전선)두드림Ⅲ-3",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "6.0/3.0",
+    "personeel": "4",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": "복선-법학/부선-법학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.4",
+    "name": "국내장기현장실습(3)Ⅰ",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "3.0/3.0",
+    "personeel": "6",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.5",
+    "name": "국내장기현장실습",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "65",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.6",
+    "name": "전공심화전문가양성교육(3)",
+    "division": null,
+    "professor": "",
+    "department": "진로취업팀",
+    "time_points": "3.0/3.0",
+    "personeel": "1",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.7",
+    "name": "전공심화전문가양성교육(6)",
+    "division": null,
+    "professor": "",
+    "department": "진로취업팀",
+    "time_points": "6.0/6.0",
+    "personeel": "12",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.8",
+    "name": "창업기업실습",
+    "division": null,
+    "professor": "허공회",
+    "department": "창업교육·지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "8",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": "복선-법학/부선-법학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.9",
+    "name": "해외장기현장실습(3)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "3.0/3.0",
+    "personeel": "1",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-법학",
+    "sub_category": "복선-법학/부선-법학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.10",
+    "name": "해외장기현장실습(6)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "2",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.14",
+    "category": "전선-법학",
+    "sub_category": "복선-법학/부선-법학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.14",
+    "name": "법논리학",
+    "division": null,
+    "professor": "윤진숙",
+    "department": "법학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "7",
+    "target": "1학년 법학",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "진리관 11407",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "진리관 11407",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.15",
+    "category": "전선-법학",
+    "sub_category": "복선-법학/부선-법학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.15",
+    "name": "법논리학",
+    "division": null,
+    "professor": "윤진숙",
+    "department": "법학과",
+    "time_points": "3.0/3.0",
+    "personeel": "45",
+    "remaining_seats": "0",
+    "target": "1학년 법학",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "진리관 11407",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "진리관 11407",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.16",
+    "category": "전선-법학",
+    "sub_category": "복선-법학/부선-법학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.16",
+    "name": "법학글쓰기세미나",
+    "division": "(팀티칭)",
+    "professor": "전삼현\n서철원\n채우석\n최정식\n고문현\n이지은\n김준호",
+    "department": "법학과",
+    "time_points": "3.0/3.0",
+    "personeel": "60",
+    "remaining_seats": "20",
+    "target": "1학년 법학 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "미래관 20305",
+        "courseCode": 0
+      }
+    ]
+  }
+]

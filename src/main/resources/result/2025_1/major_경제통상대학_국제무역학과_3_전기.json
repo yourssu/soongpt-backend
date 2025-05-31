@@ -1,0 +1,141 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.2",
+    "category": "전기-국제무역",
+    "sub_category": "복선-국제무역/부선-국제무역",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.2",
+    "name": "경제원론",
+    "division": null,
+    "professor": "이인구",
+    "department": "국제무역학과",
+    "time_points": "3.0/3.0",
+    "personeel": "60",
+    "remaining_seats": "0",
+    "target": "전체학년 국제무역 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "13:30",
+        "endTime": "14:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.7",
+    "category": "전기-국제무역",
+    "sub_category": "복선-국제무역/부선-국제무역",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.7",
+    "name": "국제상무의이해",
+    "division": null,
+    "professor": "이병문",
+    "department": "국제무역학과",
+    "time_points": "3.0/3.0",
+    "personeel": "35",
+    "remaining_seats": "25",
+    "target": "전체학년 국제무역 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.8",
+    "category": "전기-국제무역",
+    "sub_category": "복선-국제무역/부선-국제무역",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.8",
+    "name": "국제상무의이해",
+    "division": "(팀티칭)",
+    "professor": "허해관\n신홍섭",
+    "department": "국제무역학과",
+    "time_points": "3.0/3.0",
+    "personeel": "33",
+    "remaining_seats": "0",
+    "target": "전체학년 국제무역 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02110",
+        "courseCode": 0
+      },
+      {
+        "week": "토",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02110",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전기-국제무역",
+    "sub_category": "복필-국제무역/부선-국제무역",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "국제통상개론",
+    "division": null,
+    "professor": "오선영",
+    "department": "국제무역학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "22",
+    "target": "전체학년 국제무역 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02201",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.12",
+    "category": "전기-국제무역",
+    "sub_category": "복필-국제무역/부선-국제무역",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "국제통상개론",
+    "division": "(팀티칭)",
+    "professor": "허해관\n신홍섭",
+    "department": "국제무역학과",
+    "time_points": "3.0/3.0",
+    "personeel": "37",
+    "remaining_seats": "0",
+    "target": "전체학년 국제무역 (대상외수강제한)(대상외수강제한)",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      },
+      {
+        "week": "토",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "숭덕경상관 02209",
+        "courseCode": 0
+      }
+    ]
+  }
+]

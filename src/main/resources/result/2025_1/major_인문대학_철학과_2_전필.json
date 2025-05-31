@@ -1,0 +1,34 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.15",
+    "category": "전필-철학",
+    "sub_category": "복필-철학/부선-철학",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.15",
+    "name": "서양고대철학사",
+    "division": null,
+    "professor": "정준영",
+    "department": "철학과",
+    "time_points": "3.0/3.0",
+    "personeel": "38",
+    "remaining_seats": "2",
+    "target": "2학년 철학",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "교육관 06202",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "교육관 06202",
+        "courseCode": 0
+      }
+    ]
+  }
+]

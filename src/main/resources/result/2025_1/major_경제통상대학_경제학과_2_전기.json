@@ -1,0 +1,98 @@
+[
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.26",
+    "category": "전기-경제",
+    "sub_category": "복선-경제/부선-경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.26",
+    "name": "통계학",
+    "division": null,
+    "professor": "조재호",
+    "department": "경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "40",
+    "remaining_seats": "0",
+    "target": "2학년 경제",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "숭덕경상관 02318",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "15:00",
+        "endTime": "16:15",
+        "classroom": "숭덕경상관 02107",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.27",
+    "category": "전기-경제",
+    "sub_category": "복선-경제/부선-경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.27",
+    "name": "통계학",
+    "division": null,
+    "professor": "조재호",
+    "department": "경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "2학년 경제",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "16:30",
+        "endTime": "17:45",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.28",
+    "category": "전기-경제",
+    "sub_category": "복선-경제/부선-경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.28",
+    "name": "통계학",
+    "division": null,
+    "professor": "조재호",
+    "department": "경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "20",
+    "remaining_seats": "20",
+    "target": "2학년 경제",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "18:00",
+        "endTime": "19:15",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      }
+    ]
+  }
+]

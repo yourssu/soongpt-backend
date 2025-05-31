@@ -1,0 +1,208 @@
+[
+  {
+    "syllabus": null,
+    "category": "전선-미디어경영",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.1",
+    "name": "(전선)두드림Ⅰ-3",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "6.0/3.0",
+    "personeel": "29",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-미디어경영",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.2",
+    "name": "(전선)두드림Ⅱ-6",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "12.0/6.0",
+    "personeel": "8",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-미디어경영",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.3",
+    "name": "(전선)두드림Ⅲ-3",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "6.0/3.0",
+    "personeel": "4",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-미디어경영",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.4",
+    "name": "창업기업실습",
+    "division": null,
+    "professor": "허공회",
+    "department": "창업교육·지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "8",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-미디어경영",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.5",
+    "name": "해외장기현장실습(6)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "2",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.21",
+    "category": "전선-미디어경영",
+    "sub_category": "복선-미디어경영/부선-미디어경영",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.21",
+    "name": "e-비즈니스",
+    "division": null,
+    "professor": "전석",
+    "department": "미디어경영학과",
+    "time_points": "3.0/3.0",
+    "personeel": "22",
+    "remaining_seats": "18",
+    "target": "4학년 미디어경영",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      },
+      {
+        "week": "토",
+        "startTime": "12:00",
+        "endTime": "13:15",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.22",
+    "category": "전선-미디어경영",
+    "sub_category": "복선-미디어경영/부선-미디어경영",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.22",
+    "name": "뉴미디어광고",
+    "division": null,
+    "professor": "박재완",
+    "department": "미디어경영학과",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "4학년 미디어경영",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "정보과학관 21507 (미디어스튜디오",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.23",
+    "category": "전선-미디어경영",
+    "sub_category": "복선-미디어경영/부선-미디어경영",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.23",
+    "name": "운영체제",
+    "division": null,
+    "professor": "홍지만",
+    "department": "미디어경영학과",
+    "time_points": "3.0/3.0",
+    "personeel": "5",
+    "remaining_seats": "35",
+    "target": "4학년 미디어경영",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "정보과학관 21501",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "정보과학관 21501",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.24",
+    "category": "전선-미디어경영",
+    "sub_category": "복선-미디어경영/부선-미디어경영",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.24",
+    "name": "핀테크",
+    "division": null,
+    "professor": "최형광",
+    "department": "미디어경영학과",
+    "time_points": "3.0/3.0",
+    "personeel": "9",
+    "remaining_seats": "31",
+    "target": "4학년 미디어경영",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "미래관 20202",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "미래관 20202",
+        "courseCode": 0
+      }
+    ]
+  }
+]

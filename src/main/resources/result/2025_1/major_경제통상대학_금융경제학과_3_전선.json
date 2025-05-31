@@ -1,0 +1,245 @@
+[
+  {
+    "syllabus": null,
+    "category": "전선-금융경제",
+    "sub_category": null,
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.1",
+    "name": "(전선)두드림Ⅲ-3",
+    "division": null,
+    "professor": "",
+    "department": "교육과정혁신팀",
+    "time_points": "6.0/3.0",
+    "personeel": "4",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.2",
+    "name": "해외장기현장실습(3)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "3.0/3.0",
+    "personeel": "1",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": null,
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.3",
+    "name": "해외장기현장실습(6)",
+    "division": null,
+    "professor": "",
+    "department": "현장실습지원팀",
+    "time_points": "6.0/6.0",
+    "personeel": "2",
+    "remaining_seats": "0",
+    "target": "전체",
+    "courseTime": []
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.11",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.11",
+    "name": "국제금융론",
+    "division": null,
+    "professor": "이동민",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "48",
+    "remaining_seats": "7",
+    "target": "3학년 금융경제(금융경제학과 및 경제학과만 수강 가능)",
+    "courseTime": [
+      {
+        "week": "목",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      },
+      {
+        "week": "목",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02109",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.12",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.12",
+    "name": "기업금융과투자전략",
+    "division": null,
+    "professor": "송한진",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "41",
+    "remaining_seats": "0",
+    "target": "3학년 금융경제(금융경제학과 및 경제학과만 수강 가능)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02111",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.13",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.13",
+    "name": "기업금융과투자전략",
+    "division": null,
+    "professor": "박재빈",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "26",
+    "remaining_seats": "14",
+    "target": "3학년 금융경제(금융경제학과 및 경제학과만 수강 가능)",
+    "courseTime": [
+      {
+        "week": "수",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02107",
+        "courseCode": 0
+      },
+      {
+        "week": "수",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02107",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.14",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.14",
+    "name": "기업평가의이해",
+    "division": null,
+    "professor": "송인찬",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "42",
+    "remaining_seats": "0",
+    "target": "3학년 금융경제(금융경제학과 및 경제학과만 수강 가능)",
+    "courseTime": [
+      {
+        "week": "월",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02108",
+        "courseCode": 0
+      },
+      {
+        "week": "월",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02108",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.15",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.15",
+    "name": "채권투자론",
+    "division": null,
+    "professor": "신동준",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "54",
+    "remaining_seats": "1",
+    "target": "3학년 금융경제(금융경제학과 및 경제학과만 수강 가능)",
+    "courseTime": [
+      {
+        "week": "토",
+        "startTime": "09:00",
+        "endTime": "10:15",
+        "classroom": "숭덕경상관 02108",
+        "courseCode": 0
+      },
+      {
+        "week": "토",
+        "startTime": "10:30",
+        "endTime": "11:45",
+        "classroom": "숭덕경상관 02108",
+        "courseCode": 0
+      }
+    ]
+  },
+  {
+    "syllabus": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.HAS_PLAN_PAPER_SALV_WD_CE.16",
+    "category": "전선-금융경제",
+    "sub_category": "복선-금융경제/부선-금융경제",
+    "abeek_info": null,
+    "field": null,
+    "code": "SALV_WD_TABLE.ID_DE0D9128A4327646C94670E2A892C99C:VIEW_TABLE.SE_SHORT_SALV_WD_CE.16",
+    "name": "파생상품론",
+    "division": null,
+    "professor": "신동국",
+    "department": "금융경제학과",
+    "time_points": "3.0/3.0",
+    "personeel": "56",
+    "remaining_seats": "0",
+    "target": "3학년 금융경제(금융경제학과 및 경제학과만 수강 가능)",
+    "courseTime": [
+      {
+        "week": "화",
+        "startTime": "19:30",
+        "endTime": "20:45",
+        "classroom": "숭덕경상관 02101",
+        "courseCode": 0
+      },
+      {
+        "week": "화",
+        "startTime": "21:00",
+        "endTime": "22:15",
+        "classroom": "숭덕경상관 02101",
+        "courseCode": 0
+      }
+    ]
+  }
+]
