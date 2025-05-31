@@ -18,7 +18,7 @@ data class Time(
                 val (hour, minute) = timeFormat.split(TIME_DELIMITER).map { it.toInt() }
                 return Time(hour * HOUR_TO_MIN + minute)
             } catch (e: Exception) {
-                throw InvalidTimeFormatException()
+                return Time(0)
             }
         }
 

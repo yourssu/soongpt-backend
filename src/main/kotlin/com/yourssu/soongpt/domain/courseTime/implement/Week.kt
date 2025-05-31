@@ -9,11 +9,13 @@ enum class Week(
     THURSDAY("목"),
     FRIDAY("금"),
     SATURDAY("토"),
-    SUNDAY("일");
+    SUNDAY("일"),
+    UNKNOWN("알 수 없는 요일"),
+    ;
 
     companion object {
         fun fromName(name: String): Week {
-            return entries.find { it.displayName == name } ?: throw IllegalArgumentException("알 수 없는 요일 : $name")
+            return entries.find { it.displayName == name } ?: UNKNOWN
         }
 
         fun weekdays(): List<Week> {

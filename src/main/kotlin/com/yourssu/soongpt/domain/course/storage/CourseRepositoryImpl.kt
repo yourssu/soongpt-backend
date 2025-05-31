@@ -1,12 +1,12 @@
 package com.yourssu.soongpt.domain.course.storage
 
 import com.querydsl.jpa.impl.JPAQueryFactory
-import com.yourssu.soongpt.domain.course.QCourseEntity.courseEntity
 import com.yourssu.soongpt.domain.course.implement.Classification
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.Courses
 import com.yourssu.soongpt.domain.course.implement.exception.CourseNotFoundException
+import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
 import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
 import com.yourssu.soongpt.domain.departmentGrade.storage.QDepartmentGradeEntity.departmentGradeEntity
 import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
