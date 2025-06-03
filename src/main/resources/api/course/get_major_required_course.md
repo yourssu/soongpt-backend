@@ -1,4 +1,4 @@
-# getMajorRequiredCourse (GET /api/courses/major/required)
+# getMajorRequiredCourse (GET /api/v2/courses/major/required)
 
 ## Request
 

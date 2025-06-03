@@ -1,4 +1,4 @@
-# getMajorElectiveCourse (GET /api/courses/major/elective)
+# getMajorElectiveCourse (GET /api/v2/courses/major/elective)
 
 ## Request
 
