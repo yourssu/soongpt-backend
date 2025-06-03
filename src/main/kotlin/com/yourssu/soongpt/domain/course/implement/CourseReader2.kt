@@ -15,4 +15,8 @@ class CourseReader2(
     fun findAllByDepartmentGradeInMajorElective(department: Department, grade: DepartmentGrade): List<Course2> {
         return jsonCourseRepository.findAllByDepartmentAndGrade(department, grade, Category.MAJOR_ELECTIVE)
     }
+
+    fun findAllByDepartmentGradeInGeneralRequired(department: Department, grade: DepartmentGrade): List<Course2> {
+        return jsonCourseRepository.findAllByDepartmentAndGrade(department, grade, Category.GENERAL_REQUIRED)
+    }
 }
