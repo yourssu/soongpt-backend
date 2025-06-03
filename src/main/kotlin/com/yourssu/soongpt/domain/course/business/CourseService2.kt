@@ -1,6 +1,8 @@
 package com.yourssu.soongpt.domain.course.business
 
+import com.yourssu.soongpt.domain.course.business.command.MajorElectiveCourseFoundCommand
 import com.yourssu.soongpt.domain.course.business.command.MajorRequiredCourseFoundCommand
+import com.yourssu.soongpt.domain.course.business.dto.MajorElectiveCourseResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorRequiredCourseResponse
 import com.yourssu.soongpt.domain.course.implement.CourseReader2
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
@@ -18,5 +20,12 @@ class CourseService2(
         val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
         val courses = courseReader.findAllByDepartmentGradeInMajorRequired(department, departmentGrade)
         return courses.map { MajorRequiredCourseResponse.from(it) }
+    }
+
+    fun findAllByDepartmentNameAndGrade(command: MajorElectiveCourseFoundCommand): List<MajorElectiveCourseResponse> {
+        val department = departmentReader.getByName(command.departmentName)
+        val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
+        val courses = courseReader.findAllByDepartmentGradeInMajorElective(department, departmentGrade)
+        return courses.map { MajorElectiveCourseResponse.from(it) }
     }
 }

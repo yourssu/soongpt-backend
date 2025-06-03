@@ -14,6 +14,8 @@ data class MajorRequiredCourseRequest(
 
     val subDepartment: String? = null,
 
+    val field: String? = null,
+
     @Range(min = 1, max = 5, message = "학년은 1부터 5까지 가능합니다.")
     val grade: Int,
 ) {
