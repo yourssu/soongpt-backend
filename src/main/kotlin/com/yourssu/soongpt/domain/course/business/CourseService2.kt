@@ -16,6 +16,7 @@ class CourseService2(
     fun findAllByDepartmentNameAndGrade(command: MajorRequiredCourseFoundCommand): List<MajorRequiredCourseResponse> {
         val department = departmentReader.getByName(command.departmentName)
         val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
-        return courseReader.findAllByDepartmentGradeInMajorRequired(department, departmentGrade).map { MajorRequiredCourseResponse.from(it) }
+        val courses = courseReader.findAllByDepartmentGradeInMajorRequired(department, departmentGrade)
+        return courses.map { MajorRequiredCourseResponse.from(it) }
     }
 }
