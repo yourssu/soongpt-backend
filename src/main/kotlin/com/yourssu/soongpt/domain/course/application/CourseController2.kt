@@ -4,10 +4,12 @@ import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.course.application.dto.GeneralRequiredCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorElectiveCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorRequiredCourseRequest
+import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
 import com.yourssu.soongpt.domain.course.business.CourseService2
 import com.yourssu.soongpt.domain.course.business.dto.GeneralRequiredCourseResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorElectiveCourseResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorRequiredCourseResponse
+import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -33,8 +35,14 @@ class CourseController2(
     }
 
     @GetMapping("/general/elective")
-    fun getGeneralElectiveCourses(@Valid @ModelAttribute request: GeneralRequiredCourseRequest): ResponseEntity<Response<List<GeneralRequiredCourseResponse>>?> {
+    fun getGeneralElectiveCourses(@Valid @ModelAttribute request: GeneralRequiredCourseRequest): ResponseEntity<Response<List<GeneralRequiredCourseResponse>>> {
         val response = courseService.findAllByDepartmentNameAndGrade(request.toCommand2())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @GetMapping("/search")
+    fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
+        val response = courseService.search(request.toCommand())
         return ResponseEntity.ok().body(Response(result = response))
     }
 }

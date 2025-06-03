@@ -3,9 +3,11 @@ package com.yourssu.soongpt.domain.course.business
 import com.yourssu.soongpt.domain.course.business.command.GeneralRequiredCourseFoundCommand
 import com.yourssu.soongpt.domain.course.business.command.MajorElectiveCourseFoundCommand
 import com.yourssu.soongpt.domain.course.business.command.MajorRequiredCourseFoundCommand
+import com.yourssu.soongpt.domain.course.business.command.SearchCoursesCommand
 import com.yourssu.soongpt.domain.course.business.dto.GeneralRequiredCourseResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorElectiveCourseResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorRequiredCourseResponse
+import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import com.yourssu.soongpt.domain.course.implement.CourseReader2
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGradeReader
@@ -36,5 +38,10 @@ class CourseService2(
         val departmentGrade = departmentGradeReader.getByDepartmentIdAndGrade(department.id!!, command.grade)
         val courses = courseReader.findAllByDepartmentGradeInGeneralRequired(department, departmentGrade)
         return courses.map { GeneralRequiredCourseResponse.from(it) }
+    }
+
+    fun search(command: SearchCoursesCommand): SearchCoursesResponse {
+        val courses = courseReader.search(command.query(), command.toPageable())
+        return SearchCoursesResponse.from(courses.content, courses.toPageableInfo())
     }
 }

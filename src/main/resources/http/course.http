@@ -24,3 +24,8 @@ Content-Type: application/x-www-form-urlencoded
 ###
 GET {{host}}/api/courses?courseId=2709,2710
 ###
+
+// 과목 검색
+###
+GET {{host}}/api/v2/courses/search?schoolId={{schoolId}}&department={{department}}&grade={{grade}}&q=컴퓨터&page=0&size=20
+###

@@ -1,4 +1,4 @@
-# searchCourse (GET /api/courses/search)
+# searchCourse (GET /api/v2/courses/search)
 
 ## Request
 
@@ -17,6 +17,16 @@
 ## Reply
 
 ### Response Body
+
+| Name            | Type             | Description                    |
+|-----------------|------------------|--------------------------------|
+| `content`       | CourseResponse[] | Array of course response data  |
+| `totalElements` | long             | Total number of elements       |
+| `totalPages`    | integer          | Total number of pages          |
+| `size`          | integer          | Number of elements per page    |
+| `page`          | integer          | Current page number            |
+
+### CourseResponse
 
 | Name         | Type                 | Description                                        |
 |--------------|----------------------|----------------------------------------------------|

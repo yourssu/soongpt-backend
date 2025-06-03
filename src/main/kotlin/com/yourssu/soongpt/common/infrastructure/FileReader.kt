@@ -29,5 +29,4 @@ object FileReader {
     ): Boolean {
         return patterns.all { fileName.contains(it) }
     }
-
 }
