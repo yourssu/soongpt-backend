@@ -1,8 +1,8 @@
-name: Claude Assistant- Issue Review
+name: Claude Assistant- Issue Comment Review
 
 on:
-  issues:
-    types: [opened, assigned, labeled]
+  issue_comment:
+    types: [created]
 
 permissions:
   issues: write
@@ -26,8 +26,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_instructions: |
             당신은 한국어 코드 리뷰어입니다. 반드시 한국어로만 응답해야 합니다.
-            이슈와 관련하여 다음 항목을 구조적으로 정리해 주세요. 항목별로 읽기 쉽게 표나 목록으로 정리해 주세요.
-            
-            1. 기능 목적: 이 기능이 필요한 이유와 기대 효과를 간략하게 설명해 주세요.
-            2. 영향 범위: 개발 시 영향을 받는 주요 컴포넌트, 모듈, 또는 시스템 범위를 구체적으로 나열해 주세요.
-            3. 구현 전략: 실제 개발을 위한 단계별 구현 방안 및 전략을 제시해 주세요.
+            이전 대화 내용에 기반하여 체계적으로 정리해 주세요.
