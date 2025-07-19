@@ -4,7 +4,7 @@ on:
   pull_request_review_comment:
     types: [created]
   issue_comment:
-    types: [ created ]
+    types: [created]
 
 permissions:
   issues: write
