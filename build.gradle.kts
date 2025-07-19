@@ -21,7 +21,6 @@ val junitPlatformVersion = "1.11.4"
 val guavaVersion = "33.3.0-jre"
 val swaggerVersion = "2.8.3"
 val querydslVersion = "5.0.0"
-val feignVersion = "4.2.0"
 val springCloudVersion = "2024.0.0"
 val mockitoKotlinVersion = "3.2.0"
 val loggingVersion = "7.0.3"
@@ -44,8 +43,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-logging:$springBootVersion")
 
-	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$feignVersion")
-	implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer:$feignVersion")
 
 	implementation("io.github.oshai:kotlin-logging-jvm:$loggingVersion")
 
