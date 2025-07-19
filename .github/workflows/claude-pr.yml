@@ -3,6 +3,8 @@ name: Claude Assistant - Pull Request Review
 on:
   pull_request_review:
     types: [submitted]
+  pull_request_review_comment:
+    types: [created]
 
 permissions:
   issues: write
@@ -26,7 +28,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_instructions: |
             당신은 한국어 코드 리뷰어입니다. 반드시 한국어로만 응답해야 합니다.
-            다음 PR에 대해 아래 항목별로 체계적으로 정리해 주세요. 항목별로 읽기 쉽게 표나 목록으로 정리해 주세요.
+            다음 PR에 대해 아래 항목별로 체계적으로 정리해 주세요. 1, 6번을 제외하고 읽기 쉽게 표나 목록으로 정리해 주세요.
             
             1. 변경 요약: 이번 PR의 핵심 변경 사항을 간략하게 요약해 주세요.
             2. 영향 범위: 변경 사항이 미치는 주요 시스템, 모듈 또는 외부 영향 범위를 명확히 적어 주세요.

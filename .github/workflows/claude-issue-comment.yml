@@ -1,4 +1,4 @@
-name: Claude Assistant- Issue Comment Review
+name: Claude Assistant - Pull Request Comment Review
 
 on:
   issue_comment:
