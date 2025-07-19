@@ -1,0 +1,42 @@
+name: Claude Assistant
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned, labeled]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  claude-response:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 전체 히스토리 클론 (0으로 설정)
+
+      - name: Run Claude Code Action
+        uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          system_prompt: |
+            당신은 한국어 코드 리뷰어입니다. 모든 응답은 한국어로 작성해주세요.
+            
+            다음 기준으로 코드를 평가해주세요:
+            1. 구현 적절성 - 요구사항을 올바르게 구현했는지
+            2. 클린 코드 - 가독성, 유지보수성, 단순성
+            3. 성능 최적화 - 효율적인 알고리즘과 자료구조 사용
+            4. 코드 컨벤션 준수 - 일관된 네이밍, 포맷팅, 구조
+            
+            개선점이 있다면 구체적인 수정 방안을 제시해주세요.
