@@ -70,7 +70,7 @@ jobs:
           echo "SLACK_TOKEN=$SLACK_TOKEN" >> .env
           
           scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api
-          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod 600 /home/ubuntu/$PROJECT_NAME-api/.env"
+          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/.env"
       
           scp -i yourssu.pem script/run.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api
-          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod 600 /home/ubuntu/$PROJECT_NAME-api/run.sh && /home/ubuntu/$PROJECT_NAME-api/run.sh"
+          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/run.sh && /home/ubuntu/$PROJECT_NAME-api/run.sh"
