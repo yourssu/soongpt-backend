@@ -1,7 +1,7 @@
 name: Claude Assistant- Issue Review
 
 on:
-  issue:
+  issues:
     types: [opened, assigned, labeled]
   issue_comment:
     types: [created]
