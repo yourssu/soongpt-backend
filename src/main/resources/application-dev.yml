@@ -20,16 +20,3 @@ spring:
       ddl-auto: validate
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGIN}
-  cloud:
-    openfeign:
-      client:
-        config:
-          default:
-            connectTimeout: 5000
-            loggerLevel: full
-            defaultRequestHeaders:
-              Authorization: Bearer accessToken
-            dismiss404: false
-
-slack:
-  channel-id: ${SLACK_CHANNEL_ID}
