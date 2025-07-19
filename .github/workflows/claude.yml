@@ -5,8 +5,6 @@ on:
     types: [created]
   pull_request_review_comment:
     types: [created]
-  issues:
-    types: [opened, assigned, labeled]
   pull_request_review:
     types: [submitted]
 
@@ -30,13 +28,15 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          system_prompt: |
-            당신은 한국어 코드 리뷰어입니다. 모든 응답은 한국어로 작성해주세요.
+          custom_instructions: |
+            당신은 한국어 코드 리뷰어입니다. 반드시 한국어로만 응답해야 합니다.
+            이슈 코멘트나 모든 상황에서 한국어로만 대화하세요.
             
+  
             다음 기준으로 코드를 평가해주세요:
             1. 구현 적절성 - 요구사항을 올바르게 구현했는지
             2. 클린 코드 - 가독성, 유지보수성, 단순성
             3. 성능 최적화 - 효율적인 알고리즘과 자료구조 사용
             4. 코드 컨벤션 준수 - 일관된 네이밍, 포맷팅, 구조
             
-            개선점이 있다면 구체적인 수정 방안을 제시해주세요.
+            개선점이 있다면 구체적인 수정 방안을 한국어로 제시해주세요.
