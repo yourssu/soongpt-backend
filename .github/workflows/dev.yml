@@ -44,8 +44,10 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
           PROJECT_NAME: ${{ vars.PROJECT_NAME }}
+          ENVIRONMENT: ${{ vars.ENVIRONMENT }}
 
-          SLACK_CHANNEL_ID: ${{ vars.SLACK_CHANNEL_ID }}
+          SLACK_LOG_CHANNEL: ${{ vars.SLACK_LOG_CHANNEL }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
@@ -61,8 +63,14 @@ jobs:
           echo "DB_USERNAME=$DB_USERNAME" >> .env
           echo "DB_PASSWORD=$DB_PASSWORD" >> .env
           
-          echo "SLACK_CHANNEL_ID=$SLACK_CHANNEL_ID" >> .env
+          echo "PROJECT_NAME=$PROJECT_NAME" >> .env
+          echo "ENVIRONMENT=$ENVIRONMENT" >> .env
+          
+          echo "SLACK_LOG_CHANNEL=$SLACK_LOG_CHANNEL" >> .env
+          echo "SLACK_TOKEN=$SLACK_TOKEN" >> .env
           
           scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api
-          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod 600 /home/ubuntu/$PROJECT_NAME-api/.env && /home/ubuntu/$PROJECT_NAME-api/run.sh"
-          ssh -i yourssu.pem ubuntu@$HOST_URL "/home/ubuntu/$PROJECT_NAME-api/observer_run.sh"          
+          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod 600 /home/ubuntu/$PROJECT_NAME-api/.env"
+      
+          scp -i yourssu.pem script/run.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api
+          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod 600 /home/ubuntu/$PROJECT_NAME-api/run.sh && /home/ubuntu/$PROJECT_NAME-api/run.sh"
