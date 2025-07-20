@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.contact.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.contact.implement.Contact
 import jakarta.persistence.*
 
@@ -12,7 +13,7 @@ class ContactEntity(
 
     @Column(name = "content", nullable = false)
     val content: String,
-) {
+) : BaseEntity() {
     companion object {
         fun from(contact: Contact): ContactEntity {
             return ContactEntity(
