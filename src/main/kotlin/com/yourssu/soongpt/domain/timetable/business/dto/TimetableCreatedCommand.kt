@@ -4,10 +4,10 @@ class TimetableCreatedCommand(
     val departmentName: String,
     val grade: Int,
     val isChapel: Boolean,
-    val majorRequiredCourses: List<Long>,
-    val majorElectiveCourses: List<Long>,
-    val generalRequiredCourses: List<Long>,
-    val majorElectiveCredit: Int,
-    val generalElectiveCredit: Int,
+    val majorRequiredCodes: List<Long>,
+    val majorElectiveCodes: List<Long>,
+    val generalRequiredCodes: List<Long>,
+    val codes: List<Long>,
+    val generalElectivePoint: Int,
 ) {
 }
