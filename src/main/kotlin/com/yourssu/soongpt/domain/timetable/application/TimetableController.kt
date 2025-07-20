@@ -5,12 +5,9 @@ import com.yourssu.soongpt.domain.timetable.application.dto.TimetableCreatedRequ
 import com.yourssu.soongpt.domain.timetable.business.TimetableService
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponses
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-
-private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("/api/timetables")
