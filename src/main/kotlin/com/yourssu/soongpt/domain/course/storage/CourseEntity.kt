@@ -33,6 +33,9 @@ class CourseEntity(
     @Column(nullable = false)
     val department: String,
 
+    @Column(nullable = true)
+    val division: String? = null,
+
     @Column(nullable = false)
     val time: String,
 
@@ -60,6 +63,7 @@ class CourseEntity(
                 name = course.name,
                 professor = course.professor,
                 department = course.department,
+                division = course.division,
                 time = course.time,
                 point = course.point,
                 personeel = 0,
@@ -80,6 +84,7 @@ class CourseEntity(
             name = name,
             professor = professor,
             department = department,
+            division = division,
             time = time,
             point = point,
             personeel = personeel,
