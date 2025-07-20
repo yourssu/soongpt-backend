@@ -1,0 +1,7 @@
+### Create Contact - Success Case
+POST {{host}}/api/contacts
+Content-Type: application/json
+
+{
+  "content": "안녕하세요. 문의사항이 있습니다."
+}
