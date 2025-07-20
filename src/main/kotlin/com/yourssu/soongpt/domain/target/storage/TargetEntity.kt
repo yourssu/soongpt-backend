@@ -19,14 +19,14 @@ class TargetEntity(
     companion object {
         fun from(target: Target) = TargetEntity(
             id = target.id,
-            departmentGradeId = target.departmentGradeId,
+            departmentGradeId = target.departmentId,
             courseId = target.courseId
         )
     }
 
     fun toDomain() = Target(
         id = id,
-        departmentGradeId = departmentGradeId,
+        departmentId = departmentGradeId,
         courseId = courseId
     )
 }
