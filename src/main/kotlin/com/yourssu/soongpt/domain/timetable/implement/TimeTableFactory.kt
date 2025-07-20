@@ -1,6 +1,5 @@
 package com.yourssu.soongpt.domain.timetable.implement
 
-import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.course.implement.Courses
 import com.yourssu.soongpt.domain.course.implement.Courses.Companion.calculateAvailableMajorElective
 import com.yourssu.soongpt.domain.course.implement.Courses.Companion.validateCreditRule

@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.course.business.dto
 
-import com.yourssu.soongpt.domain.course.implement.Course2
+import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 
 data class MajorRequiredCourseResponse(
@@ -15,7 +15,7 @@ data class MajorRequiredCourseResponse(
 ) {
     companion object {
         fun from(
-            course: Course2,
+            course: Course,
         ): MajorRequiredCourseResponse {
             return MajorRequiredCourseResponse(
                 name = course.courseName,

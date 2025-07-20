@@ -1,7 +1,6 @@
 package com.yourssu.soongpt.domain.timetable.business.dto
 
 import com.yourssu.soongpt.domain.course.implement.Classification
-import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
 
