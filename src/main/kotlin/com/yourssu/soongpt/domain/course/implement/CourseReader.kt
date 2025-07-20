@@ -1,72 +1,28 @@
 package com.yourssu.soongpt.domain.course.implement
 
-import com.yourssu.soongpt.domain.course.implement.exception.CourseNotFoundException
+import com.yourssu.soongpt.domain.course.implement.dto.SearchCourseDto
+import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 @Component
 class CourseReader(
-    private val courseRepository: CourseRepository,
+    private val jsonCourseRepository: JsonCourseRepository,
 ) {
-    fun findAllByDepartmentGradeIdInMajorRequired(departmentGradeId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.MAJOR_REQUIRED)
+    fun findAllByDepartmentGradeInMajorRequired(department: Department, grade: DepartmentGrade): List<Course> {
+        return jsonCourseRepository.findAllByDepartmentAndGrade(department, grade, Category.MAJOR_REQUIRED)
     }
 
-    fun findAllByDepartmentIdInMajorElective(departmentId: Long): List<Pair<Course, List<DepartmentGrade>>> {
-        return courseRepository.findAllByDepartmentId(departmentId, Classification.MAJOR_ELECTIVE)
+    fun findAllByDepartmentGradeInMajorElective(department: Department, grade: DepartmentGrade): List<Course> {
+        return jsonCourseRepository.findAllByDepartmentAndGrade(department, grade, Category.MAJOR_ELECTIVE)
     }
 
-    fun findAllByDepartmentGradeIdInMajorElective(departmentGradeId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.MAJOR_ELECTIVE)
+    fun findAllByDepartmentGradeInGeneralRequired(department: Department, grade: DepartmentGrade): List<Course> {
+        return jsonCourseRepository.findAllByDepartmentAndGrade(department, grade, Category.GENERAL_REQUIRED)
     }
 
-    fun findAllByDepartmentGradeIdInGeneralRequired(departmentGradeId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.GENERAL_REQUIRED)
-    }
-
-    fun findAllByDepartmentGradeIdInGeneralElective(departmentGradeId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.GENERAL_ELECTIVE)
-    }
-
-    fun findAllByCourseNameInMajorRequired(departmentGradeId: Long, courseName: String): Courses {
-        return findAllByCourseNameGrade(departmentGradeId, courseName, Classification.MAJOR_REQUIRED)
-    }
-
-    fun findAllByCourseNameInMajorElective(departmentId: Long, courseName: String): Courses {
-        return findAllByCourseName(departmentId, courseName, Classification.MAJOR_ELECTIVE)
-    }
-
-    fun findAllByCourseNameInGeneralRequired(departmentGradeId: Long, courseName: String): Courses {
-        return findAllByCourseNameGrade(departmentGradeId, courseName, Classification.GENERAL_REQUIRED)
-    }
-
-    fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course> {
-        return courseRepository.findChapelsByDepartmentGradeId(departmentGradeId)
-    }
-
-    private fun findAllByCourseName(departmentId: Long, courseName: String, classification: Classification): Courses {
-        val courses = courseRepository.findByDepartmentIdAndCourseName(departmentId, courseName, classification)
-        if (courses.isEmpty()) {
-            throw CourseNotFoundException(courseName = courseName)
-        }
-        return courses
-    }
-
-    fun findAll(): Courses {
-        return courseRepository.findAll()
-    }
-
-    private fun findAllByCourseNameGrade(departmentGradeId: Long, courseName: String, classification: Classification): Courses {
-        val courses = courseRepository.findByDepartmentGradeIdAndCourseName(departmentGradeId, courseName, classification)
-        if (courses.isEmpty()) {
-            throw CourseNotFoundException(courseName = courseName)
-        }
-        return courses
-    }
-
-    fun getById(courseId: Long): Course {
-        return courseRepository.get(courseId)
+    fun search(query: String, pageable: Pageable): SearchCourseDto {
+        return jsonCourseRepository.search(query, pageable)
     }
 }
-
-

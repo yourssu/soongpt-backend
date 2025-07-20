@@ -2,7 +2,6 @@ package com.yourssu.soongpt.domain.course.storage
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.course.implement.Classification
-import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.Courses
 import com.yourssu.soongpt.domain.course.implement.exception.CourseNotFoundException

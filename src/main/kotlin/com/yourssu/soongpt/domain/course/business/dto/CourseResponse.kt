@@ -17,8 +17,8 @@ data class CourseResponse(
             return CourseResponse(
                 courseName = course.courseName,
                 professorName = course.professorName,
-                classification = course.classification.name,
-                credit = course.credit,
+                classification = "",
+                credit = 0,
                 target = target,
                 courseTime = courseTimes.map { CourseTimeResponse.from(it) },
             )

@@ -1,6 +1,5 @@
 package com.yourssu.soongpt.domain.timetable.implement
 
-import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import org.springframework.stereotype.Component
 
