@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.course.application.dto
 
-import com.yourssu.soongpt.domain.course.business.command.SearchCoursesCommand
+import com.yourssu.soongpt.domain.course.business.query.SearchCoursesQuery
 
 data class SearchCoursesRequest(
     val schoolId: Int,
@@ -11,12 +11,12 @@ data class SearchCoursesRequest(
     val size: Int = 20,
     val sort: String = "ASC"
 ) {
-    fun toCommand(): SearchCoursesCommand {
-        return SearchCoursesCommand(
+    fun toQuery(): SearchCoursesQuery {
+        return SearchCoursesQuery(
             schoolId = schoolId,
             department = department,
             grade = grade,
-            q = q,
+            query = q,
             page = page,
             size = size,
             sort = sort

@@ -18,13 +18,13 @@ data class TimetableCreatedRequest(
     val isChapel: Boolean = false,
 
     @field:NotNull
-    val majorRequiredCourses: List<String>,
+    val majorRequiredCourses: List<Long>,
 
     @field:NotNull
-    val majorElectiveCourses: List<String>,
+    val majorElectiveCourses: List<Long>,
 
     @field:NotNull
-    val generalRequiredCourses: List<String>,
+    val generalRequiredCourses: List<Long>,
 
     @field:Range(min = 0, max = 22, message = "전선 희망 학점은 최대 22학점입니다.")
     val majorElectiveCredit: Int,
@@ -38,9 +38,9 @@ data class TimetableCreatedRequest(
             departmentName = department,
             grade = grade,
             isChapel = isChapel,
-            majorRequiredCourses = majorRequiredCourses.distinct(),
-            majorElectiveCourses = majorElectiveCourses.distinct(),
-            generalRequiredCourses = generalRequiredCourses.distinct(),
+            majorRequiredCourses = majorRequiredCourses,
+            majorElectiveCourses = majorElectiveCourses,
+            generalRequiredCourses = generalRequiredCourses,
             majorElectiveCredit = majorElectiveCredit,
             generalElectiveCredit = generalElectiveCredit,
         )

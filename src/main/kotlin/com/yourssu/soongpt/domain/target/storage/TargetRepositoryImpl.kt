@@ -1,44 +1,30 @@
 package com.yourssu.soongpt.domain.target.storage
 
-import com.querydsl.jpa.impl.JPAQueryFactory
-import com.yourssu.soongpt.domain.department.storage.QDepartmentEntity.departmentEntity
-import com.yourssu.soongpt.domain.departmentGrade.storage.QDepartmentGradeEntity.departmentGradeEntity
 import com.yourssu.soongpt.domain.target.implement.Target
 import com.yourssu.soongpt.domain.target.implement.TargetRepository
-import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 
-@Repository
-class TargetRepositoryImpl(
-    private val targetJpaRepository: TargetJpaRepository,
-    private val jpaQueryFactory: JPAQueryFactory,
+@Component
+class TargetRepositoryImpl (
+    val targetJpaRepository: TargetJpaRepository,
 ): TargetRepository {
-    override fun save(target: Target): Target {
-        return targetJpaRepository.save(TargetEntity.from(target))
-            .toDomain()
+    override fun findAllByCode(code: Long): List<Target> {
+        return listOf()
     }
 
-    override fun findAllByCourseId(courseId: Long): List<Target> {
-        return jpaQueryFactory.selectFrom(targetEntity)
-            .where(targetEntity.courseId.eq(courseId))
-            .fetch()
-            .map { it.toDomain() }
-    }
-
-    override fun findAllByCourseIdToDisplayName(courseId: Long): List<String> {
-        return jpaQueryFactory.select(departmentEntity.name, departmentGradeEntity.grade)
-            .from(targetEntity)
-            .innerJoin(departmentGradeEntity)
-            .on(targetEntity.departmentGradeId.eq(departmentGradeEntity.id))
-            .innerJoin(departmentEntity)
-            .on(departmentGradeEntity.departmentId.eq(departmentEntity.id))
-            .where(targetEntity.courseId.eq(courseId))
-            .fetch()
-            .map { "${it.get(departmentEntity.name)}${it.get(departmentGradeEntity.grade)}" }
-
+    override fun getByDepartmentAndGrade(
+        departmentId: Long,
+        grade: Int
+    ): Target {
+        return Target(
+            id = 1L,
+            departmentId = departmentId,
+            courseId = 1L,
+            grade = 1,
+        )
     }
 }
 
-interface TargetJpaRepository: JpaRepository<TargetEntity, Long> {
+interface TargetJpaRepository : JpaRepository<TargetEntity, Long> {
 }
