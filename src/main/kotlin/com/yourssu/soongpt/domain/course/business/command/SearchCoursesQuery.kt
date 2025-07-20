@@ -3,11 +3,11 @@ package com.yourssu.soongpt.domain.course.business.command
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
-class SearchCoursesCommand(
+class SearchCoursesQuery(
     val schoolId: Int,
     val department: String,
     val grade: Int,
-    val q: String,
+    val query: String,
     val page: Int,
     val size: Int,
     val sort: String,
@@ -17,6 +17,6 @@ class SearchCoursesCommand(
     }
 
     fun query(): String {
-        return q
+        return query
     }
 }

@@ -1,7 +1,6 @@
 package com.yourssu.soongpt.domain.course.application.dto
 
-import com.yourssu.soongpt.domain.course.business.FoundDepartmentCommand
-import com.yourssu.soongpt.domain.course.business.command.MajorRequiredCourseFoundCommand
+import com.yourssu.soongpt.domain.course.business.query.MajorRequiredCourseQuery
 import jakarta.validation.constraints.NotBlank
 import org.hibernate.validator.constraints.Range
 
@@ -14,21 +13,13 @@ data class MajorRequiredCourseRequest(
 
     val subDepartment: String? = null,
 
-    val field: String? = null,
-
     @Range(min = 1, max = 5, message = "학년은 1부터 5까지 가능합니다.")
     val grade: Int,
 ) {
-    fun toCommand(): FoundDepartmentCommand {
-        return FoundDepartmentCommand(
+    fun toQuery(): MajorRequiredCourseQuery {
+        return MajorRequiredCourseQuery(
             departmentName = department,
-            grade = grade,
-        )
-    }
-
-    fun toCommand2(): MajorRequiredCourseFoundCommand {
-        return MajorRequiredCourseFoundCommand(
-            departmentName = department,
+            subDepartmentName = subDepartment,
             grade = grade,
             schoolId = schoolId
         )

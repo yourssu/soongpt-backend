@@ -1,7 +1,7 @@
 package com.yourssu.soongpt.domain.course.application.dto
 
 import com.yourssu.soongpt.domain.course.business.FoundDepartmentCommand
-import com.yourssu.soongpt.domain.course.business.command.GeneralRequiredCourseFoundCommand
+import com.yourssu.soongpt.domain.course.business.query.GeneralRequiredCourseQuery
 import jakarta.validation.constraints.NotBlank
 import org.hibernate.validator.constraints.Range
 
@@ -22,8 +22,8 @@ data class GeneralRequiredCourseRequest(
         )
     }
 
-    fun toCommand2(): GeneralRequiredCourseFoundCommand {
-        return GeneralRequiredCourseFoundCommand(
+    fun toQuery(): GeneralRequiredCourseQuery {
+        return GeneralRequiredCourseQuery(
             departmentName = department,
             grade = grade,
             schoolId = schoolId,
