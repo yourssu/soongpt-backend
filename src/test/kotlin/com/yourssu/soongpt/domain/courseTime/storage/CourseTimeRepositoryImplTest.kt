@@ -3,7 +3,6 @@ package com.yourssu.soongpt.domain.courseTime.storage
 import com.yourssu.soongpt.common.support.config.ApplicationTest
 import com.yourssu.soongpt.common.support.fixture.CourseTimeFixture.MONDAY_17_19
 import com.yourssu.soongpt.common.support.fixture.CourseTimeFixture.TUESDAY_17_19
-import com.yourssu.soongpt.domain.courseTime.implement.CourseTimeRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
