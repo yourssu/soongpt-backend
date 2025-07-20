@@ -12,3 +12,7 @@
 
 [시간표 생성 (POST /api/timetables)](timetable/create_timetable.md)  
 [시간표 조회 (GET /api/timetables/{timetableId})](timetable/get_timetable_id.md)  
+
+## Contact
+
+[연락처 생성 (POST /api/contacts)](contact/create_contact.md)  
