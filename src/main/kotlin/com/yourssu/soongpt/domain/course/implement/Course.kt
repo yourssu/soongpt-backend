@@ -9,6 +9,7 @@ class Course(
     val name: String,
     val professor: String? = null,
     val department: String,
+    val division: String? = null,
     val time: String,
     val point: String,
     val personeel: Int,
