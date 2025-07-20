@@ -32,8 +32,8 @@ class CourseController(
         return ResponseEntity.ok().body(Response(result = response))
     }
 
-    @GetMapping("/general/elective")
-    fun getGeneralElectiveCourses(@Valid @ModelAttribute request: GeneralRequiredRequest): ResponseEntity<Response<List<GeneralRequiredResponse>>> {
+    @GetMapping("/general/required")
+    fun getGeneralRequiredCourses(@Valid @ModelAttribute request: GeneralRequiredRequest): ResponseEntity<Response<List<GeneralRequiredResponse>>> {
         val response = courseService.findAll(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
