@@ -1,14 +1,9 @@
 package com.yourssu.soongpt.domain.course.implement
 
-import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
+import com.yourssu.soongpt.domain.target.implement.Target
 
 interface CourseRepository {
-    fun findAllByDepartmentId(departmentId: Long, classification: Classification): List<Pair<Course, List<DepartmentGrade>>>
-    fun findAllByDepartmentGradeId(departmentGradeId: Long, classification: Classification): List<Course>
-    fun getAll(ids: List<Long>): List<Course>
-    fun findByDepartmentIdAndCourseName(departmentId: Long, courseName: String, classification: Classification): Courses
-    fun findByDepartmentGradeIdAndCourseName(departmentGradeId: Long, courseName: String, classification: Classification): Courses
-    fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course>
-    fun get(courseId: Long): Course
-    fun findAll(): Courses
+    fun get(code: Long): Course
+    fun getAll(codes: List<Long>): List<Course>
+    fun findAllByCategoryTarget(category: Category, target: Target): List<Course>
 }
