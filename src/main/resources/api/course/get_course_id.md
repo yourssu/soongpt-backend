@@ -1,38 +1,40 @@
-# getCourseId (GET /api/courses/{courseId})
+# getCourseByCode (GET /api/courses/{code})
 
 ## Request
 
-### Path Parameters
+### Path Variables
 
-| Name       | Type      | Required | Constraint |
-|------------|-----------|----------|------------|
-| `courseId` | integer[] | true     | @NotNull   |
+| Name   | Type    | Required | Constraint |
+|--------|---------|----------|------------|
+| `code` | integer | true     | @NotNull   |
 
 ## Reply
 
 ### Response Body
 
-| Name         | Type                 | Description                                        |
-|--------------|----------------------|----------------------------------------------------|
-| `course_id`  | integer              | Course Id for Databases                            |
-| `name`       | string               | Course name                                        |
-| `professor`  | string               | Name of the professor in charge                    |
-| `code`       | string               | Unique 10-digit course code                        |
-| `category`   | string               | Course category (e.g., GENERAL_ELECTIVE)           |
-| `credit`     | string               | Number of credits                                  |
-| `target`     | string               | Target students for the course                     |
-| `courseTime` | CourseTimeResponse[] | Array of course schedule and classroom information |
-| `field`      | string               | Curriculum field by admission year                 |
-
+| Name           | Type                 | Nullable | Description                                        |
+|----------------|----------------------|----------|----------------------------------------------------| 
+| `category`     | string               | No       | Course category                                    |
+| `subCategory`  | string               | Yes      | Course sub category                                |
+| `field`        | string               | Yes      | Curriculum field by admission year                 |
+| `code`         | integer              | No       | Unique course code identifier                      |
+| `name`         | string               | No       | Course name                                        |
+| `professor`    | string               | Yes      | Name of the professor in charge                    |
+| `department`   | string               | No       | Department                                         |
+| `timePoints`   | string               | No       | Time points information                            |
+| `personeel`    | string               | No       | Personnel information                              |
+| `scheduleRoom` | string               | No       | Schedule and room information                      |
+| `target`       | string               | No       | Target students for the course                     |
+| `courseTime`   | CourseTimeResponse[] | No       | Array of course schedule and classroom information |
 
 #### CourseTimeResponse
 
-| Name        | Type   | Description                                     |
-|-------------|--------|-------------------------------------------------|
-| `week`      | string | Day of the week (in Korean, e.g., 월 for Monday) |
-| `start`     | string | Start time of the class (in HH:mm format)       |
-| `end`       | string | End time of the class (in HH:mm format)         |
-| `classroom` | string | Classroom location                              |
+| Name        | Type   | Nullable | Description                                     |
+|-------------|--------|----------|-------------------------------------------------|
+| `week`      | string | No       | Day of the week (in Korean, e.g., 월 for Monday) |
+| `start`     | string | No       | Start time of the class (in HH:mm format)       |
+| `end`       | string | No       | End time of the class (in HH:mm format)         |
+| `classroom` | string | No       | Classroom location                              |
 
 ### 200 OK
 
@@ -41,12 +43,16 @@
   "timestamp": "2025-05-18 15:14:00",
   "result": [
     {
-      "courseId": 101,
+      "category": "전선-컴퓨터",
+      "subCategory": "복선-컴퓨터",
+      "field": null,
+      "code": 5678901234,
       "name": "컴퓨터미적분활용",
       "professor": "김민수",
-      "code": "5678901234",
-      "category": "MAJOR_ELECTIVE",
-      "credit": "3",
+      "department": "컴퓨터학부",
+      "timePoints": "3.0/3.0",
+      "personeel": "30",
+      "scheduleRoom": "월 09:00-10:15 (정보과학관 21001-김민수)\n수 09:00-10:15 (정보과학관 21001-김민수)",
       "target": "컴퓨터학부 1,2학년",
       "courseTime": [
         {
@@ -64,12 +70,16 @@
       ]
     },
     {
-      "courseId": 102,
+      "category": "전선-컴퓨터",
+      "subCategory": "복선-컴퓨터",
+      "field": null,
+      "code": 6789012345,
       "name": "컴퓨터학개론",
       "professor": "이수정",
-      "code": "6789012345",
-      "category": "MAJOR_ELECTIVE",
-      "credit": "3",
+      "department": "컴퓨터학부",
+      "timePoints": "3.0/3.0",
+      "personeel": "35",
+      "scheduleRoom": "화 13:30-14:45 (정보과학관 21002-이수정)\n목 13:30-14:45 (정보과학관 21002-이수정)",
       "target": "컴퓨터학부 전체",
       "courseTime": [
         {
