@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.course.application.dto
 
-import com.yourssu.soongpt.domain.course.business.command.SearchCoursesQuery
+import com.yourssu.soongpt.domain.course.business.query.SearchCoursesQuery
 
 data class SearchCoursesRequest(
     val schoolId: Int,
