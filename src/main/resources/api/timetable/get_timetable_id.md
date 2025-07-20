@@ -19,24 +19,29 @@
 
 ### Course
 
-| name           | type         | description                                                                          |
-|----------------|--------------|--------------------------------------------------------------------------------------|
-| courseName     | string       | Course name                                                                          |
-| professorName  | string       | Professor name                                                                       |
-| classification | string       | Course classification (e.g., MAJOR_REQUIRED, MAJOR_ELECTIVE, GENERAL_REQUIRED, etc.) |
-| courseCode     | integer      | Course code                                                                          |
-| credit         | integer      | Number of credits                                                                    |
-| target         | string       | Target grade/department                                                              |
-| courseTime     | CourseTime[] | Course schedule information                                                          |
+| Name           | Type                 | Nullable | Description                                        |
+|----------------|----------------------|----------|----------------------------------------------------| 
+| `category`     | string               | No       | Course category                                    |
+| `subCategory`  | string               | Yes      | Course sub category                                |
+| `field`        | string               | Yes      | Curriculum field by admission year                 |
+| `code`         | integer              | No       | Unique course code identifier                      |
+| `name`         | string               | No       | Course name                                        |
+| `professor`    | string               | Yes      | Name of the professor in charge                    |
+| `department`   | string               | No       | Department                                         |
+| `timePoints`   | string               | No       | Time points information                            |
+| `personeel`    | integer              | No       | Personnel information                              |
+| `scheduleRoom` | string               | No       | Schedule and room information                      |
+| `target`       | string               | No       | Target students for the course                     |
+| `courseTime`   | CourseTimeResponse[] | No       | Array of course schedule and classroom information |
 
-### CourseTime
+#### CourseTimeResponse
 
-| name      | type   | description                          |
-|-----------|--------|--------------------------------------|
-| week      | string | Day of the week (e.g., 월 for Monday) |
-| start     | string | Start time (HH:mm)                   |
-| end       | string | End time (HH:mm)                     |
-| classroom | string | Classroom location                   |
+| Name        | Type   | Nullable | Description                                     |
+|-------------|--------|----------|-------------------------------------------------|
+| `week`      | string | No       | Day of the week (in Korean, e.g., 월 for Monday) |
+| `start`     | string | No       | Start time of the class (in HH:mm format)       |
+| `end`       | string | No       | End time of the class (in HH:mm format)         |
+| `classroom` | string | No       | Classroom location                              |
 
 ---
 
@@ -51,11 +56,16 @@
     "score": 155,
     "courses": [
       {
-        "courseName": "컴퓨터구조",
-        "professorName": "홍길동",
-        "classification": "MAJOR_REQUIRED",
-        "courseCode": 12345,
-        "credit": 3,
+        "category": "전필-컴퓨터",
+        "subCategory": null,
+        "field": null,
+        "code": 12345,
+        "name": "컴퓨터구조",
+        "professor": "홍길동",
+        "department": "컴퓨터학부",
+        "timePoints": "3.0/3.0",
+        "personeel": 40,
+        "scheduleRoom": "월 19:00-21:00 (공학관 1004호-홍길동)",
         "target": "컴퓨터공학과 2학년",
         "courseTime": [
           {
@@ -67,11 +77,16 @@
         ]
       },
       {
-        "courseName": "자료구조",
-        "professorName": "이몽룡",
-        "classification": "MAJOR_ELECTIVE",
-        "courseCode": 123456,
-        "credit": 3,
+        "category": "전선-컴퓨터",
+        "subCategory": "복선-컴퓨터",
+        "field": null,
+        "code": 123456,
+        "name": "자료구조",
+        "professor": "이몽룡",
+        "department": "컴퓨터학부",
+        "timePoints": "3.0/3.0",
+        "personeel": 35,
+        "scheduleRoom": "화 15:00-17:00 (공학관 1003호-이몽룡)",
         "target": "컴퓨터공학과 2학년",
         "courseTime": [
           {
@@ -83,11 +98,16 @@
         ]
       },
       {
-        "courseName": "영어회화",
-        "professorName": "성춘향",
-        "classification": "GENERAL_REQUIRED",
-        "courseCode": 1234567,
-        "credit": 3,
+        "category": "전필-교양",
+        "subCategory": null,
+        "field": "['23 이후] 언어·문학\n['20,'21~'22] 창의/융합, 균형교양-언어·문학\n['19] 균형교양-언어/문학\n['16-'18] 기초역량(언어소통-한국어)\n['15 이전] 언어와문학",
+        "code": 1234567,
+        "name": "영어회화",
+        "professor": "성춘향",
+        "department": "교육과정혁신팀",
+        "timePoints": "3.0/3.0",
+        "personeel": 25,
+        "scheduleRoom": "수 10:00-12:00 (인문관 201호-성춘향)",
         "target": "전체",
         "courseTime": [
           {
