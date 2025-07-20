@@ -7,7 +7,9 @@ import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.target.implement.Target
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.stereotype.Component
 
+@Component
 class CourseRepositoryImpl(
     private val courseJpaRepository: CourseJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
