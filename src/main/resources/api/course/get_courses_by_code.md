@@ -21,7 +21,9 @@
 | `name`         | string               | No       | Course name                                        |
 | `professor`    | string               | Yes      | Name of the professor in charge                    |
 | `department`   | string               | No       | Department                                         |
-| `timePoints`   | string               | No       | time / point information                           |
+| `division`     | string               | Yes      | Course division                                    |
+| `time`         | string               | No       | Course time information                            |
+| `point`        | string               | No       | Course point information                           |
 | `personeel`    | integer              | No       | Personnel information                              |
 | `scheduleRoom` | string               | No       | Schedule and room information                      |
 | `target`       | string               | No       | Target students for the course                     |
@@ -45,12 +47,14 @@
     {
       "category": "전선-컴퓨터",
       "subCategory": "복선-컴퓨터",
-      "field": null,
+      "field": "과학·기술",
       "code": 5678901234,
       "name": "컴퓨터미적분활용",
       "professor": "김민수",
       "department": "컴퓨터학부",
-      "timePoints": "3.0/3.0",
+      "division": "01분반",
+      "time": "3.0",
+      "point": "3.0",
       "personeel": "30",
       "scheduleRoom": "월 09:00-10:15 (정보과학관 21001-김민수)\n수 09:00-10:15 (정보과학관 21001-김민수)",
       "target": "컴퓨터학부 1,2학년",
@@ -77,7 +81,9 @@
       "name": "컴퓨터학개론",
       "professor": "이수정",
       "department": "컴퓨터학부",
-      "timePoints": "3.0/3.0",
+      "division": "01분반",
+      "time": "3.0",
+      "point": "3.0",
       "personeel": "35",
       "scheduleRoom": "화 13:30-14:45 (정보과학관 21002-이수정)\n목 13:30-14:45 (정보과학관 21002-이수정)",
       "target": "컴퓨터학부 전체",
