@@ -1,4 +1,4 @@
-# searchCourse (GET /api/v2/courses/search)
+# searchCourse (GET /api/courses/search)
 
 ## Request
 
