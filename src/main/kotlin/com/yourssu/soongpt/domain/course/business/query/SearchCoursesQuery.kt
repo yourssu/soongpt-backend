@@ -5,9 +5,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 
 class SearchCoursesQuery(
-    val schoolId: Int,
-    val department: String,
-    val grade: Int,
     val query: String,
     val page: Int,
     val size: Int,
