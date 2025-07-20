@@ -2,10 +2,8 @@ package com.yourssu.soongpt.domain.course.business.dto
 
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
-import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
 
-data class CourseResponse(
-    val id: Long? = null,
+data class MajorRequiredResponse(
     val category: Category,
     val subCategory: String? = null,
     val field: String? = null,
@@ -17,15 +15,12 @@ data class CourseResponse(
     val personeel: Int,
     val scheduleRoom: String,
     val target: String,
-    val courseTimes: List<CourseTime> = listOf(),
 ) {
     companion object {
         fun from(
             course: Course,
-            courseTimes: List<CourseTime>,
-        ): CourseResponse {
-            return CourseResponse(
-                id = course.id,
+        ): MajorRequiredResponse {
+            return MajorRequiredResponse(
                 category = course.category,
                 subCategory = course.subCategory,
                 field = course.field,
@@ -37,7 +32,6 @@ data class CourseResponse(
                 personeel = course.personeel,
                 scheduleRoom = course.scheduleRoom,
                 target = course.target,
-                courseTimes = courseTimes,
             )
         }
     }

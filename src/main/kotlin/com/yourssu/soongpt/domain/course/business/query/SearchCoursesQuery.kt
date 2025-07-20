@@ -1,7 +1,8 @@
-package com.yourssu.soongpt.domain.course.business.command
+package com.yourssu.soongpt.domain.course.business.query
 
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 
 class SearchCoursesQuery(
     val schoolId: Int,
@@ -13,7 +14,7 @@ class SearchCoursesQuery(
     val sort: String,
 ) {
     fun toPageable(): Pageable {
-        return PageRequest.of(page, size, org.springframework.data.domain.Sort.by(sort))
+        return PageRequest.of(page, size, Sort.by(sort))
     }
 
     fun query(): String {
