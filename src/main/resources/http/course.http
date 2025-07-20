@@ -1,31 +1,38 @@
-@schoolId = 21
-@department = 소프트웨어학부
-@grade = 3
+### Get Courses by Code - Single Course
+GET {{host}}/api/courses?code=1234567890
 
-// 전공 필수 과목 조회
-###
-GET {{host}}/api/v2/courses/major/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
-Content-Type: application/x-www-form-urlencoded
-###
+### Get Courses by Code - Multiple Courses
+GET {{host}}/api/courses?code=1234567890&code=2345678901&code=3456789012
 
-// 전공 선택 과목 조회
-###
-GET {{host}}/api/courses/major/elective?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
-Content-Type: application/x-www-form-urlencoded
-###
+### Get General Required Courses
+GET {{host}}/api/courses/general/required?schoolId=20&department=컴퓨터학부&grade=2&field=과학·기술
 
-// 교양 필수 과목 조회
-###
-GET {{host}}/api/courses/general/required?schoolId={{schoolId}}&department={{department}}&grade={{grade}}
-Content-Type: application/x-www-form-urlencoded
-###
+### Get General Required Courses - With Sub Department
+GET {{host}}/api/courses/general/required?schoolId=21&department=전자정보공학부&subDepartment=IT융합&grade=1
 
-// 과목 단일 조회
-###
-GET {{host}}/api/courses?courseId=2709,2710
-###
+### Get Major Required Courses
+GET {{host}}/api/courses/major/required?schoolId=20&department=컴퓨터학부&grade=2
 
-// 과목 검색
-###
-GET {{host}}/api/v2/courses/search?schoolId={{schoolId}}&department={{department}}&grade={{grade}}&q=컴퓨터&page=0&size=20
-###
+### Get Major Required Courses - With Sub Department
+GET {{host}}/api/courses/major/required?schoolId=21&department=전자정보공학부&subDepartment=전자공학&grade=3
+
+### Get Major Elective Courses
+GET {{host}}/api/courses/major/elective?schoolId=20&department=컴퓨터학부&grade=3
+
+### Get Major Elective Courses - With Sub Department
+GET {{host}}/api/courses/major/elective?schoolId=21&department=전자정보공학부&subDepartment=IT융합&grade=4
+
+### Search Courses - Default Parameters
+GET {{host}}/api/courses/search
+
+### Search Courses - With Keyword
+GET {{host}}/api/courses/search?q=컴퓨터
+
+### Search Courses - With Pagination
+GET {{host}}/api/courses/search?q=물리&page=0&size=10
+
+### Search Courses - With Sort
+GET {{host}}/api/courses/search?q=데이터베이스&sort=ASC&page=1&size=5
+
+### Search Courses - Full Parameters
+GET {{host}}/api/courses/search?q=프로그래밍&page=0&size=20&sort=DESC
