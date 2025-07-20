@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.courseTime.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
 import com.yourssu.soongpt.domain.courseTime.implement.Time
 import com.yourssu.soongpt.domain.courseTime.implement.Week
@@ -27,7 +28,7 @@ class CourseTimeEntity (
 
     @Column(nullable = false)
     val courseId: Long,
-    ) {
+    ) : BaseEntity() {
     companion object {
         fun from(courseTime: CourseTime) = CourseTimeEntity(
             id = courseTime.id,

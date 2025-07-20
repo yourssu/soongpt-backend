@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.department.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.department.implement.Department
 import jakarta.persistence.*
 
@@ -15,7 +16,7 @@ class DepartmentEntity(
 
     @Column(nullable = false)
     val collegeId: Long,
-) {
+) : BaseEntity() {
     companion object {
         fun from(department: Department) = DepartmentEntity(
             id = department.id,

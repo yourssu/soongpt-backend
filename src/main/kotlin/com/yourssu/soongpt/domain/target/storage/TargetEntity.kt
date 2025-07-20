@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.target.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.target.implement.Target
 import jakarta.persistence.*
 
@@ -15,7 +16,7 @@ class TargetEntity(
 
     @Column(nullable = false)
     val courseId: Long,
-) {
+) : BaseEntity() {
     companion object {
         fun from(target: Target) = TargetEntity(
             id = target.id,

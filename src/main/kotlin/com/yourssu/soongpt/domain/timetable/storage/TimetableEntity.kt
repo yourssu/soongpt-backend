@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.timetable.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.timetable.implement.Tag
 import com.yourssu.soongpt.domain.timetable.implement.Timetable
 import jakarta.persistence.*
@@ -14,7 +15,7 @@ class TimetableEntity(
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     val tag: Tag,
-) {
+) : BaseEntity() {
     companion object {
         fun from(timetable: Timetable): TimetableEntity {
             return TimetableEntity(
