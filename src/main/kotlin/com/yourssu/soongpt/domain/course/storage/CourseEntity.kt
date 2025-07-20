@@ -22,7 +22,7 @@ class CourseEntity(
     val field: String? = null,
 
     @Column(nullable = true, unique = true)
-    val code: Int,
+    val code: Long,
 
     @Column(nullable = false)
     val name: String,
@@ -66,7 +66,7 @@ class CourseEntity(
     }
 
 
-    fun to(): Course {
+    fun toDomain(): Course {
         return Course(
             id = id,
             category = category,

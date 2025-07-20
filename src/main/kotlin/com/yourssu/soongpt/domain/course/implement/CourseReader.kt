@@ -1,28 +1,21 @@
 package com.yourssu.soongpt.domain.course.implement
 
-import com.yourssu.soongpt.domain.course.implement.dto.SearchCourseDto
-import com.yourssu.soongpt.domain.department.implement.Department
-import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
-import org.springframework.data.domain.Pageable
+import com.yourssu.soongpt.domain.target.implement.Target
 import org.springframework.stereotype.Component
 
 @Component
 class CourseReader(
-    private val jsonCourseRepository: JsonCourseRepository,
-) {
-    fun findAllByDepartmentGradeInMajorRequired(department: Department, grade: DepartmentGrade): List<Course> {
-        return jsonCourseRepository.findAllByDepartmentAndGrade(department, grade, Category.MAJOR_REQUIRED)
+    private val courseRepository: CourseRepository,
+)  {
+    fun findAllByTargetInMajorRequired(target: Target): List<Course> {
+        return courseRepository.findAllByCategoryTarget(Category.MAJOR_REQUIRED, target)
     }
 
-    fun findAllByDepartmentGradeInMajorElective(department: Department, grade: DepartmentGrade): List<Course> {
-        return jsonCourseRepository.findAllByDepartmentAndGrade(department, grade, Category.MAJOR_ELECTIVE)
+    fun findAllByTargetInMajorElective(target: Target): List<Course> {
+        return courseRepository.findAllByCategoryTarget(Category.MAJOR_ELECTIVE, target)
     }
 
-    fun findAllByDepartmentGradeInGeneralRequired(department: Department, grade: DepartmentGrade): List<Course> {
-        return jsonCourseRepository.findAllByDepartmentAndGrade(department, grade, Category.GENERAL_REQUIRED)
-    }
-
-    fun search(query: String, pageable: Pageable): SearchCourseDto {
-        return jsonCourseRepository.search(query, pageable)
+    fun findAllByTargetInGeneralRequired(target: Target): List<Course> {
+        return courseRepository.findAllByCategoryTarget(Category.GENERAL_REQUIRED, target)
     }
 }

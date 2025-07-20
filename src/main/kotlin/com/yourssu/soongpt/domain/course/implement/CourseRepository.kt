@@ -4,6 +4,6 @@ import com.yourssu.soongpt.domain.target.implement.Target
 
 interface CourseRepository {
     fun get(code: Long): Course
-    fun getAll(code: List<Long>): List<Course>
-    fun findTargetsByCourseId(courseId: Long): List<Target>
+    fun getAll(codes: List<Long>): List<Course>
+    fun findAllByCategoryTarget(category: Category, target: Target): List<Course>
 }

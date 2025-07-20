@@ -22,19 +22,19 @@ class CourseController(
 ) {
     @GetMapping("/major/required")
     fun getMajorRequiredCourses(@Valid @ModelAttribute request: MajorRequiredRequest): ResponseEntity<Response<List<MajorRequiredResponse>>> {
-        val response = courseService.findAllByDepartmentNameAndGrade(request.toQuery())
+        val response = courseService.findAll(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 
     @GetMapping("/major/elective")
     fun getMajorElectiveCourses(@Valid @ModelAttribute request: MajorElectiveRequest): ResponseEntity<Response<List<MajorElectiveResponse>>> {
-        val response = courseService.findAllByDepartmentNameAndGrade(request.toQuery())
+        val response = courseService.findAll(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 
     @GetMapping("/general/elective")
     fun getGeneralElectiveCourses(@Valid @ModelAttribute request: GeneralRequiredRequest): ResponseEntity<Response<List<GeneralRequiredResponse>>> {
-        val response = courseService.findAllByDepartmentNameAndGrade(request.toQuery())
+        val response = courseService.findAll(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 
