@@ -1,12 +1,12 @@
-# getCourseByCode (GET /api/courses/{code})
+# getCoursesByCode (GET /api/courses})
 
 ## Request
 
-### Path Variables
+### Query Parameters
 
-| Name   | Type    | Required | Constraint |
-|--------|---------|----------|------------|
-| `code` | integer | true     | @NotNull   |
+| Name   | Type      | Required | Constraint |
+|--------|-----------|----------|------------|
+| `code` | integer[] | true     | @NotNull   |
 
 ## Reply
 
@@ -21,8 +21,8 @@
 | `name`         | string               | No       | Course name                                        |
 | `professor`    | string               | Yes      | Name of the professor in charge                    |
 | `department`   | string               | No       | Department                                         |
-| `timePoints`   | string               | No       | Time points information                            |
-| `personeel`    | string               | No       | Personnel information                              |
+| `timePoints`   | string               | No       | time / point information                           |
+| `personeel`    | integer              | No       | Personnel information                              |
 | `scheduleRoom` | string               | No       | Schedule and room information                      |
 | `target`       | string               | No       | Target students for the course                     |
 | `courseTime`   | CourseTimeResponse[] | No       | Array of course schedule and classroom information |
