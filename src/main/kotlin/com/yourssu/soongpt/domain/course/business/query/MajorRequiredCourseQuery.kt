@@ -1,6 +1,6 @@
-package com.yourssu.soongpt.domain.course.business.command
+package com.yourssu.soongpt.domain.course.business.query
 
-class GeneralRequiredCourseFoundCommand(
+class MajorRequiredCourseQuery(
     val departmentName: String,
     val subDepartmentName: String? = null,
     val grade: Int,

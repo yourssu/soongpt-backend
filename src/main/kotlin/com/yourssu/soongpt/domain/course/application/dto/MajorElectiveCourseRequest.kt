@@ -1,7 +1,7 @@
 package com.yourssu.soongpt.domain.course.application.dto
 
 import com.yourssu.soongpt.domain.course.business.FoundDepartmentCommand
-import com.yourssu.soongpt.domain.course.business.command.MajorElectiveCourseFoundCommand
+import com.yourssu.soongpt.domain.course.business.query.MajorElectiveCourseQuery
 import jakarta.validation.constraints.NotBlank
 import org.hibernate.validator.constraints.Range
 
@@ -24,8 +24,8 @@ data class MajorElectiveCourseRequest(
         )
     }
 
-    fun toCommand2(): MajorElectiveCourseFoundCommand {
-        return MajorElectiveCourseFoundCommand(
+    fun toQuery(): MajorElectiveCourseQuery {
+        return MajorElectiveCourseQuery(
             departmentName = department,
             grade = grade,
             schoolId = schoolId,
