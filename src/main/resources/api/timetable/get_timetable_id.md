@@ -28,7 +28,9 @@
 | `name`         | string               | No       | Course name                                        |
 | `professor`    | string               | Yes      | Name of the professor in charge                    |
 | `department`   | string               | No       | Department                                         |
-| `timePoints`   | string               | No       | Time points information                            |
+| `division`     | string               | Yes      | Course division                                    |
+| `time`         | string               | No       | Course time information                            |
+| `point`        | string               | No       | Course point information                           |
 | `personeel`    | integer              | No       | Personnel information                              |
 | `scheduleRoom` | string               | No       | Schedule and room information                      |
 | `target`       | string               | No       | Target students for the course                     |
@@ -63,7 +65,9 @@
         "name": "컴퓨터구조",
         "professor": "홍길동",
         "department": "컴퓨터학부",
-        "timePoints": "3.0/3.0",
+        "division": "(가)분반",
+        "time": "3.0",
+        "point": "3.0",
         "personeel": 40,
         "scheduleRoom": "월 19:00-21:00 (공학관 1004호-홍길동)",
         "target": "컴퓨터공학과 2학년",
@@ -84,7 +88,9 @@
         "name": "자료구조",
         "professor": "이몽룡",
         "department": "컴퓨터학부",
-        "timePoints": "3.0/3.0",
+        "division": "(나)분반",
+        "time": "3.0",
+        "point": "3.0",
         "personeel": 35,
         "scheduleRoom": "화 15:00-17:00 (공학관 1003호-이몽룡)",
         "target": "컴퓨터공학과 2학년",
@@ -100,12 +106,14 @@
       {
         "category": "전필-교양",
         "subCategory": null,
-        "field": "['23 이후] 언어·문학\n['20,'21~'22] 창의/융합, 균형교양-언어·문학\n['19] 균형교양-언어/문학\n['16-'18] 기초역량(언어소통-한국어)\n['15 이전] 언어와문학",
+        "field": "과학·기술",
         "code": 1234567,
         "name": "영어회화",
         "professor": "성춘향",
         "department": "교육과정혁신팀",
-        "timePoints": "3.0/3.0",
+        "division": null,
+        "time": "3.0",
+        "point": "3.0",
         "personeel": 25,
         "scheduleRoom": "수 10:00-12:00 (인문관 201호-성춘향)",
         "target": "전체",

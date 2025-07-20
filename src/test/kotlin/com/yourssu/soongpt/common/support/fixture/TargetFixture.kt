@@ -7,7 +7,7 @@ enum class TargetFixture {
 
     fun toDomain(departmentGradeId: Long, courseId: Long): Target {
         return Target(
-            departmentGradeId = departmentGradeId,
+            departmentId = departmentGradeId,
             courseId = courseId,
         )
     }

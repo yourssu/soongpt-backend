@@ -1,12 +1,12 @@
 package com.yourssu.soongpt.domain.timetable.business.dto
 
-data class TimetableCreatedCommand(
+class TimetableCreatedCommand(
     val departmentName: String,
     val grade: Int,
     val isChapel: Boolean,
-    val majorRequiredCourses: List<String>,
-    val majorElectiveCourses: List<String>,
-    val generalRequiredCourses: List<String>,
+    val majorRequiredCourses: List<Long>,
+    val majorElectiveCourses: List<Long>,
+    val generalRequiredCourses: List<Long>,
     val majorElectiveCredit: Int,
     val generalElectiveCredit: Int,
 ) {
