@@ -18,31 +18,30 @@ data class TimetableCreatedRequest(
     val isChapel: Boolean = false,
 
     @field:NotNull
-    val majorRequiredCourses: List<Long>,
+    val majorRequiredCodes: List<Long>,
 
     @field:NotNull
-    val majorElectiveCourses: List<Long>,
+    val majorElectiveCodes: List<Long>,
 
     @field:NotNull
-    val generalRequiredCourses: List<Long>,
+    val generalRequiredCodes: List<Long>,
 
-    @field:Range(min = 0, max = 22, message = "전선 희망 학점은 최대 22학점입니다.")
-    val majorElectiveCredit: Int,
-
+    @field:NotNull
+    val codes: List<Long>,
 
     @field:Range(min = 0, max = 22, message = "교선 희망 학점은 최대 22학점입니다.")
-    val generalElectiveCredit: Int
+    val generalElectivePoint: Int
 ) {
     fun toCommand(): TimetableCreatedCommand {
         return TimetableCreatedCommand(
             departmentName = department,
             grade = grade,
             isChapel = isChapel,
-            majorRequiredCourses = majorRequiredCourses,
-            majorElectiveCourses = majorElectiveCourses,
-            generalRequiredCourses = generalRequiredCourses,
-            majorElectiveCredit = majorElectiveCredit,
-            generalElectiveCredit = generalElectiveCredit,
+            majorRequiredCodes = majorRequiredCodes,
+            majorElectiveCodes = majorElectiveCodes,
+            generalRequiredCodes = generalRequiredCodes,
+            codes = codes,
+            generalElectivePoint = generalElectivePoint,
         )
     }
 }
