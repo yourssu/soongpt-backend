@@ -4,12 +4,10 @@ import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.course.application.dto.GeneralRequiredCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorElectiveCourseRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorRequiredCourseRequest
-import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.GeneralRequiredCourseResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorElectiveCourseResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorRequiredCourseResponse
-import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,25 +22,26 @@ class CourseController(
 ) {
     @GetMapping("/major/required")
     fun getMajorRequiredCourses(@Valid @ModelAttribute request: MajorRequiredCourseRequest): ResponseEntity<Response<List<MajorRequiredCourseResponse>>> {
-        val response = courseService.findAllByDepartmentNameAndGrade(request.toCommand2())
+        val response = courseService.findAllByDepartmentNameAndGrade(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 
     @GetMapping("/major/elective")
     fun getMajorElectiveCourses(@Valid @ModelAttribute request: MajorElectiveCourseRequest): ResponseEntity<Response<List<MajorElectiveCourseResponse>>> {
-        val response = courseService.findAllByDepartmentNameAndGrade(request.toCommand2())
+        val response = courseService.findAllByDepartmentNameAndGrade(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 
     @GetMapping("/general/elective")
     fun getGeneralElectiveCourses(@Valid @ModelAttribute request: GeneralRequiredCourseRequest): ResponseEntity<Response<List<GeneralRequiredCourseResponse>>> {
-        val response = courseService.findAllByDepartmentNameAndGrade(request.toCommand2())
+        val response = courseService.findAllByDepartmentNameAndGrade(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 
-    @GetMapping("/search")
-    fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
-        val response = courseService.search(request.toCommand())
-        return ResponseEntity.ok().body(Response(result = response))
-    }
+//    // TODO: 검색 기능 구현
+//    @GetMapping("/search")
+//    fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
+//        val response = courseService.search(request.toCommand())
+//        return ResponseEntity.ok().body(Response(result = response))
+//    }
 }

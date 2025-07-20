@@ -5,7 +5,7 @@ class Course(
     val category: Category,
     val subCategory: String? = null,
     val field: String? = null,
-    val code: Int,
+    val code: Long,
     val name: String,
     val professor: String? = null,
     val department: String,
