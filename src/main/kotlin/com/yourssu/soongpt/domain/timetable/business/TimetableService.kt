@@ -18,8 +18,6 @@ class TimetableService(
         return TimetableResponse(
             timetableId = id,
             tag = "Sample Tag",
-            score = null,
-            totalPoint = 0,
             courses = listOf()
         )
     }
