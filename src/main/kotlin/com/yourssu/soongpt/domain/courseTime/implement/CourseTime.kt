@@ -8,7 +8,6 @@ class CourseTime(
     val startTime: Time,
     val endTime: Time,
     val classroom: String? = null,
-    val courseId: Long,
 ) {
     init {
         if (startTime.isOverThan(endTime)) {

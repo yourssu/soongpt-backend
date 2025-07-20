@@ -1,7 +1,6 @@
 package com.yourssu.soongpt.common.support.fixture
 
 import com.yourssu.soongpt.domain.course.implement.Classification
-import com.yourssu.soongpt.domain.course.implement.Course
 
 enum class CourseFixture(
     val courseName: String,

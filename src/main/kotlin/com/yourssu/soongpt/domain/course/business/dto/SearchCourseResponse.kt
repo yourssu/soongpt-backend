@@ -1,31 +1,39 @@
 package com.yourssu.soongpt.domain.course.business.dto
 
-import com.yourssu.soongpt.domain.course.implement.Course2
-import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
+import com.yourssu.soongpt.domain.course.implement.Category
+import com.yourssu.soongpt.domain.course.implement.Course
 
 data class SearchCourseResponse(
+    val id: Long? = null,
+    val category: Category,
+    val subCategory: String? = null,
+    val field: String? = null,
+    val code: Long,
     val name: String,
-    val professor: String?,
-    val code: Int?,
-    val category: String,
-    val credit: Int,
+    val professor: String? = null,
+    val department: String,
+    val timePoints: String,
+    val personeel: Int,
+    val scheduleRoom: String,
     val target: String,
-    val field: String?,
-    val courseTime: List<CourseTimeResponse>,
 ) {
     companion object {
         fun from(
-            course: Course2,
+            course: Course,
         ): SearchCourseResponse {
             return SearchCourseResponse(
-                name = course.courseName,
-                professor = course.professorName,
-                code = course.courseCode,
-                category = course.category.name,
-                credit = course.credit,
-                target = course.target,
+                id = course.id,
+                category = course.category,
+                subCategory = course.subCategory,
                 field = course.field,
-                courseTime = course.courseTime.map { CourseTimeResponse.from(it) }
+                code = course.code,
+                name = course.name,
+                professor = course.professor,
+                department = course.department,
+                timePoints = course.timePoints,
+                personeel = course.personeel,
+                scheduleRoom = course.scheduleRoom,
+                target = course.target,
             )
         }
     }
