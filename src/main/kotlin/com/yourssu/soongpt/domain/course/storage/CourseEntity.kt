@@ -34,7 +34,10 @@ class CourseEntity(
     val department: String,
 
     @Column(nullable = false)
-    val timePoints: String,
+    val time: String,
+
+    @Column(nullable = false)
+    val point: String,
 
     @Column(nullable = false)
     val personeel: Int,
@@ -57,7 +60,8 @@ class CourseEntity(
                 name = course.name,
                 professor = course.professor,
                 department = course.department,
-                timePoints = course.timePoints,
+                time = course.time,
+                point = course.point,
                 personeel = 0,
                 scheduleRoom = course.scheduleRoom,
                 target = course.target,
@@ -76,7 +80,8 @@ class CourseEntity(
             name = name,
             professor = professor,
             department = department,
-            timePoints = timePoints,
+            time = time,
+            point = point,
             personeel = personeel,
             scheduleRoom = scheduleRoom,
             target = target
