@@ -4,21 +4,22 @@
 
 ### Request Body
 
-| Name                     | Type     | Required | Constraint                 |
-|--------------------------|----------|----------|----------------------------|
-| `schoolId`               | integer  | true     | @Range(min = 15, max = 25) |
-| `department`             | string   | true     | @NotBlank                  |
-| `subDepartment`          | string   | false    |                            |
-| `grade`                  | integer  | true     | @Range(min = 1, max = 5)   |
-| `isChapel`               | boolean  | false    | default: false             |
-| `majorRequiredCourses`   | string[] | true     | @NotNull                   |
-| `majorElectiveCourses`   | string[] | true     | @NotNull                   |
-| `generalRequiredCourses` | string[] | true     | @NotNull                   |
-| `majorElectiveCredit`    | integer  | true     | @Range(min = 0, max = 22)  |
-| `generalElectiveCredit`  | integer  | true     | @Range(min = 0, max = 22)  |
+| Name                    | Type      | Required | Constraint                 |
+|-------------------------|-----------|----------|----------------------------|
+| `schoolId`              | integer   | true     | @Range(min = 15, max = 25) |
+| `department`            | string    | true     | @NotBlank                  |
+| `subDepartment`         | string    | false    |                            |
+| `grade`                 | integer   | true     | @Range(min = 1, max = 5)   |
+| `isChapel`              | boolean   | false    | default: false             |
+| `majorRequiredCodes`    | integer[] | true     | @NotNull                   |
+| `majorRequiredCodes`    | integer[] | true     | @NotNull                   |
+| `majorRequiredCodes`    | integer[] | true     | @NotNull                   |
+| `majorElectiveCredit`   | integer   | true     | @Range(min = 0, max = 22)  |
+| `generalElectiveCredit` | integer   | true     | @Range(min = 0, max = 22)  |
 
 **Global Constraint:**  
-The sum of points from selected major required, general required courses, and desired major/general elective points must be less than 23.
+The sum of points from selected major required, general required courses, and desired major/general elective points must
+be less than 23.
 
 ---
 
@@ -70,14 +71,14 @@ The sum of points from selected major required, general required courses, and de
 
 Each timetable will have one of the following tags:
 
-| Tag                      | Description                    |
-|--------------------------|--------------------------------|
-| `DEFAULT`                | 기본 태그                       |
-| `NO_MORNING_CLASSES`     | 아침 수업이 없는 시간표          |
-| `HAS_FREE_DAY`           | 공강 날이 있는 시간표            |
-| `NO_LONG_BREAKS`         | 우주 공강이 없는 시간표          |
-| `GUARANTEED_LUNCH_TIME`  | 점심시간 보장되는 시간표         |
-| `NO_EVENING_CLASSES`     | 저녁수업이 없는 시간표           |
+| Tag                     | Description   |
+|-------------------------|---------------|
+| `DEFAULT`               | 기본 태그         |
+| `NO_MORNING_CLASSES`    | 아침 수업이 없는 시간표 |
+| `HAS_FREE_DAY`          | 공강 날이 있는 시간표  |
+| `NO_LONG_BREAKS`        | 우주 공강이 없는 시간표 |
+| `GUARANTEED_LUNCH_TIME` | 점심시간 보장되는 시간표 |
+| `NO_EVENING_CLASSES`    | 저녁수업이 없는 시간표  |
 
 ---
 
