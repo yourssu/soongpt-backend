@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.rating.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.rating.implement.Rating
 import jakarta.persistence.*
 
@@ -21,7 +22,7 @@ class RatingEntity(
 
     @Column(name = "point", nullable = false)
     val point: Double,
-) {
+) : BaseEntity() {
     companion object {
         fun from(rating: Rating): RatingEntity {
             return RatingEntity(

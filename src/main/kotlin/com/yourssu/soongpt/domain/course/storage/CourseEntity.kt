@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.course.implement.Classification
 import com.yourssu.soongpt.domain.course.implement.Course
 import jakarta.persistence.*
@@ -26,7 +27,7 @@ class CourseEntity(
 
     @Column(nullable = false)
     val credit: Int,
-) {
+) : BaseEntity() {
     companion object {
         fun from(course: Course) = CourseEntity(
             id = course.id,

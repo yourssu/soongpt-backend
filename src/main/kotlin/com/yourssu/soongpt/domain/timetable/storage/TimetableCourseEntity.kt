@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.timetable.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.timetable.implement.TimetableCourse
 import jakarta.persistence.*
 
@@ -15,7 +16,7 @@ class TimetableCourseEntity(
 
     @Column(nullable = false)
     val courseId: Long,
-) {
+) : BaseEntity() {
     companion object {
         fun from(timetableCourse: TimetableCourse): TimetableCourseEntity {
             return TimetableCourseEntity(
