@@ -3,8 +3,8 @@ package com.yourssu.soongpt.domain.timetable.business.dto
 data class TimetableResponse(
     val timetableId: Long,
     val tag: String,
-    val score: Int? = null,
-    val totalPoint: Int,
+    val score: Int = 0,
+    val totalPoint: Double = 0.0,
     val courses: List<TimetableCourseResponse>,
 ) {
     companion object {
