@@ -65,6 +65,18 @@ def append_or_create_file(filename, content):
 last_checked_line = dict()
 
 
+def process_line_with_handlers(line, handlers):
+    for prefix, handler_func in handlers.items():
+        if prefix in line:
+            try:
+                handler_func(line)
+            except Exception as e:
+                error_message = f"🚨ALERT ERROR - {config.environment.upper()} SERVER🚨\nlogging: {line}\nError: {str(e)}"
+                print(error_message)
+                notifier.send_log_notification(error_message)
+            break
+
+
 def check(file_path):
     global last_checked_line
 
@@ -75,15 +87,8 @@ def check(file_path):
         lines = lines[last_checked_line.get(file_path):]
 
     for line in lines:
-        for prefix, handler_func in log_handlers.handlers.items():
-            if prefix in line:
-                try:
-                    handler_func(line)
-                except Exception as e:
-                    error_message = f"🚨ALERT ERROR - {config.environment.upper()} SERVER🚨\nlogging: {line}\nError: {str(e)}"
-                    print(error_message)
-                    notifier.send_log_notification(error_message)
-                break
+        process_line_with_handlers(line, log_handlers.handlers)
+        process_line_with_handlers(line, soongpt_handler.handlers)
 
     last_checked_line[file_path] += len(lines)
 
