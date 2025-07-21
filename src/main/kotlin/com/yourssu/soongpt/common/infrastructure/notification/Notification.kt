@@ -14,6 +14,6 @@ object Notification {
     }
 
     fun notifyContactCreated(response: ContactResponse) {
-        logger.info { "ContactCreated&${response.id} ${response.content}" }
+        logger.info { "ContactCreated&${response.id}" }
     }
 }
