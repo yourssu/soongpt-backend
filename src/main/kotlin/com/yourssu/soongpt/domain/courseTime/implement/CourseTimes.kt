@@ -20,7 +20,7 @@ class CourseTimes(
         }
 
         private fun parseScheduleEntry(entry: String): List<CourseTime> {
-            val pattern = Regex("""([월화수목금토일\s]+)\s+(\d{1,2}:\d{2})-(\d{1,2}:\d{2})\s+\((.+?)\)""")
+            val pattern = Regex("""([월화수목금토일\s]+)\s+(\d{1,2}:\d{2})-(\d{1,2}:\d{2})\s+\((.+)\)""")
             val result = pattern.find(entry.trim()) ?: return emptyList()
 
             try {
