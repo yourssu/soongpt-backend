@@ -27,7 +27,7 @@
 | `personeel`    | integer              | No       | Personnel information                              |
 | `scheduleRoom` | string               | No       | Schedule and room information                      |
 | `target`       | string               | No       | Target students for the course                     |
-| `courseTime`   | CourseTimeResponse[] | No       | Array of course schedule and classroom information |
+| `courseTimes`   | CourseTimeResponse[] | No       | Array of course schedule and classroom information |
 
 #### CourseTimeResponse
 
@@ -58,7 +58,7 @@
       "personeel": "30",
       "scheduleRoom": "월 09:00-10:15 (정보과학관 21001-김민수)\n수 09:00-10:15 (정보과학관 21001-김민수)",
       "target": "컴퓨터학부 1,2학년",
-      "courseTime": [
+      "courseTimes": [
         {
           "week": "월",
           "start": "09:00",
@@ -87,7 +87,7 @@
       "personeel": "35",
       "scheduleRoom": "화 13:30-14:45 (정보과학관 21002-이수정)\n목 13:30-14:45 (정보과학관 21002-이수정)",
       "target": "컴퓨터학부 전체",
-      "courseTime": [
+      "courseTimes": [
         {
           "week": "화",
           "start": "13:30",
