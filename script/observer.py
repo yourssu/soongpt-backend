@@ -12,7 +12,7 @@ from soongpt_handler import SoongptHandler
 
 class Config:
     def __init__(self):
-        load_dotenv()
+        load_dotenv(override=True)  # 기존 환경변수 덮어쓰기
         self.environment = os.getenv('ENVIRONMENT')
         self.slack_token = os.getenv('SLACK_TOKEN')
         self.slack_channel = os.getenv('SLACK_CHANNEL')
