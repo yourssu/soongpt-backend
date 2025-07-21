@@ -6,7 +6,7 @@ class CourseTimes(
     private val values: List<CourseTime>
 ) {
     companion object {
-        fun parseScheduleRoom(scheduleRoom: String): CourseTimes {
+        fun from(scheduleRoom: String): CourseTimes {
             if (scheduleRoom.isBlank()) return CourseTimes(emptyList())
 
             val courseTimes = scheduleRoom.split("\n")
