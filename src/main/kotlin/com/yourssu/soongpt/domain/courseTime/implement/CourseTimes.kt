@@ -6,6 +6,7 @@ class CourseTimes(
     private val values: List<CourseTime>
 ) {
     companion object {
+        private val SCHEDULE_PATTERN = Regex("""([월화수목금토일\s]+)\s+(\d{1,2}:\d{2})-(\d{1,2}:\d{2})\s+\((.+)\)""")
         fun from(scheduleRoom: String): CourseTimes {
             if (scheduleRoom.isBlank()) return CourseTimes(emptyList())
 
@@ -20,8 +21,7 @@ class CourseTimes(
         }
 
         private fun parseScheduleEntry(entry: String): List<CourseTime> {
-            val pattern = Regex("""([월화수목금토일\s]+)\s+(\d{1,2}:\d{2})-(\d{1,2}:\d{2})\s+\((.+)\)""")
-            val result = pattern.find(entry.trim()) ?: return emptyList()
+            val result = SCHEDULE_PATTERN.find(entry.trim()) ?: return emptyList()
 
             try {
                 val (weeksStr, startTimeStr, endTimeStr, classroomStr) = result.destructured
@@ -47,10 +47,8 @@ class CourseTimes(
                     )
                 }
             } catch (e: Exception) {
-                throw InvalidParseFormatException();
+                throw InvalidParseFormatException()
             }
-
-
         }
     }
 
