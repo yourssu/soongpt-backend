@@ -58,7 +58,7 @@ be less than 23.
 | `personeel`    | integer              | No       | Personnel information                              |
 | `scheduleRoom` | string               | No       | Schedule and room information                      |
 | `target`       | string               | No       | Target students for the course                     |
-| `courseTime`   | CourseTimeResponse[] | No       | Array of course schedule and classroom information |
+| `courseTimes`  | CourseTimeResponse[] | No       | Array of course schedule and classroom information |
 
 #### CourseTimeResponse
 
@@ -111,7 +111,7 @@ Each timetable will have one of the following tags:
             "personeel": 40,
             "scheduleRoom": "월 10:00-12:00 (공학관 1004호-김교수)",
             "target": "컴퓨터 2학년",
-            "courseTime": [
+            "courseTimes": [
               {
                 "week": "월",
                 "start": "10:00",
