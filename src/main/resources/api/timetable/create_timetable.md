@@ -134,7 +134,7 @@ Each timetable will have one of the following tags:
             "personeel": 35,
             "scheduleRoom": "수 14:00-16:00 (공학관 2002호-이교수)",
             "target": "컴퓨터 2학년",
-            "courseTime": [
+            "courseTimes": [
               {
                 "week": "수",
                 "start": "14:00",
@@ -157,7 +157,7 @@ Each timetable will have one of the following tags:
             "personeel": 30,
             "scheduleRoom": "금 11:00-13:00 (인문관 301호-박교수)",
             "target": "전체",
-            "courseTime": [
+            "courseTimes": [
               {
                 "week": "금",
                 "start": "11:00",
