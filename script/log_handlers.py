@@ -16,7 +16,7 @@ class LogHandlers:
     def create_server_restart_message(self, line):
         """서버 재시작 메시지 생성 예시"""
         message = f"🟢 {self.config.environment.upper()} SERVER RESTARTED - 숭피티 API"
-        self.notifier.send_notification(message)
+        self.notifier.send_log_notification(message)
 
     def create_internal_error_message(self, line):
         """내부 에러 메시지 생성 예시"""
