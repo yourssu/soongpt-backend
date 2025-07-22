@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component
 
 @Component
 class TargetRepositoryImpl (
-    val targetJpaRepository: TargetJpaRepository,
-    val jpaQueryFactory: JPAQueryFactory
+    private val targetJpaRepository: TargetJpaRepository,
+    private val jpaQueryFactory: JPAQueryFactory
 ): TargetRepository {
     override fun findAllByCourseId(courseId: Long): List<Target> {
         return jpaQueryFactory
             .selectFrom(targetEntity)
-            .where(targetEntity.courseId .eq(courseId))
+            .where(targetEntity.courseId.eq(courseId))
             .fetch()
             .map { it.toDomain() }
     }
