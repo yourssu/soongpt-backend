@@ -4,21 +4,22 @@
 
 ### Request Body
 
-| Name                     | Type     | Required | Constraint                 |
-|--------------------------|----------|----------|----------------------------|
-| `schoolId`               | integer  | true     | @Range(min = 15, max = 25) |
-| `department`             | string   | true     | @NotBlank                  |
-| `subDepartment`          | string   | false    |                            |
-| `grade`                  | integer  | true     | @Range(min = 1, max = 5)   |
-| `isChapel`               | boolean  | false    | default: false             |
-| `majorRequiredCourses`   | string[] | true     | @NotNull                   |
-| `majorElectiveCourses`   | string[] | true     | @NotNull                   |
-| `generalRequiredCourses` | string[] | true     | @NotNull                   |
-| `majorElectiveCredit`    | integer  | true     | @Range(min = 0, max = 22)  |
-| `generalElectiveCredit`  | integer  | true     | @Range(min = 0, max = 22)  |
+| Name                   | Type      | Required | Constraint                 |
+|------------------------|-----------|----------|----------------------------|
+| `schoolId`             | integer   | true     | @Range(min = 15, max = 25) |
+| `department`           | string    | true     | @NotBlank                  |
+| `subDepartment`        | string    | false    |                            |
+| `grade`                | integer   | true     | @Range(min = 1, max = 5)   |
+| `isChapel`             | boolean   | false    | default: false             |
+| `majorRequiredCodes`   | integer[] | true     | @NotNull                   |
+| `majorElectiveCodes`   | integer[] | true     | @NotNull                   |
+| `generalRequiredCodes` | integer[] | true     | @NotNull                   |
+| `codes`                | integer[] | true     | @NotNull                   |
+| `generalElectivePoint` | integer   | true     | @Range(min = 0, max = 22)  |
 
 **Global Constraint:**  
-The sum of credits from selected major required, general required courses, and desired major/general elective credits must be less than 23.
+The sum of points from selected major/general required courses, and desired major/general elective points must
+be less than 23.
 
 ---
 
@@ -35,31 +36,51 @@ The sum of credits from selected major required, general required courses, and d
 | name        | type      | description                               |
 |-------------|-----------|-------------------------------------------|
 | timetableId | integer   | Unique ID of the timetable                |
-| tag         | string    | Timetable tag (e.g., NO_MORNING_CLASSES)  |
+| tag         | string    | Timetable tag (see Available Tags below)  |
 | score       | integer   | Timetable preference score                |
-| totalCredit | double    | Sum of all course credits in timetable    |
+| totalPoint  | double    | Sum of all course points in timetable     |
 | courses     | Courses[] | List of courses included in the timetable |
 
 #### Courses
 
-| name           | type         | description                                                                          |
-|----------------|--------------|--------------------------------------------------------------------------------------|
-| courseName     | string       | Course name                                                                          |
-| professorName  | string       | Professor name                                                                       |
-| classification | string       | Course classification (e.g., MAJOR_REQUIRED, MAJOR_ELECTIVE, GENERAL_REQUIRED, etc.) |
-| courseCode     | integer      | Course code                                                                          |
-| credit         | integer      | Number of credits                                                                    |
-| target         | string       | Target grade/department                                                              |
-| courseTime     | CourseTime[] | Course schedule information                                                          |
+| Name           | Type                 | Nullable | Description                                        |
+|----------------|----------------------|----------|----------------------------------------------------| 
+| `category`     | string               | No       | Course category                                    |
+| `subCategory`  | string               | Yes      | Course sub category                                |
+| `field`        | string               | Yes      | Curriculum field by admission year                 |
+| `code`         | integer              | No       | Unique course code identifier                      |
+| `name`         | string               | No       | Course name                                        |
+| `professor`    | string               | Yes      | Name of the professor in charge                    |
+| `department`   | string               | No       | Department                                         |
+| `division`     | string               | Yes      | Course division                                    |
+| `time`         | string               | No       | Course time information                            |
+| `point`        | string               | No       | Course point information                           |
+| `personeel`    | integer              | No       | Personnel information                              |
+| `scheduleRoom` | string               | No       | Schedule and room information                      |
+| `target`       | string               | No       | Target students for the course                     |
+| `courseTimes`  | CourseTimeResponse[] | No       | Array of course schedule and classroom information |
 
-#### CourseTime
+#### CourseTimeResponse
 
-| name      | type   | description                          |
-|-----------|--------|--------------------------------------|
-| week      | string | Day of the week (e.g., 월 for Monday) |
-| start     | string | Start time (HH:mm)                   |
-| end       | string | End time (HH:mm)                     |
-| classroom | string | Classroom location                   |
+| Name        | Type   | Nullable | Description                                     |
+|-------------|--------|----------|-------------------------------------------------|
+| `week`      | string | No       | Day of the week (in Korean, e.g., 월 for Monday) |
+| `start`     | string | No       | Start time of the class (in HH:mm format)       |
+| `end`       | string | No       | End time of the class (in HH:mm format)         |
+| `classroom` | string | No       | Classroom location                              |
+
+### Available Tags
+
+Each timetable will have one of the following tags:
+
+| Tag                     | Description   |
+|-------------------------|---------------|
+| `DEFAULT`               | 기본 태그         |
+| `NO_MORNING_CLASSES`    | 아침 수업이 없는 시간표 |
+| `HAS_FREE_DAY`          | 공강 날이 있는 시간표  |
+| `NO_LONG_BREAKS`        | 우주 공강이 없는 시간표 |
+| `GUARANTEED_LUNCH_TIME` | 점심시간 보장되는 시간표 |
+| `NO_EVENING_CLASSES`    | 저녁수업이 없는 시간표  |
 
 ---
 
@@ -74,16 +95,23 @@ The sum of credits from selected major required, general required courses, and d
         "timetableId": 1,
         "tag": "NO_MORNING_CLASSES",
         "score": 155,
-        "totalCredit": 9,
+        "totalPoint": 9,
         "courses": [
           {
-            "courseName": "자료구조",
-            "professorName": "김교수",
-            "classification": "MAJOR_REQUIRED",
-            "courseCode": 12345,
-            "credit": 3,
+            "category": "전필-컴퓨터",
+            "subCategory": null,
+            "field": null,
+            "code": 12345,
+            "name": "자료구조",
+            "professor": "김교수",
+            "department": "컴퓨터학부",
+            "division": "(가)분반",
+            "time": "3.0",
+            "point": "3.0",
+            "personeel": 40,
+            "scheduleRoom": "월 10:00-12:00 (공학관 1004호-김교수)",
             "target": "컴퓨터 2학년",
-            "courseTime": [
+            "courseTimes": [
               {
                 "week": "월",
                 "start": "10:00",
@@ -93,13 +121,20 @@ The sum of credits from selected major required, general required courses, and d
             ]
           },
           {
-            "courseName": "알고리즘",
-            "professorName": "이교수",
-            "classification": "MAJOR_ELECTIVE",
-            "courseCode": 123456,
-            "credit": 3,
+            "category": "전선-컴퓨터",
+            "subCategory": "복선-컴퓨터",
+            "field": null,
+            "code": 123456,
+            "name": "알고리즘",
+            "professor": "이교수",
+            "department": "컴퓨터학부",
+            "division": "(나)분반",
+            "time": "3.0",
+            "point": "3.0",
+            "personeel": 35,
+            "scheduleRoom": "수 14:00-16:00 (공학관 2002호-이교수)",
             "target": "컴퓨터 2학년",
-            "courseTime": [
+            "courseTimes": [
               {
                 "week": "수",
                 "start": "14:00",
@@ -109,17 +144,24 @@ The sum of credits from selected major required, general required courses, and d
             ]
           },
           {
-            "courseName": "글쓰기",
-            "professorName": "박교수",
-            "classification": "GENERAL_REQUIRED",
-            "courseCode": 1234567,
-            "credit": 3,
+            "category": "전필-교양",
+            "subCategory": null,
+            "field": "언어·문학",
+            "code": 1234567,
+            "name": "글쓰기",
+            "professor": "박교수",
+            "department": "교육과정혁신팀",
+            "division": null,
+            "time": "3.0",
+            "point": "3.0",
+            "personeel": 30,
+            "scheduleRoom": "금 11:00-13:00 (인문관 301호-박교수)",
             "target": "전체",
-            "courseTime": [
+            "courseTimes": [
               {
                 "week": "금",
-                "start": "09:00",
-                "end": "11:00",
+                "start": "11:00",
+                "end": "13:00",
                 "classroom": "인문관 301호"
               }
             ]
