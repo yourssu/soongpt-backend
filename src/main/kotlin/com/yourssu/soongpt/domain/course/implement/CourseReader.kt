@@ -7,15 +7,18 @@ import org.springframework.stereotype.Component
 class CourseReader(
     private val courseRepository: CourseRepository,
 )  {
-    fun findAllByTargetInMajorRequired(target: Target): List<Course> {
-        return courseRepository.findAllByCategoryTarget(Category.MAJOR_REQUIRED, target)
+    fun findAllInMajorRequired(targets: List<Target>): List<Course> {
+        val courseIds = targets.map { it.courseId }
+        return courseRepository.getAllInCategory(Category.MAJOR_REQUIRED, courseIds)
     }
 
-    fun findAllByTargetInMajorElective(target: Target): List<Course> {
-        return courseRepository.findAllByCategoryTarget(Category.MAJOR_ELECTIVE, target)
+    fun findAllInMajorElective(targets: List<Target>): List<Course> {
+        val courseIds = targets.map { it.courseId }
+        return courseRepository.getAllInCategory(Category.MAJOR_ELECTIVE, courseIds)
     }
 
-    fun findAllByTargetInGeneralRequired(target: Target): List<Course> {
-        return courseRepository.findAllByCategoryTarget(Category.GENERAL_REQUIRED, target)
+    fun findAllInGeneralRequired(targets: List<Target>): List<Course> {
+        val courseIds = targets.map { it.courseId }
+        return courseRepository.getAllInCategory(Category.GENERAL_REQUIRED, courseIds)
     }
 }
