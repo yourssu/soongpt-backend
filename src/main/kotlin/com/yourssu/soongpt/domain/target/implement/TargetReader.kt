@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 class TargetReader(
     private val targetRepository: TargetRepository,
 ) {
-    fun getByDepartmentGrade(department: Department, grade: Int): Target {
-        return targetRepository.getByDepartmentAndGrade(department.id!!, grade)
+    fun findAllByDepartmentGrade(department: Department, grade: Int): List<Target> {
+        return targetRepository.findAllByDepartmentGrade(department.id!!, grade)
     }
 }

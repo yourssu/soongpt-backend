@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.target.implement
 
 interface TargetRepository {
-    fun findAllByCode(code: Long): List<Target>
-    fun getByDepartmentAndGrade(departmentId: Long, grade: Int): Target
+    fun findAllByCourseId(courseId: Long): List<Target>
+    fun findAllByDepartmentGrade(departmentId: Long, grade: Int): List<Target>
 }
