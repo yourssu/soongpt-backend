@@ -1,0 +1,29 @@
+name: Claude Assistant - Pull Request Comment Review
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  claude-response:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 전체 히스토리 클론 (0으로 설정)
+
+      - name: Run Claude Code Action
+        uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_instructions: |
+            당신은 한국어 코드 리뷰어입니다. 반드시 한국어로만 응답해야 합니다.
+            이전 대화 내용에 기반하여 체계적으로 정리해 주세요.

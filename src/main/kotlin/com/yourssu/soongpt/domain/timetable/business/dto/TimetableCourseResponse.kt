@@ -1,33 +1,48 @@
 package com.yourssu.soongpt.domain.timetable.business.dto
 
-import com.yourssu.soongpt.domain.course.implement.Classification
+import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
-import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
 
 data class TimetableCourseResponse(
-    val courseName: String,
-    val professorName: String?,
-    val classification: String,
-    val credit: Double,
-    val courseTime: List<CourseTimeResponse>,
+    val id: Long? = null,
+    val category: Category,
+    val subCategory: String? = null,
+    val field: String? = null,
+    val code: Long,
+    val name: String,
+    val professor: String? = null,
+    val department: String,
+    val division: String? = null,
+    val time: String,
+    val point: String,
+    val personeel: Int,
+    val scheduleRoom: String,
+    val target: String,
+    val courseTimes: List<CourseTime> = listOf(),
 ) {
     companion object {
-        fun from(course: Course, courseTimes: List<CourseTime>): TimetableCourseResponse {
+        fun from(
+            course: Course,
+            courseTimes: List<CourseTime>,
+        ): TimetableCourseResponse {
             return TimetableCourseResponse(
-                courseName = course.courseName,
-                professorName = course.professorName,
-                classification = course.classification.name,
-                credit = course.credit.toDouble() + addCreditIfChapel(course.classification),
-                courseTime = courseTimes.map { CourseTimeResponse.from(it) },
+                id = course.id,
+                category = course.category,
+                subCategory = course.subCategory,
+                field = course.field,
+                code = course.code,
+                name = course.name,
+                professor = course.professor,
+                department = course.department,
+                division = course.division,
+                time = course.time,
+                point = course.point,
+                personeel = course.personeel,
+                scheduleRoom = course.scheduleRoom,
+                target = course.target,
+                courseTimes = courseTimes,
             )
-        }
-
-        private fun addCreditIfChapel(classification: Classification): Double {
-            if (classification == Classification.CHAPEL) {
-                return 0.5
-            }
-            return 0.0
         }
     }
 }

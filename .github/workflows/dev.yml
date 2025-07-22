@@ -44,16 +44,25 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
           PROJECT_NAME: ${{ vars.PROJECT_NAME }}
+          ENVIRONMENT: ${{ vars.ENVIRONMENT }}
 
-          SLACK_CHANNEL_ID: ${{ vars.SLACK_CHANNEL_ID }}
+          SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
+          SLACK_LOG_CHANNEL: ${{ vars.SLACK_LOG_CHANNEL }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
           echo "$YOURSSU_PEM" > yourssu.pem
           chmod 600 yourssu.pem
           mv build/libs/$PROJECT_NAME-0.0.1-SNAPSHOT.jar yourssu-$PROJECT_NAME-application.jar
-          scp -i yourssu.pem yourssu-$PROJECT_NAME-application.jar ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api
           
+          # Create deployment directory structure
+          ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
+          
+          # Deploy JAR file
+          scp -i yourssu.pem yourssu-$PROJECT_NAME-application.jar ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          
+          # Create environment file
           echo "SERVER_PORT=$SERVER_PORT" >> .env
           echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> .env
           
@@ -61,8 +70,22 @@ jobs:
           echo "DB_USERNAME=$DB_USERNAME" >> .env
           echo "DB_PASSWORD=$DB_PASSWORD" >> .env
           
-          echo "SLACK_CHANNEL_ID=$SLACK_CHANNEL_ID" >> .env
+          echo "PROJECT_NAME=$PROJECT_NAME" >> .env
+          echo "ENVIRONMENT=$ENVIRONMENT" >> .env
           
-          scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api
-          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod 600 /home/ubuntu/$PROJECT_NAME-api/.env && /home/ubuntu/$PROJECT_NAME-api/run.sh"
-          ssh -i yourssu.pem ubuntu@$HOST_URL "/home/ubuntu/$PROJECT_NAME-api/observer_run.sh"          
+          echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> .env
+          echo "SLACK_LOG_CHANNEL=$SLACK_LOG_CHANNEL" >> .env
+          echo "SLACK_TOKEN=$SLACK_TOKEN" >> .env
+          
+          # Deploy environment file
+          scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          
+          # Deploy entire script folder contents to $PROJECT_NAME-api directory
+          scp -i yourssu.pem -r script/* ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          
+          # Set execute permissions for all script files
+          ssh -i yourssu.pem ubuntu@$HOST_URL "find /home/ubuntu/$PROJECT_NAME-api -type f -name '*.sh' -exec chmod +x {} \;"
+          ssh -i yourssu.pem ubuntu@$HOST_URL "find /home/ubuntu/$PROJECT_NAME-api -type f -name '*.py' -exec chmod +x {} \;"
+          
+          # Execute deployment script
+          ssh -i yourssu.pem ubuntu@$HOST_URL "/home/ubuntu/$PROJECT_NAME-api/run.sh"
