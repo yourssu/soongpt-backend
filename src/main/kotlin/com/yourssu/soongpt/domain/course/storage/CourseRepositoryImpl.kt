@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
-import com.yourssu.soongpt.domain.target.implement.Target
+import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Component
@@ -23,11 +23,15 @@ class CourseRepositoryImpl(
             .map { it.toDomain() }
     }
 
-    override fun findAllByCategoryTarget(
-        category: Category,
-        target: Target
-    ): List<Course> {
-        return listOf()
+    override fun getAllInCategory(category: Category, courseIds: List<Long>): List<Course> {
+        return jpaQueryFactory.
+            selectFrom(courseEntity)
+            .where(
+                courseEntity.category.eq(category),
+                courseEntity.code.`in`(courseIds)
+            )
+            .fetch()
+            .map { it.toDomain() }
     }
 }
 
