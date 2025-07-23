@@ -21,7 +21,7 @@ class CourseEntity(
     @Column(nullable = false)
     val field: String? = null,
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = false, unique = true)
     val code: Long,
 
     @Column(nullable = false)
