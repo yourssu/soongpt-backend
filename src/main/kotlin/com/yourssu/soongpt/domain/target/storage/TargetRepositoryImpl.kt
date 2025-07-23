@@ -1,28 +1,33 @@
 package com.yourssu.soongpt.domain.target.storage
 
+import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.target.implement.Target
 import com.yourssu.soongpt.domain.target.implement.TargetRepository
+import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
 
 @Component
 class TargetRepositoryImpl (
     val targetJpaRepository: TargetJpaRepository,
+    val jpaQueryFactory: JPAQueryFactory,
 ): TargetRepository {
     override fun findAllByCode(code: Long): List<Target> {
         return listOf()
     }
 
-    override fun getByDepartmentAndGrade(
+    override fun findAllByDepartmentGrade(
         departmentId: Long,
         grade: Int
-    ): Target {
-        return Target(
-            id = 1L,
-            departmentId = departmentId,
-            courseId = 1L,
-            grade = 1,
-        )
+    ): List<Target> {
+        return jpaQueryFactory
+            .selectFrom(targetEntity)
+            .where(
+                targetEntity.departmentId.eq(departmentId),
+                targetEntity.grade.eq(grade)
+            )
+            .fetch()
+            .map { it.toDomain() }
     }
 }
 

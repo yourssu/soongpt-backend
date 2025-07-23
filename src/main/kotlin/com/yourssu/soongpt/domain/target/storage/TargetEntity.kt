@@ -11,7 +11,7 @@ class TargetEntity(
     val id: Long? = null,
 
     @Column(nullable = false)
-    val departmentGradeId: Long,
+    val departmentId: Long,
 
     @Column(nullable = false)
     val courseId: Long,
@@ -22,7 +22,7 @@ class TargetEntity(
     companion object {
         fun from(target: Target) = TargetEntity(
             id = target.id,
-            departmentGradeId = target.departmentId,
+            departmentId = target.departmentId,
             courseId = target.courseId,
             grade = target.grade,
         )
@@ -30,7 +30,7 @@ class TargetEntity(
 
     fun toDomain() = Target(
         id = id,
-        departmentId = departmentGradeId,
+        departmentId = departmentId,
         courseId = courseId,
         grade = grade,
     )
