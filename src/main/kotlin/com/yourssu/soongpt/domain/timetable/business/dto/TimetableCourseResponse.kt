@@ -2,6 +2,7 @@ package com.yourssu.soongpt.domain.timetable.business.dto
 
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
+import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
 
 data class TimetableCourseResponse(
@@ -19,7 +20,7 @@ data class TimetableCourseResponse(
     val personeel: Int,
     val scheduleRoom: String,
     val target: String,
-    val courseTimes: List<CourseTime> = listOf(),
+    val courseTimes: List<CourseTimeResponse> = listOf(),
 ) {
     companion object {
         fun from(
@@ -41,7 +42,7 @@ data class TimetableCourseResponse(
                 personeel = course.personeel,
                 scheduleRoom = course.scheduleRoom,
                 target = course.target,
-                courseTimes = courseTimes,
+                courseTimes = courseTimes.map { CourseTimeResponse.from(it) },
             )
         }
     }
