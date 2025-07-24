@@ -1,6 +1,5 @@
 package com.yourssu.soongpt.domain.timetable.business
 
-import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCourseResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCreatedCommand
