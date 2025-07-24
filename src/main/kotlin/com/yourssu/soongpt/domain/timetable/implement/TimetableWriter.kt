@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component
 class TimetableWriter (
     private val timetableRepository: TimetableRepository
 ) {
-    fun save(timetable: Timetable) {
-        timetableRepository.save(timetable)
+    fun save(timetable: Timetable): Timetable {
+        return timetableRepository.save(timetable)
     }
 
     fun delete(id: Long) {
