@@ -52,35 +52,37 @@ class CourseRepositoryImpl(
         query: String,
         pageable: Pageable
     ): Page<Course> {
-        val whereCondition = courseEntity.field.containsIgnoreCase(query)
+        val content = jpaQueryFactory
+            .selectFrom(courseEntity)
+            .where(buildSearchCondition(query))
+            .orderBy(
+                courseEntity.name.lower().indexOf(query.lowercase()).asc(),
+                courseEntity.name.length().asc(),
+                courseEntity.name.asc()
+            )
+            .offset(pageable.offset)
+            .limit(pageable.pageSize.toLong())
+            .fetch()
+            .map { it.toDomain() }
+        return PageImpl(content, pageable, countCoursesByQuery(query))
+    }
+
+    private fun buildSearchCondition(query: String) =
+        courseEntity.field.containsIgnoreCase(query)
             .or(courseEntity.code.stringValue().containsIgnoreCase(query))
             .or(courseEntity.name.containsIgnoreCase(query))
             .or(courseEntity.professor.containsIgnoreCase(query))
             .or(courseEntity.scheduleRoom.containsIgnoreCase(query))
             .or(courseEntity.target.containsIgnoreCase(query))
-        
-        // 전체 개수 조회
-        val totalCount = jpaQueryFactory
+
+    private fun countCoursesByQuery(query: String): Long {
+        return jpaQueryFactory
             .select(courseEntity.count())
             .from(courseEntity)
-            .where(whereCondition)
+            .where(buildSearchCondition(query))
             .fetchOne() ?: 0L
-        
-        // 페이징된 결과 조회
-        val content = jpaQueryFactory
-            .selectFrom(courseEntity)
-            .where(whereCondition)
-            .offset(pageable.offset)
-            .limit(pageable.pageSize.toLong())
-            .orderBy(
-                courseEntity.name.startsWithIgnoreCase(query).desc(),
-                courseEntity.name.asc()
-            )
-            .fetch()
-            .map { it.toDomain() }
-        
-        return PageImpl(content, pageable, totalCount)
     }
+
 }
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
