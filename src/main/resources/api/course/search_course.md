@@ -4,12 +4,12 @@
 
 ### Query Parameters
 
-| Name         | Type    | Required | Constraint      | Description               |
-|--------------|---------|----------|-----------------|---------------------------|
-| `q`          | string  | false    | -               | Keyword for search        |
-| `page`       | integer | false    | 0 ≤ value       | Page number (default: 0)  |
-| `size`       | integer | false    | 0 < value       | Page size (default: 20)   |
-| `sort`       | string  | false    | -               | Sort order (default: ASC) |
+| Name   | Type    | Required | Constraint                          | Description               |
+|--------|---------|----------|-------------------------------------|---------------------------|
+| `q`    | string  | true     | 2-100자, 한글/영문/숫자/공백/점/언더스코어/하이픈만 허용 | Keyword for search        |
+| `page` | integer | false    | 0 ≤ value                           | Page number (default: 0)  |
+| `size` | integer | false    | 1 ≤ value ≤ 100                     | Page size (default: 20)   |
+| `sort` | string  | false    | ASC \| DESC (대소문자 구분 없음)     | Sort order (default: ASC) |
 
 ## Reply
 
