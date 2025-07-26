@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
+import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -18,8 +19,13 @@ class CourseRepositoryImpl(
         return courseJpaRepository.getByCode(code).toDomain()
     }
 
-    override fun findAll(courseIds: List<Long>): List<Course> {
+    override fun findAllById(courseIds: List<Long>): List<Course> {
         return courseJpaRepository.findAllById(courseIds)
+            .map { it.toDomain() }
+    }
+
+    override fun findAllByCode(codes: List<Long>): List<Course> {
+        return courseJpaRepository.getAllByCode(codes)
             .map { it.toDomain() }
     }
 
@@ -32,6 +38,11 @@ class CourseRepositoryImpl(
             )
             .fetch()
             .map { it.toDomain() }
+    }
+
+    override fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto {
+        val groupedCourses = findAllByCode(codes).groupBy { it.category }
+        return GroupedCoursesByCategoryDto.from(groupedCourses)
     }
 }
 
