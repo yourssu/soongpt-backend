@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.implement.dto
 
+import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 
 data class GroupedCoursesByCategoryDto(
@@ -10,16 +11,13 @@ data class GroupedCoursesByCategoryDto(
 ) {
     companion object {
         fun from(
-            majorRequiredCourses: List<Course>,
-            majorElectiveCourses: List<Course>,
-            generalRequiredCourses: List<Course>,
-            generalElectiveCourses: List<Course>,
+            groupedCourses: Map<Category, List<Course>>,
         ): GroupedCoursesByCategoryDto {
             return GroupedCoursesByCategoryDto(
-                majorRequiredCourses = majorRequiredCourses,
-                majorElectiveCourses = majorElectiveCourses,
-                generalRequiredCourses = generalRequiredCourses,
-                generalElectiveCourses = generalElectiveCourses,
+                majorRequiredCourses = groupedCourses[Category.MAJOR_REQUIRED] ?: emptyList(),
+                majorElectiveCourses = groupedCourses[Category.MAJOR_ELECTIVE] ?: emptyList(),
+                generalRequiredCourses = groupedCourses[Category.GENERAL_REQUIRED] ?: emptyList(),
+                generalElectiveCourses = groupedCourses[Category.GENERAL_ELECTIVE] ?: emptyList(),
             )
         }
     }
