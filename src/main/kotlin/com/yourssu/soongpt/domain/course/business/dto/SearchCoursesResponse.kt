@@ -2,13 +2,14 @@ package com.yourssu.soongpt.domain.course.business.dto
 
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.dto.PageableInfo
+import org.springframework.data.domain.Page
 
 data class SearchCoursesResponse(
     val content: List<SearchCourseResponse>,
     val totalElements: Long,
     val totalPages: Int,
     val size: Int,
-    val page: Int,
+    val number: Int,
 ) {
     companion object {
         fun from(
@@ -21,7 +22,18 @@ data class SearchCoursesResponse(
                 totalElements = pageableInfo.totalElements,
                 totalPages = pageableInfo.totalPages,
                 size = pageableInfo.size,
-                page = pageableInfo.page,
+                number = pageableInfo.page,
+            )
+        }
+        
+        fun from(page: Page<Course>): SearchCoursesResponse {
+            val content = page.content.map { SearchCourseResponse.from(it) }
+            return SearchCoursesResponse(
+                content = content,
+                totalElements = page.totalElements,
+                totalPages = page.totalPages,
+                size = page.size,
+                number = page.number,
             )
         }
     }

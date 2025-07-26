@@ -4,10 +4,12 @@ import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.course.application.dto.GeneralRequiredRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorElectiveRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorRequiredRequest
+import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.GeneralRequiredResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorElectiveResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorRequiredResponse
+import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -38,10 +40,9 @@ class CourseController(
         return ResponseEntity.ok().body(Response(result = response))
     }
 
-//    // TODO: 검색 기능 구현
-//    @GetMapping("/search")
-//    fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
-//        val response = courseService.search(request.toCommand())
-//        return ResponseEntity.ok().body(Response(result = response))
-//    }
+    @GetMapping("/search")
+    fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
+        val response = courseService.search(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
 }
