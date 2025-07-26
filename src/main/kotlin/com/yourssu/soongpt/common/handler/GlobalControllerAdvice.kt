@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
@@ -156,6 +157,20 @@ class ControllerAdvice {
                 ErrorResponse(
                     status = HttpStatus.BAD_REQUEST.value(),
                     message = "잘못된 타입의 요청입니다. {{ ${e.message} }}"
+                )
+            )
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    fun handleMissingParameterException(
+        e: MissingServletRequestParameterException
+    ): ResponseEntity<ErrorResponse> {
+        logger.error { e }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(
+                ErrorResponse(
+                    status = HttpStatus.BAD_REQUEST.value(),
+                    message = "필수 파라미터가 누락되었습니다: ${e.parameterName}"
                 )
             )
     }
