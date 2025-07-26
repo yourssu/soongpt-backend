@@ -4,12 +4,33 @@
 
 ### Query Parameters
 
-| Name   | Type    | Required | Constraint                          | Description               |
-|--------|---------|----------|-------------------------------------|---------------------------|
-| `q`    | string  | true     | 2-100자, 한글/영문/숫자/공백/점/언더스코어/하이픈만 허용 | Keyword for search        |
-| `page` | integer | false    | 0 ≤ value                           | Page number (default: 0)  |
-| `size` | integer | false    | 1 ≤ value ≤ 100                     | Page size (default: 20)   |
-| `sort` | string  | false    | ASC \| DESC (대소문자 구분 없음)     | Sort order (default: ASC) |
+| Name   | Type    | Required | Constraint                     | Description               |
+|--------|---------|----------|--------------------------------|---------------------------|
+| `q`    | string  | false    |                                | Search keyword            |
+| `page` | integer | false    | 0 ≤ value                      | Page number (default: 0)  |
+| `size` | integer | false    | 1 ≤ value ≤ 100                | Page size (default: 20)   |
+| `sort` | string  | false    | ASC \| DESC (case insensitive) | Sort order (default: ASC) |
+
+- **Allow Regex Pattern**: `^(?!.*[%_])(?!.*(.)\1{4,})[가-힣a-zA-ZⅠ-Ⅹ0-9\s\n().,;:_-]{0,50}$`
+
+### Searchable Fields
+
+- `professor`
+- `name`
+- `target`
+- `scheduleRoom`
+- `field`
+- `code`
+
+### Usage Examples
+
+```
+GET /api/courses/search?q=김남미              # Search by professor name
+GET /api/courses/search?q=물리1               # Search by course name  
+GET /api/courses/search?q=Business English   # Search by English course name
+GET /api/courses/search?q=&page=1&size=50    # Empty query with pagination
+GET /api/courses/search?page=0&size=20       # Get all courses
+```
 
 ## Reply
 
