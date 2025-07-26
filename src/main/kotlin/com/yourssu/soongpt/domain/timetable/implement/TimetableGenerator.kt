@@ -18,10 +18,10 @@ class TimetableGenerator (
 ){
 
     fun generate(command: TimetableCreatedCommand): TimetableResponses {
-        val selectedCodes = getAllCourseCodes(command)
-        val courseGroup = courseReader.groupByCategory(selectedCodes)
+        val courseCodes = getFlattenCourseCodes(command)
+        val courseGroup = courseReader.groupByCategory(courseCodes)
 
-        val courseCandidates = getAllCourseCandidates(
+        val courseCandidates = generateAllCourseCandidates(
             courseGroup = courseGroup,
             department = departmentReader.getByName(command.departmentName),
             grade = command.grade,
@@ -35,7 +35,7 @@ class TimetableGenerator (
         )
     }
 
-    private fun getAllCourseCodes(command: TimetableCreatedCommand): List<Long> {
+    private fun getFlattenCourseCodes(command: TimetableCreatedCommand): List<Long> {
         return listOf(
             command.majorRequiredCodes,
             command.majorElectiveCodes,
@@ -44,7 +44,7 @@ class TimetableGenerator (
         ).flatten().distinct()
     }
 
-    private fun getAllCourses(courseGroup: GroupedCoursesByCategoryDto): List<Course> {
+    private fun getFlattenCoursesInCourseGroup(courseGroup: GroupedCoursesByCategoryDto): List<Course> {
         return listOf(
             courseGroup.majorRequiredCourses,
             courseGroup.generalRequiredCourses,
@@ -53,15 +53,15 @@ class TimetableGenerator (
         ).flatten().distinctBy { it.code }
     }
 
-    private fun getAllCourseCandidates(
+    private fun generateAllCourseCandidates(
         courseGroup: GroupedCoursesByCategoryDto,
         department: Department,
         grade: Int,
     ): List<CourseCandidates> {
-        val allCourses = getAllCourses(courseGroup)
+        val flattenCourses = getFlattenCoursesInCourseGroup(courseGroup)
 
         val courseCandidates =
-            allCourses.map {
+            flattenCourses.map {
                 val classes = courseReader.findAllByClass(
                     department = department,
                     grade = grade,
