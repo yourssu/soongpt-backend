@@ -1,15 +1,13 @@
 package com.yourssu.soongpt.domain.course.business
 
-import com.yourssu.soongpt.domain.course.business.dto.GeneralRequiredResponse
-import com.yourssu.soongpt.domain.course.business.dto.MajorElectiveResponse
-import com.yourssu.soongpt.domain.course.business.dto.MajorRequiredResponse
-import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
+import com.yourssu.soongpt.domain.course.business.dto.*
 import com.yourssu.soongpt.domain.course.business.query.GeneralRequiredCourseQuery
 import com.yourssu.soongpt.domain.course.business.query.MajorElectiveCourseQuery
 import com.yourssu.soongpt.domain.course.business.query.MajorRequiredCourseQuery
 import com.yourssu.soongpt.domain.course.business.query.SearchCoursesQuery
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.TargetReader
 import org.springframework.stereotype.Service
@@ -44,5 +42,17 @@ class CourseService(
     fun search(query: SearchCoursesQuery): SearchCoursesResponse {
         val page = courseReader.searchCourses(query.query, query.toPageable())
         return SearchCoursesResponse.from(page)
+    }
+
+    fun findAllByCode(codes: List<Long>): List<CourseDetailResponse> {
+        val courses = courseReader.findAllByCode(codes)
+
+        val responses = mutableListOf<CourseDetailResponse>()
+        for (course in courses) {
+            val courseTimes = CourseTimes.from(course.scheduleRoom)
+            responses.add(CourseDetailResponse.from(course, courseTimes))
+        }
+
+        return responses
     }
 }

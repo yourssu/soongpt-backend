@@ -29,4 +29,8 @@ class CourseReader(
     fun searchCourses(query: String, pageable: Pageable): Page<Course> {
         return courseRepository.searchCourses(query, pageable)
     }
+
+    fun findAllByCode(codes: List<Long>): List<Course> {
+        return courseRepository.findAllByCode(codes)
+    }
 }

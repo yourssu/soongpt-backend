@@ -6,16 +6,10 @@ import com.yourssu.soongpt.domain.course.application.dto.MajorElectiveRequest
 import com.yourssu.soongpt.domain.course.application.dto.MajorRequiredRequest
 import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
-import com.yourssu.soongpt.domain.course.business.dto.GeneralRequiredResponse
-import com.yourssu.soongpt.domain.course.business.dto.MajorElectiveResponse
-import com.yourssu.soongpt.domain.course.business.dto.MajorRequiredResponse
-import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
+import com.yourssu.soongpt.domain.course.business.dto.*
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/courses")
@@ -37,6 +31,12 @@ class CourseController(
     @GetMapping("/general/required")
     fun getGeneralRequiredCourses(@Valid @ModelAttribute request: GeneralRequiredRequest): ResponseEntity<Response<List<GeneralRequiredResponse>>> {
         val response = courseService.findAll(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @GetMapping
+    fun getCoursesByCode(@RequestParam code: List<Long>): ResponseEntity<Response<List<CourseDetailResponse>>> {
+        val response = courseService.findAllByCode(code)
         return ResponseEntity.ok().body(Response(result = response))
     }
 
