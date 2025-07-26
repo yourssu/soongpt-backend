@@ -11,9 +11,9 @@ import java.util.*
 @Component
 class CourseCandidateFactory {
     companion object {
-        private const val WHOLE_TIMESLOT = 24 * 7 * 60
-        private const val COMPRESS_TIME_UNIT = 5
-        private const val TIMESLOT_SIZE = WHOLE_TIMESLOT / COMPRESS_TIME_UNIT
+        private const val WEEKLY_MINUTES = 24 * 7 * 60
+        private const val TIMESLOT_UNIT_MINUTES = 5
+        private const val TIMESLOT_SIZE = WEEKLY_MINUTES / TIMESLOT_UNIT_MINUTES
     }
 
     fun create(course: Course): CourseCandidate {
