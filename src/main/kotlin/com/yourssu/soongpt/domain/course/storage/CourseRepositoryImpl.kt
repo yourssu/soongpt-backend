@@ -7,7 +7,6 @@ import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Component
 
 @Component
@@ -19,17 +18,20 @@ class CourseRepositoryImpl(
         return courseJpaRepository.getByCode(code).toDomain()
     }
 
-    override fun getAll(codes: List<Long>): List<Course> {
-        return courseJpaRepository.getAllByCode(codes)
+    override fun findAll(courseIds: List<Long>): List<Course> {
+        return jpaQueryFactory
+            .selectFrom(courseEntity)
+            .where(courseEntity.id.`in`(courseIds))
+            .fetch()
             .map { it.toDomain() }
     }
 
-    override fun getAllInCategory(category: Category, courseIds: List<Long>): List<Course> {
-        return jpaQueryFactory.
-            selectFrom(courseEntity)
+    override fun findAllInCategory(category: Category, courseIds: List<Long>): List<Course> {
+        return jpaQueryFactory
+            .selectFrom(courseEntity)
             .where(
+                courseEntity.id.`in`(courseIds),
                 courseEntity.category.eq(category),
-                courseEntity.code.`in`(courseIds)
             )
             .fetch()
             .map { it.toDomain() }
@@ -52,7 +54,4 @@ class CourseRepositoryImpl(
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
     fun getByCode(code: Long): CourseEntity
-
-    @Query("select c from CourseEntity c where c.code in :codes")
-    fun getAllByCode(codes: List<Long>): List<CourseEntity>
 }
