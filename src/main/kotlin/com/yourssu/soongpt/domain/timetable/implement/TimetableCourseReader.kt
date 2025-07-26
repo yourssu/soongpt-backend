@@ -12,6 +12,6 @@ class TimetableCourseReader (
     fun findAllCourseByTimetableId(timetableId: Long): List<Course> {
         val courseIds = timetableCourseRepository
             .findAllCourseByTimetableId(timetableId).map { it.courseId }
-        return courseRepository.getAll(courseIds)
+        return courseRepository.findAll(courseIds)
     }
 }

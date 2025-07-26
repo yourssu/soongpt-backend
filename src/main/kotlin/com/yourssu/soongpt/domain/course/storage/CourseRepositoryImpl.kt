@@ -18,7 +18,12 @@ class CourseRepositoryImpl(
         return courseJpaRepository.getByCode(code).toDomain()
     }
 
-    override fun findAllByCategoryTarget(category: Category, courseIds: List<Long>): List<Course> {
+    override fun findAll(courseIds: List<Long>): List<Course> {
+        return courseJpaRepository.findAllById(courseIds)
+            .map { it.toDomain() }
+    }
+
+    override fun findAllByCategory(category: Category, courseIds: List<Long>): List<Course> {
         return jpaQueryFactory
             .selectFrom(courseEntity)
             .where(
