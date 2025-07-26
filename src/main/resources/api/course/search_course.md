@@ -11,7 +11,8 @@
 | `size` | integer | false    | 1 ≤ value ≤ 100                | Page size (default: 20)   |
 | `sort` | string  | false    | ASC \| DESC (case insensitive) | Sort order (default: ASC) |
 
-- **Allow Regex Pattern**: `^(?!.*[%_])(?!.*(.)\1{4,})[가-힣a-zA-ZⅠ-Ⅹ0-9\s\n().,;:_-]{0,50}$`
+- **Allow Regex Pattern**: `[가-힣a-zA-ZⅠ-Ⅹ0-9\s\n().,;:_-]` 
+- taken 50 characters max.
 
 ### Searchable Fields
 
