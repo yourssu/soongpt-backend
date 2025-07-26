@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable
 
 interface CourseRepository {
     fun get(code: Long): Course
+    fun findAll(pageable: Pageable): Page<Course>
     fun findAllById(courseIds: List<Long>): List<Course>
     fun findAllByCode(codes: List<Long>): List<Course>
     fun findAllInCategory(category: Category, courseIds: List<Long>): List<Course>
