@@ -7,6 +7,6 @@ class CourseReader(
     private val courseRepository: CourseRepository,
 ) {
     fun findAllInCategory(category: Category, courseIds: List<Long>): List<Course> {
-        return courseRepository.findAllByCategoryTarget(category, courseIds)
+        return courseRepository.findAllByCategory(category, courseIds)
     }
 }
