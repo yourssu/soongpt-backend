@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.implement
 
+import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.target.implement.Target
 import org.springframework.stereotype.Component
 
@@ -20,5 +21,9 @@ class CourseReader(
     fun findAllInGeneralRequired(targets: List<Target>): List<Course> {
         val courseIds = targets.map { it.courseId }
         return courseRepository.getAllInCategory(Category.GENERAL_REQUIRED, courseIds)
+    }
+
+    fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto {
+        return courseRepository.groupByCategory(codes)
     }
 }
