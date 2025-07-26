@@ -22,7 +22,7 @@ data class CourseDetailResponse(
 ) {
     companion object {
         fun from(course: Course, courseTimes: CourseTimes): CourseDetailResponse {
-            val courseTimeResponses  =courseTimes.toList()
+            val courseTimeResponses = courseTimes.toList()
                 .map { CourseTimeResponse.from(it) }
             return CourseDetailResponse(
                 category = course.category.name,
