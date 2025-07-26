@@ -5,8 +5,10 @@ import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.timetable.implement.dto.CompressTime
 import com.yourssu.soongpt.domain.timetable.implement.dto.CompressTimes
 import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
+import org.springframework.stereotype.Component
 import java.util.*
 
+@Component
 class CourseCandidateFactory {
     companion object {
         private const val WHOLE_TIMESLOT = 24 * 7 * 60
