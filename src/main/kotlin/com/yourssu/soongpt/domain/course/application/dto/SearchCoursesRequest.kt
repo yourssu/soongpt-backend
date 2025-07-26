@@ -29,10 +29,14 @@ data class SearchCoursesRequest(
     }
 
     private fun sanitizeQuery(input: String): String {
-        return """[가-힣a-zA-ZⅠ-Ⅹ0-9\s\n().,;:_-]""".toRegex()
-            .findAll(input.take(MAX_LENGTH))
+        return ALLOWED_CHARS_REGEX.findAll(input.take(MAX_LENGTH))
             .map { it.value }
             .joinToString("")
             .trim()
+    }
+
+    companion object {
+        private const val MAX_LENGTH = 50
+        private val ALLOWED_CHARS_REGEX = """[가-힣a-zA-ZⅠ-Ⅹ0-9\s\n().,;:_-]""".toRegex()
     }
 }
