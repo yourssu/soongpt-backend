@@ -47,8 +47,8 @@ class TimetableGenerator (
     private fun getAllCourses(courseGroup: GroupedCoursesByCategoryDto): List<Course> {
         return listOf(
             courseGroup.majorRequiredCourses,
-            courseGroup.majorElectiveCourses,
             courseGroup.generalRequiredCourses,
+            courseGroup.majorElectiveCourses,
             courseGroup.generalElectiveCourses,
         ).flatten().distinctBy { it.code }
     }
