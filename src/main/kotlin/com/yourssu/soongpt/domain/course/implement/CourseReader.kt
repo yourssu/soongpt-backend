@@ -33,6 +33,9 @@ class CourseReader(
     }
 
     fun searchCourses(query: String, pageable: Pageable): Page<Course> {
+        if (query.isBlank()) {
+            return courseRepository.findAll(pageable)
+        }
         return courseRepository.searchCourses(query, pageable)
     }
 

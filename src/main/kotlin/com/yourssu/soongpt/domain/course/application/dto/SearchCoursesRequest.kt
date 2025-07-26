@@ -3,13 +3,12 @@ package com.yourssu.soongpt.domain.course.application.dto
 import com.yourssu.soongpt.domain.course.business.query.SearchCoursesQuery
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Pattern
-import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.Range
 
+private const val MAX_LENGTH = 50
+
 data class SearchCoursesRequest(
-    @field:Pattern(regexp = "^[a-zA-Z0-9가-힣\\s._-]*$", message = "검색어는 한글, 영문, 숫자, 공백, 점, 언더스코어, 하이픈만 사용 가능합니다")
-    @field:Size(min = 2, max = 100, message = "검색어는 2자 이상 100자 이하이어야 합니다")
-    val q: String,
+    val q: String = "",
     
     @field:Min(value = 0, message = "페이지 번호는 0 이상이어야 합니다")
     val page: Int = 0,
@@ -22,10 +21,18 @@ data class SearchCoursesRequest(
 ) {
     fun toQuery(): SearchCoursesQuery {
         return SearchCoursesQuery(
-            query = q,
+            query = sanitizeQuery(q),
             page = page,
             size = size,
             sort = sort
         )
+    }
+
+    private fun sanitizeQuery(input: String): String {
+        return """[가-힣a-zA-ZⅠ-Ⅹ0-9\s\n().,;:_-]""".toRegex()
+            .findAll(input.take(MAX_LENGTH))
+            .map { it.value }
+            .joinToString("")
+            .trim()
     }
 }

@@ -6,6 +6,7 @@ import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -18,8 +19,22 @@ class CourseRepositoryImpl(
     private val courseJpaRepository: CourseJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
     ): CourseRepository {
+    private val totalCount: Long = courseJpaRepository.count()
+
     override fun get(code: Long): Course {
         return courseJpaRepository.getByCode(code).toDomain()
+    }
+
+    @Cacheable(value = ["courseCache"], key = "#pageable.pageNumber + '_' + #pageable.pageSize")
+    override fun findAll(pageable: Pageable): Page<Course> {
+        val content = jpaQueryFactory
+            .selectFrom(courseEntity)
+            .orderBy(courseEntity.name.asc())
+            .offset(pageable.offset)
+            .limit(pageable.pageSize.toLong())
+            .fetch()
+            .map { it.toDomain() }
+        return PageImpl(content, pageable, totalCount)
     }
 
     override fun findAllById(courseIds: List<Long>): List<Course> {
@@ -82,7 +97,6 @@ class CourseRepositoryImpl(
             .where(buildSearchCondition(query))
             .fetchOne() ?: 0L
     }
-
 }
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
