@@ -1,7 +1,7 @@
 package com.yourssu.soongpt.domain.course.implement.utils
 
 object FieldFinder {
-    fun findFieldBySchoolId(schoolId: Int, field: String): String {
+    fun findFieldBySchoolId(field: String, schoolId: Int): String {
         val matchingEntries = field.split("\n")
             .mapNotNull { line -> parseFieldEntry(line) }
             .filter { entry -> schoolId in entry.yearRange }

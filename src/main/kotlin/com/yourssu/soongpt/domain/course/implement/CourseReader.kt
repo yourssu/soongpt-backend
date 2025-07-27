@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.implement
 
 import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
+import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.target.implement.TargetRepository
 import org.springframework.data.domain.Page
@@ -26,6 +27,11 @@ class CourseReader(
 
     fun findAllInCategory(category: Category, courseIds: List<Long>): List<Course> {
         return courseRepository.findAllInCategory(category, courseIds)
+    }
+
+    fun findAllInCategory(category: Category, courseIds: List<Long>, field: String, schoolId: Int): List<Course> {
+        val courses = courseRepository.findAllInCategory(category, courseIds)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(field, schoolId)) }
     }
 
     fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto {

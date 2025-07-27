@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Range
 
 data class MajorRequiredRequest(
     @Range(min = 15, max = 25, message = "학번은 15부터 25까지 가능합니다.")
-    val schoolId: Long,
+    val schoolId: Int,
 
     @NotBlank
     val department: String,
