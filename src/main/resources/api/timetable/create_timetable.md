@@ -4,18 +4,20 @@
 
 ### Request Body
 
-| Name                   | Type      | Required | Constraint                 |
-|------------------------|-----------|----------|----------------------------|
-| `schoolId`             | integer   | true     | @Range(min = 15, max = 25) |
-| `department`           | string    | true     | @NotBlank                  |
-| `subDepartment`        | string    | false    |                            |
-| `grade`                | integer   | true     | @Range(min = 1, max = 5)   |
-| `isChapel`             | boolean   | false    | default: false             |
-| `majorRequiredCodes`   | integer[] | true     | @NotNull                   |
-| `majorElectiveCodes`   | integer[] | true     | @NotNull                   |
-| `generalRequiredCodes` | integer[] | true     | @NotNull                   |
-| `codes`                | integer[] | true     | @NotNull                   |
-| `generalElectivePoint` | integer   | true     | @Range(min = 0, max = 22)  |
+| Name                  | Type      | Required | Constraint                 |
+|-----------------------|-----------|---------|----------------------------|
+| `schoolId`            | integer   | true    | @Range(min = 15, max = 25) |
+| `department`          | string    | true    | @NotBlank                  |
+| `subDepartment`       | string    | false   |                            |
+| `grade`               | integer   | true    | @Range(min = 1, max = 5)   |
+| `isChapel`            | boolean   | false   | default: false             |
+| `majorRequiredCodes`  | integer[] | true    | @NotNull                   |
+| `majorElectiveCodes`  | integer[] | true    | @NotNull                   |
+| `generalRequiredCodes` | integer[] | true    | @NotNull                   |
+| `codes`               | integer[] | true    | @NotNull                   |
+| `generalElectivePoint` | integer   | true    | @Range(min = 0, max = 22)  |
+| `preferredGeneralElectives` | string[]  | true  | @NotNull                   |
+
 
 **Global Constraint:**  
 The sum of points from selected major/general required courses, and desired major/general elective points must
