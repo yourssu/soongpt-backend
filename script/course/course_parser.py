@@ -54,7 +54,7 @@ def parse_sub_category(sub_category: Optional[str]) -> Optional[str]:
 
 def parse_field(field: Optional[str]) -> Optional[str]:
     """Parse and clean field."""
-    return field if field else None
+    return field if field else ""
 
 
 def parse_code(code: str) -> int:
