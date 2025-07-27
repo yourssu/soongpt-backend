@@ -212,6 +212,7 @@ def convert_course_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 def process_single_file(json_file: str, output_file: str) -> None:
     """Process a single JSON file and create output file."""
     all_courses = []
+    seen_courses = set()  # Track unique courses by (code, name, department)
     
     if not os.path.exists(json_file):
         print(f"File not found: {json_file}")
@@ -227,7 +228,13 @@ def process_single_file(json_file: str, output_file: str) -> None:
             for item in data:
                 converted_item = convert_course_item(item)
                 if converted_item is not None:  # Only add non-excluded courses
-                    all_courses.append(converted_item)
+                    # Create unique key for deduplication (only code)
+                    unique_key = converted_item["code"]
+                    
+                    # Only add if not seen before
+                    if unique_key not in seen_courses:
+                        seen_courses.add(unique_key)
+                        all_courses.append(converted_item)
         else:
             print(f"Warning: {json_file} does not contain a list")
             
@@ -236,7 +243,7 @@ def process_single_file(json_file: str, output_file: str) -> None:
         return
     
     # Write output file
-    print(f"Writing {len(all_courses)} courses to {output_file}")
+    print(f"Writing {len(all_courses)} unique courses to {output_file}")
     
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(all_courses, f, ensure_ascii=False, indent=2)
@@ -247,6 +254,7 @@ def process_single_file(json_file: str, output_file: str) -> None:
 def process_json_files(input_pattern: str, output_file: str) -> None:
     """Process all JSON files matching the pattern and create output file."""
     all_courses = []
+    seen_courses = set()  # Track unique courses by (code, name, department)
     
     # Find all files matching the pattern
     json_files = glob.glob(input_pattern)
@@ -268,7 +276,13 @@ def process_json_files(input_pattern: str, output_file: str) -> None:
                 for item in data:
                     converted_item = convert_course_item(item)
                     if converted_item is not None:  # Only add non-excluded courses
-                        all_courses.append(converted_item)
+                        # Create unique key for deduplication (only code)
+                        unique_key = converted_item["code"]
+                        
+                        # Only add if not seen before
+                        if unique_key not in seen_courses:
+                            seen_courses.add(unique_key)
+                            all_courses.append(converted_item)
             else:
                 print(f"Warning: {json_file} does not contain a list")
                 
@@ -277,7 +291,7 @@ def process_json_files(input_pattern: str, output_file: str) -> None:
             continue
     
     # Write output file
-    print(f"Writing {len(all_courses)} courses to {output_file}")
+    print(f"Writing {len(all_courses)} unique courses to {output_file}")
     
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(all_courses, f, ensure_ascii=False, indent=2)
