@@ -5,10 +5,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', NULL, '', 5039890501, '개별지도 연구 II', NULL, '언론홍보학과', NULL, '3.0', '3.0', 0, '', '전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-컴퓨터', '', 5006762801, '(공통)물리1및실험', '최현희', '물리학과', NULL, '4.0', '3.0', 0, '조만식기념관 12123, 숭덕경상관 02317', '전체학년 기계 ,화공 ,전기 ,건축학부 ,신소재 ,정통전, 전자정보공학부 ,AI융합 ,화학 ,건축학부 ,물리 ,의생명, 컴퓨터');
+VALUES ('MAJOR_REQUIRED', '복선-컴퓨터', '', 5006762801, '(공통)물리1및실험', '최현희', '물리학과', NULL, '4.0', '3.0', 0, '숭덕경상관 02317, 조만식기념관 12123', '전체학년 기계 ,화공 ,전기 ,건축학부 ,신소재 ,정통전, 전자정보공학부 ,AI융합 ,화학 ,건축학부 ,물리 ,의생명, 컴퓨터');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-컴퓨터', '', 5006762802, '(공통)물리1및실험', '이동렬', '물리학과', NULL, '4.0', '3.0', 0, '조만식기념관 12124, 숭덕경상관 02317', '전체학년 기계 ,화공 ,전기 ,건축학부 ,신소재 ,정통전, 전자정보공학부 ,AI융합 ,화학 ,건축학부 ,물리 ,의생명, 컴퓨터');
+VALUES ('MAJOR_REQUIRED', '복선-컴퓨터', '', 5006762802, '(공통)물리1및실험', '이동렬', '물리학과', NULL, '4.0', '3.0', 0, '숭덕경상관 02317, 조만식기념관 12124', '전체학년 기계 ,화공 ,전기 ,건축학부 ,신소재 ,정통전, 전자정보공학부 ,AI융합 ,화학 ,건축학부 ,물리 ,의생명, 컴퓨터');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', NULL, '', 5006762901, '물리2및실험', '김남미', '물리학과', NULL, '4.0', '3.0', 0, '교육관 06303, 조만식기념관 12214', '전체학년 전기,기계,전자정보,AI융합,화학 ,물리 ,정통전');
@@ -68,7 +68,7 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
 [''''20,''''21~''''22]의사소통/글로벌,기초역량-한국어의사소통
 [''''19]기초역량-한국어의사소통과국제어문
 [''''16-''''18]기초역량(한국어의사소통-읽기와쓰기)
-[''''15이전]창의성과의사소통능력(핵심-창의)', 2150060503, '(외국인을위한)학술적글쓰기', '이유경', '교양교육운영팀', NULL, '3.0', '3.0', 0, '조만식기념관 12328, 진리관 11521', '전체학년 전체;순수외국인입학생 (대상외수강제한)');
+[''''15이전]창의성과의사소통능력(핵심-창의)', 2150060503, '(외국인을위한)학술적글쓰기', '이유경', '교양교육운영팀', NULL, '3.0', '3.0', 0, '진리관 11521, 조만식기념관 12328', '전체학년 전체;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
@@ -208,7 +208,7 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
 [''''20,''''21~''''22]창의/융합,균형교양-역사·철학·종교
 [''''19]균형교양-인문학(인간/문화/사고력)
 [''''16-''''18]균형교양(인문학-철학/사상)
-[''''15이전]역사와철학(융합-인문)', 2150141501, 'AI와윤리', '김광연', '철학과', NULL, '3.0', '3.0', 0, '백마관 07117, 교육관 06203', '전체');
+[''''15이전]역사와철학(융합-인문)', 2150141501, 'AI와윤리', '김광연', '철학과', NULL, '3.0', '3.0', 0, '교육관 06203, 백마관 07117', '전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('OTHER', NULL, '', 5052310801, 'AI융합세미나', '김계영', 'AI·SW융합학과(계약학과)', NULL, '3.0', '3.0', 0, '', '전체');
@@ -796,7 +796,7 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]자기개발·진로탐색
 [''''15이전]인성과리더쉽(핵심-창의)', 2150637302, '공공가치와리더십', '이국배', '교양교육운영팀', NULL, '2.0', '2.0', 0, '조만식기념관 12208', '전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부/융선-ICT유통물류융합', '', 2150433804, '공급체인경영', '박종우', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02212, 문화관 03314', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
+VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부/융선-ICT유통물류융합', '', 2150433804, '공급체인경영', '박종우', '경영학부', NULL, '3.0', '3.0', 0, '문화관 03314, 숭덕경상관 02212', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부/융선-ICT유통물류융합', '', 2150433805, '공급체인경영', '황연희', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02212', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
@@ -851,7 +851,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복필-경영학부/부선-경영학부', '', 2150287006, '관리경제', '이은정', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02210, 숭덕경상관 02209', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복필-경영학부/부선-경영학부', '', 2150287007, '관리경제', '김경화', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02212, 문화관 03105', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
+VALUES ('MAJOR_REQUIRED', '복필-경영학부/부선-경영학부', '', 2150287007, '관리경제', '김경화', '경영학부', NULL, '3.0', '3.0', 0, '문화관 03105, 숭덕경상관 02212', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', NULL, '', 2150870101, '관리경제', '박종호', '복지경영학과(계약학과)', NULL, '3.0', '3.0', 0, '문화관 03308', '전체학년 복지경영학과(계약학과) (대상외수강제한)');
@@ -1136,7 +1136,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', NULL, '', 5031619201, '기업가정신의 이론과 실천', '김영수', '벤처중소기업학과', NULL, '3.0', '3.0', 0, '', '전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부', '', 2150433903, '기업가치평가', '서영숙', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02212, 숭덕경상관 02211', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
+VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부', '', 2150433903, '기업가치평가', '서영숙', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02211, 숭덕경상관 02212', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', NULL, '', 5008037901, '기업가치평가사례', '양기태', '회계·세무학과', NULL, '3.0', '3.0', 0, '', '전체');
@@ -1230,7 +1230,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', NULL, '', 5027407001, '기업재무실증연구', '문성재', '금융학과', NULL, '3.0', '3.0', 0, '', '전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', NULL, '', 5006762501, '기초공학수학1', '장미송', '수학과', NULL, '3.0', '3.0', 0, '백마관 07218, 문화관 03314', '전체');
+VALUES ('MAJOR_REQUIRED', NULL, '', 5006762501, '기초공학수학1', '장미송', '수학과', NULL, '3.0', '3.0', 0, '문화관 03314, 백마관 07218', '전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-건축공학/부선-건축공학', '', 5006762601, '기초공학수학2', '이의우', '수학과', NULL, '3.0', '3.0', 0, '안익태기념관 04403', '전체학년 신소재, 산업정보, IT융합전공, 전자공학전공, 전기, 기계, 화공, 건축공학');
@@ -1298,7 +1298,7 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
 [''''20,''''21~''''22]의사소통/글로벌,기초역량-국제어문
 [''''19]기초역량-한국어의사소통과국제어문
 [''''16-''''18]기초역량(국제어문-국제어)
-[''''15이전]세계의언어(핵심-창의)', 2150519502, '기초프랑스어', NULL, '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20302, 미래관 20301', '불문 제외');
+[''''15이전]세계의언어(핵심-창의)', 2150519502, '기초프랑스어', NULL, '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20301, 미래관 20302', '불문 제외');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
@@ -1732,7 +1732,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복필-경영학부/부선-경영학부/융선-ICT유통물류융합/융선-사회적기업혁신융합/융선-스포츠마케팅융합', '', 2150338205, '마케팅', '강기두', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02316', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복필-경영학부/부선-경영학부/융선-ICT유통물류융합/융선-사회적기업혁신융합/융선-스포츠마케팅융합', '', 2150338206, '마케팅', '이정규', '경영학부', NULL, '3.0', '3.0', 0, '문화관 03314, 숭덕경상관 02211', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
+VALUES ('MAJOR_REQUIRED', '복필-경영학부/부선-경영학부/융선-ICT유통물류융합/융선-사회적기업혁신융합/융선-스포츠마케팅융합', '', 2150338206, '마케팅', '이정규', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02211, 문화관 03314', '전체학년 경영학부;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', NULL, '', 2150636101, '마케팅', '강기두', '혁신경영학과(계약학과)', NULL, '3.0', '3.0', 0, '숭덕경상관 02318', '전체학년 혁신경영학과(계약학과) (대상외수강제한)');
@@ -2116,15 +2116,6 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]과학·기술
 [''''19]균형교양-자연/공학(자연/과학/기술)
 [''''16-''''18]균형교양(자연과학-자연과학)
 [''''15이전]자연과학과수리(융합-자연)', 2150342501, '생명과학의이해', '양진국', '화학과', NULL, '2.0', '2.0', 0, '숭덕경상관 02318', '전체(의생명시스템, 화학 2/3/4 학년 제외)
-전체(의생명시스템, 화학 2/3/4 학년 제외)
-전체(의생명시스템, 화학 2/3/4 학년 제외)');
-
-INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]과학·기술
-[''''20,''''21~''''22]창의/융합,균형교양-자연과학·공학·기술
-[''''19]균형교양-자연/공학(자연/과학/기술)
-[''''16-''''18]균형교양(자연과학-자연과학)
-[''''15이전]자연과학과수리(융합-자연)', 2150342502, '생명과학의이해', '양진국', '화학과', NULL, '2.0', '2.0', 0, '숭덕경상관 02318', '전체(의생명시스템, 화학 2/3/4 학년 제외)
 전체(의생명시스템, 화학 2/3/4 학년 제외)
 전체(의생명시스템, 화학 2/3/4 학년 제외)');
 
@@ -2966,7 +2957,7 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]문화·예술
 [''''20,''''21~''''22]창의/융합,균형교양-문학·예술
 [''''19]균형교양-인문학(인간/문화/사고력)
 [''''16-''''18]균형교양(인문학-철학/사상)
-[''''15이전]역사와철학(융합-인문)', 2150381601, '예술과미학', '김대식', '철학과', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10311, 교육관 06203', '전체');
+[''''15이전]역사와철학(융합-인문)', 2150381601, '예술과미학', '김대식', '철학과', NULL, '3.0', '3.0', 0, '교육관 06203, 벤처중소기업센터 10311', '전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]문화·예술
@@ -3036,7 +3027,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('GENERAL_REQUIRED', NULL, '', 2150077806, '외국인신입생세미나', '차봉준', '교양교육운영팀', NULL, '3.0', '3.0', 0, '미래관 20406', '전체학년 ;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('GENERAL_REQUIRED', NULL, '', 2150077807, '외국인신입생세미나', '차봉준', '교양교육운영팀', NULL, '3.0', '3.0', 0, '미래관 20406, 베어드홀 01103', '전체학년 ;순수외국인입학생 (대상외수강제한)');
+VALUES ('GENERAL_REQUIRED', NULL, '', 2150077807, '외국인신입생세미나', '차봉준', '교양교육운영팀', NULL, '3.0', '3.0', 0, '베어드홀 01103, 미래관 20406', '전체학년 ;순수외국인입학생 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
@@ -3357,7 +3348,7 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
 [''''20,''''21~''''22]의사소통/글로벌,기초역량-국제어문
 [''''19]기초역량-한국어의사소통과국제어문
 [''''16-''''18]기초역량(국제어문-국제어)
-[''''15이전]세계의언어(핵심-창의)', 2150519201, '일본어입문', '이정옥', '일어일문학과', NULL, '3.0', '3.0', 0, '백마관 07317, 백마관 07316', '전체(일어일문 제외)');
+[''''15이전]세계의언어(핵심-창의)', 2150519201, '일본어입문', '이정옥', '일어일문학과', NULL, '3.0', '3.0', 0, '백마관 07316, 백마관 07317', '전체(일어일문 제외)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
@@ -3726,7 +3717,7 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
 [''''20,''''21~''''22]의사소통/글로벌,기초역량-국제어문
 [''''19]기초역량-한국어의사소통과국제어문
 [''''16-''''18]기초역량(국제어문-국제어)
-[''''15이전]세계의언어(핵심-창의)', 2150520101, '중국어입문', '윤애경', '중어중문학과', NULL, '3.0', '3.0', 0, '진리관 11309, 진리관 11521', '전체(중문 제외),(중국국적학생 제외)');
+[''''15이전]세계의언어(핵심-창의)', 2150520101, '중국어입문', '윤애경', '중어중문학과', NULL, '3.0', '3.0', 0, '진리관 11521, 진리관 11309', '전체(중문 제외),(중국국적학생 제외)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]인간·언어
@@ -4088,14 +4079,14 @@ VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]문화·예술
 [''''20,''''21~''''22]창의/융합,균형교양-문학·예술
 [''''19]균형교양-인문학(인간/문화/사고력)
 [''''16-''''18]균형교양(인문학-문학/어학/예술)
-[''''15이전]문학과예술(융합-인문)', 2150526301, '프랑스예술', '김기일', '불어불문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12210, 교육관 06301', '전체학년');
+[''''15이전]문학과예술(융합-인문)', 2150526301, '프랑스예술', '김기일', '불어불문학과', NULL, '3.0', '3.0', 0, '교육관 06301, 조만식기념관 12210', '전체학년');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('GENERAL_ELECTIVE', NULL, '[‘23이후]문화·예술
 [''''20,''''21~''''22]창의/융합,균형교양-문학·예술
 [''''19]균형교양-인문학(인간/문화/사고력)
 [''''16-''''18]균형교양(인문학-문학/어학/예술)
-[''''15이전]문학과예술(융합-인문)', 2150526302, '프랑스예술', '김기일', '불어불문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12210, 교육관 06301', '전체학년');
+[''''15이전]문학과예술(융합-인문)', 2150526302, '프랑스예술', '김기일', '불어불문학과', NULL, '3.0', '3.0', 0, '교육관 06301, 조만식기념관 12210', '전체학년');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-컴퓨터', '', 2150336203, '프로그래밍2및실습', '김익수', '컴퓨터학부', '(공통-재수강)', '4.0', '3.0', 0, '월 18:00-18:50 (정보과학관 21205 (실습실)-김익수)
@@ -5389,10 +5380,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150578201, '공학물리2', '강대승', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405', '1학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150578202, '공학물리2', '박병권', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03308, 문화관 03206', '1학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150578202, '공학물리2', '박병권', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 문화관 03308', '1학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150578203, '공학물리2', '박병권', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03308, 문화관 03206', '1학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150578203, '공학물리2', '박병권', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 문화관 03308', '1학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-기계/부선-기계', '', 5010441501, '공학물리2', '송기영', '기계공학부', NULL, '3.0', '3.0', 0, '형남공학관 05116', '1학년 기계');
@@ -5407,7 +5398,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-산업·정보/부선-산업·정보', '', 2150536701, '공학설계입문', '곽민정', '산업·정보시스템공학과', NULL, '3.0', '3.0', 0, '형남공학관 05111', '1학년 산업정보');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-산업·정보/부선-산업·정보', '', 2150536702, '공학설계입문', '곽민정', '산업·정보시스템공학과', NULL, '3.0', '3.0', 0, '형남공학관 05111, 형남공학관 05B124', '1학년 산업정보');
+VALUES ('MAJOR_ELECTIVE', '복선-산업·정보/부선-산업·정보', '', 2150536702, '공학설계입문', '곽민정', '산업·정보시스템공학과', NULL, '3.0', '3.0', 0, '형남공학관 05B124, 형남공학관 05111', '1학년 산업정보');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-산업·정보/부선-산업·정보', '', 2150536703, '공학설계입문', '곽민정', '산업·정보시스템공학과', NULL, '3.0', '3.0', 0, '형남공학관 05111', '1학년 산업정보');
@@ -5437,7 +5428,7 @@ VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150679
 목 13:30-14:45 (형남공학관 05104 (김낙경강의실)-차형태)', '1학년 전자공학전공(IT융합전공 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150679002, '공학설계입문', '안병권', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '문화관 03312, 문화관 03307', '1학년 전자공학전공(IT융합전공 수강제한)');
+VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150679002, '공학설계입문', '안병권', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '문화관 03307, 문화관 03312', '1학년 전자공학전공(IT융합전공 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150679003, '공학설계입문', '정원국', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '화 10:30-11:45 (미래관 20204 (윤동주강의실)-정원국)
@@ -5499,7 +5490,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 5010245002, '국제통상개론', '조재호', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02107', '1학년 경제');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 5010245003, '국제통상개론', NULL, '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02108, 숭덕경상관 02317', '1학년 경제');
+VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 5010245003, '국제통상개론', NULL, '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02317, 숭덕경상관 02108', '1학년 경제');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-금융학부/부선-금융학부', '', 2150624201, '금융의이해', '김재호', '금융학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02212', '1학년 금융');
@@ -5553,7 +5544,7 @@ VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150525
 수 09:00-10:15 (형남공학관 05105 (심영복강의실)-최현석)', '1학년 전자공학전공(IT융합전공 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150525704, '기초공학수학2', '최성자', '전자정보공학부 IT융합전공', NULL, '3.0', '3.0', 0, '미래관 20402, 문화관 03105', '1학년 전자공학전공(IT융합전공 수강제한)');
+VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150525704, '기초공학수학2', '최성자', '전자정보공학부 IT융합전공', NULL, '3.0', '3.0', 0, '문화관 03105, 미래관 20402', '1학년 전자공학전공(IT융합전공 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-IT융합/부선-IT융합', '', 2150525705, '기초공학수학2', '장미송', '전자정보공학부 IT융합전공', NULL, '3.0', '3.0', 0, '문화관 03312', '1학년 IT융합전공(전자공학 수강제한)');
@@ -5562,13 +5553,13 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-IT융합/부선-IT융합', '', 2150525706, '기초공학수학2', '김연욱', '전자정보공학부 IT융합전공', NULL, '3.0', '3.0', 0, '미래관 20401', '1학년 IT융합전공(전자공학 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-산업·정보/부선-산업·정보', '', 5010441001, '기초공학수학2', '이상민', '산업·정보시스템공학과', NULL, '3.0', '3.0', 0, '문화관 03307, 문화관 03309', '1학년 산업정보');
+VALUES ('MAJOR_REQUIRED', '복선-산업·정보/부선-산업·정보', '', 5010441001, '기초공학수학2', '이상민', '산업·정보시스템공학과', NULL, '3.0', '3.0', 0, '문화관 03309, 문화관 03307', '1학년 산업정보');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-산업·정보/부선-산업·정보', '', 5010441002, '기초공학수학2', '최현주', '산업·정보시스템공학과', NULL, '3.0', '3.0', 0, '미래관 20303', '1학년 산업정보');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-신소재/부선-신소재', '', 5010443701, '기초공학수학2', '손정숙', '신소재공학과', NULL, '3.0', '3.0', 0, '백마관 07403, 백마관 07317', '1학년 신소재 (대상외수강제한)');
+VALUES ('MAJOR_REQUIRED', '복선-신소재/부선-신소재', '', 5010443701, '기초공학수학2', '손정숙', '신소재공학과', NULL, '3.0', '3.0', 0, '백마관 07317, 백마관 07403', '1학년 신소재 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-신소재/부선-신소재', '', 5010443702, '기초공학수학2', '최성자', '신소재공학과', NULL, '3.0', '3.0', 0, '백마관 07318', '1학년 신소재 (대상외수강제한)');
@@ -5650,16 +5641,16 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-문예창작/부선-문예창작', '', 2150387001, '문학의이해', '백로라', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '진리관 11401', '1학년 문예창작');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-수학/부선-수학', '', 2150387401, '물리1및실험', '정현희', '수학과', NULL, '4.0', '3.0', 0, '조만식기념관 12123, 진리관 11516', '1학년 수학');
+VALUES ('MAJOR_REQUIRED', '복선-수학/부선-수학', '', 2150387401, '물리1및실험', '정현희', '수학과', NULL, '4.0', '3.0', 0, '진리관 11516, 조만식기념관 12123', '1학년 수학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150577501, '물리1및실험', '이항모', '의생명시스템학부', NULL, '4.0', '3.0', 0, '조만식기념관 12123, 백마관 07117', '1학년 의생명시스템');
+VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150577501, '물리1및실험', '이항모', '의생명시스템학부', NULL, '4.0', '3.0', 0, '백마관 07117, 조만식기념관 12123', '1학년 의생명시스템');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150577502, '물리1및실험', '송현석', '의생명시스템학부', NULL, '4.0', '3.0', 0, '백마관 07117, 조만식기념관 12124', '1학년 의생명시스템');
+VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150577502, '물리1및실험', '송현석', '의생명시스템학부', NULL, '4.0', '3.0', 0, '조만식기념관 12124, 백마관 07117', '1학년 의생명시스템');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150577503, '물리1및실험', '박혜련', '의생명시스템학부', NULL, '4.0', '3.0', 0, '백마관 07117, 조만식기념관 12124', '1학년 자유전공학부');
+VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150577503, '물리1및실험', '박혜련', '의생명시스템학부', NULL, '4.0', '3.0', 0, '조만식기념관 12124, 백마관 07117', '1학년 자유전공학부');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-신소재/부선-신소재', '', 2150578301, '물리2', '정영진', '신소재공학과', NULL, '3.0', '3.0', 0, '월 15:00-16:15 (형남공학관 05322 (임경희강의실)-정영진)
@@ -5669,13 +5660,13 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-신소재/부선-신소재', '', 2150578302, '물리2', '홍철재', '신소재공학과', NULL, '3.0', '3.0', 0, '진리관 11516', '1학년 신소재');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-화학/부선-화학', '', 2150304001, '물리2및실험', '김남미', '화학과', NULL, '4.0', '3.0', 0, '조만식기념관 12214, 백마관 07318', '1학년 화학');
+VALUES ('MAJOR_REQUIRED', '복선-화학/부선-화학', '', 2150304001, '물리2및실험', '김남미', '화학과', NULL, '4.0', '3.0', 0, '백마관 07318, 조만식기념관 12214', '1학년 화학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-화학/부선-화학', '', 2150304002, '물리2및실험', '김남미', '화학과', NULL, '4.0', '3.0', 0, '백마관 07318', '1학년 화학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150443001, '물리2및실험', '김남미', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '백마관 07403, 조만식기념관 12214', '1학년 전자공학전공(IT융합 수강제한)');
+VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150443001, '물리2및실험', '김남미', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '조만식기념관 12214, 백마관 07403', '1학년 전자공학전공(IT융합 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150443002, '물리2및실험', '홍영우', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '백마관 07403', '1학년 전자공학전공(IT융합 수강제한)');
@@ -5687,13 +5678,13 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150443004, '물리2및실험', '이순녀', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '숭덕경상관 02101', '1학년 전자공학전공(IT융합 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150443005, '물리2및실험', '이동재', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10311, 조만식기념관 12214', '1학년 자유전공학부만 수강가능');
+VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150443005, '물리2및실험', '이동재', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '조만식기념관 12214, 벤처중소기업센터 10311', '1학년 자유전공학부만 수강가능');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-전자공학/부선-전자공학', '', 2150443006, '물리2및실험', '김수경', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10311', '1학년 자유전공학부만 수강가능');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-IT융합/부선-IT융합', '', 2150443007, '물리2및실험', '김남미', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '백마관 07403, 조만식기념관 12214', '1학년 IT융합전공(전자공학 수강제한)');
+VALUES ('MAJOR_REQUIRED', '복선-IT융합/부선-IT융합', '', 2150443007, '물리2및실험', '김남미', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '조만식기념관 12214, 백마관 07403', '1학년 IT융합전공(전자공학 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-IT융합/부선-IT융합', '', 2150443008, '물리2및실험', '김남미', '전자정보공학부 IT융합전공', NULL, '4.0', '3.0', 0, '백마관 07403', '1학년 IT융합전공(전자공학 수강제한)');
@@ -5708,7 +5699,7 @@ VALUES ('MAJOR_REQUIRED', '복선-IT융합/부선-IT융합', '', 2150443010, '�
 월 12:00-12:50 (조만식기념관 12215 (물리실험실)-이동렬)', '1학년 IT융합전공(전자공학 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-물리/부선-물리', '', 2150525301, '물리2및실험', '이항모', '물리학과', NULL, '4.0', '3.0', 0, '조만식기념관 12311, 조만식기념관 12214', '1학년 물리');
+VALUES ('MAJOR_REQUIRED', '복선-물리/부선-물리', '', 2150525301, '물리2및실험', '이항모', '물리학과', NULL, '4.0', '3.0', 0, '조만식기념관 12214, 조만식기념관 12311', '1학년 물리');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-물리/부선-물리', '', 2150525302, '물리2및실험', '정진석', '물리학과', NULL, '4.0', '3.0', 0, '조만식기념관 12311', '1학년 물리');
@@ -5739,7 +5730,7 @@ VALUES ('MAJOR_REQUIRED', '복선-글로벌미디어/부선-글로벌미디어/�
 화 16:30-17:20 (정보과학관 21508 (디지털미디어스튜디오)-)', '1학년 자유전공학부만 수강가능');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-수학/부선-수학', '', 2150336101, '미적분학2', '이상욱', '수학과', NULL, '3.0', '3.0', 0, '문화관 03105, 진리관 11516', '1학년 수학');
+VALUES ('MAJOR_REQUIRED', '복선-수학/부선-수학', '', 2150336101, '미적분학2', '이상욱', '수학과', NULL, '3.0', '3.0', 0, '진리관 11516, 문화관 03105', '1학년 수학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-물리/부선-물리', '', 5010442801, '미적분학2', '이상욱', '물리학과', NULL, '3.0', '3.0', 0, '조만식기념관 12311', '1학년 물리');
@@ -5748,7 +5739,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-화학/부선-화학', '', 5010443001, '미적분학2', '정주영', '화학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02317', '1학년 화학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-통계·보험/부선-통계·보험', '', 5010443201, '미적분학2', '심은하', '정보통계·보험수리학과', NULL, '3.0', '3.0', 0, '조만식기념관 12330, 숭덕경상관 02317', '1학년 통계보험');
+VALUES ('MAJOR_REQUIRED', '복선-통계·보험/부선-통계·보험', '', 5010443201, '미적분학2', '심은하', '정보통계·보험수리학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02317, 조만식기념관 12330', '1학년 통계보험');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150459001, '바이오컴퓨팅및실습', '류재용', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10711', '1학년 의생명시스템');
@@ -5822,7 +5813,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-일어일문/부선-일어일문/융선-동아시아경제통상', '', 2150528401, '시청각일본어2', '최서영', '일어일문학과', NULL, '3.0', '3.0', 0, '미래관 20205, 미래관 20201', '1학년 일어일문,동아시아경제통상');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-영문/부선-영문', '', 2150552601, '영국문학의이해', '최정선', '영어영문학과', '(가반)', '3.0', '3.0', 0, '벤처중소기업센터 10311, 조만식기념관 12327', '1학년 영문');
+VALUES ('MAJOR_REQUIRED', '복선-영문/부선-영문', '', 2150552601, '영국문학의이해', '최정선', '영어영문학과', '(가반)', '3.0', '3.0', 0, '조만식기념관 12327, 벤처중소기업센터 10311', '1학년 영문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-영문/부선-영문', '', 2150552602, '영국문학의이해', '최정선', '영어영문학과', '(나반)', '3.0', '3.0', 0, '벤처중소기업센터 10511, 조만식기념관 12327', '1학년 영문');
@@ -5897,16 +5888,16 @@ VALUES ('MAJOR_ELECTIVE', '복선-AI융합/부선-AI융합/융선-AI로봇융합
 수 09:00-10:15 (문화관 03411(AI SPACE)-한영준)', '1학년 AI융합학부,AI로봇융합,AI모빌리티융합,스마트자동차융합,인공지능반도체융합 ,AI융합학부');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150456001, '일반생물2및실험', '김미연', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10611, 벤처중소기업센터 10511', '1학년 의생명시스템');
+VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150456001, '일반생물2및실험', '김미연', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10511, 벤처중소기업센터 10611', '1학년 의생명시스템');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150456002, '일반생물2및실험', '김미연', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10611, 벤처중소기업센터 10511', '1학년 의생명시스템');
+VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150456002, '일반생물2및실험', '김미연', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10511, 벤처중소기업센터 10611', '1학년 의생명시스템');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150456003, '일반생물2및실험', '김미연', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10611, 벤처중소기업센터 10511', '1학년 의생명시스템');
+VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150456003, '일반생물2및실험', '김미연', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10511, 벤처중소기업센터 10611', '1학년 의생명시스템');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150456004, '일반생물2및실험', '김미연', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10611, 벤처중소기업센터 10511', '1학년 의생명시스템');
+VALUES ('MAJOR_REQUIRED', '복선-의생명시스템/부선-의생명시스템', '', 2150456004, '일반생물2및실험', '김미연', '의생명시스템학부', NULL, '4.0', '3.0', 0, '벤처중소기업센터 10511, 벤처중소기업센터 10611', '1학년 의생명시스템');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 5010197201, '일반화학', '남궁미옥', '전기공학부', NULL, '3.0', '3.0', 0, '미래관 20303', '1학년 전기');
@@ -6004,10 +5995,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-일어일문/부선-일어일문', '', 2150525601, '초급전공일본어2', '권승림', '일어일문학과', NULL, '3.0', '3.0', 0, '진리관 11304', '1학년 일어일문(일어일문 2~4학년 / 복선 / 부선 수강 제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-일어일문/부선-일어일문', '', 2150525602, '초급전공일본어2', '김수진', '일어일문학과', NULL, '3.0', '3.0', 0, '미래관 20205, 미래관 20403', '1학년 일어일문');
+VALUES ('MAJOR_REQUIRED', '복선-일어일문/부선-일어일문', '', 2150525602, '초급전공일본어2', '김수진', '일어일문학과', NULL, '3.0', '3.0', 0, '미래관 20403, 미래관 20205', '1학년 일어일문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-중문/부선-중문', '', 2150524101, '초급중어회화작문2', 'Piao Hongying', '중어중문학과', NULL, '3.0', '3.0', 0, '진리관 11307, 진리관 11516', '1학년 중문');
+VALUES ('MAJOR_REQUIRED', '복선-중문/부선-중문', '', 2150524101, '초급중어회화작문2', 'Piao Hongying', '중어중문학과', NULL, '3.0', '3.0', 0, '진리관 11516, 진리관 11307', '1학년 중문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-미디어경영/부선-미디어경영', '', 2150151501, '캡스톤프로젝트', '정기철', '미디어경영학과', '(팀티칭)', '3.0', '3.0', 0, '토 16:30-17:45 (정보과학관 21507 (미디어스튜디오)-정기철)
@@ -6072,7 +6063,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-통계·보험/부선-통계·보험', '', 2150210201, '통계적방법론', '권혁성', '정보통계·보험수리학과', NULL, '3.0', '3.0', 0, '조만식기념관 12330', '1학년 통계보험');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-수학/부선-수학', '', 5010234701, '통계학', '이종규', '수학과', NULL, '3.0', '3.0', 0, '조만식기념관 12203, 문화관 03206', '1학년 수학');
+VALUES ('MAJOR_REQUIRED', '복선-수학/부선-수학', '', 5010234701, '통계학', '이종규', '수학과', NULL, '3.0', '3.0', 0, '문화관 03206, 조만식기념관 12203', '1학년 수학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-평생교육/부선-평생교육', '', 2150524701, '평생교육프리젠테이션기법', '신경주', '평생교육학과', NULL, '3.0', '3.0', 0, '조만식기념관 12202', '1학년 평생교육');
@@ -6084,13 +6075,13 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-금융경제/부선-금융경제', '', 2150917102, '퓨처리더코스', '김미정', '금융경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02107', '1학년 금융경제 (타학과 수강 불가)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-불문/부선-불문', '', 2150523701, '프랑스어문법과활용', '이가야', '불어불문학과', NULL, '3.0', '3.0', 0, '진리관 11304, 조만식기념관 12407', '1학년 불문');
+VALUES ('MAJOR_REQUIRED', '복선-불문/부선-불문', '', 2150523701, '프랑스어문법과활용', '이가야', '불어불문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12407, 진리관 11304', '1학년 불문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-불문/부선-불문', '', 2150523801, '프랑스어실습2', 'Stephanie Tome Garnier', '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20301', '1학년 불문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-불문/부선-불문/융선-뉴미디어콘텐츠융합', '', 2150523901, '프랑스역사와문화', '김유정', '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20302, 미래관 20301', '1학년 불문, 뉴미디어콘텐츠융합');
+VALUES ('MAJOR_REQUIRED', '복선-불문/부선-불문/융선-뉴미디어콘텐츠융합', '', 2150523901, '프랑스역사와문화', '김유정', '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20301, 미래관 20302', '1학년 불문, 뉴미디어콘텐츠융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-산업·정보/부선-산업·정보', '', 2150578501, '프로그래밍2', NULL, '산업·정보시스템공학과', NULL, '3.0', '3.0', 0, '목 16:30-17:45 (형남공학관 05719 (산공과 전산실습실1)-)
@@ -6280,10 +6271,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-법학/부선-법학', '법학과목', 2150224701, '형법총론', '김준호', '법학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02109, 숭덕경상관 02111', '1학년 법학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-법학/부선-법학', '법학과목', 2150224702, '형법총론', '김준호', '법학과', NULL, '3.0', '3.0', 0, '미래관 20B102, 미래관 20302', '1학년 법학');
+VALUES ('MAJOR_REQUIRED', '복선-법학/부선-법학', '법학과목', 2150224702, '형법총론', '김준호', '법학과', NULL, '3.0', '3.0', 0, '미래관 20302, 미래관 20B102', '1학년 법학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-법학/부선-법학', '법학과목', 2150224703, '형법총론', '김준호', '법학과', NULL, '3.0', '3.0', 0, '정보과학관 21403, 미래관 20307', '1학년 법학');
+VALUES ('MAJOR_REQUIRED', '복선-법학/부선-법학', '법학과목', 2150224703, '형법총론', '김준호', '법학과', NULL, '3.0', '3.0', 0, '미래관 20307, 정보과학관 21403', '1학년 법학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-화공/부선-화공/융선-스마트소재제품융합/융선-스마트안전보건환경', '', 2150353701, '화공양론1', '류희욱', '화학공학과', NULL, '3.0', '3.0', 0, '안익태기념관 04402, 문화관 03308', '1학년 화공,스마트소재/제품융합,스마트안전보건환경');
@@ -6393,7 +6384,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복선-회계학과/복필-벤처중소/부선-경영학부/부선-회계학과/부필-벤처중소/연계1-융합창업/융선-ICT유통물류융합', '', 2150644105, 'Entrepreneurship', '문경준', '회계학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02316', '2학년 벤처중소,회계학과,경영학부,융합창업,ICT유통물류');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-영문/부선-영문', '', 2150529301, 'Essential writing and editing skills', '김지은', '영어영문학과', NULL, '3.0', '3.0', 0, '진리관 11302, 조만식기념관 12204', '2학년 영문');
+VALUES ('MAJOR_ELECTIVE', '복선-영문/부선-영문', '', 2150529301, 'Essential writing and editing skills', '김지은', '영어영문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12204, 진리관 11302', '2학년 영문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-중문/부선-중문', '', 2150543901, 'HSK중국어', 'Piao Hongying', '중어중문학과', NULL, '3.0', '3.0', 0, '진리관 11307', '2학년 중문');
@@ -6817,7 +6808,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복필-경제/부선-경제/융선-동아시아경제통상/융선-순환경제·친환경', '', 2150260403, '거시경제학', '박재빈', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02109', '2학년 경제,동아시아경제통상,순환경제·친환경화학소재');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복필-경제/부선-경제/융선-동아시아경제통상/융선-순환경제·친환경', '', 2150260404, '거시경제학', '강달원', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02108, 숭덕경상관 02107', '2학년 경제,동아시아경제통상,순환경제·친환경화학소재');
+VALUES ('MAJOR_REQUIRED', '복필-경제/부선-경제/융선-동아시아경제통상/융선-순환경제·친환경', '', 2150260404, '거시경제학', '강달원', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02107, 숭덕경상관 02108', '2학년 경제,동아시아경제통상,순환경제·친환경화학소재');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-금융경제/부선-금융경제', '', 2150669201, '거시경제학', '박재빈', '금융경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02109', '2학년 금융경제');
@@ -6941,10 +6932,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-신소재/부선-신소재/융선-순환경제·친환경/융선-스마트소재제품융합/융선-스마트자동차융합/융선-에너지공학융합', '', 2150317202, '고분자공학', '정재우', '신소재공학과', NULL, '3.0', '3.0', 0, '형남공학관 05B124', '2학년 신소재, 스마트소재/제품융합, 스마트자동차융합, 에너지공학융합, 순환경제·친환경소재 융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150465001, '고전시가론', '정영문', '국어국문학과', NULL, '3.0', '3.0', 0, '진리관 11304, 미래관 20401', '2학년 국문');
+VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150465001, '고전시가론', '정영문', '국어국문학과', NULL, '3.0', '3.0', 0, '미래관 20401, 진리관 11304', '2학년 국문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150465002, '고전시가론', '정영문', '국어국문학과', NULL, '3.0', '3.0', 0, '진리관 11302, 조만식기념관 12312', '2학년 ;순수외국인입학생 ,국문');
+VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150465002, '고전시가론', '정영문', '국어국문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12312, 진리관 11302', '2학년 ;순수외국인입학생 ,국문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-글로벌미디어/부선-글로벌미디어', '', 2150665001, '공간조형', NULL, '글로벌미디어학부', NULL, '3.0', '3.0', 0, '금 15:00-16:15 (정보과학관 21508 (디지털미디어스튜디오)-)
@@ -6961,7 +6952,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150620301, '공업물리화학2', '엄기원', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03307, 미래관 20206', '2학년 화공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150620302, '공업물리화학2', '엄기원', '화학공학과', NULL, '3.0', '3.0', 0, '미래관 20402, 문화관 03206', '2학년 화공');
+VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150620302, '공업물리화학2', '엄기원', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03206, 미래관 20402', '2학년 화공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150620303, '공업물리화학2', '엄기원', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03307, 미래관 20402', '2학년 화공');
@@ -6995,13 +6986,13 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복필-건축공학/부선-건축공학/융선-스마트안전보건환경', '', 2150446301, '구조역학및실습', '최경규', '건축학부', NULL, '4.0', '3.0', 0, '형남공학관 05102', '2학년 건축공학,스마트안전보건환경융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150537001, '국어문장구성의원리', '오충연', '국어국문학과', NULL, '3.0', '3.0', 0, '미래관 20403, 조만식기념관 12312', '2학년 국문');
+VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150537001, '국어문장구성의원리', '오충연', '국어국문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12312, 미래관 20403', '2학년 국문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150537002, '국어문장구성의원리', '장경우', '국어국문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12312', '2학년 ;순수외국인입학생 ,국문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150542401, '국어의미론', '임채훈', '국어국문학과', NULL, '3.0', '3.0', 0, '진리관 11403, 조만식기념관 12312', '2학년 국문');
+VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150542401, '국어의미론', '임채훈', '국어국문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12312, 진리관 11403', '2학년 국문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부', '', 2150371601, '국제경영', '송창석', '경영학부', NULL, '3.0', '3.0', 0, '월 수 10:30-11:45 (조만식기념관 12207 (박명복강의실)-송창석)', '2학년 경영학부');
@@ -7058,7 +7049,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 2150434601, '금융경제학', '강달원', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02108', '2학년 경제');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 2150434602, '금융경제학', '강달원', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02108, 숭덕경상관 02111', '2학년 경제');
+VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 2150434602, '금융경제학', '강달원', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02111, 숭덕경상관 02108', '2학년 경제');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 2150434603, '금융경제학', '김형진', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02109', '2학년 경제');
@@ -7203,7 +7194,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-미디어경영/부선-미디어경영', '', 2150692801, '디지털미디어원리', '이강희', '미디어경영학과', NULL, '3.0', '3.0', 0, '정보과학관 21501', '2학년 미디어경영');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-AI융합/부선-AI융합', '', 2150686901, '디지털시스템입문', '신동화', 'AI융합학부', NULL, '3.0', '3.0', 0, '문화관 03312, 문화관 03105', '2학년 AI융합학부');
+VALUES ('MAJOR_REQUIRED', '복선-AI융합/부선-AI융합', '', 2150686901, '디지털시스템입문', '신동화', 'AI융합학부', NULL, '3.0', '3.0', 0, '문화관 03105, 문화관 03312', '2학년 AI융합학부');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-AI융합/부선-AI융합', '', 2150686902, '디지털시스템입문', '신동화', 'AI융합학부', NULL, '3.0', '3.0', 0, '문화관 03105', '2학년 AI융합학부');
@@ -7259,7 +7250,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복필-AI융합/부선-AI융합/융선-AI모빌리티융합', '', 2150076102, '머신러닝', '윤진혁', 'AI융합학부', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10311', '2학년 AI융합학부,AI모빌리티융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복필-AI융합/부선-AI융합/융선-AI모빌리티융합', '', 2150076103, '머신러닝', '윤진혁', 'AI융합학부', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10311, 조만식기념관 12311', '2학년 AI융합학부,AI모빌리티융합');
+VALUES ('MAJOR_REQUIRED', '복필-AI융합/부선-AI융합/융선-AI모빌리티융합', '', 2150076103, '머신러닝', '윤진혁', 'AI융합학부', NULL, '3.0', '3.0', 0, '조만식기념관 12311, 벤처중소기업센터 10311', '2학년 AI융합학부,AI모빌리티융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-글로벌통상/부선-글로벌통상', '법학과목', 2150569001, '무역계약론', '고상훈', '글로벌통상학과', NULL, '3.0', '3.0', 0, '문화관 03106', '2학년 글로벌통상');
@@ -7277,10 +7268,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-글로벌통상/부선-글로벌통상', '', 2150620201, '무역전시론', '김세진', '글로벌통상학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02111', '2학년 글로벌통상');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150143401, '물권법', '이지은', '법학과', NULL, '3.0', '3.0', 0, '진리관 11410, 진리관 11404', '2학년 법학');
+VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150143401, '물권법', '이지은', '법학과', NULL, '3.0', '3.0', 0, '진리관 11404, 진리관 11410', '2학년 법학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150143402, '물권법', '이지은', '법학과', NULL, '3.0', '3.0', 0, '진리관 11410, 진리관 11404', '2학년 법학');
+VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150143402, '물권법', '이지은', '법학과', NULL, '3.0', '3.0', 0, '진리관 11404, 진리관 11410', '2학년 법학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-물리/부선-물리', '', 2150580601, '물리계측실험(캡스톤)', '오홍석', '물리학과', NULL, '4.0', '2.0', 0, '베어드홀 01328', '2학년 물리');
@@ -7461,7 +7452,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복필-철학/부선-철학', '', 2150358901, '서양근대철학사', '유현상', '철학과', NULL, '3.0', '3.0', 0, '진리관 11403', '2학년 철학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학', '', 2150163901, '서양중세사', '이영재', '사학과', NULL, '3.0', '3.0', 0, '미래관 20205, 미래관 20302', '2학년 사학');
+VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학', '', 2150163901, '서양중세사', '이영재', '사학과', NULL, '3.0', '3.0', 0, '미래관 20302, 미래관 20205', '2학년 사학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-철학/부선-철학', '', 2150359001, '서양중세철학사', '안상욱', '철학과', NULL, '3.0', '3.0', 0, '교육관 06202', '2학년 철학');
@@ -7473,7 +7464,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150555701, '선형대수', '권혁회', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03208, 문화관 03106', '2학년 화공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150555702, '선형대수', '권혁회', '화학공학과', NULL, '3.0', '3.0', 0, '안익태기념관 04402, 문화관 03208', '2학년 화공');
+VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150555702, '선형대수', '권혁회', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03208, 안익태기념관 04402', '2학년 화공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150555703, '선형대수', '권혁회', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03309, 안익태기념관 04402', '2학년 화공');
@@ -7505,7 +7496,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-전자공학/부선-전자공학', '', 2150689904, '선형대수', '정동현', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '문화관 03106', '2학년 전자공학전공(IT융합전공 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학/융선-정보보호융합', '', 2150164701, '선형대수2', '정주영', '수학과', NULL, '3.0', '3.0', 0, '미래관 20406, 진리관 11516', '2학년 수학, 정보보호융합');
+VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학/융선-정보보호융합', '', 2150164701, '선형대수2', '정주영', '수학과', NULL, '3.0', '3.0', 0, '진리관 11516, 미래관 20406', '2학년 수학, 정보보호융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-독문/부선-독문', '', 2150135501, '세계언어속의독일어', '이재호', '독어독문학과', NULL, '3.0', '3.0', 0, '진리관 11303, 조만식기념관 12328', '2학년 독문');
@@ -7589,7 +7580,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-실내건축/부선-실내건축', '', 2150042
 수 15:00-16:15 (문화관 03111 (토론식강의실)-강은기)', '2학년 실내건축');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-일어일문/부선-일어일문', '', 2150432601, '실용일본어작문', '최서영', '일어일문학과', NULL, '3.0', '3.0', 0, '미래관 20201, 미래관 20206', '2학년 일어일문');
+VALUES ('MAJOR_ELECTIVE', '복선-일어일문/부선-일어일문', '', 2150432601, '실용일본어작문', '최서영', '일어일문학과', NULL, '3.0', '3.0', 0, '미래관 20206, 미래관 20201', '2학년 일어일문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-AI융합/부선-AI융합/융선-AI모빌리티융합/융선-빅데이터융합/융선-스마트자동차융합', '', 2150014001, '알고리즘', '이길호', 'AI융합학부', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10311', '2학년 AI융합학부,빅데이터융합,스마트자동차융합,AI모빌리티융합');
@@ -7637,10 +7628,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', NULL, '', 2150131901, '어셈블리프로그래밍', '한승훈', '정보보호학과(계약학과)', NULL, '3.0', '3.0', 0, '정보과학관 21406', '2학년 정보보호학과');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150175601, '에너지변환공학', '이향범', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 문화관 03206', '2학년 전기,에너지공학융합');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150175601, '에너지변환공학', '이향범', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04405', '2학년 전기,에너지공학융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150175602, '에너지변환공학', '이향범', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 문화관 03206', '2학년 전기,에너지공학융합');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150175602, '에너지변환공학', '이향범', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04405', '2학년 전기,에너지공학융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150175603, '에너지변환공학', '박종후', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04403', '2학년 전기,에너지공학융합');
@@ -7667,7 +7658,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-영문/부선-영문', '', 2150543301, '영어어휘분석', '임수연', '영어영문학과', '(가반)', '3.0', '3.0', 0, '조만식기념관 12406', '2학년 영문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-영문/부선-영문', '', 2150543302, '영어어휘분석', '김지은', '영어영문학과', '(나반)', '3.0', '3.0', 0, '조만식기념관 12204, 조만식기념관 12311', '2학년 영문');
+VALUES ('MAJOR_ELECTIVE', '복선-영문/부선-영문', '', 2150543302, '영어어휘분석', '김지은', '영어영문학과', '(나반)', '3.0', '3.0', 0, '조만식기념관 12311, 조만식기념관 12204', '2학년 영문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-철학/부선-철학/융선-뉴미디어콘텐츠융합', '', 2150182301, '예술철학', '박준상', '철학과', NULL, '3.0', '3.0', 0, '진리관 11403', '2학년 철학,뉴미디어콘텐츠융합');
@@ -7920,7 +7911,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150197002, '전자공학', '배원규', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04403', '2학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150197003, '전자공학', '김선제', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 형남공학관 05B124', '2학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150197003, '전자공학', '김선제', '전기공학부', NULL, '3.0', '3.0', 0, '형남공학관 05B124, 안익태기념관 04405', '2학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150197004, '전자공학', '김선제', '전기공학부', NULL, '3.0', '3.0', 0, '미래관 20301', '2학년 전기');
@@ -7943,16 +7934,16 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-전자공학/부선-전자공학', '', 2150690103, '전자장', '김철기', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '문화관 03106', '2학년 전자공학전공(IT융합전공 수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150556401, '전자장해석', '염정덕', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 문화관 03206', '2학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150556401, '전자장해석', '염정덕', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04405', '2학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150556402, '전자장해석', '염정덕', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 문화관 03206', '2학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150556402, '전자장해석', '염정덕', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04405', '2학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150556403, '전자장해석', '노영수', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 문화관 03206', '2학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150556403, '전자장해석', '노영수', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04405', '2학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150556404, '전자장해석', '노영수', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04403, 문화관 03206', '2학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150556404, '전자장해석', '노영수', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04403', '2학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-정보사회/부선-정보사회', '', 2150619001, '정보법세미나', '이상우', '정보사회학과', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10512', '2학년 정보사회');
@@ -8018,7 +8009,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복필-중문/부선-중문', '', 2150537601, '중국어학의이해', '임정현', '중어중문학과', NULL, '3.0', '3.0', 0, '진리관 11307', '2학년 중문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-정외/부선-정외', '', 2150399501, '중국정치의이해', '이광수', '정치외교학과', NULL, '3.0', '3.0', 0, '미래관 20308, 미래관 20305', '2학년 정외');
+VALUES ('MAJOR_ELECTIVE', '복선-정외/부선-정외', '', 2150399501, '중국정치의이해', '이광수', '정치외교학과', NULL, '3.0', '3.0', 0, '미래관 20305, 미래관 20308', '2학년 정외');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-글로벌통상/부선-글로벌통상/융선-동아시아경제통상', '', 2150608401, '중국지역통상론', '유은정', '글로벌통상학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02201', '2학년 글로벌통상,동아시아경제통상');
@@ -8039,7 +8030,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-중문/부선-중문', '', 2150390801, '중급중어작문', 'Piao Hongying', '중어중문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12202', '2학년 중문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-불문/부선-불문', '', 2150173601, '중급프랑스어문법2', NULL, '불어불문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12210, 미래관 20301', '2학년 불문');
+VALUES ('MAJOR_ELECTIVE', '복선-불문/부선-불문', '', 2150173601, '중급프랑스어문법2', NULL, '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20301, 조만식기념관 12210', '2학년 불문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-회계학과/부선-회계학과', '', 2150328301, '중급회계1', '김용수', '회계학과', '(공통-재수강)', '3.0', '3.0', 0, '미래관 20405', '2학년 회계학과
@@ -8067,7 +8058,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-글로벌통상/부선-글로벌통상', '', 2150692702, '지역무역협정론', '김두수', '글로벌통상학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02201', '2학년 글로벌통상');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학', '', 2150205901, '집합론', '이의우', '수학과', NULL, '3.0', '3.0', 0, '진리관 11516, 숭덕경상관 02317', '2학년 수학');
+VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학', '', 2150205901, '집합론', '이의우', '수학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02317, 진리관 11516', '2학년 수학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-벤처중소/부선-벤처중소', '', 2150550101, '창업과 Business Analytics', '김종옥', '벤처중소기업학과', NULL, '3.0', '3.0', 0, '화 18:00-19:15 (숭덕경상관 02112 (PC실습실)-김종옥)
@@ -8176,7 +8167,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학/융선-뉴미디어콘텐츠융합', '', 2150215101, '한국미술사', '송만영', '사학과', NULL, '3.0', '3.0', 0, '미래관 20205', '2학년 사학, 뉴미디어콘텐츠융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학', '', 2150216001, '한국중세사', '강문식', '사학과', NULL, '3.0', '3.0', 0, '진리관 11302, 진리관 11401', '2학년 사학');
+VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학', '', 2150216001, '한국중세사', '강문식', '사학과', NULL, '3.0', '3.0', 0, '진리관 11401, 진리관 11302', '2학년 사학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('GENERAL_REQUIRED', NULL, '', 2150663403, '한반도평화와통일', '조은희', '교양교육운영팀', NULL, '1.0', '1.0', 0, '', '2학년 
@@ -8204,7 +8195,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-행정학부/부선-행정학부', '', 2150220002, '행정학연구방법론', '김소정', '행정학부', NULL, '3.0', '3.0', 0, '조만식기념관 12202', '2학년 행정학부');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문/융선-뉴미디어콘텐츠융합', '', 2150363101, '현대명문읽기', '박동억', '국어국문학과', NULL, '3.0', '3.0', 0, '미래관 20202, 미래관 20402', '2학년 국문, 뉴미디어콘텐츠융합');
+VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문/융선-뉴미디어콘텐츠융합', '', 2150363101, '현대명문읽기', '박동억', '국어국문학과', NULL, '3.0', '3.0', 0, '미래관 20402, 미래관 20202', '2학년 국문, 뉴미디어콘텐츠융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문/융선-뉴미디어콘텐츠융합', '', 2150363102, '현대명문읽기', '송상덕', '국어국문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12312', '2학년 ;순수외국인입학생 ,국문, 뉴미디어콘텐츠융합');
@@ -8272,10 +8263,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-화학/부선-화학/융필-순환경제·친환경', '', 2150230501, '환경화학', '남궁미옥', '화학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02318', '2학년 화학, 순환경제·친환경화학소재');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-통계·보험/부선-통계·보험/융선-계산과학융합/융선-공공정책융합/융선-데이터분석기반영업/융선-데이터어낼러틱스/융선-빅데이터융합/융선-여론조사컨설팅융합', '', 2150236301, '회귀분석2', '한경도', '정보통계·보험수리학과', NULL, '3.0', '3.0', 0, '백마관 07218, 베어드홀 01523', '2학년 통계보험,빅데이터융합');
+VALUES ('MAJOR_ELECTIVE', '복선-통계·보험/부선-통계·보험/융선-계산과학융합/융선-공공정책융합/융선-데이터분석기반영업/융선-데이터어낼러틱스/융선-빅데이터융합/융선-여론조사컨설팅융합', '', 2150236301, '회귀분석2', '한경도', '정보통계·보험수리학과', NULL, '3.0', '3.0', 0, '베어드홀 01523, 백마관 07218', '2학년 통계보험,빅데이터융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-통계·보험/부선-통계·보험/융선-계산과학융합/융선-공공정책융합/융선-데이터분석기반영업/융선-데이터어낼러틱스/융선-빅데이터융합/융선-여론조사컨설팅융합', '', 2150236302, '회귀분석2', '한경도', '정보통계·보험수리학과', '(공통-재수강)', '3.0', '3.0', 0, '백마관 07218, 베어드홀 01523', '2학년 통계보험,빅데이터융합');
+VALUES ('MAJOR_ELECTIVE', '복선-통계·보험/부선-통계·보험/융선-계산과학융합/융선-공공정책융합/융선-데이터분석기반영업/융선-데이터어낼러틱스/융선-빅데이터융합/융선-여론조사컨설팅융합', '', 2150236302, '회귀분석2', '한경도', '정보통계·보험수리학과', '(공통-재수강)', '3.0', '3.0', 0, '베어드홀 01523, 백마관 07218', '2학년 통계보험,빅데이터융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-IT융합/부선-IT융합/융선-스마트자동차융합', '', 2150289301, '회로망해석', '오준택', '전자정보공학부 IT융합전공', NULL, '3.0', '3.0', 0, '화 목 12:00-13:15 (형남공학관 05103 (정용기강의실)-오준택)', '2학년 IT융합(전자공학수강제한),스마트자동차융합');
@@ -8293,7 +8284,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150556303, '회로망해석', '박종후', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04403', '2학년 전기,에너지공학융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150556304, '회로망해석', '윤성국', '전기공학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02111, 형남공학관 05B124', '2학년 전기,에너지공학융합');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150556304, '회로망해석', '윤성국', '전기공학부', NULL, '3.0', '3.0', 0, '형남공학관 05B124, 숭덕경상관 02111', '2학년 전기,에너지공학융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-전자공학/부선-전자공학/융선-스마트자동차융합', '', 2150690001, '회로망해석', '차형태', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '수 13:30-14:45 (형남공학관 05104 (김낙경강의실)-차형태)
@@ -8560,7 +8551,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-신소재/부선-신소재/융선-순환경제
 수 09:00-10:15 (형남공학관 05322 (임경희강의실)-정영진)', '3학년 신소재, 스마트소재/제품융합, 스마트자동차융합, 에너지공학융합, 순환경제·친환경소재 융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150562501, '고전산문강독', '강지희', '국어국문학과', NULL, '3.0', '3.0', 0, '미래관 20201, 조만식기념관 12312', '3학년 국문
+VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150562501, '고전산문강독', '강지희', '국어국문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12312, 미래관 20201', '3학년 국문
 4학년 국문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
@@ -8715,7 +8706,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-회계학과/부선-회계학과', '', 2150646
 4학년 회계학과');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150365201, '기기분석', '박경원', '화학공학과', NULL, '3.0', '3.0', 0, '안익태기념관 04402, 문화관 03208', '3학년 화공');
+VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150365201, '기기분석', '박경원', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03208, 안익태기념관 04402', '3학년 화공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공', '', 2150365202, '기기분석', '박경원', '화학공학과', NULL, '3.0', '3.0', 0, '안익태기념관 04402', '3학년 화공');
@@ -8898,7 +8889,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부/융선-사회적기업혁신융합', '', 2150811606, '리더십개발론', '우주연', '경영학부', NULL, '3.0', '3.0', 0, '미래관 20501', '3학년 경영학부,사회적기업과사회혁신융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150139801, '마이크로프로세서', '윤성국', '전기공학부', NULL, '3.0', '3.0', 0, '형남공학관 05111, 문화관 03206', '3학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150139801, '마이크로프로세서', '윤성국', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 형남공학관 05111', '3학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-미디어경영/부선-미디어경영', '', 2150013001, '머신러닝', '김희원', '미디어경영학과', NULL, '3.0', '3.0', 0, '화 19:30-20:45 (정보과학관 21507 (미디어스튜디오)-김희원)
@@ -8912,10 +8903,10 @@ VALUES ('MAJOR_ELECTIVE', '복선-IT융합/복선-차세대/부선-IT융합/부�
 4학년 전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150074201, '머신러닝의기초', NULL, '전기공학부', NULL, '3.0', '3.0', 0, '미래관 20203, 안익태기념관 04405', '3학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150074201, '머신러닝의기초', NULL, '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 미래관 20203', '3학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150074202, '머신러닝의기초', NULL, '전기공학부', NULL, '3.0', '3.0', 0, '미래관 20203, 안익태기념관 04405', '3학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150074202, '머신러닝의기초', NULL, '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 미래관 20203', '3학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-글로벌미디어/부선-글로벌미디어', '', 2150457501, '멀티미디어론', '성보경', '글로벌미디어학부', NULL, '3.0', '3.0', 0, '목 13:30-14:45 (정보과학관 21507 (미디어스튜디오)-성보경)
@@ -8995,7 +8986,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학', '', 2150266801, '미분기하학', '이은주', '수학과', NULL, '3.0', '3.0', 0, '진리관 11516, 벤처중소기업센터 10511', '3학년 수학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국제법무/부선-국제법무/융선-지식재산융합', '법학과목', 2150048001, '민사집행법', '임상혁', '국제법무학과', NULL, '3.0', '3.0', 0, '진리관 11404, 진리관 11301', '3학년 국제법무학과, 지식재산융합');
+VALUES ('MAJOR_ELECTIVE', '복선-국제법무/부선-국제법무/융선-지식재산융합', '법학과목', 2150048001, '민사집행법', '임상혁', '국제법무학과', NULL, '3.0', '3.0', 0, '진리관 11301, 진리관 11404', '3학년 국제법무학과, 지식재산융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-의생명시스템/부선-의생명시스템', '', 2150079101, '바이오의약', '심가용', '의생명시스템학부', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10711', '3학년 의생명시스템');
@@ -9028,7 +9019,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-차세대/부선-차세대/심선-차세대반
 4학년 전체');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-독문/부선-독문', '', 2150543701, '번역의이론및실제', '이완호', '독어독문학과', NULL, '3.0', '3.0', 0, '진리관 11307, 미래관 20302', '3학년 독문');
+VALUES ('MAJOR_ELECTIVE', '복선-독문/부선-독문', '', 2150543701, '번역의이론및실제', '이완호', '독어독문학과', NULL, '3.0', '3.0', 0, '미래관 20302, 진리관 11307', '3학년 독문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-미디어경영/부선-미디어경영', '', 2150027501, '벤처비지니스', NULL, '미디어경영학과', NULL, '3.0', '3.0', 0, '정보과학관 21501', '3학년 미디어경영');
@@ -9185,7 +9176,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', NULL, '', 2150087502, '세법원리', '노희천', '회계세무학과(계약학과)', NULL, '3.0', '3.0', 0, '숭덕경상관 02210', '3학년 회계세무학과(계약학과) (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-의생명시스템/부선-의생명시스템', '', 2150504001, '세포생물학', '박상연', '의생명시스템학부', NULL, '3.0', '3.0', 0, '백마관 07117, 벤처중소기업센터 10511', '3학년 의생명시스템');
+VALUES ('MAJOR_ELECTIVE', '복선-의생명시스템/부선-의생명시스템', '', 2150504001, '세포생물학', '박상연', '의생명시스템학부', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10511, 백마관 07117', '3학년 의생명시스템');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-벤처중소/부선-벤처중소/융선-ICT유통물류융합/융선-문화서비스산업융합', '', 2150407601, '소매경영', '김현순', '벤처중소기업학과', NULL, '3.0', '3.0', 0, '교육관 06301', '3학년 벤처중소,문화서비스산업,ICT유통물류');
@@ -9194,7 +9185,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작', '', 2150395001, '소설창작3', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '진리관 11401', '3학년 문예창작');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-소프트', '', 2150027801, '소프트웨어분석및설계', '정진홍', '소프트웨어학부', NULL, '3.0', '3.0', 0, '정보과학관 21601, 정보과학관 21303', '3학년 소프트');
+VALUES ('MAJOR_ELECTIVE', '복선-소프트', '', 2150027801, '소프트웨어분석및설계', '정진홍', '소프트웨어학부', NULL, '3.0', '3.0', 0, '정보과학관 21303, 정보과학관 21601', '3학년 소프트');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-소프트', '', 2150027802, '소프트웨어분석및설계', '정진홍', '소프트웨어학부', NULL, '3.0', '3.0', 0, '정보과학관 21303', '3학년 소프트');
@@ -9277,7 +9268,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공/융선-스마트안전보건환경/융선-에너지공학융합', '', 2150177001, '열및물질전달', '김일원', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03314, 안익태기념관 04402', '3학년 화공,에너지공학융합,스마트안전보건환경');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공/융선-스마트안전보건환경/융선-에너지공학융합', '', 2150177002, '열및물질전달', '김일원', '화학공학과', NULL, '3.0', '3.0', 0, '안익태기념관 04402, 문화관 03208', '3학년 화공,에너지공학융합,스마트안전보건환경');
+VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공/융선-스마트안전보건환경/융선-에너지공학융합', '', 2150177002, '열및물질전달', '김일원', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03208, 안익태기념관 04402', '3학년 화공,에너지공학융합,스마트안전보건환경');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공/융선-스마트안전보건환경/융선-에너지공학융합', '', 2150177003, '열및물질전달', '김일원', '화학공학과', NULL, '3.0', '3.0', 0, '안익태기념관 04402', '3학년 화공,에너지공학융합,스마트안전보건환경');
@@ -9354,7 +9345,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-컴퓨터/융선-빅데이터컴퓨팅융합',
 월 12:00-12:50 (정보과학관 21101 (실습실)-유소율)', '3학년 컴퓨터, 빅데이터컴퓨팅융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학', '', 2150184601, '위상수학2', '이상욱', '수학과', NULL, '3.0', '3.0', 0, '진리관 11304, 조만식기념관 12330', '3학년 수학');
+VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학', '', 2150184601, '위상수학2', '이상욱', '수학과', NULL, '3.0', '3.0', 0, '조만식기념관 12330, 진리관 11304', '3학년 수학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공/융선-에너지공학융합', '', 2150043101, '유기재료공학', '이준협', '화학공학과', NULL, '3.0', '3.0', 0, '문화관 03309, 문화관 03208', '3학년 화공,에너지공학융합');
@@ -9491,10 +9482,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150194701, '전력전자', '최우진', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206', '3학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150194702, '전력전자', '최우진', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 문화관 03206', '3학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150194702, '전력전자', '최우진', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04405', '3학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150194703, '전력전자', '최우진', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 문화관 03206', '3학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150194703, '전력전자', '최우진', '전기공학부', NULL, '3.0', '3.0', 0, '문화관 03206, 안익태기념관 04405', '3학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-회계학과/부선-회계학과', '', 2150667601, '전산세무', '이유선', '회계학과', NULL, '3.0', '3.0', 0, '금 13:30-14:45 (숭덕경상관 02112 (PC실습실)-이유선)
@@ -9560,7 +9551,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-실내건축/부선-실내건축', '', 2150414101, '조명계획과디자인', '김영진', '건축학부', NULL, '3.0', '3.0', 0, '형남공학관 05102', '3학년 실내건축');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제/융선-동아시아경제통상/융선-순환경제·친환경', '', 2150238501, '조세정책론', '장연재', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02107, 숭덕경상관 02109', '3학년 경제,동아시아경제통상융합,순환경제·친환경화학소재');
+VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제/융선-동아시아경제통상/융선-순환경제·친환경', '', 2150238501, '조세정책론', '장연재', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02109, 숭덕경상관 02107', '3학년 경제,동아시아경제통상융합,순환경제·친환경화학소재');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-중문/부선-중문', '', 2150314901, '중국서사문학의세계', '김지연', '중어중문학과', NULL, '3.0', '3.0', 0, '미래관 20308', '3학년 중문');
@@ -9668,7 +9659,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150208501, '친족상속법', '김은아', '법학과', NULL, '3.0', '3.0', 0, '진리관 11407, 진리관 11404', '3학년 법학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150208502, '친족상속법', '김은아', '법학과', NULL, '3.0', '3.0', 0, '진리관 11410, 조만식기념관 12209', '3학년 법학');
+VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150208502, '친족상속법', '김은아', '법학과', NULL, '3.0', '3.0', 0, '조만식기념관 12209, 진리관 11410', '3학년 법학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-소프트', '', 2150028301, '캡스톤디자인종합프로젝트1', '이상준', '소프트웨어학부', NULL, '3.0', '3.0', 0, '정보과학관 21303', '3학년 소프트');
@@ -9767,7 +9758,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-불문/부선-불문', '', 2150140601, '프랑스상상력', '이찬규', '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20301', '3학년 불문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-불문/부선-불문', '', 2150390301, '프랑스어와언어학', '이형석', '불어불문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12210, 미래관 20301', '3학년 불문');
+VALUES ('MAJOR_ELECTIVE', '복선-불문/부선-불문', '', 2150390301, '프랑스어와언어학', '이형석', '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20301, 조만식기념관 12210', '3학년 불문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-불문/부선-불문', '', 2150390201, '프랑스회화B1-2', 'Stephanie Tome Garnier', '불어불문학과', NULL, '3.0', '3.0', 0, '미래관 20301, 벤처중소기업센터 10513', '3학년 불문');
@@ -9794,10 +9785,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학', '', 2150234501, '한국근대사', NULL, '사학과', NULL, '3.0', '3.0', 0, '조만식기념관 12208', '3학년 사학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학/융선-뉴미디어콘텐츠융합', '', 2150544201, '한국대외관계사', '강문식', '사학과', NULL, '3.0', '3.0', 0, '조만식기념관 12208, 진리관 11407', '3학년 사학, 뉴미디어콘텐츠융합');
+VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학/융선-뉴미디어콘텐츠융합', '', 2150544201, '한국대외관계사', '강문식', '사학과', NULL, '3.0', '3.0', 0, '진리관 11407, 조만식기념관 12208', '3학년 사학, 뉴미디어콘텐츠융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150569301, '한국어,한국문화와한국어교육', '임채훈', '국어국문학과', NULL, '3.0', '3.0', 0, '미래관 20201, 조만식기념관 12312', '3학년 국문
+VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150569301, '한국어,한국문화와한국어교육', '임채훈', '국어국문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12312, 미래관 20201', '3학년 국문
 4학년 국문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
@@ -9827,7 +9818,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학/융선-지식재산융합', '법학과목', 2150626302, '헌법소송법', '고문현', '법학과', NULL, '3.0', '3.0', 0, '진리관 11407', '3학년 법학,지식재산융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학/융선-정보보호융합', '', 2150221301, '현대대수2', '정주영', '수학과', NULL, '3.0', '3.0', 0, '진리관 11516, 숭덕경상관 02317', '3학년 수학, 정보보호융합');
+VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학/융선-정보보호융합', '', 2150221301, '현대대수2', '정주영', '수학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02317, 진리관 11516', '3학년 수학, 정보보호융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-국문/부선-국문', '', 2150551501, '현대문학비평과실제', '이경재', '국어국문학과', NULL, '3.0', '3.0', 0, '미래관 20201', '3학년 국문
@@ -9873,10 +9864,10 @@ VALUES ('MAJOR_ELECTIVE', NULL, '', 2150087802, '회계컨설팅', '이명환', 
 4학년 회계세무학과(계약학과) (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-기독교/부선-기독교', '', 2150423801, '히브리어', '김윤경', '기독교학과', NULL, '3.0', '3.0', 0, '미래관 20303, 미래관 20503', '3학년 기독교');
+VALUES ('MAJOR_ELECTIVE', '복선-기독교/부선-기독교', '', 2150423801, '히브리어', '김윤경', '기독교학과', NULL, '3.0', '3.0', 0, '미래관 20503, 미래관 20303', '3학년 기독교');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-국제법무/부선-국제법무', '', 2150155101, 'AI법적쟁점세미나', '김대홍', '국제법무학과', NULL, '3.0', '3.0', 0, '진리관 11407, 미래관 20304', '4학년 국제법무학과');
+VALUES ('MAJOR_ELECTIVE', '복선-국제법무/부선-국제법무', '', 2150155101, 'AI법적쟁점세미나', '김대홍', '국제법무학과', NULL, '3.0', '3.0', 0, '미래관 20304, 진리관 11407', '4학년 국제법무학과');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', NULL, '', 2150154901, 'AI스크린라이팅과시나리오분석', '최익환', '예술창작학부 영화예술전공', NULL, '3.0', '3.0', 0, '조만식기념관 12406', '4학년 영화예술전공 (타학과수강제한)');
@@ -9896,7 +9887,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-영문/부선-영문', '', 2150569101, 'English debate and interview skills', '웡킴벌리앤', '영어영문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12327', '4학년 영문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-영문/부선-영문', '', 2150665601, 'English through children''s literature', '백정국', '영어영문학과', NULL, '3.0', '3.0', 0, '미래관 20202, 조만식기념관 12327', '4학년 영문');
+VALUES ('MAJOR_ELECTIVE', '복선-영문/부선-영문', '', 2150665601, 'English through children''s literature', '백정국', '영어영문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12327, 미래관 20202', '4학년 영문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-IT융합/부선-IT융합', '', 2150034301, 'IT융합응용', '홍승모', '전자정보공학부 IT융합전공', NULL, '3.0', '3.0', 0, '문화관 03312', '4학년 IT융합전공');
@@ -9977,7 +9968,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부/융선-ICT유
 토 15:00-16:15 (조만식기념관 12207 (박명복강의실)-황성택)', '4학년 경영학부,ICT유통물류융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150219101, '공법연습', '채우석', '법학과', NULL, '3.0', '3.0', 0, '진리관 11402, 진리관 11407', '4학년 법학');
+VALUES ('MAJOR_ELECTIVE', '복선-법학/부선-법학', '법학과목', 2150219101, '공법연습', '채우석', '법학과', NULL, '3.0', '3.0', 0, '진리관 11407, 진리관 11402', '4학년 법학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150496401, '공학경영', '배원규', '전기공학부', NULL, '3.0', '3.0', 0, '형남공학관 05111', '4학년 전기');
@@ -10030,7 +10021,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-기독교/부선-기독교', '', 2150016501, '기독교고전세미나', '이용주', '기독교학과', NULL, '3.0', '3.0', 0, '미래관 20303, 미래관 20206', '4학년 기독교');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 2150608201, '기업경제예측론', '강달원', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02108, 숭덕경상관 02111', '4학년 경제');
+VALUES ('MAJOR_ELECTIVE', '복선-경제/부선-경제', '', 2150608201, '기업경제예측론', '강달원', '경제학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02111, 숭덕경상관 02108', '4학년 경제');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-건축공학/부선-건축공학', '', 2150504701, '기초구조및토질', '강수민', '건축학부', NULL, '3.0', '3.0', 0, '형남공학관 05113', '4학년 건축공학');
@@ -10087,16 +10078,16 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-정외/부선-정외', '', 2150431401, '동아시아국제정치', '강성철', '정치외교학과', NULL, '3.0', '3.0', 0, '미래관 20308', '4학년 정외');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-철학/부선-철학', '', 2150319901, '동아시아철학특강', '선병삼', '철학과', NULL, '3.0', '3.0', 0, '조만식기념관 12204, 진리관 11403', '4학년 철학');
+VALUES ('MAJOR_ELECTIVE', '복선-철학/부선-철학', '', 2150319901, '동아시아철학특강', '선병삼', '철학과', NULL, '3.0', '3.0', 0, '진리관 11403, 조만식기념관 12204', '4학년 철학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학', '', 2150052101, '동양미술사', '심영신', '사학과', NULL, '3.0', '3.0', 0, '조만식기념관 12203, 조만식기념관 12406', '4학년 사학');
+VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학', '', 2150052101, '동양미술사', '심영신', '사학과', NULL, '3.0', '3.0', 0, '조만식기념관 12406, 조만식기념관 12203', '4학년 사학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-전자공학/부선-전자공학', '', 2150098001, '디지털FPGA설계', '이주석', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '문화관 03307, 문화관 03106', '4학년 전자공학전공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150366501, '디지털신호처리', '문원식', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 형남공학관 05B124', '4학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150366501, '디지털신호처리', '문원식', '전기공학부', NULL, '3.0', '3.0', 0, '형남공학관 05B124, 안익태기념관 04405', '4학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-전자공학/부선-전자공학', '', 2150349401, '디지털집적회로', '권혁주', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '월 13:30-14:45 (형남공학관 05104 (김낙경강의실)-권혁주)
@@ -10160,7 +10151,7 @@ VALUES ('OTHER', '융필-AI로봇융합/융필-빅데이터컴퓨팅융합', '',
 목 15:00-16:15 (정보과학관 21101 (실습실)-차영화)', '4학년 빅데이터컴퓨팅융합,AI로봇융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-신소재/부선-신소재/융선-순환경제·친환경', '', 2150561701, '바이오소재', '신재만', '신소재공학과', NULL, '3.0', '3.0', 0, '형남공학관 05115, 형남공학관 05B124', '4학년 신소재, 순환경제·친환경소재 융합');
+VALUES ('MAJOR_ELECTIVE', '복선-신소재/부선-신소재/융선-순환경제·친환경', '', 2150561701, '바이오소재', '신재만', '신소재공학과', NULL, '3.0', '3.0', 0, '형남공학관 05B124, 형남공학관 05115', '4학년 신소재, 순환경제·친환경소재 융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-의생명시스템/부선-의생명시스템', '', 2150155001, '바이오시스템설계', '류재용', '의생명시스템학부', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10712', '4학년 의생명시스템');
@@ -10217,7 +10208,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-사학/부선-사학', '', 2150234601, '서양현대사', '양승조', '사학과', NULL, '3.0', '3.0', 0, '벤처중소기업센터 10512', '4학년 사학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-신소재/부선-신소재', '', 2150150301, '섬유공학', '최지호', '신소재공학과', NULL, '3.0', '3.0', 0, '미래관 20404, 미래관 20301', '4학년 신소재');
+VALUES ('MAJOR_ELECTIVE', '복선-신소재/부선-신소재', '', 2150150301, '섬유공학', '최지호', '신소재공학과', NULL, '3.0', '3.0', 0, '미래관 20301, 미래관 20404', '4학년 신소재');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-평생교육/부선-평생교육', '', 2150476901, '성인학습및상담', '김남숙', '평생교육학과', NULL, '3.0', '3.0', 0, '진리관 11521', '4학년 평생교육');
@@ -10236,7 +10227,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-물리/부선-물리', '', 2150398901, '세미나2', '오태구', '물리학과', NULL, '1.0', '1.0', 0, '베어드홀 01103', '4학년 물리');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부/융선-스포츠마케팅융합', '', 2150403801, '소매와옴니채널관리', '안승호', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02212, 숭덕경상관 02211', '4학년 경영학부,스포츠마케팅융합');
+VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부/융선-스포츠마케팅융합', '', 2150403801, '소매와옴니채널관리', '안승호', '경영학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02211, 숭덕경상관 02212', '4학년 경영학부,스포츠마케팅융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-경영학부/부선-경영학부/융선-스포츠마케팅융합', '', 2150403802, '소매와옴니채널관리', '최종화', '경영학부', NULL, '3.0', '3.0', 0, '수 16:30-17:45 (조만식기념관 12207 (박명복강의실)-최종화)
@@ -10270,7 +10261,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-산업·정보/부선-산업·정보', '', 215
 수 12:00-13:15 (형남공학관 05B109 (창의공학설계실 황도현강의실)-박태준)', '4학년 산업정보');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-불문/부선-불문', '', 2150272101, '시사프랑스어', '김기일', '불어불문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12210, 백마관 07316', '4학년 불문');
+VALUES ('MAJOR_ELECTIVE', '복선-불문/부선-불문', '', 2150272101, '시사프랑스어', '김기일', '불어불문학과', NULL, '3.0', '3.0', 0, '백마관 07316, 조만식기념관 12210', '4학년 불문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-화공/부선-화공/융선-스마트안전보건환경', '', 2150409101, '신재생에너지공학', '엄기원', '화학공학과', NULL, '3.0', '3.0', 0, '형남공학관 05102', '4학년 화공,스마트안전보건환경');
@@ -10335,14 +10326,14 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('OTHER', '융필-빅데이터컴퓨팅융합', '', 2150681401, '의생명영상처리', '류제철', '컴퓨터학부', NULL, '3.0', '3.0', 0, '수 금 15:00-16:15 (정보과학관 21202 (이준호강의실)-류제철)', '4학년 빅데이터컴퓨팅');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-화학/부선-화학', '', 2150145101, '의약화학', '김종훈', '화학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02318, 숭덕경상관 02317', '4학년 화학');
+VALUES ('MAJOR_ELECTIVE', '복선-화학/부선-화학', '', 2150145101, '의약화학', '김종훈', '화학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02317, 숭덕경상관 02318', '4학년 화학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-IT융합/부선-IT융합', '', 2150689701, '이동통신시스템', '이종호', '전자정보공학부 IT융합전공', NULL, '3.0', '3.0', 0, '월 13:30-14:45 (형남공학관 05105 (심영복강의실)-이종호)
 금 12:00-13:15 (형남공학관 05105 (심영복강의실)-이종호)', '4학년 IT융합전공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-글로벌통상/부선-글로벌통상', '', 2150077301, '인공지능과디지털소비자', '신우철', '글로벌통상학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02109, 숭덕경상관 02317', '4학년 글로벌통상');
+VALUES ('MAJOR_ELECTIVE', '복선-글로벌통상/부선-글로벌통상', '', 2150077301, '인공지능과디지털소비자', '신우철', '글로벌통상학과', NULL, '3.0', '3.0', 0, '숭덕경상관 02317, 숭덕경상관 02109', '4학년 글로벌통상');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-일어일문/부선-일어일문', '', 2150491101, '일본문학·문화특강', '이시준', '일어일문학과', NULL, '3.0', '3.0', 0, '조만식기념관 12201', '4학년 일어일문');
@@ -10354,7 +10345,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-일어일문/부선-일어일문', '', 2150491001, '일본어학특강', '권승림', '일어일문학과', NULL, '3.0', '3.0', 0, '진리관 11304', '4학년 일어일문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-전자공학/부선-전자공학/융선-인공지능반도체융합', '', 2150508001, '임베디드시스템', '이기홍', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '미래관 20401, 문화관 03106', '4학년 전자공학전공');
+VALUES ('MAJOR_ELECTIVE', '복선-전자공학/부선-전자공학/융선-인공지능반도체융합', '', 2150508001, '임베디드시스템', '이기홍', '전자정보공학부 전자공학전공', NULL, '3.0', '3.0', 0, '문화관 03106, 미래관 20401', '4학년 전자공학전공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-컴퓨터', '', 2150559201, '전공종합설계2', '장훈', '컴퓨터학부', NULL, '3.0', '3.0', 0, '정보과학관 21201', '4학년 컴퓨터');
@@ -10363,10 +10354,10 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-컴퓨터', '', 2150559202, '전공종합설계2', '장훈', '컴퓨터학부', NULL, '3.0', '3.0', 0, '정보과학관 21201', '4학년 컴퓨터');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150620801, '전기공학특강2', 'Ashraf Abdel hafeez Ahmed Mahmoud', '전기공학부', NULL, '3.0', '3.0', 0, '형남공학관 05B124, 백마관 07318', '4학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150620801, '전기공학특강2', 'Ashraf Abdel hafeez Ahmed Mahmoud', '전기공학부', NULL, '3.0', '3.0', 0, '백마관 07318, 형남공학관 05B124', '4학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150553301, '전기및정보통신설비', '문원식', '전기공학부', NULL, '3.0', '3.0', 0, '안익태기념관 04405, 형남공학관 05B124', '4학년 전기');
+VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기', '', 2150553301, '전기및정보통신설비', '문원식', '전기공학부', NULL, '3.0', '3.0', 0, '형남공학관 05B124, 안익태기념관 04405', '4학년 전기');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', NULL, '', 2150088601, '전산세무', '이정이', '회계세무학과(계약학과)', NULL, '3.0', '3.0', 0, '토 09:00-10:15 (숭덕경상관 02112 (PC실습실)-이정이)', '4학년 회계세무학과(계약학과) (대상외수강제한)');
@@ -10448,7 +10439,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', '복선-전기/부선-전기/융선-에너지공학융합', '', 2150615401, '초전도응용', '임성훈', '전기공학부', NULL, '3.0', '3.0', 0, '숭덕경상관 02110, 숭덕경상관 02209', '4학년 전기,에너지공학융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학', '', 2150146601, '최적화개론', '송윤정', '수학과', NULL, '3.0', '3.0', 0, '조만식기념관 12330, 진리관 11516', '4학년');
+VALUES ('MAJOR_ELECTIVE', '복선-수학/부선-수학', '', 2150146601, '최적화개론', '송윤정', '수학과', NULL, '3.0', '3.0', 0, '진리관 11516, 조만식기념관 12330', '4학년');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-문화서비스산업융합/융선-소셜벤처미디어융합', '', 2150501601, '출판기획', '박혜민', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '조만식기념관 12406', '4학년 문예창작,문화서비스산업융합');
@@ -10530,7 +10521,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_ELECTIVE', '복선-독문/부선-독문', '', 2150421401, '현대독문학', '김연정', '독어독문학과', NULL, '3.0', '3.0', 0, '진리관 11303', '4학년 독문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-디자인플래닝융합/융선-문화서비스산업융합/융선-문화예술마케팅융합/융선-실감미디어/융선-아트&게임융합/융선-콘텐츠스타트업', '', 6821774360, '현대예술과문화콘텐츠', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '진리관 11401', '4학년 문예창작전공, 문화서비스산업융합');
+VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-디자인플래닝융합/융선-문화서비스산업융합/융선-문화예술마케팅융합/융선-실감미디어/융선-아트&게임융합/융선-콘텐츠스타트업', '', 2201061755, '현대예술과문화콘텐츠', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '진리관 11401', '4학년 문예창작전공, 문화서비스산업융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-철학/부선-철학', '', 2150391201, '현대유럽철학특강', '박준상', '철학과', NULL, '3.0', '3.0', 0, '진리관 11403', '4학년 철학');
@@ -10557,7 +10548,7 @@ INSERT INTO course (category, sub_category, field, code, name, professor, depart
 VALUES ('MAJOR_REQUIRED', NULL, '', 5011418501, '건축설계8', '김홍기', '건축학부', NULL, '12.0', '6.0', 0, '문화관 03506', '5학년 건축학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', NULL, '', 5011418502, '건축설계8', '김동원', '건축학부', NULL, '12.0', '6.0', 0, '문화관 03507, 문화관 03506', '5학년 건축학');
+VALUES ('MAJOR_REQUIRED', NULL, '', 5011418502, '건축설계8', '김동원', '건축학부', NULL, '12.0', '6.0', 0, '문화관 03506, 문화관 03507', '5학년 건축학');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', NULL, '', 2150506201, '건축설계실무및경영', '김인철', '건축학부', NULL, '3.0', '3.0', 0, '형남공학관 05102', '5학년 건축학');
