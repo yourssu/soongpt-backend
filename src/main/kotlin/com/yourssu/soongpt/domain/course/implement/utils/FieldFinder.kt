@@ -1,0 +1,69 @@
+package com.yourssu.soongpt.domain.course.implement.utils
+
+object FieldFinder {
+    fun findFieldBySchoolId(schoolId: Int, field: String): String {
+        val matchingEntries = field.split("\n")
+            .mapNotNull { line -> parseFieldEntry(line) }
+            .filter { entry -> schoolId in entry.yearRange }
+        
+        if (matchingEntries.isEmpty()) {
+            return ""
+        }
+
+        val entryWithHighestYear = matchingEntries.maxBy { entry -> entry.yearRange.first }
+        return entryWithHighestYear.fieldName
+    }
+    
+    private fun parseFieldEntry(line: String): FieldEntry? {
+        val yearRange = parseYearRange(line) ?: return null
+        val fieldName = parseFieldName(line)
+        
+        return if (fieldName.isNotBlank()) {
+            FieldEntry(yearRange, fieldName)
+        } else null
+    }
+    
+    private fun parseYearRange(line: String): IntRange? {
+        return when {
+            line.contains("이후") -> {
+                val match = Regex("\\['?(\\d{2})이후").find(line)
+                match?.let { it.groupValues[1].toInt()..MAX_YEAR }
+            }
+            line.contains("이전") -> {
+                val match = Regex("\\['?(\\d{2})이전").find(line)
+                match?.let { MIN_YEAR..it.groupValues[1].toInt() }
+            }
+            line.contains("~") -> {
+                val allNumbers = Regex("(\\d{2})").findAll(line).map { it.groupValues[1].toInt() }.toList()
+                if (allNumbers.size >= 2) {
+                    allNumbers.first()..allNumbers.last()
+                } else null
+            }
+            Regex("\\['?\\d{2}-'?\\d{2}'?\\]").containsMatchIn(line) -> {
+                val match = Regex("\\['?(\\d{2})-'?(\\d{2})").find(line)
+                match?.let { it.groupValues[1].toInt()..it.groupValues[2].toInt() }
+            }
+            else -> {
+                val match = Regex("'(\\d{2})\\]").find(line)
+                match?.let { 
+                    val year = it.groupValues[1].toInt()
+                    year..year 
+                }
+            }
+        }
+    }
+    
+    
+    private fun parseFieldName(line: String): String {
+        val fieldNamePattern = Regex("](.+?)(?:\n|$)")
+        return fieldNamePattern.find(line)?.groupValues?.get(1)?.trim() ?: ""
+    }
+    
+    private data class FieldEntry(
+        val yearRange: IntRange,
+        val fieldName: String
+    )
+    
+    private const val MIN_YEAR = 0
+    private const val MAX_YEAR = 99
+}
