@@ -45,9 +45,9 @@ class CourseEntity(
     @Column(nullable = false)
     val personeel: Int,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     val scheduleRoom: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     val target: String,
 )
