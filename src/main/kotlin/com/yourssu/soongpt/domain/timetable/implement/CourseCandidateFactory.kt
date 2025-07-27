@@ -5,17 +5,12 @@ import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.timetable.implement.dto.CompressTime
 import com.yourssu.soongpt.domain.timetable.implement.dto.CompressTimes
 import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
+import com.yourssu.soongpt.domain.timetable.implement.timeslot.TIMESLOT_SIZE
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
 class CourseCandidateFactory {
-    companion object {
-        private const val WEEKLY_MINUTES = 24 * 7 * 60
-        private const val TIMESLOT_UNIT_MINUTES = 5
-        private const val TIMESLOT_SIZE = WEEKLY_MINUTES / TIMESLOT_UNIT_MINUTES
-    }
-
     fun create(course: Course): CourseCandidate {
         val courseTimes = CourseTimes.from(course.scheduleRoom)
         val compressTimes = compressTimes(courseTimes)
