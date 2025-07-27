@@ -48,7 +48,7 @@ def generate_course_inserts(course_data: List[Dict]) -> List[str]:
         # Extract and escape fields
         category = course.get("category", "OTHER")
         sub_category = course.get("subCategory")
-        field = course.get("field")
+        field = escape_sql_string(course.get("field"))
         code = course.get("code", 0)
         name = escape_sql_string(course.get("name", ""))
         professor = course.get("professor")
@@ -62,7 +62,7 @@ def generate_course_inserts(course_data: List[Dict]) -> List[str]:
         
         # Handle NULL values
         sub_category_sql = f"'{escape_sql_string(sub_category)}'" if sub_category else "NULL"
-        field_sql = f"'{escape_sql_string(field)}'" if field else "NULL"
+        field_sql = f"'{escape_sql_string(field)}'" if field is not None else "NULL"
         professor_sql = f"'{escape_sql_string(professor)}'" if professor else "NULL"
         division_sql = f"'{escape_sql_string(division)}'" if division else "NULL"
         

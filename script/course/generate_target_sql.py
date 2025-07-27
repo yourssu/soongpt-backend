@@ -64,62 +64,19 @@ def parse_department_grade(target_str: str) -> List[tuple]:
     
     return results
 
-def generate_department_mapping() -> Dict[str, int]:
-    """
-    Generate mapping from department names to department IDs.
-    This is a placeholder - in real implementation, this should query the database.
-    """
-    # This mapping should be generated from actual database queries
-    # For now, we'll create placeholder mappings
-    department_mapping = {
-        "컴퓨터학부": 1,
-        "전자정보공학부": 2,
-        "스포츠학부": 3,
-        "경영학부": 4,
-        "기계공학부": 5,
-        "건축학부": 6,
-        "화학공학과": 7,
-        "수학과": 8,
-        "물리학과": 9,
-        "화학과": 10,
-        "생명과학과": 11,
-        "정보통계보험수리학과": 12,
-        "영어영문학과": 13,
-        "독어독문학과": 14,
-        "불어불문학과": 15,
-        "중어중문학과": 16,
-        "일어일문학과": 17,
-        "철학과": 18,
-        "사학과": 19,
-        "법학과": 20,
-        "행정학과": 21,
-        "정치외교학과": 22,
-        "사회복지학부": 23,
-        "언론홍보학과": 24,
-        "평생교육학과": 25,
-        "경제학과": 26,
-        "금융학부": 27,
-        "회계학과": 28,
-        "벤처중소기업학과": 29,
-        "국제통상학과": 30,
-        # Add more mappings as needed
-    }
-    return department_mapping
 
-def generate_target_inserts(classification_data: Dict, course_data: List[Dict], department_mapping: Dict[str, int]) -> List[str]:
+def generate_target_inserts(classification_data: Dict, course_data: List[Dict]) -> List[str]:
     """
     Generate SQL INSERT statements for TargetEntity.
     
     Args:
         classification_data: Target classification results
         course_data: Parsed course data with code and target fields
-        department_mapping: Mapping from department names to IDs
         
     Returns:
         List of SQL INSERT statements
     """
     insert_statements = []
-    target_id = 1
     
     # Header comment
     insert_statements.append("-- SQL INSERT statements for TargetEntity")
@@ -153,31 +110,22 @@ def generate_target_inserts(classification_data: Dict, course_data: List[Dict], 
             for department_name, grade in department_grades:
                 if department_name is None:
                     # Handle "전체" case - this means all departments for the given grade
-                    # We'll generate entries for all departments
-                    for dept_name, dept_id in department_mapping.items():
-                        for code in course_codes:
-                            sql = f"""INSERT INTO target (id, department_id, course_id, grade) 
-SELECT {target_id}, {dept_id}, c.id, {grade}
-FROM course c 
+                    # Generate entries for all departments by joining with department table
+                    for code in course_codes:
+                        sql = f"""INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, {grade}
+FROM course c, department d
 WHERE c.code = {code};"""
-                            insert_statements.append(sql)
-                            insert_statements.append("")
-                            target_id += 1
+                        insert_statements.append(sql)
+                        insert_statements.append("")
                 else:
-                    # Handle specific department
-                    dept_id = department_mapping.get(department_name)
-                    if dept_id:
-                        for code in course_codes:
-                            sql = f"""INSERT INTO target (id, department_id, course_id, grade) 
-SELECT {target_id}, {dept_id}, c.id, {grade}
-FROM course c 
-WHERE c.code = {code};"""
-                            insert_statements.append(sql)
-                            insert_statements.append("")
-                            target_id += 1
-                    else:
-                        # Unknown department - add as comment
-                        insert_statements.append(f"-- UNKNOWN DEPARTMENT: {department_name} for target: {original_target}")
+                    # Handle specific department - join with department table by name
+                    for code in course_codes:
+                        sql = f"""INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, {grade}
+FROM course c, department d
+WHERE c.code = {code} AND d.name = '{department_name}';"""
+                        insert_statements.append(sql)
                         insert_statements.append("")
     
     return insert_statements
@@ -197,11 +145,8 @@ def main():
     print("Loading course data...")
     course_data = load_course_data()
     
-    print("Generating department mapping...")
-    department_mapping = generate_department_mapping()
-    
     print("Generating SQL INSERT statements...")
-    insert_statements = generate_target_inserts(classification_data, course_data, department_mapping)
+    insert_statements = generate_target_inserts(classification_data, course_data)
     
     # Write SQL file
     output_file = os.path.join(output_dir, "target_insert.sql")
