@@ -1,0 +1,279 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Course data parser for converting 2025_2학기 JSON files to CourseEntity format.
+"""
+
+import json
+import glob
+import os
+from typing import List, Dict, Any, Optional, Tuple
+
+
+def parse_category(category: str) -> str:
+    """Convert category string to CourseEntity Category enum value."""
+    if "전필" in category or "전기" in category:
+        return "MAJOR_REQUIRED"
+    elif "전선" in category:
+        return "MAJOR_ELECTIVE"
+    elif "교필" in category:
+        return "GENERAL_REQUIRED"
+    elif "교선" in category:
+        return "GENERAL_ELECTIVE"
+    elif "채플" in category:
+        return "CHAPEL"
+    else:
+        return "OTHER"
+
+
+def parse_sub_category(sub_category: Optional[str]) -> Optional[str]:
+    """Parse and clean sub_category field."""
+    return sub_category if sub_category else None
+
+
+def parse_field(field: Optional[str]) -> Optional[str]:
+    """Parse and clean field."""
+    return field if field else None
+
+
+def parse_code(code: str) -> int:
+    """Convert code string to Long."""
+    try:
+        return int(code)
+    except ValueError:
+        # If code is not numeric, generate a hash or use default
+        return hash(code) % (10**10)  # Generate a numeric code from string
+
+
+def parse_name(name: str) -> str:
+    """Parse and clean course name."""
+    return name.strip()
+
+
+def parse_professor(professor: str) -> Optional[str]:
+    """Parse professor field, handling multiple professors."""
+    if not professor or professor.strip() == "":
+        return None
+    
+    # Handle multiple professors separated by newlines
+    professors = professor.strip().split('\n')
+    return professors[0].strip() if professors else None
+
+
+def parse_department(department: str) -> str:
+    """Parse department field."""
+    return department.strip()
+
+
+def parse_division(division: Optional[str]) -> Optional[str]:
+    """Parse division field."""
+    return division if division else None
+
+
+def parse_time(schedule_room: str) -> str:
+    """Extract time information from schedule_room field."""
+    if not schedule_room or schedule_room.strip() == "":
+        return ""
+    
+    # Extract time patterns from schedule_room
+    lines = schedule_room.strip().split('\n')
+    time_parts = []
+    
+    for line in lines:
+        if line.strip():
+            # Extract day and time (e.g., "화 11:00-11:50")
+            parts = line.split(' ')
+            if len(parts) >= 2:
+                day = parts[0]
+                time_range = parts[1]
+                time_parts.append(f"{day} {time_range}")
+    
+    return ' '.join(time_parts) if time_parts else ""
+
+
+def parse_time_points(time_points: str) -> Tuple[str, str]:
+    """
+    Parse time_points field and split into time and point strings.
+    
+    Args:
+        time_points: String in format "time/point" (e.g., "3.0/3.0")
+        
+    Returns:
+        Tuple of (time_str, point_str)
+    """
+    if not time_points or time_points.strip() == "":
+        return ("", "")
+    
+    # Split by '/' if present
+    if '/' in time_points:
+        parts = time_points.split('/')
+        if len(parts) >= 2:
+            time_str = parts[0].strip()
+            point_str = parts[1].strip()
+            return (time_str, point_str)
+    
+    # If no '/' found, assume it's just the point value
+    return ("", time_points.strip())
+
+
+def parse_point(time_points: str) -> str:
+    """Parse point information from time_points field."""
+    _, point_str = parse_time_points(time_points)
+    return point_str if point_str else "0"
+
+
+def parse_personeel(personeel: str) -> int:
+    """Parse personeel (enrollment) number."""
+    try:
+        return int(personeel) if personeel else 0
+    except ValueError:
+        return 0
+
+
+def parse_schedule_room(schedule_room: str) -> str:
+    """Parse schedule and room information."""
+    if not schedule_room or schedule_room.strip() == "":
+        return ""
+    
+    # Extract room information from schedule_room
+    lines = schedule_room.strip().split('\n')
+    room_parts = []
+    
+    for line in lines:
+        if '(' in line and ')' in line:
+            # Extract room info from parentheses
+            start = line.find('(')
+            end = line.find(')')
+            if start != -1 and end != -1:
+                room_info = line[start+1:end]
+                # Remove professor name if present
+                if '-' in room_info:
+                    room_only = room_info.split('-')[0].strip()
+                    room_parts.append(room_only)
+    
+    return ', '.join(set(room_parts)) if room_parts else schedule_room
+
+
+def parse_target(target: str) -> str:
+    """Parse target field."""
+    return target.strip() if target else "전체"
+
+
+def convert_course_item(item: Dict[str, Any]) -> Dict[str, Any]:
+    """Convert a single course item from JSON to CourseEntity format."""
+    # Parse time_points to get separate time and point values
+    time_from_points, point_from_points = parse_time_points(item.get("time_points", ""))
+    
+    return {
+        "id": None,
+        "category": parse_category(item.get("category", "")),
+        "subCategory": parse_sub_category(item.get("sub_category")),
+        "field": parse_field(item.get("field")),
+        "code": parse_code(item.get("code", "0")),
+        "name": parse_name(item.get("name", "")),
+        "professor": parse_professor(item.get("professor", "")),
+        "department": parse_department(item.get("department", "")),
+        "division": parse_division(item.get("division")),
+        "time": time_from_points if time_from_points else parse_time(item.get("schedule_room", "")),
+        "point": point_from_points if point_from_points else "0",
+        "personeel": parse_personeel(item.get("personeel", "0")),
+        "scheduleRoom": parse_schedule_room(item.get("schedule_room", "")),
+        "target": parse_target(item.get("target", ""))
+    }
+
+
+def process_single_file(json_file: str, output_file: str) -> None:
+    """Process a single JSON file and create output file."""
+    all_courses = []
+    
+    if not os.path.exists(json_file):
+        print(f"File not found: {json_file}")
+        return
+    
+    print(f"Processing: {json_file}")
+    
+    try:
+        with open(json_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        if isinstance(data, list):
+            for item in data:
+                converted_item = convert_course_item(item)
+                all_courses.append(converted_item)
+        else:
+            print(f"Warning: {json_file} does not contain a list")
+            
+    except Exception as e:
+        print(f"Error processing {json_file}: {e}")
+        return
+    
+    # Write output file
+    print(f"Writing {len(all_courses)} courses to {output_file}")
+    
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(all_courses, f, ensure_ascii=False, indent=2)
+    
+    print("Conversion completed successfully!")
+
+
+def process_json_files(input_pattern: str, output_file: str) -> None:
+    """Process all JSON files matching the pattern and create output file."""
+    all_courses = []
+    
+    # Find all files matching the pattern
+    json_files = glob.glob(input_pattern)
+    
+    if not json_files:
+        print(f"No files found matching pattern: {input_pattern}")
+        return
+    
+    print(f"Found {len(json_files)} files to process")
+    
+    for json_file in json_files:
+        print(f"Processing: {json_file}")
+        
+        try:
+            with open(json_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            if isinstance(data, list):
+                for item in data:
+                    converted_item = convert_course_item(item)
+                    all_courses.append(converted_item)
+            else:
+                print(f"Warning: {json_file} does not contain a list")
+                
+        except Exception as e:
+            print(f"Error processing {json_file}: {e}")
+            continue
+    
+    # Write output file
+    print(f"Writing {len(all_courses)} courses to {output_file}")
+    
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(all_courses, f, ensure_ascii=False, indent=2)
+    
+    print("Conversion completed successfully!")
+
+
+def main():
+    """Main function to run the course parser."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Handle the specific filename with literal asterisk
+    json_file = os.path.join(script_dir, "2025_2학기_*.json")
+    # Create result/course_parser directory and save result there
+    output_dir = os.path.join(script_dir, "result", "course_parser")
+    os.makedirs(output_dir, exist_ok=True)
+    output_file = os.path.join(output_dir, "2025_2학기_parsed.json")
+    
+    print("Course Parser - Converting 2025_2학기 JSON files to CourseEntity format")
+    print(f"Input file: {json_file}")
+    print(f"Output file: {output_file}")
+    
+    # Process the single file directly
+    process_single_file(json_file, output_file)
+
+
+if __name__ == "__main__":
+    main()
