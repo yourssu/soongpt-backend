@@ -4,6 +4,6 @@ class MajorElectiveCourseQuery(
     val departmentName: String,
     val subDepartmentName: String? = null,
     val grade: Int,
-    val schoolId: Long? = null,
+    val schoolId: Int,
 ) {
 }
