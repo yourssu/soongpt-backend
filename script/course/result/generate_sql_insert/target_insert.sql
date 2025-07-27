@@ -37269,7 +37269,7 @@ WHERE c.code = 2150214201 AND d.name = '경제학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2201061755 AND d.name = '예술창작학부 문예창작전공';
+WHERE c.code = 9271673741 AND d.name = '예술창작학부 문예창작전공';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
