@@ -35,7 +35,16 @@ class CourseService(
     fun findAll(query: GeneralRequiredCourseQuery): List<GeneralRequiredResponse> {
         val department = departmentReader.getByName(query.departmentName)
         val targets = targetReader.findAllByDepartmentGrade(department, query.grade)
-        val courses = courseReader.findAllInCategory(Category.GENERAL_REQUIRED, targets.map { it.courseId })
+        if (query.field == null) {
+            val courses = courseReader.findAllInCategory(Category.GENERAL_REQUIRED, targets.map { it.courseId })
+            return courses.map { GeneralRequiredResponse.from(it) }
+        }
+        val courses = courseReader.findAllInCategory(
+            Category.GENERAL_REQUIRED,
+            targets.map { it.courseId },
+            query.field,
+            query.schoolId
+        )
         return courses.map { GeneralRequiredResponse.from(it) }
     }
 

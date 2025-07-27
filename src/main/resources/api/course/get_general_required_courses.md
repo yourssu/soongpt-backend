@@ -1,4 +1,4 @@
-# getGeneralRequiredCourse (GET /api/courses/general/required)
+`# getGeneralRequiredCourse (GET /api/courses/general/required)
 
 ## Request
 
