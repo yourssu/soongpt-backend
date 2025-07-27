@@ -171,8 +171,39 @@ def classify_target(target: str) -> List[str]:
     all_departments, college_departments = load_departments_data()
     abbrev_map = create_department_abbreviation_map(all_departments)
     
-    # Clean target string
-    cleaned = target.strip()
+    # Parse exclusion patterns like "(1,2학년 컴퓨터학부생 수강불가)"
+    exclusions = []
+    exclusion_pattern = r'\(([^)]*수강불가[^)]*)\)'
+    exclusion_matches = re.findall(exclusion_pattern, target)
+    
+    for exclusion_text in exclusion_matches:
+        # Parse grade and department from exclusion text
+        grade_matches = re.findall(r'(\d+)학년', exclusion_text)
+        dept_matches = []
+        
+        # Find department names in exclusion text
+        for abbrev, full_name in abbrev_map.items():
+            if abbrev in exclusion_text and abbrev != "전체":
+                dept_matches.append(full_name)
+                break
+        
+        # If no specific department found, check for exact department names
+        if not dept_matches:
+            for dept in all_departments:
+                if dept in exclusion_text:
+                    dept_matches.append(dept)
+                    break
+        
+        # Add exclusions
+        for grade in grade_matches:
+            for dept in dept_matches:
+                exclusions.append(f"{dept}{grade}")
+    
+    # Remove exclusion patterns from target string for further processing
+    cleaned = target
+    for pattern in exclusion_matches:
+        cleaned = cleaned.replace(f"({pattern})", "")
+    cleaned = cleaned.strip()
     
     # Remove common restriction patterns
     patterns_to_remove = [
@@ -306,6 +337,10 @@ def classify_target(target: str) -> List[str]:
         else:
             # Return original string if no match found
             return [cleaned] if cleaned else ["전체1", "전체2", "전체3", "전체4", "전체5"]
+    
+    # Filter out exclusions from results
+    if exclusions:
+        results = [r for r in results if r not in exclusions]
     
     return results if results else ["전체1", "전체2", "전체3", "전체4", "전체5"]
 

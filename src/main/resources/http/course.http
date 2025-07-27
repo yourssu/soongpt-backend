@@ -1,11 +1,12 @@
+@host = http://localhost:9001
 ### Get Courses by Code - Single Course
-GET {{host}}/api/courses?code=1234567890
+GET {{host}}/api/courses?code=5006762801
 
 ### Get Courses by Code - Multiple Courses
 GET {{host}}/api/courses?code=1234567890&code=2345678901&code=3456789012
 
 ### Get General Required Courses
-GET {{host}}/api/courses/general/required?schoolId=20&department=컴퓨터학부&grade=2&field=과학·기술
+GET {{host}}/api/courses/general/required?schoolId=20&department=컴퓨터학부&grade=2
 
 ### Get General Required Courses - With Sub Department
 GET {{host}}/api/courses/general/required?schoolId=21&department=전자정보공학부&subDepartment=IT융합&grade=1
