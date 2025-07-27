@@ -8,7 +8,10 @@ import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCreatedCommand
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponses
 import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidates
+import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
+import com.yourssu.soongpt.domain.timetable.implement.timeslot.TIMESLOT_SIZE
 import org.springframework.stereotype.Component
+import java.util.BitSet
 
 @Component
 class TimetableGenerator (
@@ -27,12 +30,47 @@ class TimetableGenerator (
             grade = command.grade,
         )
 
-        // TODO: 각 그룹별로 TimetableCandidate 생성
-        // 이후 교선 처리, 태그 처리
+        val timetableCandidates = generateTimetableCandidates(courseCandidates)
 
+        // 교선 넣고
+        // strategy 전략 체크 -> 스코어 체크
+        // 상위 3개씩 db 저장
         return TimetableResponses(
             listOf()
         )
+    }
+
+    private fun generateTimetableCandidates(
+        courseCandidates: List<CourseCandidates>
+    ): List<TimetableCandidate> {
+        val results = mutableListOf<TimetableCandidate>()
+        val currentCodes = mutableListOf<Long>()
+        val currentSlots = BitSet(TIMESLOT_SIZE)
+
+        fun dfs(depth: Int) {
+            if (depth == courseCandidates.size) {
+                results.add(TimetableCandidate.from(currentCodes.toList(), currentSlots.clone() as BitSet))
+                return
+            }
+
+            val candidates = courseCandidates[depth].candidates
+            for (candidate in candidates) {
+                if (currentSlots.intersects(candidate.timeSlot)) {
+                    continue
+                }
+
+                currentCodes.add(candidate.code)
+                currentSlots.or(candidate.timeSlot)
+
+                dfs(depth + 1)
+
+                currentCodes.removeAt(currentCodes.lastIndex)
+                currentSlots.xor(candidate.timeSlot)
+            }
+        }
+
+        dfs(0)
+        return results
     }
 
     private fun getFlattenCourseCodes(command: TimetableCreatedCommand): List<Long> {
