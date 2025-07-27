@@ -2,12 +2,20 @@
 # -*- coding: utf-8 -*-
 """
 Course data parser for converting 2025_2학기 JSON files to CourseEntity format.
+Uses target_classifier and target_validator for target field processing.
 """
 
 import json
 import glob
 import os
 from typing import List, Dict, Any, Optional, Tuple
+
+# Import target processing modules
+from target_classifier import classify_target
+from target_validator import (
+    load_valid_departments_and_colleges, 
+    validate_and_clean_targets
+)
 
 
 def parse_category(category: str) -> str:
@@ -167,13 +175,35 @@ def parse_schedule_room(schedule_room: str) -> str:
     return ', '.join(set(room_parts)) if room_parts else schedule_room
 
 
-def parse_target(target: str) -> str:
-    """Parse target field."""
-    return target.strip() if target else "전체"
+def parse_target(target: str) -> List[str]:
+    """Parse target field and return list of validated department+grade combinations."""
+    # Step 1: Use target_classifier to get initial classification
+    classified_targets = classify_target(target)
+    
+    # Step 2: Use target_validator to validate and clean the results
+    valid_departments, college_to_departments, valid_colleges, college_abbrev_map = load_valid_departments_and_colleges()
+    
+    validated_targets = validate_and_clean_targets(
+        classified_targets, 
+        valid_departments, 
+        college_to_departments, 
+        valid_colleges, 
+        college_abbrev_map, 
+        target  # original target for re-parsing if needed
+    )
+    
+    return validated_targets
 
 
-def convert_course_item(item: Dict[str, Any]) -> Dict[str, Any]:
-    """Convert a single course item from JSON to CourseEntity format."""
+def convert_course_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Convert a single course item from JSON to CourseEntity format. Returns None if course should be excluded."""
+    # Parse target first to check if course should be excluded
+    target_result = parse_target(item.get("target", ""))
+    
+    # If target parsing returns empty list, exclude this course
+    if not target_result:
+        return None
+    
     # Parse time_points to get separate time and point values
     time_from_points, point_from_points = parse_time_points(item.get("time_points", ""))
     
@@ -191,7 +221,7 @@ def convert_course_item(item: Dict[str, Any]) -> Dict[str, Any]:
         "point": point_from_points if point_from_points else "0",
         "personeel": parse_personeel(item.get("personeel", "0")),
         "scheduleRoom": parse_schedule_room(item.get("schedule_room", "")),
-        "target": parse_target(item.get("target", ""))
+        "target": target_result
     }
 
 
@@ -212,7 +242,8 @@ def process_single_file(json_file: str, output_file: str) -> None:
         if isinstance(data, list):
             for item in data:
                 converted_item = convert_course_item(item)
-                all_courses.append(converted_item)
+                if converted_item is not None:  # Only add non-excluded courses
+                    all_courses.append(converted_item)
         else:
             print(f"Warning: {json_file} does not contain a list")
             
@@ -252,7 +283,8 @@ def process_json_files(input_pattern: str, output_file: str) -> None:
             if isinstance(data, list):
                 for item in data:
                     converted_item = convert_course_item(item)
-                    all_courses.append(converted_item)
+                    if converted_item is not None:  # Only add non-excluded courses
+                        all_courses.append(converted_item)
             else:
                 print(f"Warning: {json_file} does not contain a list")
                 
