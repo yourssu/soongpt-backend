@@ -175,24 +175,8 @@ def parse_schedule_room(schedule_room: str) -> str:
     return ', '.join(set(room_parts)) if room_parts else schedule_room
 
 
-def parse_target(target: str) -> List[str]:
-    """Parse target field and return list of validated department+grade combinations."""
-    # Step 1: Use target_classifier to get initial classification
-    classified_targets = classify_target(target)
-    
-    # Step 2: Use target_validator to validate and clean the results
-    valid_departments, college_to_departments, valid_colleges, college_abbrev_map = load_valid_departments_and_colleges()
-    
-    validated_targets = validate_and_clean_targets(
-        classified_targets, 
-        valid_departments, 
-        college_to_departments, 
-        valid_colleges, 
-        college_abbrev_map, 
-        target  # original target for re-parsing if needed
-    )
-    
-    return validated_targets
+def parse_target(target: str) -> str:
+    return target.strip() if target else ""
 
 
 def convert_course_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
