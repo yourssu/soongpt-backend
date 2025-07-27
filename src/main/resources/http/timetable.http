@@ -8,20 +8,27 @@ Content-Type: application/json
   "schoolId": 21,
   "department": "소프트웨어학부",
   "grade": 2,
-  "majorRequiredCourses": [
-    "자료구조"
+  "isChapel": true,
+  "majorRequiredCodes": [
+    "2150492901"
   ],
-  "majorElectiveCourses": [
-    "컴퓨터구조",
-    "객체지향프로그래밍및실습",
-    "선형대수"
+  "majorElectiveCodes": [
+    "2150242901",
+    "2150422901",
+    "2150288302"
   ],
-  "generalRequiredCourses": [
-    "[글로벌소통과언어]CTE for IT, Engineering&Natura"
+  "generalRequiredCodes": [
+    "2150202001"
   ],
-  "majorElectiveCredit": 9,
-  "generalElectiveCredit": 6,
-  "isChapel": true
+  "codes": [
+    "2150496901",
+    "2150245901"
+  ],
+  "generalElectivePoint": 3,
+  "preferredGeneralElectives": [
+    "인간·언어",
+    "과학·기술"
+  ]
 }
 ###
 
