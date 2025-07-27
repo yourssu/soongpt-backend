@@ -30,7 +30,10 @@ data class TimetableCreatedRequest(
     val codes: List<Long>,
 
     @field:Range(min = 0, max = 22, message = "교선 희망 학점은 최대 22학점입니다.")
-    val generalElectivePoint: Int
+    val generalElectivePoint: Int,
+
+    @field:NotNull
+    val preferredGeneralElectives: List<String>,
 ) {
     fun toCommand(): TimetableCreatedCommand {
         return TimetableCreatedCommand(
@@ -42,6 +45,7 @@ data class TimetableCreatedRequest(
             generalRequiredCodes = generalRequiredCodes,
             codes = codes,
             generalElectivePoint = generalElectivePoint,
+            preferredGeneralElectives = preferredGeneralElectives,
         )
     }
 }

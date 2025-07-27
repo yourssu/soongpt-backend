@@ -9,5 +9,6 @@ class TimetableCreatedCommand(
     val generalRequiredCodes: List<Long>,
     val codes: List<Long>,
     val generalElectivePoint: Int,
+    val preferredGeneralElectives: List<String>,
 ) {
 }
