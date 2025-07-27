@@ -1,8 +1,7 @@
 package com.yourssu.soongpt.domain.timetable.implement.dto
 
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTime
-
-private const val COMPRESS_TIME_UNIT = 5
+import com.yourssu.soongpt.domain.timetable.implement.timeslot.TIMESLOT_UNIT_MINUTES
 
 data class CompressTime(
     val compressedStartTime: Int,
@@ -10,8 +9,8 @@ data class CompressTime(
 ) {
     companion object {
         fun from(courseTime: CourseTime): CompressTime {
-            val start = courseTime.startTime.time / COMPRESS_TIME_UNIT
-            val end = courseTime.endTime.time / COMPRESS_TIME_UNIT
+            val start = courseTime.startTime.time / TIMESLOT_UNIT_MINUTES
+            val end = courseTime.endTime.time / TIMESLOT_UNIT_MINUTES
             return CompressTime(start, end)
         }
     }
