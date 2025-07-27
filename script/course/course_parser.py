@@ -12,18 +12,31 @@ from typing import List, Dict, Any, Optional, Tuple
 
 def parse_category(category: str) -> str:
     """Convert category string to CourseEntity Category enum value."""
-    if "전필" in category or "전기" in category:
-        return "MAJOR_REQUIRED"
-    elif "전선" in category:
-        return "MAJOR_ELECTIVE"
-    elif "교필" in category:
-        return "GENERAL_REQUIRED"
-    elif "교선" in category:
-        return "GENERAL_ELECTIVE"
-    elif "채플" in category:
-        return "CHAPEL"
-    else:
+    if not category or category.strip() == "" or category == "empty":
         return "OTHER"
+    
+    # Handle multiple categories separated by "/"
+    categories = [cat.strip() for cat in category.split("/")]
+    
+    # Find the first matching category in priority order
+    for cat in categories:
+        if "전필" in cat:
+            return "MAJOR_REQUIRED"
+        elif "전기" in cat:
+            return "MAJOR_REQUIRED"
+        elif "전선" in cat:
+            return "MAJOR_ELECTIVE"
+        elif cat.startswith("전공"):
+            return "MAJOR_ELECTIVE"
+        elif "교필" in cat:
+            return "GENERAL_REQUIRED"
+        elif "교선" in cat:
+            return "GENERAL_ELECTIVE"
+        elif "채플" in cat:
+            return "CHAPEL"
+    
+    # If no known category found, return OTHER
+    return "OTHER"
 
 
 def parse_sub_category(sub_category: Optional[str]) -> Optional[str]:
