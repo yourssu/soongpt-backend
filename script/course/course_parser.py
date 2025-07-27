@@ -152,27 +152,7 @@ def parse_personeel(personeel: str) -> int:
 
 
 def parse_schedule_room(schedule_room: str) -> str:
-    """Parse schedule and room information."""
-    if not schedule_room or schedule_room.strip() == "":
-        return ""
-    
-    # Extract room information from schedule_room
-    lines = schedule_room.strip().split('\n')
-    room_parts = []
-    
-    for line in lines:
-        if '(' in line and ')' in line:
-            # Extract room info from parentheses
-            start = line.find('(')
-            end = line.find(')')
-            if start != -1 and end != -1:
-                room_info = line[start+1:end]
-                # Remove professor name if present
-                if '-' in room_info:
-                    room_only = room_info.split('-')[0].strip()
-                    room_parts.append(room_only)
-    
-    return ', '.join(set(room_parts)) if room_parts else schedule_room
+    return schedule_room if schedule_room else ""
 
 
 def parse_target(target: str) -> str:
