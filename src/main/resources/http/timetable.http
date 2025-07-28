@@ -1,5 +1,3 @@
-@host = localhost:9000
-
 ###
 POST {{host}}/api/timetables
 Content-Type: application/json
@@ -27,13 +25,11 @@ Content-Type: application/json
     "문화·예술"
   ]
 }
+
 ###
-//    "창의/융합",
 
 
-
-
-@timeTableId = 10000
+@timeTableId = 10
 ###
 GET {{host}}/api/timetables/{{timeTableId}}
 Content-Type: application/json
