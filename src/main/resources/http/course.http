@@ -1,4 +1,3 @@
-@host = http://localhost:9001
 ### Get Courses by Code - Single Course
 GET {{host}}/api/courses?code=5006762801
 

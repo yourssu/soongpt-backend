@@ -161,12 +161,43 @@ def parse_target(target: str) -> str:
 
 def convert_course_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Convert a single course item from JSON to CourseEntity format. Returns None if course should be excluded."""
-    # Parse target first to check if course should be excluded
-    target_result = parse_target(item.get("target", ""))
+    # Parse category first to check for chapel courses
+    category = item.get("category", "")
     
-    # If target parsing returns empty list, exclude this course
-    if not target_result:
-        return None
+    # Handle chapel courses - extract grades from target and apply chapel logic
+    parsed_category = parse_category(category)
+    if parsed_category == "CHAPEL":
+        original_target = item.get("target", "")
+        
+        # Check for special cases that should have empty target
+        if ("계약학과" in original_target and "재직자전형" in original_target and 
+            "7+1해외봉사자" in original_target and "파견교환학생" in original_target and
+            "외국인" in original_target and "대상외수강제한" in original_target):
+            target_result = ""
+        else:
+            # Extract grade numbers from target string
+            import re
+            grade_matches = re.findall(r'(\d)학년', original_target)
+            if grade_matches:
+                unique_grades = sorted(set(int(g) for g in grade_matches))
+                
+                # Chapel logic: if only 1학년, then only 1학년; if 2학년 or higher, then 2학년~5학년
+                if unique_grades == [1]:
+                    target_result = "전체1"
+                elif any(grade >= 2 for grade in unique_grades):
+                    target_result = "전체2,전체3,전체4,전체5"
+                else:
+                    target_result = ",".join([f"전체{grade}" for grade in unique_grades])
+            else:
+                # Fallback to all grades if no specific grades found
+                target_result = "전체1,전체2,전체3,전체4,전체5"
+    else:
+        # Parse target normally for non-chapel courses
+        target_result = parse_target(item.get("target", ""))
+        
+        # If target parsing returns empty list, exclude this course
+        if not target_result:
+            return None
     
     # Parse time_points to get separate time and point values
     time_from_points, point_from_points = parse_time_points(item.get("time_points", ""))
