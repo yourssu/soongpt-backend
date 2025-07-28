@@ -17,9 +17,9 @@ class NoEveningClassesStrategy: TagStrategy {
             val endSlot = startSlot + EVENING_RANGE
 
             if (timeSlot.get(startSlot, endSlot).isEmpty) {
-                return false
+                return true
             }
         }
-        return true
+        return false
     }
 }
