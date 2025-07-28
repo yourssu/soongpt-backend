@@ -15,7 +15,8 @@ class CourseCandidateFactory {
         val courseTimes = CourseTimes.from(course.scheduleRoom)
         val compressTimes = compressTimes(courseTimes)
         val timeSlot = generateTimeSlot(compressTimes)
-        val point = course.point.toInt()
+        val point = course.point.toDouble().toInt()
+
         return CourseCandidate.from(course.code, timeSlot, point)
     }
 
