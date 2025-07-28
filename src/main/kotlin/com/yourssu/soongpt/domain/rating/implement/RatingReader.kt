@@ -1,5 +1,8 @@
 package com.yourssu.soongpt.domain.rating.implement
 
+import org.springframework.stereotype.Component
+
+@Component
 class RatingReader (
     private val ratingRepository: RatingRepository
 ){
