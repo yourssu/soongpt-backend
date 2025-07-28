@@ -7,7 +7,8 @@ import java.util.*
 
 class TimetableCandidateBuilder(
     initialCodes: List<Long> = emptyList(),
-   initialTimeSlot: BitSet = BitSet(TIMESLOT_SIZE)
+    initialTimeSlot: BitSet = BitSet(TIMESLOT_SIZE),
+    private val pinnedTag: Tag = Tag.DEFAULT
 ) {
     private val codes: MutableList<Long> = initialCodes.toMutableList()
     private val timeSlot: BitSet = initialTimeSlot.clone() as BitSet
@@ -18,31 +19,41 @@ class TimetableCandidateBuilder(
     }
 
     fun add(course: CourseCandidate): Boolean {
-        if (intersects(course.timeSlot)) {
-            return false
-        }
-        codes.add(course.code)
+        if (intersects(course.timeSlot)) return false
+
+        val simulated = timeSlot.clone() as BitSet
+        simulated.or(course.timeSlot)
+
+        if (!pinnedTag.strategy.isCorrect(simulated)) return false
+
+        codes += course.code
         timeSlot.or(course.timeSlot)
         points += course.point
         return true
     }
 
     fun remove(course: CourseCandidate) {
-        codes.removeLast()
-        timeSlot.xor(course.timeSlot)
-        points -= course.point
+        if (codes.remove(course.code)) {
+            timeSlot.xor(course.timeSlot)
+            points -= course.point
+        }
     }
 
     fun build(): TimetableCandidate {
-        val finalTags = Tag.entries.filter { tag ->
-            tag.strategy.isCorrect(this.timeSlot)
+        if (pinnedTag.strategy.isCorrect(timeSlot)) {
+            return TimetableCandidate(
+                codes    = codes.toList(),
+                timeSlot = timeSlot.clone() as BitSet,
+                validTags = listOf(pinnedTag),
+                points   = points
+            )
+        } else {
+            return TimetableCandidate(
+                codes    = codes.toList(),
+                timeSlot = timeSlot.clone() as BitSet,
+                validTags = listOf(Tag.DEFAULT),
+                points   = points
+            )
         }
-
-        return TimetableCandidate(
-            codes = this.codes.toList(),
-            timeSlot = this.timeSlot,
-            validTags = finalTags,
-            points = this.points
-        )
     }
 }

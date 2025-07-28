@@ -23,6 +23,12 @@ class CourseReader(
     fun findAllBy(category: Category, department: Department, grade: Int): List<Course> {
         val departmentId = department.id ?: return emptyList()
         val targets = targetRepository.findAllByDepartmentGrade(departmentId, grade)
+
+//        for (target in targets) {
+//            if (target.courseId) {
+//                continue
+//            }
+//        }
         return courseRepository.findAllInCategory(category, targets.map { it.courseId })
     }
 

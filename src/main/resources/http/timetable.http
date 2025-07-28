@@ -1,36 +1,34 @@
-@host = localhost:9001
+@host = localhost:9000
 
 ###
 POST {{host}}/api/timetables
 Content-Type: application/json
 
 {
-  "schoolId": 21,
-  "department": "소프트웨어학부",
+  "schoolId": 22,
+  "department": "법학과",
   "grade": 2,
   "isChapel": true,
   "majorRequiredCodes": [
-    "2150492901"
+    "2150545501"
   ],
   "majorElectiveCodes": [
-    "2150242901",
-    "2150422901",
-    "2150288302"
+    "2150143401",
+    "2150225101"
   ],
   "generalRequiredCodes": [
-    "2150202001"
+    "2150102701"
   ],
   "codes": [
-    "2150496901",
-    "2150245901"
+    "2150145301"
   ],
-  "generalElectivePoint": 3,
+  "generalElectivePoint": 6,
   "preferredGeneralElectives": [
-    "인간·언어",
-    "과학·기술"
+    "문화·예술"
   ]
 }
 ###
+//    "창의/융합",
 
 
 
