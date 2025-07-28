@@ -19,8 +19,9 @@ class TimetableService(
 ) {
     @Transactional
     fun createTimetable(command: TimetableCreatedCommand): TimetableResponses {
-        val timetables = timetableGenerator.generate(command)
-        return timetables
+        val timetableCandidates = timetableGenerator.generate(command)
+        val responses = timetableGenerator.issueTimetables(timetableCandidates)
+        return TimetableResponses(responses)
     }
 
     fun getTimeTable(id: Long): TimetableResponse {
