@@ -2,10 +2,10 @@ package com.yourssu.soongpt.domain.timetable.implement
 
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
+import com.yourssu.soongpt.domain.timetable.implement.constant.TIMESLOT_SIZE
 import com.yourssu.soongpt.domain.timetable.implement.dto.CompressTime
 import com.yourssu.soongpt.domain.timetable.implement.dto.CompressTimes
 import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
-import com.yourssu.soongpt.domain.timetable.implement.timeslot.TIMESLOT_SIZE
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -15,7 +15,8 @@ class CourseCandidateFactory {
         val courseTimes = CourseTimes.from(course.scheduleRoom)
         val compressTimes = compressTimes(courseTimes)
         val timeSlot = generateTimeSlot(compressTimes)
-        return CourseCandidate.from(course.code, timeSlot)
+        val point = course.point.toInt()
+        return CourseCandidate.from(course.code, timeSlot, point)
     }
 
     private fun compressTimes(
