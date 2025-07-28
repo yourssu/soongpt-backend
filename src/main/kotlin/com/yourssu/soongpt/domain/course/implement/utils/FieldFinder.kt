@@ -2,16 +2,23 @@ package com.yourssu.soongpt.domain.course.implement.utils
 
 object FieldFinder {
     fun findFieldBySchoolId(field: String, schoolId: Int): String {
-        val matchingEntries = field.split("\n")
+        val allEntries = field.split("\n")
             .mapNotNull { line -> parseFieldEntry(line) }
-            .filter { entry -> schoolId in entry.yearRange }
         
-        if (matchingEntries.isEmpty()) {
+        if (allEntries.isEmpty()) {
             return ""
         }
 
-        val entryWithHighestYear = matchingEntries.maxBy { entry -> entry.yearRange.first }
-        return entryWithHighestYear.fieldName
+        val matchingEntries = allEntries.filter { entry -> schoolId in entry.yearRange }
+
+        if (matchingEntries.isNotEmpty()) {
+            val entryWithHighestYear = matchingEntries.maxBy { entry -> entry.yearRange.first }
+            return entryWithHighestYear.fieldName
+        }
+
+        // 일치하는 연도가 없을 때 가장 최근 연도의 필드를 반환
+        val mostRecentEntry = allEntries.maxBy { entry -> entry.yearRange.last }
+        return mostRecentEntry.fieldName
     }
     
     private fun parseFieldEntry(line: String): FieldEntry? {
@@ -26,26 +33,26 @@ object FieldFinder {
     private fun parseYearRange(line: String): IntRange? {
         return when {
             line.contains("이후") -> {
-                val match = Regex("\\['?(\\d{2})이후").find(line)
+                val match = Regex("\\['{0,2}(\\d{2})이후").find(line)
                 match?.let { it.groupValues[1].toInt()..MAX_YEAR }
             }
             line.contains("이전") -> {
-                val match = Regex("\\['?(\\d{2})이전").find(line)
+                val match = Regex("\\['{0,2}(\\d{2})이전").find(line)
                 match?.let { MIN_YEAR..it.groupValues[1].toInt() }
             }
             line.contains("~") -> {
                 val allNumbers = Regex("(\\d{2})").findAll(line).map { it.groupValues[1].toInt() }.toList()
                 if (allNumbers.size >= 2) {
-                    allNumbers.first()..allNumbers.last()
+                    allNumbers.min()..allNumbers.max()
                 } else null
             }
-            Regex("\\['?\\d{2}-'?\\d{2}'?\\]").containsMatchIn(line) -> {
-                val match = Regex("\\['?(\\d{2})-'?(\\d{2})").find(line)
+            Regex("\\['{0,2}\\d{2}-'{0,2}\\d{2}'{0,2}\\]").containsMatchIn(line) -> {
+                val match = Regex("\\['{0,2}(\\d{2})-'{0,2}(\\d{2})").find(line)
                 match?.let { it.groupValues[1].toInt()..it.groupValues[2].toInt() }
             }
             else -> {
-                val match = Regex("'(\\d{2})\\]").find(line)
-                match?.let { 
+                val match = Regex("'{0,2}(\\d{2})\\]").find(line)
+                match?.let {
                     val year = it.groupValues[1].toInt()
                     year..year 
                 }
@@ -55,8 +62,13 @@ object FieldFinder {
     
     
     private fun parseFieldName(line: String): String {
-        val fieldNamePattern = Regex("](.+?)(?:\n|$)")
-        return fieldNamePattern.find(line)?.groupValues?.get(1)?.trim() ?: ""
+        // 마지막 ] 이후의 모든 텍스트를 필드명으로 추출
+        val lastBracketIndex = line.lastIndexOf(']')
+        if (lastBracketIndex != -1 && lastBracketIndex < line.length - 1) {
+            return line.substring(lastBracketIndex + 1).trim()
+        }
+
+        return ""
     }
     
     private data class FieldEntry(
