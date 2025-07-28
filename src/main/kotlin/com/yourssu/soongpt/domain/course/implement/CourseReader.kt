@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.implement
 
+import com.yourssu.soongpt.domain.course.implement.dto.FieldNullPointException
 import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.department.implement.Department
@@ -25,13 +26,15 @@ class CourseReader(
         return courseRepository.findAllInCategory(category, targets.map { it.courseId })
     }
 
-    fun findAllInCategory(category: Category, courseIds: List<Long>): List<Course> {
-        return courseRepository.findAllInCategory(category, courseIds)
+    fun findAllInCategory(category: Category, courseIds: List<Long>, schoolId: Int): List<Course> {
+        val courses = courseRepository.findAllInCategory(category, courseIds)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(it.field?: throw FieldNullPointException(), schoolId)) }
     }
 
     fun findAllInCategory(category: Category, courseIds: List<Long>, field: String, schoolId: Int): List<Course> {
         val courses = courseRepository.findAllInCategory(category, courseIds)
         return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(field, schoolId)) }
+            .filter { it.field?.contains(field) == true }
     }
 
     fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto {
