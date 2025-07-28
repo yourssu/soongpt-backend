@@ -155,10 +155,34 @@ def create_department_abbreviation_map(departments: List[str]) -> Dict[str, str]
     return abbrev_map
 
 
-def classify_target(target: str) -> List[str]:
+def classify_target(target: str, category: str = None) -> List[str]:
     """Parse target field and return list of department+grade combinations."""
     if not target or target.strip() == "":
         return ["전체1", "전체2", "전체3", "전체4", "전체5"]
+    
+    # Handle chapel courses - extract grades from target and apply chapel logic
+    if category == "CHAPEL":
+        # Check for special cases that should have empty target
+        if ("계약학과" in target and "재직자전형" in target and 
+            "7+1해외봉사자" in target and "파견교환학생" in target and
+            "외국인" in target and "대상외수강제한" in target):
+            return []
+        
+        # Extract grade numbers from target string
+        grade_matches = re.findall(r'(\d)학년', target)
+        if grade_matches:
+            unique_grades = sorted(set(int(g) for g in grade_matches))
+            
+            # Chapel logic: if only 1학년, then only 1학년; if 2학년 or higher, then 2학년~5학년
+            if unique_grades == [1]:
+                return ["전체1"]
+            elif any(grade >= 2 for grade in unique_grades):
+                return ["전체2", "전체3", "전체4", "전체5"]
+            else:
+                return [f"전체{grade}" for grade in unique_grades]
+        else:
+            # Fallback to all grades if no specific grades found
+            return ["전체1", "전체2", "전체3", "전체4", "전체5"]
     
     # Check for foreign student restrictions or exchange student restrictions - exclude these courses entirely
     if ("순수외국인입학생" in target or 
