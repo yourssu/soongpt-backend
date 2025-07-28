@@ -41,7 +41,7 @@ class TargetRepositoryImpl (
             .on(targetEntity.courseId.eq(courseEntity.id))
             .where(
                 targetEntity.departmentId.eq(departmentId),
-                courseEntity.code.divide(DIVISION_DIVISOR).eq(codeWithoutDivision),
+                courseEntity.code.divide(DIVISION_DIVISOR).longValue().eq(codeWithoutDivision),
                 targetEntity.grade.eq(grade)
             )
             .fetch()
