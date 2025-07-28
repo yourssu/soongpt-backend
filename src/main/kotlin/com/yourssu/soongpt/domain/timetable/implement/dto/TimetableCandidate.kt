@@ -1,8 +1,7 @@
 package com.yourssu.soongpt.domain.timetable.implement.dto
 
 import com.yourssu.soongpt.domain.timetable.implement.Tag
-import com.yourssu.soongpt.domain.timetable.implement.TimetableBuilder
-import com.yourssu.soongpt.domain.timetable.implement.constant.TIMESLOT_SIZE
+import com.yourssu.soongpt.domain.timetable.implement.TimetableCandidateBuilder
 import java.util.*
 
 data class TimetableCandidate(
@@ -17,7 +16,7 @@ data class TimetableCandidate(
         }
 
     }
-    fun toBuilder(): TimetableBuilder {
-        return TimetableBuilder(codes, timeSlot)
+    fun toBuilder(): TimetableCandidateBuilder {
+        return TimetableCandidateBuilder(codes, timeSlot)
     }
 }
