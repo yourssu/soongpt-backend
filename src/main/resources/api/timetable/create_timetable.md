@@ -106,26 +106,26 @@ Each timetable will have one of the following tags:
             "field": "법학과목",
             "code": 2150545501,
             "name": "행정법1",
-            "professor": "채우석",
+            "professor": "홍길동",
             "department": "법학과",
             "division": null,
             "time": "3.0",
             "point": "3.0",
             "personeel": 0,
-            "scheduleRoom": "월 13:30-14:45 (진리관 11522 (이효계강의실)-채우석)\n수 10:30-11:45 (진리관 11407-채우석)",
+            "scheduleRoom": "월 13:30-14:45 (진리관 11522 (이효계강의실)-홍길동)\n수 10:30-11:45 (진리관 11407-홍길동)",
             "target": "2학년 법학",
             "courseTimes": [
               {
                 "week": "월",
                 "start": "13:30",
                 "end": "14:45",
-                "classroom": "진리관 11522 (이효계강의실)-채우석"
+                "classroom": "진리관 11522 (이효계강의실)-홍길동"
               },
               {
                 "week": "수",
                 "start": "10:30",
                 "end": "11:45",
-                "classroom": "진리관 11407-채우석"
+                "classroom": "진리관 11407-홍길동"
               }
             ]
           },
