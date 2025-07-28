@@ -7,12 +7,12 @@ class SoongptHandler:
         
         # 숭피티 관련 로그 패턴
         self.CREATE_CONTACT_PREFIX = 'INFO com.yourssu.soongpt.common.infrastructure.notification.Notification - ContactCreated'
-        self.CREATE_TIMETABLE_PREFIX = 'INFO com.yourssu.soongpt.common.infrastructure.notification.Notification - ContactCreated'
+        self.CREATE_TIMETABLE_PREFIX = 'INFO com.yourssu.soongpt.common.infrastructure.notification.Notification - TimetableCreated'
 
         # 핸들러 매핑
         self.handlers = {
             self.CREATE_CONTACT_PREFIX: self.create_contact,
-            self.CREATE_HANDLER_PREFIX: self.create_timetable
+            self.CREATE_TIMETABLE_PREFIX: self.create_timetable
         }
     
     def create_contact(self, line):
