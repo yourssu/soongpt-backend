@@ -61,16 +61,10 @@ class TimetableGenerator (
         val department = departmentReader.getByName(command.departmentName)
         val baseCourseCandidates = generateCourseCandidatesForBase(command, department)
         val baseTimeTables = generateBaseTimetable(baseCourseCandidates)
-
-        println("Generated ${baseTimeTables.size} base timetables.")
-        for (timetable in baseTimeTables) {
-            println("Timetable: ${timetable.codes}, Points: ${timetable.points}, Tags: ${timetable.validTags}")
-        }
-
         val baseBuilders: List<TimetableCandidateBuilder> = baseTimeTables.flatMap { it.toBuilders() }
-        val builders = generateFinalTimeTables(baseBuilders, command, department)
+        val timetableBuilders = generateFinalTimeTables(baseBuilders, command, department)
 
-        val finalTimetables = builders
+        val finalTimetables = timetableBuilders
             .map { it.build() }
             .filter { it.validTags.isNotEmpty() && it.points > 0 }
 
@@ -138,24 +132,8 @@ class TimetableGenerator (
             return tables
         } else {
             val tables = addGeneralElectives(timeTableBuilders, command, department)
-
-            for (builder in tables) {
-                println("Builder: ${builder.build()?.points}, Points: ${builder.build()?.codes}")
-            }
-
             val optionalChapelCandidates = findChapelCandidates(department, command.grade)
-
-            println("Found ${optionalChapelCandidates.candidates.size} optional chapel candidates.")
-            for (candidate in optionalChapelCandidates.candidates) {
-                println("Chapel Candidate: ${candidate.code}, Points: ${candidate.point}")
-            }
-
             val tablesWithChapel = addChapel(tables, optionalChapelCandidates)
-
-            println("Added chapel candidates, total tables: ${tablesWithChapel.size}")
-            for (builder in tablesWithChapel) {
-                println("Builder with Chapel: ${builder.build().points}, Codes: ${builder.build().codes}")
-            }
             return tablesWithChapel
         }
     }
@@ -170,30 +148,22 @@ class TimetableGenerator (
         }
 
         val sortedElectiveCandidates = generateSortedElectiveCandidates(department, command)
-
-        for (elective in sortedElectiveCandidates) {
-            println("Elective Candidate: ${elective.code}, Points: ${elective.point}")
-        }
-
-        println("generalElectivePoint: ${command.generalElectivePoint}, Elective Candidates: ${sortedElectiveCandidates.size}")
         return builders.map { builder ->
-
-            println("Processing builder with initial points: ${builder.build().points}, Codes: ${builder.build().codes}")
             var remainingPoints = command.generalElectivePoint
 
             for (elective in sortedElectiveCandidates) {
                 if (remainingPoints <= 0) {
                     break
                 }
-                if (elective.point > remainingPoints) continue
+                if (elective.point > remainingPoints) {
+                    continue
+                }
 
                 val wasAdded = builder.add(elective)
                 if (wasAdded) {
                     remainingPoints -= elective.point
                 }
             }
-
-            println("remainingPoints after adding electives: $remainingPoints")
             builder
         }
     }
@@ -209,55 +179,46 @@ class TimetableGenerator (
         ).preferWeekday()
 
         val (preferredCourses, otherCourses) = allCourses.partition { course ->
-            // prefer 목록이 비어있으면 전부 Other 로 보내기
             command.preferredGeneralElectives.isNotEmpty() &&
-                    command.preferredGeneralElectives.any { pref ->
-                        course.field?.contains(pref) == true
-                    }
+            command.preferredGeneralElectives.any { pref ->
+                course.field?.contains(pref) == true
+            }
         }
 
-        // 1) 별점이 클수록 rank 숫자가 작아지도록 만든다
-        val codeToRank: Map<Long, Int> = ratingReader.findAll()
-            .sortedByDescending { it.star }               // ★ 내림차순
+        val codeToRank = ratingReader.findAll()
+            .sortedByDescending { it.star }
             .mapIndexed { idx, rating -> rating.code to idx }
             .toMap()
 
-        // 2) 두 가지 키를 한 번에 적용
         fun List<CourseCandidate>.sortByPointDescStarDesc() =
             sortedWith(
-                compareByDescending<CourseCandidate> { it.point }          // 학점 ↓
-                    .thenBy { codeToRank[it.code] ?: Int.MAX_VALUE }       // rank ↑  → 별점 ↓
+                compareByDescending<CourseCandidate> { it.point }
+                    .thenBy { codeToRank[it.code] ?: Int.MAX_VALUE }
             )
 
-// 3) 그룹별로 정렬
         val preferredCandidates = preferredCourses.map(courseCandidateFactory::create)
-        val otherCandidates     = otherCourses.map(courseCandidateFactory::create)
+        val otherCandidates = otherCourses.map(courseCandidateFactory::create)
 
         val sortedPreferred = preferredCandidates.sortByPointDescStarDesc()
-        val sortedOthers    = otherCandidates.sortByPointDescStarDesc()
+        val sortedOthers = otherCandidates.sortByPointDescStarDesc()
 
-// 4) 합치기
-        val result =
-            if (sortedPreferred.isNotEmpty()) sortedPreferred + sortedOthers
-            else (preferredCandidates + otherCandidates).sortByPointDescStarDesc()
-
-        return result
-
+        if (sortedPreferred.isNotEmpty()) {
+            return sortedPreferred + sortedOthers
+        }
+        else {
+            return (preferredCandidates + otherCandidates).sortByPointDescStarDesc()
+        }
     }
 
     private fun addChapel(
         baseBuilders: List<TimetableCandidateBuilder>,
         chapelCandidates: CourseCandidates,
     ): List<TimetableCandidateBuilder> {
+        // TODO: chapel test
         return baseBuilders.map { builder ->
             chapelCandidates.candidates.map {
-                if (builder.add(it)) {
-                    println("Added chapel candidate: ${it.code}, Points: ${it.point}")
-                } else {
-                    println("Failed to add chapel candidate: ${it.code}, Points: ${it.point}")
-                }
+                builder.add(it)
             }
-
             builder
         }
     }
@@ -272,19 +233,10 @@ class TimetableGenerator (
             department = department,
             grade = grade
         )
-        for (course in tmp) {
-            println("Chapel Course: ${course.name}, Code: ${course.code}")
+
+        val chapelCourses = tmp.map {
+            courseCandidateFactory.create(it)
         }
-
-
-        val chapelCourses = tmp
-            .filter { it.name.startsWith(namePrefix) }
-            .map { courseCandidateFactory.create(it) }
-
-
-//            .filter { it.name.startsWith(namePrefix) }
-//        .map { courseCandidateFactory.create(it) }
-
         return CourseCandidates.from(chapelCourses)
     }
     private fun generateCourseCandidatesForBase(
@@ -364,13 +316,6 @@ class TimetableGenerator (
                     }
                 )
             }
-
-        for (i in courseCandidates.indices) {
-            val course = courses[i]
-            println("Course: ${course.name}, Candidates: ${courseCandidates[i].candidates.size}")
-
-        }
         return courseCandidates
     }
-
 }

@@ -8,7 +8,7 @@ import java.util.*
 class TimetableCandidateBuilder(
     initialCodes: List<Long> = emptyList(),
     initialTimeSlot: BitSet = BitSet(TIMESLOT_SIZE),
-    private val pinnedTag: Tag = Tag.DEFAULT
+    private val pinnedTag: Tag? = null
 ) {
     private val codes: MutableList<Long> = initialCodes.toMutableList()
     private val timeSlot: BitSet = initialTimeSlot.clone() as BitSet
@@ -21,10 +21,11 @@ class TimetableCandidateBuilder(
     fun add(course: CourseCandidate): Boolean {
         if (intersects(course.timeSlot)) return false
 
-        val simulated = timeSlot.clone() as BitSet
-        simulated.or(course.timeSlot)
-
-        if (!pinnedTag.strategy.isCorrect(simulated)) return false
+        if (pinnedTag != null) {
+            val simulated = timeSlot.clone() as BitSet
+            simulated.or(course.timeSlot)
+            if (!pinnedTag.strategy.isCorrect(simulated)) return false
+        }
 
         codes += course.code
         timeSlot.or(course.timeSlot)
@@ -40,19 +41,18 @@ class TimetableCandidateBuilder(
     }
 
     fun build(): TimetableCandidate {
-        if (pinnedTag.strategy.isCorrect(timeSlot)) {
+        if (pinnedTag != null) {
             return TimetableCandidate(
-                codes    = codes.toList(),
-                timeSlot = timeSlot.clone() as BitSet,
-                validTags = listOf(pinnedTag),
-                points   = points
+                codes.toList(), timeSlot.clone() as BitSet,
+                listOf(pinnedTag), points
             )
         } else {
+            val tags = Tag.entries
+                .filter { it.strategy.isCorrect(timeSlot) }
+
             return TimetableCandidate(
-                codes    = codes.toList(),
-                timeSlot = timeSlot.clone() as BitSet,
-                validTags = listOf(Tag.DEFAULT),
-                points   = points
+                codes.toList(), timeSlot.clone() as BitSet,
+                tags, points
             )
         }
     }
