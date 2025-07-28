@@ -55,8 +55,13 @@ object FieldFinder {
     
     
     private fun parseFieldName(line: String): String {
-        val fieldNamePattern = Regex("](.+?)(?:\n|$)")
-        return fieldNamePattern.find(line)?.groupValues?.get(1)?.trim() ?: ""
+        // 마지막 ] 이후의 모든 텍스트를 필드명으로 추출
+        val lastBracketIndex = line.lastIndexOf(']')
+        if (lastBracketIndex != -1 && lastBracketIndex < line.length - 1) {
+            return line.substring(lastBracketIndex + 1).trim()
+        }
+        
+        return ""
     }
     
     private data class FieldEntry(
