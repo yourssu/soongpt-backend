@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.timetable.application
 
 import com.yourssu.soongpt.common.business.dto.Response
+import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.domain.timetable.application.dto.TimetableCreatedRequest
 import com.yourssu.soongpt.domain.timetable.business.TimetableService
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
@@ -17,6 +18,7 @@ class TimetableController(
     @PostMapping
     fun createTimetable(@RequestBody request: TimetableCreatedRequest): ResponseEntity<Response<TimetableResponses>> {
         val responses = timetableService.createTimetable(request.toCommand())
+        Notification.notifyTimetableCreated(responses)
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(Response(result = responses))
     }
