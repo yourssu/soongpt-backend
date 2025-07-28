@@ -14,9 +14,16 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     hikari:
-      max-lifetime: 175000
+      connection-timeout: 30000
+      maximum-pool-size: 10
+      max-lifetime: 178000
+      leak-detection-threshold: 40000
   jpa:
     hibernate:
       ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGIN}

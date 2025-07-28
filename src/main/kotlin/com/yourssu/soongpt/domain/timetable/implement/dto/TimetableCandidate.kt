@@ -16,7 +16,11 @@ data class TimetableCandidate(
         }
 
     }
-    fun toBuilder(): TimetableCandidateBuilder {
-        return TimetableCandidateBuilder(codes, timeSlot)
+    fun toBuilders(): List<TimetableCandidateBuilder> {
+        if (validTags.isNotEmpty()) {
+            return validTags.map { TimetableCandidateBuilder(codes, timeSlot, it) }
+        } else {
+            return listOf()
+        }
     }
 }
