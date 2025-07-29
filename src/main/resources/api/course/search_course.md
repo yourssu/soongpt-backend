@@ -18,10 +18,6 @@
 
 - `professor`
 - `name`
-- `target`
-- `scheduleRoom`
-- `field`
-- `code`
 
 ### Usage Examples
 

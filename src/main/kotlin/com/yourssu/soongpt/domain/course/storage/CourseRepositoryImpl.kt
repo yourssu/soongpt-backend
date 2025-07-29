@@ -84,11 +84,8 @@ class CourseRepositoryImpl(
 
     private fun buildSearchCondition(query: String) =
         courseEntity.field.containsIgnoreCase(query)
-            .or(courseEntity.code.stringValue().containsIgnoreCase(query))
             .or(courseEntity.name.containsIgnoreCase(query))
             .or(courseEntity.professor.containsIgnoreCase(query))
-            .or(courseEntity.scheduleRoom.containsIgnoreCase(query))
-            .or(courseEntity.target.containsIgnoreCase(query))
 
     private fun countCoursesByQuery(query: String): Long {
         return jpaQueryFactory
