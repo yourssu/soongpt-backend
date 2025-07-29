@@ -7,6 +7,7 @@
 [교양 필수 과목 조회 (GET /api/courses/general/required)](course/get_general_required_courses.md)  
 [과목 단일 조회 (GET /api/courses)](course/get_courses_by_code.md)  
 [과목 검색 (GET /api/courses/search)](course/search_course.md)  
+[학번별 필드 조회 (GET /api/courses/fields/schoolId/{schoolId})](course/get_fields_by_school_id.md)  
 
 ## TimeTable
 

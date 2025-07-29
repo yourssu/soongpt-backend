@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 class CourseReader(
     private val courseRepository: CourseRepository,
     private val targetRepository: TargetRepository,
-
+    private val fieldListFinder: FieldListFinder,
 ) {
     fun findAllByClass(department: Department, code: Long, grade: Int): List<Course> {
         val targets = targetRepository.findAllByClass(department.id!!, code, grade)
@@ -23,12 +23,6 @@ class CourseReader(
     fun findAllBy(category: Category, department: Department, grade: Int): List<Course> {
         val departmentId = department.id ?: return emptyList()
         val targets = targetRepository.findAllByDepartmentGrade(departmentId, grade)
-
-//        for (target in targets) {
-//            if (target.courseId) {
-//                continue
-//            }
-//        }
         return courseRepository.findAllInCategory(category, targets.map { it.courseId })
     }
 
@@ -56,5 +50,9 @@ class CourseReader(
 
     fun findAllByCode(codes: List<Long>): List<Course> {
         return courseRepository.findAllByCode(codes)
+    }
+
+    fun getFieldsBySchoolId(schoolId: Int): List<String> {
+        return fieldListFinder.getFieldsBySchoolId(schoolId)
     }
 }

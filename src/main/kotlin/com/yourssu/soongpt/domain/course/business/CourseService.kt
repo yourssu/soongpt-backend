@@ -64,4 +64,8 @@ class CourseService(
 
         return responses
     }
+
+    fun getFieldsBySchoolId(schoolId: Int): List<String> {
+        return courseReader.getFieldsBySchoolId(schoolId)
+    }
 }

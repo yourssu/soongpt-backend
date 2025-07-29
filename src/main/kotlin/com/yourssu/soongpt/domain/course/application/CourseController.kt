@@ -5,11 +5,9 @@ import com.yourssu.soongpt.domain.course.application.dto.*
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.*
 import jakarta.validation.Valid
+import org.jetbrains.annotations.NotNull
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/courses")
@@ -43,6 +41,12 @@ class CourseController(
     @GetMapping("/search")
     fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
         val response = courseService.search(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @GetMapping("/fields/schoolId/{schoolId}")
+    fun getFieldsBySchoolId(@NotNull @PathVariable schoolId: Int): ResponseEntity<Response<List<String>>> {
+        val response = courseService.getFieldsBySchoolId(schoolId)
         return ResponseEntity.ok().body(Response(result = response))
     }
 }

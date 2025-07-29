@@ -1,3 +1,5 @@
+
+
 ### Get Courses by Code - Single Course
 GET {{host}}/api/courses?code=5006762801
 
@@ -36,3 +38,9 @@ GET {{host}}/api/courses/search?q=데이터베이스&sort=ASC&page=1&size=5
 
 ### Search Courses - Full Parameters
 GET {{host}}/api/courses/search?q=프로그래밍&page=0&size=20&sort=DESC
+
+### Get Fields by School ID
+GET {{host}}/api/courses/fields/schoolId/25
+
+### Get Fields by School ID - Different Year
+GET {{host}}/api/courses/fields/schoolId/23
