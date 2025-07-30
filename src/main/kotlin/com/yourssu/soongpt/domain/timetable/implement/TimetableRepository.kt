@@ -4,4 +4,5 @@ interface TimetableRepository {
     fun save(timetable: Timetable): Timetable
     fun get(id: Long): Timetable
     fun delete(id: Long)
+    fun count(): Long
 }
