@@ -21,7 +21,7 @@ class TimetableCandidateBuilder(
     fun add(course: CourseCandidate): Boolean {
         if (intersects(course.timeSlot)) return false
 
-        if (pinnedTag != null) { //  && course.point > 0
+        if (pinnedTag != null && course.point > 0) { // 채플 검사 X
             val simulated = timeSlot.clone() as BitSet
             simulated.or(course.timeSlot)
             if (!pinnedTag.strategy.isCorrect(simulated)) return false
