@@ -24,12 +24,12 @@ class SoongptHandler:
         self.notifier.send_notification(message)
 
     def create_timetable(self, line):
-        id_part = line[line.find('&') + 1:].strip()
-        if id_part.startswith('{') and id_part.endswith('}'):
-            id_part = id_part[1:-1]
+        table_part = line[line.find('&') + 1:].strip()
+        if table_part.startswith('{') and table_part.endswith('}'):
+            table_part = table_part[1:-1]
 
         kv_dict = {}
-        for pair in id_part.split(','):
+        for pair in table_part.split(','):
             if ':' not in pair:
                 continue
             key, val = pair.split(':', 1)
