@@ -17,6 +17,7 @@ import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidates
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
 import com.yourssu.soongpt.domain.timetable.storage.exception.TimetableNotFoundException
 import org.springframework.stereotype.Component
+import kotlin.random.Random
 
 private const val MAXIMUM_TIMETABLE_CANDIDATES = 1000
 @Component
@@ -108,11 +109,7 @@ class TimetableGenerator (
     private fun generateTimetableCourseResponses(
         codes: List<Long>
     ): List<TimetableCourseResponse> {
-
-        val flattenCourses = getFlattenCoursesInCourseGroup(
-            courseReader.groupByCategory(codes)
-        )
-
+        val flattenCourses = courseReader.findAllByCode(codes)
         val timetableCourseResponses = flattenCourses.map { course ->
             val courseTimes = CourseTimes.from(course.scheduleRoom).toList()
             TimetableCourseResponse.from(course, courseTimes)
@@ -200,6 +197,29 @@ class TimetableGenerator (
         }
     }
 
+    private fun String.normalizeDot(): String =
+        replace("""\s*·\s*""".toRegex(), "·")
+            .trim()
+
+    private fun sortByPointDescStarDescShuffleEqual(
+        candidates: List<CourseCandidate>,
+        codeToRank: Map<Long, Int>
+    ): List<CourseCandidate> =
+        candidates.groupBy { it.point }
+            .toList()
+            .sortedByDescending { it.first }            // point ↓
+            .flatMap { (_, samePoint) ->
+                samePoint
+                    .groupBy { codeToRank[it.code] ?: Int.MAX_VALUE }
+                    .toList()
+                    .sortedBy { it.first }              // star ↓ (rank ↑)
+                    .flatMap { (_, sameStar) ->
+                        if (sameStar.size > 1)
+                            sameStar.shuffled(Random(System.nanoTime()))      // 동점만 섞기
+                        else sameStar
+                    }
+            }
+
     private fun generateSortedElectiveCandidates (
         department: Department,
         command: TimetableCreatedCommand
@@ -210,10 +230,21 @@ class TimetableGenerator (
             grade = command.grade
         ).preferWeekday()
 
-        val (preferredCourses, otherCourses) = allCourses.partition { course ->
-            command.preferredGeneralElectives.isNotEmpty() &&
-            command.preferredGeneralElectives.any { pref ->
-                course.field?.contains(pref) == true
+        val electiveFields = courseReader.getFieldsBySchoolId(command.schoolId)
+            .filterNot { it.startsWith("교필") }
+            .map { it.normalizeDot() }
+
+        val preferredFields = command.preferredGeneralElectives
+            .map { it.normalizeDot() }
+
+        val courses = allCourses.filter { course ->
+            val field = course.field?.normalizeDot() ?: return@filter false
+            electiveFields.any(field::contains)
+        }
+
+        val (preferredCourses, otherCourses) = courses.partition { course ->
+            preferredFields.isNotEmpty() && preferredFields.any { pref ->
+                course.field?.normalizeDot()?.contains(pref) == true
             }
         }
 
@@ -222,23 +253,25 @@ class TimetableGenerator (
             .mapIndexed { idx, rating -> rating.code to idx }
             .toMap()
 
-        fun List<CourseCandidate>.sortByPointDescStarDesc() =
-            sortedWith(
-                compareByDescending<CourseCandidate> { it.point }
-                    .thenBy { codeToRank[it.code] ?: Int.MAX_VALUE }
-            )
-
         val preferredCandidates = preferredCourses.map(courseCandidateFactory::create)
         val otherCandidates = otherCourses.map(courseCandidateFactory::create)
 
-        val sortedPreferred = preferredCandidates.sortByPointDescStarDesc()
-        val sortedOthers = otherCandidates.sortByPointDescStarDesc()
+        val sortedPreferred = sortByPointDescStarDescShuffleEqual(
+            preferredCandidates,
+            codeToRank
+        )
 
         if (sortedPreferred.isNotEmpty()) {
-            return sortedPreferred + sortedOthers
+            return sortByPointDescStarDescShuffleEqual(
+                sortedPreferred,
+                codeToRank
+            )
         }
         else {
-            return (preferredCandidates + otherCandidates).sortByPointDescStarDesc()
+            return sortByPointDescStarDescShuffleEqual(
+                preferredCandidates + otherCandidates,
+                codeToRank
+            )
         }
     }
 
@@ -246,7 +279,6 @@ class TimetableGenerator (
         baseBuilders: List<TimetableCandidateBuilder>,
         chapelCandidates: CourseCandidates,
     ): List<TimetableCandidateBuilder> {
-        // TODO: chapel test
         return baseBuilders.map { builder ->
             chapelCandidates.candidates.map {
                 builder.add(it)
