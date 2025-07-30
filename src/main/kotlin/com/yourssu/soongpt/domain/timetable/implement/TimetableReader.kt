@@ -9,4 +9,8 @@ class TimetableReader (
     fun get(id: Long): Timetable {
         return timetableRepository.get(id)
     }
+
+    fun count(): Long {
+        return timetableRepository.count()
+    }
 }

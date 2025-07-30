@@ -1,6 +1,8 @@
 package com.yourssu.soongpt.domain.timetable.business
 
+import com.yourssu.soongpt.common.infrastructure.dto.TimetableCreatedAlarmRequest
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
+import com.yourssu.soongpt.domain.timetable.application.dto.TimetableCreatedRequest
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCourseResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCreatedCommand
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
@@ -32,5 +34,16 @@ class TimetableService(
             TimetableCourseResponse.from(course, courseTimes)
         }
         return TimetableResponse.from(timetable, coursesWithTime)
+    }
+
+    fun createTimetableAlarmRequest(
+        request: TimetableCreatedRequest
+    ): TimetableCreatedAlarmRequest {
+        val response = TimetableCreatedAlarmRequest(
+            schoolId = request.schoolId,
+            departmentName = request.department,
+            times = timetableReader.count()
+        )
+        return response
     }
 }

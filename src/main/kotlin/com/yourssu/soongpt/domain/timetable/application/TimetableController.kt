@@ -18,7 +18,8 @@ class TimetableController(
     @PostMapping
     fun createTimetable(@RequestBody request: TimetableCreatedRequest): ResponseEntity<Response<TimetableResponses>> {
         val responses = timetableService.createTimetable(request.toCommand())
-        Notification.notifyTimetableCreated(responses)
+        val slackRequest = timetableService.createTimetableAlarmRequest(request)
+        Notification.notifyTimetableCreated(slackRequest)
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(Response(result = responses))
     }
