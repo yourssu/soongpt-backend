@@ -76,10 +76,36 @@ class TimetableGenerator (
         val topTimetablesByTag = groupAndSelectTopN(finalTimetables, 2)
         val topTimetableCandidates = topTimetablesByTag.values.flatten()
 
-        if (topTimetableCandidates.isEmpty()) {
+        val distinctFinalTimetableCandidates = getDistinctTimetableCandidates(topTimetableCandidates)
+        if (distinctFinalTimetableCandidates.isEmpty()) {
             throw TimetableNotFoundException()
         }
-        return topTimetableCandidates
+        return distinctFinalTimetableCandidates
+    }
+
+    private fun getDistinctTimetableCandidates(
+        topTimetableCandidates: List<TimetableCandidate>
+    ): List<TimetableCandidate> {
+        // Tag는 Default가 앞쪽 우선이라, 해당 내용 거르기 위한 reverse
+        val reverseCandidates = topTimetableCandidates.reversed()
+        val distinctCandidates = mutableListOf<TimetableCandidate>()
+
+        // n^2 logic, timeslot(bitset) & 한게 똑같고, codes 배열 조차 같으면 태그 하나만 남기고 리턴.
+        for (candidate in reverseCandidates) {
+            var isDistinct = true
+            for (distinctCandidate in distinctCandidates) {
+                if (candidate.timeSlot.toString() != distinctCandidate.timeSlot.toString() ||
+                    candidate.codes.size != distinctCandidate.codes.size ||
+                    candidate.codes.toSet() == distinctCandidate.codes.toSet()) {
+                    isDistinct = false
+                    break
+                }
+            }
+            if (isDistinct) {
+                distinctCandidates.add(candidate)
+            }
+        }
+        return distinctCandidates.reversed()
     }
 
     private fun generateTimetableCourseResponses(
