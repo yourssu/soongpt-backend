@@ -204,21 +204,29 @@ class TimetableGenerator (
     private fun sortByPointDescStarDescShuffleEqual(
         candidates: List<CourseCandidate>,
         codeToRank: Map<Long, Int>
-    ): List<CourseCandidate> =
-        candidates.groupBy { it.point }
+    ): List<CourseCandidate> {
+        val random = Random(System.currentTimeMillis())
+        val groupedCandidates = candidates
+            .groupBy { it.point }
             .toList()
             .sortedByDescending { it.first }            // point ↓
-            .flatMap { (_, samePoint) ->
-                samePoint
-                    .groupBy { codeToRank[it.code] ?: Int.MAX_VALUE }
-                    .toList()
-                    .sortedBy { it.first }              // star ↓ (rank ↑)
-                    .flatMap { (_, sameStar) ->
-                        if (sameStar.size > 1)
-                            sameStar.shuffled(Random(System.nanoTime()))      // 동점만 섞기
-                        else sameStar
-                    }
-            }
+
+        val shuffledCandidates = groupedCandidates.flatMap {
+            (_, samePoint) ->
+            samePoint
+                .groupBy { codeToRank[it.code] ?: Int.MAX_VALUE }
+                .toList()
+                .sortedBy { it.first }              // star ↓ (rank ↑)
+                .flatMap { (_, sameStar) ->
+                    if (sameStar.size > 1)
+                        sameStar.shuffled(random)      // 동점만 섞기
+                    else sameStar
+                }
+        }
+
+        return shuffledCandidates
+    }
+
 
     private fun generateSortedElectiveCandidates (
         department: Department,
