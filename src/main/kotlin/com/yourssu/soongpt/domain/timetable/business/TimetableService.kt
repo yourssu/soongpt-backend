@@ -40,6 +40,10 @@ class TimetableService(
         request: TimetableCreatedRequest,
         responses: TimetableResponses
     ): TimetableCreatedAlarmRequest {
+        if (responses.timetables.isEmpty()) {
+            throw IllegalStateException("No timetables created")
+        }
+
         val response = TimetableCreatedAlarmRequest(
             schoolId = request.schoolId,
             departmentName = request.department,
