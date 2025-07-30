@@ -15,6 +15,7 @@ import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
 import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
 import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidates
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
+import com.yourssu.soongpt.domain.timetable.storage.exception.TimetableNotFoundException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -28,7 +29,6 @@ class TimetableGenerator (
     private val timetableWriter: TimetableWriter,
     private val timetableCourseWriter: TimetableCourseWriter,
 ){
-    @Transactional
     fun issueTimetables(timetableCandidates: List<TimetableCandidate>): List<TimetableResponse> {
         val responses = ArrayList<TimetableResponse>()
         for (candidate in timetableCandidates) {
@@ -61,6 +61,11 @@ class TimetableGenerator (
         val department = departmentReader.getByName(command.departmentName)
         val baseCourseCandidates = generateCourseCandidatesForBase(command, department)
         val baseTimeTables = generateBaseTimetable(baseCourseCandidates)
+
+        if (baseTimeTables.isEmpty()) {
+            throw TimetableNotFoundException()
+        }
+
         val baseBuilders: List<TimetableCandidateBuilder> = baseTimeTables.flatMap { it.toBuilders() }
         val timetableBuilders = generateFinalTimeTables(baseBuilders, command, department)
 
