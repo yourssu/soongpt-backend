@@ -2,6 +2,7 @@ package com.yourssu.soongpt.domain.timetable.business.dto
 
 class TimetableCreatedCommand(
     val departmentName: String,
+    val schoolId: Int,
     val grade: Int,
     val isChapel: Boolean,
     val majorRequiredCodes: List<Long>,

@@ -1,16 +1,14 @@
-
-
 ### Get Courses by Code - Single Course
-GET {{host}}/api/courses?code=5006762801
+GET {{host}}/api/courses?code=2150153901
 
 ### Get Courses by Code - Multiple Courses
 GET {{host}}/api/courses?code=1234567890&code=2345678901&code=3456789012
 
 ### Get General Required Courses
-GET {{host}}/api/courses/general/required?schoolId=20&department=컴퓨터학부&grade=2
+GET {{host}}/api/courses/general/required?schoolId=20&department=컴퓨터학부&grade=3
 
 ### Get General Required Courses - With Sub Department
-GET {{host}}/api/courses/general/required?schoolId=21&department=전자정보공학부&subDepartment=IT융합&grade=1
+GET {{host}}/api/courses/general/required?schoolId=2&department=전자정보공학부&subDepartment=IT융합&grade=1
 
 ### Get Major Required Courses
 GET {{host}}/api/courses/major/required?schoolId=20&department=컴퓨터학부&grade=2
@@ -19,7 +17,7 @@ GET {{host}}/api/courses/major/required?schoolId=20&department=컴퓨터학부&g
 GET {{host}}/api/courses/major/required?schoolId=21&department=전자정보공학부&subDepartment=전자공학&grade=3
 
 ### Get Major Elective Courses
-GET {{host}}/api/courses/major/elective?schoolId=20&department=컴퓨터학부&grade=3
+GET {{host}}/api/courses/major/elective?schoolId=20&department=회계학과&grade=4
 
 ### Get Major Elective Courses - With Sub Department
 GET {{host}}/api/courses/major/elective?schoolId=21&department=전자정보공학부&subDepartment=IT융합&grade=4

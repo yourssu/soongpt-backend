@@ -38,6 +38,7 @@ data class TimetableCreatedRequest(
     fun toCommand(): TimetableCreatedCommand {
         return TimetableCreatedCommand(
             departmentName = department,
+            schoolId = schoolId,
             grade = grade,
             isChapel = isChapel,
             majorRequiredCodes = majorRequiredCodes,
