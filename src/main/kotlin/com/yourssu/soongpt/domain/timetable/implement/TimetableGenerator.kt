@@ -270,10 +270,7 @@ class TimetableGenerator (
         )
 
         if (sortedPreferred.isNotEmpty()) {
-            return sortByPointDescStarDescShuffleEqual(
-                sortedPreferred,
-                codeToRank
-            )
+            return sortedPreferred + otherCandidates
         }
         else {
             return sortByPointDescStarDescShuffleEqual(
