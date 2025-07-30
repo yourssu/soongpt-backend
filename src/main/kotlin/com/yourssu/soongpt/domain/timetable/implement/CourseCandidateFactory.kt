@@ -16,13 +16,16 @@ class CourseCandidateFactory {
         val compressTimes = compressTimes(courseTimes)
         val timeSlot = generateTimeSlot(compressTimes)
         val point = course.point.toDouble().toInt()
-
         return CourseCandidate.from(course.code, timeSlot, point)
     }
 
     private fun compressTimes(
         courseTimes: CourseTimes
     ): CompressTimes {
+        if (courseTimes.isEmpty()) {
+            return CompressTimes.from(emptyList())
+        }
+
         val compressedTimes = courseTimes.toList().map { courseTime ->
             CompressTime.from(courseTime)
         }

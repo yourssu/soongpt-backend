@@ -66,12 +66,12 @@ class TimetableGenerator (
             throw TimetableNotFoundException()
         }
 
-        val baseBuilders: List<TimetableCandidateBuilder> = baseTimeTables.flatMap { it.toBuilders() }
+        val baseBuilders = baseTimeTables.flatMap { it.toBuilders() }
         val timetableBuilders = generateFinalTimeTables(baseBuilders, command, department)
 
         val finalTimetables = timetableBuilders
             .map { it.build() }
-            .filter { it.validTags.isNotEmpty() && it.points > 0 }
+            .filter { it.validTags.isNotEmpty() && it.codes.isNotEmpty() }
 
         val topTimetablesByTag = groupAndSelectTopN(finalTimetables, 2)
         val topTimetableCandidates = topTimetablesByTag.values.flatten()
