@@ -109,8 +109,13 @@ def generate_target_inserts(target_map: Dict, course_data: List[Dict]) -> List[s
     for course in course_data:
         original_target = course.get("target", "")
         code = course.get("code")
+        category = course.get("category", "")
         
         if not original_target or not code:
+            continue
+            
+        # Skip if category is MAJOR_ELECTIVE or MAJOR_REQUIRED and original target contains "전체"
+        if category in ["MAJOR_ELECTIVE", "MAJOR_REQUIRED", "GENERAL_REQUIRED"] and "전체" in original_target:
             continue
             
         # Look up the mapped target value in target_map
