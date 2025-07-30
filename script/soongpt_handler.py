@@ -25,8 +25,30 @@ class SoongptHandler:
 
     def create_timetable(self, line):
         id_part = line[line.find('&') + 1:].strip()
-        message = f"""🕰️ 숭피티 시간표 등록 알림 🕰️
+        if id_part.startswith('{') and id_part.endswith('}'):
+            id_part = id_part[1:-1]
 
-📧 {id_part}번째 시간표가 등록되었어요!
+        kv_dict = {}
+        for pair in id_part.split(','):
+            if ':' not in pair:
+                continue
+            key, val = pair.split(':', 1)
+
+            # 따옴표·공백 제거
+            key = key.strip().strip('"').strip("'")
+            val = val.strip().strip('"').strip("'")
+            kv_dict[key] = val
+
+        student_id = kv_dict.get('schoolId', 'N/A')
+        department  = kv_dict.get('departmentName', 'N/A')
+        total_cnt   = kv_dict.get('times', 'N/A')
+
+        message = (
+            f"""🎉 시간표 생성 알림 🎉
+--------------------------
+👤학번 : {student_id}
+📚학과 : {department}
+👥누적 시간표 생성 개수: {total_cnt}회
 ⏰ 등록시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"""
+        )
         self.notifier.send_notification(message)
