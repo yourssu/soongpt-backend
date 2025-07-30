@@ -90,12 +90,10 @@ class TimetableGenerator (
         val reverseCandidates = topTimetableCandidates.reversed()
         val distinctCandidates = mutableListOf<TimetableCandidate>()
 
-        // n^2 logic, timeslot(bitset) & 한게 똑같고, codes 배열 조차 같으면 태그 하나만 남기고 리턴.
         for (candidate in reverseCandidates) {
             var isDistinct = true
             for (distinctCandidate in distinctCandidates) {
-                if (candidate.timeSlot.toString() != distinctCandidate.timeSlot.toString() ||
-                    candidate.codes.size != distinctCandidate.codes.size ||
+                if (candidate.timeSlot.toString() == distinctCandidate.timeSlot.toString() ||
                     candidate.codes.toSet() == distinctCandidate.codes.toSet()) {
                     isDistinct = false
                     break
