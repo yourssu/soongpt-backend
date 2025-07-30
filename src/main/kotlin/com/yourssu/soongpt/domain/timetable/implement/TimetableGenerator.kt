@@ -75,6 +75,10 @@ class TimetableGenerator (
 
         val topTimetablesByTag = groupAndSelectTopN(finalTimetables, 2)
         val topTimetableCandidates = topTimetablesByTag.values.flatten()
+
+        if (topTimetableCandidates.isEmpty()) {
+            throw TimetableNotFoundException()
+        }
         return topTimetableCandidates
     }
 
