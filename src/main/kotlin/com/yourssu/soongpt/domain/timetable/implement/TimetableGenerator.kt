@@ -17,7 +17,6 @@ import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidates
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
 import com.yourssu.soongpt.domain.timetable.storage.exception.TimetableNotFoundException
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 private const val MAXIMUM_TIMETABLE_CANDIDATES = 1000
 @Component
@@ -76,14 +75,14 @@ class TimetableGenerator (
         val topTimetablesByTag = groupAndSelectTopN(finalTimetables, 2)
         val topTimetableCandidates = topTimetablesByTag.values.flatten()
 
-        val distinctFinalTimetableCandidates = getDistinctTimetableCandidates(topTimetableCandidates)
+        val distinctFinalTimetableCandidates = removeDuplicateTimetables(topTimetableCandidates)
         if (distinctFinalTimetableCandidates.isEmpty()) {
             throw TimetableNotFoundException()
         }
         return distinctFinalTimetableCandidates
     }
 
-    private fun getDistinctTimetableCandidates(
+    private fun removeDuplicateTimetables(
         topTimetableCandidates: List<TimetableCandidate>
     ): List<TimetableCandidate> {
         // Tag는 Default가 앞쪽 우선이라, 해당 내용 거르기 위한 reverse
