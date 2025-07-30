@@ -37,12 +37,13 @@ class TimetableService(
     }
 
     fun createTimetableAlarmRequest(
-        request: TimetableCreatedRequest
+        request: TimetableCreatedRequest,
+        responses: TimetableResponses
     ): TimetableCreatedAlarmRequest {
         val response = TimetableCreatedAlarmRequest(
             schoolId = request.schoolId,
             departmentName = request.department,
-            times = timetableReader.count()
+            times = responses.timetables.last().timetableId
         )
         return response
     }
