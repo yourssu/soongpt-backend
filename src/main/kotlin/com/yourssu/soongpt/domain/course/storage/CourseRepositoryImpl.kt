@@ -14,6 +14,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Component
 
+private const val DIVISION_DIVISOR = 100
+
 @Component
 class CourseRepositoryImpl(
     private val courseJpaRepository: CourseJpaRepository,
@@ -82,6 +84,15 @@ class CourseRepositoryImpl(
         return PageImpl(content, pageable, countCoursesByQuery(query))
     }
 
+    override fun findAllByClass(code: Long): List<Course> {
+        val codeWithoutDivision = code.div(DIVISION_DIVISOR)
+        return jpaQueryFactory
+            .selectFrom(courseEntity)
+            .where(courseEntity.code.divide(DIVISION_DIVISOR).longValue().eq(codeWithoutDivision))
+            .fetch()
+            .map { it.toDomain() }
+    }
+
     private fun buildSearchCondition(query: String) =
         courseEntity.field.containsIgnoreCase(query)
             .or(courseEntity.name.containsIgnoreCase(query))
@@ -97,6 +108,7 @@ class CourseRepositoryImpl(
 }
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
+    @Query("select c from CourseEntity c where c.code = :code")
     fun getByCode(code: Long): CourseEntity
 
     @Query("select c from CourseEntity c where c.code in :codes")
