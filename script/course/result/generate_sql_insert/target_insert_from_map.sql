@@ -19987,27 +19987,7 @@ SELECT d.id, c.id, 2
 FROM course c, department d
 WHERE c.code = 2150216001 AND d.name = '사학과';
 
--- Custom target for course 2150663403: 전체2,전체3,전체4,전체5
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150663403;
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150663403;
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 4
-FROM course c, department d
-WHERE c.code = 2150663403;
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 5
-FROM course c, department d
-WHERE c.code = 2150663403;
-
+-- Custom target for course 2150663403: 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
 FROM course c, department d
@@ -22228,10 +22208,11 @@ SELECT d.id, c.id, 3
 FROM course c, department d
 WHERE c.code = 2150027803 AND d.name = '소프트웨어학부';
 
+-- Custom target for course 2150146201: 수학과3
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 3
 FROM course c, department d
-WHERE c.code = 2150146201;
+WHERE c.code = 2150146201 AND d.name = '수학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 3
@@ -24278,7 +24259,7 @@ WHERE c.code = 2150421401 AND d.name = '독어독문학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 9111894549 AND d.name = '예술창작학부 문예창작전공';
+WHERE c.code = 3697381041 AND d.name = '예술창작학부 문예창작전공';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
