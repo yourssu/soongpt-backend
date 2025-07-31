@@ -175,22 +175,23 @@ def convert_course_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             "외국인" in original_target and "대상외수강제한" in original_target):
             target_result = ""
         else:
-            # Extract grade numbers from target string
-            import re
-            grade_matches = re.findall(r'(\d)학년', original_target)
-            if grade_matches:
-                unique_grades = sorted(set(int(g) for g in grade_matches))
-                
-                # Chapel logic: if only 1학년, then only 1학년; if 2학년 or higher, then 2학년~5학년
-                if unique_grades == [1]:
-                    target_result = "전체1"
-                elif any(grade >= 2 for grade in unique_grades):
-                    target_result = "전체2,전체3,전체4,전체5"
-                else:
-                    target_result = ",".join([f"전체{grade}" for grade in unique_grades])
-            else:
-                # Fallback to all grades if no specific grades found
-                target_result = "전체1,전체2,전체3,전체4,전체5"
+#             # Extract grade numbers from target string
+#             import re
+#             grade_matches = re.findall(r'(\d)학년', original_target)
+#             if grade_matches:
+#                 unique_grades = sorted(set(int(g) for g in grade_matches))
+#
+#                 # Chapel logic: if only 1학년, then only 1학년; if 2학년 or higher, then 2학년~5학년
+#                 if unique_grades == [1]:
+#                     target_result = "전체1"
+#                 elif any(grade >= 2 for grade in unique_grades):
+#                     target_result = "전체2,전체3,전체4,전체5"
+#                 else:
+#                     target_result = ",".join([f"전체{grade}" for grade in unique_grades])
+#             else:
+#                 # Fallback to all grades if no specific grades found
+#                 target_result = "전체1,전체2,전체3,전체4,전체5"
+              target_result = parse_target(item.get("target", ""))
     else:
         # Parse target normally for non-chapel courses
         target_result = parse_target(item.get("target", ""))
