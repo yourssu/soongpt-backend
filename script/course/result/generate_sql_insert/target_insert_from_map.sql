@@ -22653,11 +22653,10 @@ SELECT d.id, c.id, 3
 FROM course c, department d
 WHERE c.code = 2150573301 AND d.name = '경영학부';
 
--- Custom target for course 2150573302: 전체1
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 1
+SELECT d.id, c.id, 3
 FROM course c, department d
-WHERE c.code = 2150573302;
+WHERE c.code = 2150573302 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 3
