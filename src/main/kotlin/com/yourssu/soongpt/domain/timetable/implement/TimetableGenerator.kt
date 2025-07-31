@@ -298,10 +298,11 @@ class TimetableGenerator (
         chapelCandidates: CourseCandidates,
     ): List<TimetableCandidateBuilder> {
         return baseBuilders.map { builder ->
-            chapelCandidates.candidates.map {
-                builder.add(it)
+            builder.also {
+                chapelCandidates.candidates.any { candidate ->
+                    it.add(candidate)
+                }
             }
-            builder
         }
     }
 
