@@ -68,11 +68,8 @@ def check_prerequisites() -> bool:
     # Check for required source files
     required_files = [
         "course_parser.py",
-        "generate_custom_target_map.py", 
         "generate_course_sql.py",
-        "generate_target_sql_from_map.py",
-        "target_classifier.py",
-        "target_validator.py"
+        "generate_target_sql_from_map.py"
     ]
     
     for file_name in required_files:
