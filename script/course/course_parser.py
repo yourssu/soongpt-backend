@@ -181,9 +181,9 @@ def convert_course_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 #             if grade_matches:
 #                 unique_grades = sorted(set(int(g) for g in grade_matches))
 #
-#                 # Chapel logic: if only 1학년, then only 1학년; if 2학년 or higher, then 2학년~5학년
+#                 # Chapel logic: if only 1학년, then only target; if 2학년 or higher, then 2학년~5학년
 #                 if unique_grades == [1]:
-#                     target_result = "전체1"
+#                     target_result = parse_target(item.get("target", ""))
 #                 elif any(grade >= 2 for grade in unique_grades):
 #                     target_result = "전체2,전체3,전체4,전체5"
 #                 else:
@@ -199,7 +199,16 @@ def convert_course_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         # If target parsing returns empty list, exclude this course
         if not target_result:
             return None
-    
+
+    # exception 회계 - 경제원론 예외처리
+    if item.get("code") == "2150642301":
+        item["code"] = "2150642203"
+
+    if item.get("code") == "2150577401":
+        item["code"] = "2150568110"
+
+    if item.get("code") == "2150642501":
+        item["code"] = "2150568111"
     # Parse time_points to get separate time and point values
     time_from_points, point_from_points = parse_time_points(item.get("time_points", ""))
     

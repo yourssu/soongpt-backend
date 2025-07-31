@@ -13800,17 +13800,32 @@ WHERE c.code = 2150568106 AND d.name = '회계학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 215056810 AND d.name = '경영학부';
+WHERE c.code = 2150568110 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 215056810 AND d.name = '회계학과';
+WHERE c.code = 2150568110 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 215056810 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150568110 AND d.name = '회계학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150568111 AND d.name = '경영학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150568111 AND d.name = '회계학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150568111 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
@@ -13855,12 +13870,12 @@ WHERE c.code = 2150642202 AND d.name = '회계학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642301 AND d.name = '회계학과';
+WHERE c.code = 2150642203 AND d.name = '회계학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642301 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150642203 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
@@ -14592,6 +14607,7 @@ SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150657101 AND d.name = '국제무역학과';
 
+-- Custom target for course 2150101507: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
@@ -14665,6 +14681,278 @@ WHERE c.code = 2150101507 AND d.name = '화학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = 'AI융합학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = '글로벌미디어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = '미디어경영학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = '소프트웨어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = '전자정보공학부 IT융합전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = '전자정보공학부 전자공학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = '정보보호학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = '컴퓨터학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101507 AND d.name = '자유전공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150101507;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 3
+FROM course c, department d
+WHERE c.code = 2150101507;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 4
+FROM course c, department d
+WHERE c.code = 2150101507;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 5
+FROM course c, department d
+WHERE c.code = 2150101507;
+
+-- Custom target for course 2150101508: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '건축학부 건축공학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '건축학부 건축학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '건축학부 건축학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '건축학부 실내건축전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '기계공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '산업정보시스템공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '신소재공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '전기공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '화학공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '물리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '수학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '의생명시스템학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '정보통계보험수리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '화학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = 'AI융합학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '글로벌미디어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '미디어경영학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '소프트웨어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '전자정보공학부 IT융합전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '전자정보공학부 전자공학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '정보보호학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '컴퓨터학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101508 AND d.name = '자유전공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150101508;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 3
+FROM course c, department d
+WHERE c.code = 2150101508;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 4
+FROM course c, department d
+WHERE c.code = 2150101508;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 5
+FROM course c, department d
+WHERE c.code = 2150101508;
+
+-- Custom target for course 2150101509: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '건축학부 건축공학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '건축학부 건축학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '건축학부 건축학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '건축학부 실내건축전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '기계공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '산업정보시스템공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '신소재공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '전기공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '화학공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '물리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '수학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '의생명시스템학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '정보통계보험수리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '화학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
 WHERE c.code = 2150101509 AND d.name = 'AI융합학부';
 
 INSERT INTO target (department_id, course_id, grade) 
@@ -14700,7 +14988,32 @@ WHERE c.code = 2150101509 AND d.name = '정보보호학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101509 AND d.name = '컴퓨터학부자유전공학부';
+WHERE c.code = 2150101509 AND d.name = '컴퓨터학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101509 AND d.name = '자유전공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150101509;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 3
+FROM course c, department d
+WHERE c.code = 2150101509;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 4
+FROM course c, department d
+WHERE c.code = 2150101509;
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 5
+FROM course c, department d
+WHERE c.code = 2150101509;
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
@@ -15105,52 +15418,72 @@ WHERE c.code = 2150191602 AND d.name = '금융학부';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150642601 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '경영학부';
+WHERE c.code = 2150642601 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '금융학부';
+WHERE c.code = 2150642601 AND d.name = '금융학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191605 AND d.name = '경영학부';
+WHERE c.code = 2150642701 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191605 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150642701 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191605 AND d.name = '금융학부';
+WHERE c.code = 2150642701 AND d.name = '금융학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191605 AND d.name = '회계학과';
+WHERE c.code = 2150642701 AND d.name = '회계학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191606 AND d.name = '경영학부';
+WHERE c.code = 2150642702 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191606 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150642702 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150191606 AND d.name = '금융학부';
+WHERE c.code = 2150642702 AND d.name = '금융학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150642702 AND d.name = '회계학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150642801 AND d.name = '경영학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150642801 AND d.name = '벤처중소기업학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150642801 AND d.name = '금융학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
@@ -15992,25 +16325,11 @@ SELECT d.id, c.id, 2
 FROM course c, department d
 WHERE c.code = 2150543901 AND d.name = '중어중문학과';
 
+-- Custom target for course 2150568701: 언론홍보학과2
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
 FROM course c, department d
-WHERE c.code = 2150568701;
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150568701;
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 4
-FROM course c, department d
-WHERE c.code = 2150568701;
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 5
-FROM course c, department d
-WHERE c.code = 2150568701;
+WHERE c.code = 2150568701 AND d.name = '언론홍보학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
@@ -18442,280 +18761,413 @@ SELECT d.id, c.id, 2
 FROM course c, department d
 WHERE c.code = 2150549601 AND d.name = '행정학부';
 
+-- Custom target for course 2150101501: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101501 AND d.name = '국제법무학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101501 AND d.name = '법학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101501 AND d.name = '사회복지학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101501 AND d.name = '언론홍보학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101501 AND d.name = '정보사회학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101501 AND d.name = '정치외교학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101501 AND d.name = '평생교육학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101501 AND d.name = '행정학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '건축학부 건축공학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '건축학부 건축학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '건축학부 건축학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '건축학부 실내건축전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '기계공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '산업정보시스템공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '신소재공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '전기공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101501 AND d.name = '화학공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101502 AND d.name = '경제학과';
+WHERE c.code = 2150101501 AND d.name = '물리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '수학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '의생명시스템학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '정보통계보험수리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '화학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = 'AI융합학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '글로벌미디어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '미디어경영학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '소프트웨어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '전자정보공학부 IT융합전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '전자정보공학부 전자공학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '정보보호학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '컴퓨터학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101501 AND d.name = '자유전공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
 FROM course c, department d
-WHERE c.code = 2150101502 AND d.name = '국제무역학과';
+WHERE c.code = 2150101501;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 3
 FROM course c, department d
-WHERE c.code = 2150101502 AND d.name = '글로벌통상학과';
+WHERE c.code = 2150101501;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2150101502 AND d.name = '금융경제학과';
+WHERE c.code = 2150101501;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 5
 FROM course c, department d
-WHERE c.code = 2150101502 AND d.name = '통상산업학과';
+WHERE c.code = 2150101501;
+
+-- Custom target for course 2150101502: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '건축학부 건축공학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '건축학부 건축학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '건축학부 건축학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '건축학부 실내건축전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '기계공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '산업정보시스템공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '신소재공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '전기공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '화학공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '물리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '수학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '의생명시스템학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '정보통계보험수리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101502 AND d.name = '화학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101502 AND d.name = 'AI융합학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101502 AND d.name = '글로벌미디어학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101502 AND d.name = '미디어경영학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101502 AND d.name = '소프트웨어학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101502 AND d.name = '전자정보공학부 IT융합전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101502 AND d.name = '전자정보공학부 전자공학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101502 AND d.name = '정보보호학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101502 AND d.name = '컴퓨터학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '국어국문학과';
+WHERE c.code = 2150101502 AND d.name = '자유전공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '기독교학과';
+WHERE c.code = 2150101502;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 3
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '독어독문학과';
+WHERE c.code = 2150101502;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '불어불문학과';
+WHERE c.code = 2150101502;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 5
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '사학과';
+WHERE c.code = 2150101502;
 
+-- Custom target for course 2150101503: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '스포츠학부';
+WHERE c.code = 2150101503 AND d.name = '건축학부 건축공학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '영어영문학과';
+WHERE c.code = 2150101503 AND d.name = '건축학부 건축학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '예술창작학부 문예창작전공';
+WHERE c.code = 2150101503 AND d.name = '건축학부 건축학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '예술창작학부 영화예술전공';
+WHERE c.code = 2150101503 AND d.name = '건축학부 실내건축전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '일어일문학과';
+WHERE c.code = 2150101503 AND d.name = '기계공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '중어중문학과';
+WHERE c.code = 2150101503 AND d.name = '산업정보시스템공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '철학과';
+WHERE c.code = 2150101503 AND d.name = '신소재공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '전기공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '화학공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101503 AND d.name = '물리학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101503 AND d.name = '수학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101503 AND d.name = '의생명시스템학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101503 AND d.name = '정보통계보험수리학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101503 AND d.name = '화학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '경영학부';
+WHERE c.code = 2150101503 AND d.name = 'AI융합학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '글로벌미디어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '미디어경영학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '소프트웨어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '전자정보공학부 IT융합전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '전자정보공학부 전자공학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '정보보호학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '컴퓨터학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101503 AND d.name = '자유전공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '금융학부';
+WHERE c.code = 2150101503;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 3
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '벤처경영학과';
+WHERE c.code = 2150101503;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150101503;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
+SELECT d.id, c.id, 5
 FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '복지경영학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '혁신경영학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '회계세무학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150101503 AND d.name = '회계학과';
+WHERE c.code = 2150101503;
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
@@ -19436,6 +19888,66 @@ INSERT INTO target (department_id, course_id, grade)
 SELECT d.id, c.id, 2
 FROM course c, department d
 WHERE c.code = 2150643102 AND d.name = '경영학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '경영학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 3
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '경영학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 4
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '경영학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '회계학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 3
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '회계학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 4
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '회계학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '벤처중소기업학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 3
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '벤처중소기업학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 4
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '벤처중소기업학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '금융학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 3
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '금융학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 4
+FROM course c, department d
+WHERE c.code = 2150191603 AND d.name = '금융학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
@@ -21643,280 +22155,413 @@ SELECT d.id, c.id, 4
 FROM course c, department d
 WHERE c.code = 2150157101 AND d.name = '회계학과';
 
+-- Custom target for course 2150101504: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101504 AND d.name = '국제법무학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101504 AND d.name = '법학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101504 AND d.name = '사회복지학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101504 AND d.name = '언론홍보학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101504 AND d.name = '정보사회학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101504 AND d.name = '정치외교학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101504 AND d.name = '평생교육학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101504 AND d.name = '행정학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '건축학부 건축공학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '건축학부 건축학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '건축학부 건축학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '건축학부 실내건축전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '기계공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '산업정보시스템공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '신소재공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '전기공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101504 AND d.name = '화학공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101505 AND d.name = '경제학과';
+WHERE c.code = 2150101504 AND d.name = '물리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '수학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '의생명시스템학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '정보통계보험수리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '화학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = 'AI융합학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '글로벌미디어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '미디어경영학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '소프트웨어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '전자정보공학부 IT융합전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '전자정보공학부 전자공학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '정보보호학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '컴퓨터학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101504 AND d.name = '자유전공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150101504;
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 3
 FROM course c, department d
-WHERE c.code = 2150101505 AND d.name = '국제무역학과';
+WHERE c.code = 2150101504;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2150101505 AND d.name = '글로벌통상학과';
+WHERE c.code = 2150101504;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 5
 FROM course c, department d
-WHERE c.code = 2150101505 AND d.name = '금융경제학과';
+WHERE c.code = 2150101504;
 
+-- Custom target for course 2150101505: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101505 AND d.name = '통상산업학과';
+WHERE c.code = 2150101505 AND d.name = '건축학부 건축공학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '건축학부 건축학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '건축학부 건축학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '건축학부 실내건축전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '기계공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '산업정보시스템공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '신소재공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '전기공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '화학공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '물리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '수학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '의생명시스템학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '정보통계보험수리학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101505 AND d.name = '화학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101505 AND d.name = 'AI융합학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101505 AND d.name = '글로벌미디어학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101505 AND d.name = '미디어경영학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101505 AND d.name = '소프트웨어학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101505 AND d.name = '전자정보공학부 IT융합전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101505 AND d.name = '전자정보공학부 전자공학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101505 AND d.name = '정보보호학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101505 AND d.name = '컴퓨터학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '국어국문학과';
+WHERE c.code = 2150101505 AND d.name = '자유전공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150101505;
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 3
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '기독교학과';
+WHERE c.code = 2150101505;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '독어독문학과';
+WHERE c.code = 2150101505;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 5
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '불어불문학과';
+WHERE c.code = 2150101505;
 
+-- Custom target for course 2150101506: 건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '사학과';
+WHERE c.code = 2150101506 AND d.name = '건축학부 건축공학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '스포츠학부';
+WHERE c.code = 2150101506 AND d.name = '건축학부 건축학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '영어영문학과';
+WHERE c.code = 2150101506 AND d.name = '건축학부 건축학전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '예술창작학부 문예창작전공';
+WHERE c.code = 2150101506 AND d.name = '건축학부 실내건축전공';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '예술창작학부 영화예술전공';
+WHERE c.code = 2150101506 AND d.name = '기계공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '일어일문학과';
+WHERE c.code = 2150101506 AND d.name = '산업정보시스템공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '중어중문학과';
+WHERE c.code = 2150101506 AND d.name = '신소재공학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '철학과';
+WHERE c.code = 2150101506 AND d.name = '전기공학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '화학공학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101506 AND d.name = '물리학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101506 AND d.name = '수학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101506 AND d.name = '의생명시스템학부';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101506 AND d.name = '정보통계보험수리학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
 WHERE c.code = 2150101506 AND d.name = '화학과';
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '경영학부';
+WHERE c.code = 2150101506 AND d.name = 'AI융합학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '글로벌미디어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '미디어경영학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '소프트웨어학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '전자정보공학부 IT융합전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '전자정보공학부 전자공학전공';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '정보보호학과';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '컴퓨터학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 1
+FROM course c, department d
+WHERE c.code = 2150101506 AND d.name = '자유전공학부';
+
+INSERT INTO target (department_id, course_id, grade) 
+SELECT d.id, c.id, 2
+FROM course c, department d
+WHERE c.code = 2150101506;
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 3
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '금융학부';
+WHERE c.code = 2150101506;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '벤처경영학과';
+WHERE c.code = 2150101506;
 
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 5
 FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '벤처중소기업학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '복지경영학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '혁신경영학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '회계세무학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150101506 AND d.name = '회계학과';
+WHERE c.code = 2150101506;
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 3
@@ -22008,10 +22653,11 @@ SELECT d.id, c.id, 3
 FROM course c, department d
 WHERE c.code = 2150573301 AND d.name = '경영학부';
 
+-- Custom target for course 2150573302: 전체1
 INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
+SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150573302 AND d.name = '경영학부';
+WHERE c.code = 2150573302;
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 3
@@ -24164,7 +24810,7 @@ WHERE c.code = 2150421401 AND d.name = '독어독문학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 1853678735 AND d.name = '예술창작학부 문예창작전공';
+WHERE c.code = 3243112513 AND d.name = '예술창작학부 문예창작전공';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
