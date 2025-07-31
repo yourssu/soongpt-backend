@@ -13800,32 +13800,17 @@ WHERE c.code = 2150568106 AND d.name = '회계학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150577401 AND d.name = '경영학부';
+WHERE c.code = 215056810 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150577401 AND d.name = '벤처중소기업학과';
+WHERE c.code = 215056810 AND d.name = '회계학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150577401 AND d.name = '회계학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 1
-FROM course c, department d
-WHERE c.code = 2150642501 AND d.name = '경영학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 1
-FROM course c, department d
-WHERE c.code = 2150642501 AND d.name = '회계학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 1
-FROM course c, department d
-WHERE c.code = 2150642501 AND d.name = '벤처중소기업학과';
+WHERE c.code = 215056810 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
@@ -15120,72 +15105,52 @@ WHERE c.code = 2150191602 AND d.name = '금융학부';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642601 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150191603 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642601 AND d.name = '경영학부';
+WHERE c.code = 2150191603 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642601 AND d.name = '금융학부';
+WHERE c.code = 2150191603 AND d.name = '금융학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642701 AND d.name = '경영학부';
+WHERE c.code = 2150191605 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642701 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150191605 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642701 AND d.name = '금융학부';
+WHERE c.code = 2150191605 AND d.name = '금융학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642701 AND d.name = '회계학과';
+WHERE c.code = 2150191605 AND d.name = '회계학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642702 AND d.name = '경영학부';
+WHERE c.code = 2150191606 AND d.name = '경영학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642702 AND d.name = '벤처중소기업학과';
+WHERE c.code = 2150191606 AND d.name = '벤처중소기업학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
 FROM course c, department d
-WHERE c.code = 2150642702 AND d.name = '금융학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 1
-FROM course c, department d
-WHERE c.code = 2150642702 AND d.name = '회계학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 1
-FROM course c, department d
-WHERE c.code = 2150642801 AND d.name = '경영학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 1
-FROM course c, department d
-WHERE c.code = 2150642801 AND d.name = '벤처중소기업학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 1
-FROM course c, department d
-WHERE c.code = 2150642801 AND d.name = '금융학부';
+WHERE c.code = 2150191606 AND d.name = '금융학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 1
@@ -19471,66 +19436,6 @@ INSERT INTO target (department_id, course_id, grade)
 SELECT d.id, c.id, 2
 FROM course c, department d
 WHERE c.code = 2150643102 AND d.name = '경영학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '경영학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '경영학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 4
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '경영학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '회계학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '회계학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 4
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '회계학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '벤처중소기업학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '벤처중소기업학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 4
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '벤처중소기업학과';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 2
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '금융학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 3
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '금융학부';
-
-INSERT INTO target (department_id, course_id, grade) 
-SELECT d.id, c.id, 4
-FROM course c, department d
-WHERE c.code = 2150191603 AND d.name = '금융학부';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
@@ -24259,7 +24164,7 @@ WHERE c.code = 2150421401 AND d.name = '독어독문학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 3697381041 AND d.name = '예술창작학부 문예창작전공';
+WHERE c.code = 4861455312 AND d.name = '예술창작학부 문예창작전공';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
