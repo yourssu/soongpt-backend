@@ -12,4 +12,5 @@ interface CourseRepository {
     fun findAllInCategory(category: Category, courseIds: List<Long>): List<Course>
     fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto
     fun searchCourses(query: String, pageable: Pageable): Page<Course>
+    fun findAllByClass(code: Long): List<Course>
 }
