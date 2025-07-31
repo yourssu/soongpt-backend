@@ -68,6 +68,7 @@ def check_prerequisites() -> bool:
     # Check for required source files
     required_files = [
         "course_parser.py",
+        "generate_custom_target_map.py",
         "generate_course_sql.py",
         "generate_target_sql_from_map.py"
     ]
@@ -152,6 +153,7 @@ def main():
     # Pipeline steps
     pipeline_steps = [
         ("course_parser.py", "Parse raw course data and classify targets"),
+        ("generate_custom_target_map.py", "Generate custom target mappings"),
         ("generate_course_sql.py", "Generate SQL INSERT statements for CourseEntity"),
         ("generate_target_sql_from_map.py", "Generate SQL INSERT statements for TargetEntity with custom mappings")
     ]

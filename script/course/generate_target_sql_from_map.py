@@ -32,11 +32,12 @@ def create_custom_target_map() -> Dict[int, str]:
     """
     custom_map = {
         # 한반도평화와통일 - 2,3,4,5학년 대상
-        2150663403: "전체2,전체3,전체4,전체5",
+        2150663403: "",
         
-        # 수학과 전공선택 - 4학년 대상
         2150146401: "수학과4",  # 응용수학개론
         2150146601: "수학과4",  # 최적화개론
+        2150146201: "수학과3",
+
         
         # Add more custom mappings here as needed
         # Format: course_code: "department1,department2,..." or "전체1,전체2,..."
