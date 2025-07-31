@@ -176,8 +176,9 @@ class TimetableGenerator (
             return builders
         }
 
-        val sortedElectiveCandidates = generateSortedElectiveCandidates(department, command)
+        val codeToRank = getCodeToRankMap()
         return builders.map { builder ->
+            val sortedElectiveCandidates = generateSortedElectiveCandidates(department, command, codeToRank)
             var remainingPoints = command.generalElectivePoint
 
             for (elective in sortedElectiveCandidates) {
@@ -226,7 +227,8 @@ class TimetableGenerator (
 
     private fun generateSortedElectiveCandidates (
         department: Department,
-        command: TimetableCreatedCommand
+        command: TimetableCreatedCommand,
+        codeToRank: Map<Long, Int>
     ): List<CourseCandidate> {
         val allCourses = courseReader.findAllBy(
             category = Category.GENERAL_ELECTIVE,
@@ -252,8 +254,26 @@ class TimetableGenerator (
             }
         }
 
+        val preferredCandidates = preferredCourses.map(courseCandidateFactory::create)
+        val otherCandidates = otherCourses.map(courseCandidateFactory::create)
+
+        if (preferredCandidates.isNotEmpty()) {
+            return sortByPointDescStarDescShuffleEqual(
+                preferredCandidates,
+                codeToRank
+            ) + otherCandidates
+        }
+        else {
+            return sortByPointDescStarDescShuffleEqual(
+                otherCandidates,
+                codeToRank
+            )
+        }
+    }
+
+    private fun getCodeToRankMap(): Map<Long, Int> {
         val allRatings = ratingReader.findAll()
-        val (highStarRatings, otherRatings) = allRatings.partition { it.star >= HIGH_STAR_THRESHOLD}
+        val (highStarRatings, otherRatings) = allRatings.partition { it.star >= HIGH_STAR_THRESHOLD }
         val highRankCourses = highStarRatings.map { it.code to 0 }
 
         val otherRankCourses = otherRatings
@@ -268,23 +288,7 @@ class TimetableGenerator (
             .flatten()
 
         val codeToRank = (highRankCourses + otherRankCourses).toMap()
-        val preferredCandidates = preferredCourses.map(courseCandidateFactory::create)
-        val otherCandidates = otherCourses.map(courseCandidateFactory::create)
-
-        val sortedPreferred = sortByPointDescStarDescShuffleEqual(
-            preferredCandidates,
-            codeToRank
-        )
-
-        if (sortedPreferred.isNotEmpty()) {
-            return sortedPreferred + otherCandidates
-        }
-        else {
-            return sortByPointDescStarDescShuffleEqual(
-                preferredCandidates + otherCandidates,
-                codeToRank
-            )
-        }
+        return codeToRank
     }
 
     private fun addChapel(
