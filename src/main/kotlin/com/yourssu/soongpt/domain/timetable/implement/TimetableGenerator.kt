@@ -17,9 +17,9 @@ import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidates
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
 import com.yourssu.soongpt.domain.timetable.storage.exception.TimetableNotFoundException
 import org.springframework.stereotype.Component
-import kotlin.random.Random
 
 private const val MAXIMUM_TIMETABLE_CANDIDATES = 1000
+private const val HIGH_STAR_THRESHOLD = 4.3
 @Component
 class TimetableGenerator (
     private val courseReader: CourseReader,
@@ -253,7 +253,7 @@ class TimetableGenerator (
         }
 
         val allRatings = ratingReader.findAll()
-        val (highStarRatings, otherRatings) = allRatings.partition { it.star >= 4.3}
+        val (highStarRatings, otherRatings) = allRatings.partition { it.star >= HIGH_STAR_THRESHOLD}
         val highRankCourses = highStarRatings.map { it.code to 0 }
 
         val otherRankCourses = otherRatings
