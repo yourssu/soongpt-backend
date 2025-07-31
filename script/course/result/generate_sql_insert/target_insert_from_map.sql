@@ -1,5 +1,5 @@
 -- SQL INSERT statements for TargetEntity
--- Generated from target_map.json mapping
+-- Generated from target_map.json mapping with custom overrides
 -- Maps original course target values to department+grade combinations
 
 INSERT INTO target (department_id, course_id, grade) 
@@ -19987,6 +19987,7 @@ SELECT d.id, c.id, 2
 FROM course c, department d
 WHERE c.code = 2150216001 AND d.name = '사학과';
 
+-- Custom target for course 2150663403: 전체2,전체3,전체4,전체5
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 2
 FROM course c, department d
@@ -23977,10 +23978,11 @@ SELECT d.id, c.id, 4
 FROM course c, department d
 WHERE c.code = 2150136301 AND d.name = '독어독문학과';
 
+-- Custom target for course 2150146401: 수학과4
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2150146401;
+WHERE c.code = 2150146401 AND d.name = '수학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
@@ -24172,10 +24174,11 @@ SELECT d.id, c.id, 4
 FROM course c, department d
 WHERE c.code = 2150615401 AND d.name = '전기공학부';
 
+-- Custom target for course 2150146601: 수학과4
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 2150146601;
+WHERE c.code = 2150146601 AND d.name = '수학과';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
@@ -24275,7 +24278,7 @@ WHERE c.code = 2150421401 AND d.name = '독어독문학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 9788589320 AND d.name = '예술창작학부 문예창작전공';
+WHERE c.code = 9111894549 AND d.name = '예술창작학부 문예창작전공';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4

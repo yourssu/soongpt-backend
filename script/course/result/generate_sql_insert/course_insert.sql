@@ -12915,7 +12915,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-독문/부선-독문', '', 2150421401, '현대
 금 16:30-17:45 (진리관 11303-김연정)', '4학년 독문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-디자인플래닝융합/융선-문화서비스산업융합/융선-문화예술마케팅융합/융선-실감미디어/융선-아트&게임융합/융선-콘텐츠스타트업', '', 9788589320, '현대예술과문화콘텐츠', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '목 12:00-13:15 (진리관 11401-김태용)
+VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-디자인플래닝융합/융선-문화서비스산업융합/융선-문화예술마케팅융합/융선-실감미디어/융선-아트&게임융합/융선-콘텐츠스타트업', '', 9111894549, '현대예술과문화콘텐츠', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '목 12:00-13:15 (진리관 11401-김태용)
 목 13:30-14:45 (진리관 11401-김태용)', '4학년 문예창작전공, 문화서비스산업융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
