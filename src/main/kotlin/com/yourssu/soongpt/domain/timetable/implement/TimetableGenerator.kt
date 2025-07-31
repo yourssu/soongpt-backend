@@ -19,7 +19,8 @@ import com.yourssu.soongpt.domain.timetable.storage.exception.TimetableNotFoundE
 import org.springframework.stereotype.Component
 
 private const val MAXIMUM_TIMETABLE_CANDIDATES = 1000
-private const val HIGH_STAR_THRESHOLD = 4.3
+private const val HIGH_STAR_THRESHOLD = 4.2
+private val SPECIAL_CHAPEL_RULE_COLLEGE_IDS = setOf(2, 5, 7, 10)
 @Component
 class TimetableGenerator (
     private val courseReader: CourseReader,
@@ -154,7 +155,8 @@ class TimetableGenerator (
             return tables
         }
 
-        if (command.grade == 1) {
+        val collegeId = department.collegeId.toInt()
+        if (command.grade == 1 && collegeId !in SPECIAL_CHAPEL_RULE_COLLEGE_IDS) {
             val mandatoryChapelCandidates = findChapelCandidates(department, command.grade)
             val tablesWithChapel = addChapel(timeTableBuilders, mandatoryChapelCandidates)
             val tables = addGeneralElectives(tablesWithChapel, command, department)
