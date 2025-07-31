@@ -33293,7 +33293,8 @@
     "point": "1.0",
     "personeel": 0,
     "scheduleRoom": "",
-    "target": "2학년 \n3학년 \n4학년 \n5학년 (대상외수강제한)"
+    "target": "2학년 \n3학년 \n4학년 \n5학년 (대상외수강제한)",
+    "custom_target": ""
   },
   {
     "id": null,
@@ -38253,7 +38254,8 @@
     "point": "3.0",
     "personeel": 0,
     "scheduleRoom": "월 수 13:30-14:45 (진리관 11516-이의우)",
-    "target": "3학년"
+    "target": "3학년",
+    "custom_target": "수학과3"
   },
   {
     "id": null,
@@ -43661,7 +43663,8 @@
     "point": "3.0",
     "personeel": 0,
     "scheduleRoom": "월 수 10:30-11:45 (진리관 11516-심은하)",
-    "target": "4학년"
+    "target": "4학년",
+    "custom_target": "수학과4"
   },
   {
     "id": null,
@@ -44317,7 +44320,8 @@
     "point": "3.0",
     "personeel": 0,
     "scheduleRoom": "목 10:30-11:45 (조만식기념관 12330-송윤정)\n금 10:30-11:45 (진리관 11516-송윤정)",
-    "target": "4학년"
+    "target": "4학년",
+    "custom_target": "수학과4"
   },
   {
     "id": null,
