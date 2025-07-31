@@ -28,6 +28,8 @@ def create_custom_target_map() -> Dict[int, str]:
     Returns:
         Dictionary mapping course codes to custom target strings
     """
+
+    vision_chapel_target = "건축학부 건축공학전공1,건축학부 건축학부1,건축학부 건축학전공1,건축학부 실내건축전공1,기계공학부1,산업정보시스템공학과1,신소재공학과1,전기공학부1,화학공학과1,물리학과1,수학과1,의생명시스템학부1,정보통계보험수리학과1,화학과1,AI융합학부1,글로벌미디어학부1,미디어경영학과1,소프트웨어학부1,전자정보공학부 IT융합전공1,전자정보공학부 전자공학전공1,정보보호학과1,컴퓨터학부1,자유전공학부1,전체2,전체3,전체4,전체5"
     custom_map = {
         # 한반도평화와통일 - 2,3,4,5학년 대상
         2150663403: "",
@@ -37,10 +39,17 @@ def create_custom_target_map() -> Dict[int, str]:
         2150146601: "수학과4",  # 최적화개론
 
         2150146201: "수학과3",
+        2150568701: "언론홍보학과2", # PR크리에이티브론
 
-        2150573302: "전체1"
-        
-        
+        2150101507: vision_chapel_target, # 비전채플
+        2150101508: vision_chapel_target, # 비전채플
+        2150101509: vision_chapel_target, # 비전채플
+        2150101501: vision_chapel_target, # 비전채플
+        2150101502: vision_chapel_target, # 비전채플
+        2150101503: vision_chapel_target, # 비전채플
+        2150101504: vision_chapel_target, # 비전채플
+        2150101505: vision_chapel_target, # 비전채플
+        2150101506: vision_chapel_target, # 비전채플
         # Add more custom mappings here as needed
         # Format: course_code: "department1,department2,..." or "전체1,전체2,..."
     }

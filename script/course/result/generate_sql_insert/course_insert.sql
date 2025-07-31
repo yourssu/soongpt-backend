@@ -6599,7 +6599,10 @@ VALUES ('MAJOR_REQUIRED', '복선-벤처중소/복선-회계학과/복필-경영
 금 19:30-20:45 (숭덕경상관 02207-김홍진)', '1학년 경영학부,벤처중소,회계학과 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-벤처중소/복선-회계학과/복필-경영학부/부선-경영학부/부선-벤처중소/부선-회계학과', '', 215056810, '경영수리와통계', '김지혜', '회계학과', NULL, '3.0', '3.0', 0, '월 수 09:00-10:15 (문화관 03314-김지혜)', '1학년 경영학부,회계학과,벤처중소 (대상외수강제한)');
+VALUES ('MAJOR_REQUIRED', '복선-벤처중소/복선-회계학과/복필-경영학부/부선-경영학부/부선-벤처중소/부선-회계학과', '', 2150568110, '경영수리와통계', '김지혜', '벤처중소기업학과', NULL, '3.0', '3.0', 0, '월 수 10:30-11:45 (문화관 03314-김지혜)', '1학년 경영학부,벤처중소,회계학과 (대상외수강제한)');
+
+INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
+VALUES ('MAJOR_REQUIRED', '복선-벤처중소/복선-회계학과/복필-경영학부/부선-경영학부/부선-벤처중소/부선-회계학과', '', 2150568111, '경영수리와통계', '김지혜', '회계학과', NULL, '3.0', '3.0', 0, '월 수 09:00-10:15 (문화관 03314-김지혜)', '1학년 경영학부,회계학과,벤처중소 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-국제무역/부선-국제무역', '', 2150636401, '경영학의이해', '조승호', '국제무역학과', NULL, '3.0', '3.0', 0, '토 12:00-13:15 (숭덕경상관 02110-조승호)', '1학년 국제무역학과 대상(타학과 수강 불가) (대상외수강제한)');
@@ -6623,7 +6626,7 @@ VALUES ('MAJOR_REQUIRED', '복선-벤처중소/복선-회계학과/부선-벤처
 목 18:00-19:15 (숭덕경상관 02208-)', '1학년 벤처중소, 회계학과 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_REQUIRED', '복선-벤처중소/복선-회계학과/부선-벤처중소/부선-회계학과', '', 2150642301, '경제원론', '김현순', '회계학과', NULL, '3.0', '3.0', 0, '월 화 10:30-11:45 (교육관 06301-김현순)', '1학년 회계학과 ,벤처중소 (대상외수강제한)');
+VALUES ('MAJOR_REQUIRED', '복선-벤처중소/복선-회계학과/부선-벤처중소/부선-회계학과', '', 2150642203, '경제원론', '김현순', '회계학과', NULL, '3.0', '3.0', 0, '월 화 10:30-11:45 (교육관 06301-김현순)', '1학년 회계학과 ,벤처중소 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-글로벌통상/부선-글로벌통상', '', 5010211101, '경제원론', '이창선', '글로벌통상학과', NULL, '3.0', '3.0', 0, '월 수 16:30-17:45 (교육관 06302-이창선)', '1학년 글로벌통상');
@@ -7398,15 +7401,18 @@ VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복필-금융학부/복필-벤처
 금 12:00-13:15 (숭덕경상관 02210-김민희)', '1학년 경영학부,벤처중소,금융학부, (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복선-벤처중소/복필-금융학부/부선-경영학부/부선-금융학부/부선-벤처중소', '', 2150191603, '재무회계', '김용수', '벤처중소기업학과', NULL, '3.0', '3.0', 0, '수 12:00-13:15 (미래관 20405-김용수)
+VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복선-벤처중소/복필-금융학부/부선-경영학부/부선-금융학부/부선-벤처중소', '', 2150642601, '재무회계', '김용수', '벤처중소기업학과', NULL, '3.0', '3.0', 0, '수 12:00-13:15 (미래관 20405-김용수)
 수 13:30-14:45 (미래관 20405-김용수)', '1학년 벤처중소,경영학부,금융학부 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복필-금융학부/복필-벤처중소/복필-회계학과/부선-경영학부/부선-금융학부/부선-벤처중소/부선-회계학과', '', 2150191605, '재무회계', '이정이', '회계학과', NULL, '3.0', '3.0', 0, '금 12:00-13:15 (문화관 03314-이정이)
+VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복필-금융학부/복필-벤처중소/복필-회계학과/부선-경영학부/부선-금융학부/부선-벤처중소/부선-회계학과', '', 2150642701, '재무회계', '이광진', '회계학과', NULL, '3.0', '3.0', 0, '월 화 15:00-16:15 (문화관 03314-이광진)', '1학년 경영학부,벤처중소 ,금융 ,회계학과 (대상외수강제한)');
+
+INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
+VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복필-금융학부/복필-벤처중소/복필-회계학과/부선-경영학부/부선-금융학부/부선-벤처중소/부선-회계학과', '', 2150642702, '재무회계', '이정이', '회계학과', NULL, '3.0', '3.0', 0, '금 12:00-13:15 (문화관 03314-이정이)
 금 13:30-14:45 (문화관 03314-이정이)', '1학년 경영학부,벤처중소 ,금융 ,회계학과 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복필-금융학부/복필-벤처중소/부선-경영학부/부선-금융학부/부선-벤처중소', '', 2150191606, '재무회계', '박진하', '금융학부', NULL, '3.0', '3.0', 0, '월 수 16:30-17:45 (숭덕경상관 02209-박진하)', '1학년 경영학부,벤처중소,금융 (대상외수강제한)');
+VALUES ('MAJOR_ELECTIVE', '복선-경영학부/복필-금융학부/복필-벤처중소/부선-경영학부/부선-금융학부/부선-벤처중소', '', 2150642801, '재무회계', '박진하', '금융학부', NULL, '3.0', '3.0', 0, '월 수 16:30-17:45 (숭덕경상관 02209-박진하)', '1학년 경영학부,벤처중소,금융 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-국제법무/부선-국제법무', '법학과목', 5023312201, '재산법특강', '김태훈', '국제법무학과', NULL, '3.0', '3.0', 0, '월 09:00-10:15 (진리관 11410-김태훈)
@@ -9697,6 +9703,12 @@ VALUES ('MAJOR_REQUIRED', '복필-경영학부/복필-금융학부/복필-회계
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복필-경영학부/복필-금융학부/복필-회계학과/부선-경영학부/부선-금융학부/부선-회계학과/융선-동아시아경제통상/융선-사회적기업혁신융합', '', 2150643102, '재무관리', '김범', '금융학부', NULL, '3.0', '3.0', 0, '월 수 16:30-17:45 (숭덕경상관 02316-김범)', '2학년 금융,회계학과,경영학부,동아시아경제통상융합');
+
+INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
+VALUES ('MAJOR_REQUIRED', '복선-경영학부/복필-금융학부/복필-벤처중소/복필-회계학과/부선-경영학부', '', 2150191603, '재무회계', '임규한', '경영학부', '(공통-재수강)', '3.0', '3.0', 0, '목 15:00-16:15 (문화관 03314-임규한)
+목 16:30-17:45 (문화관 03314-임규한)', '2학년 경영학부,벤처중소,회계학과,금융학부
+3학년 경영학부,벤처중소,회계학과,금융학부
+4학년 경영학부,벤처중소,회계학과,금융학부');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복필-전기/부선-전기', '', 2150613201, '전기전자기초설계', '박종후', '전기공학부', NULL, '3.0', '1.0', 0, '목 09:00-10:15 (형남공학관 05518-박종후)
@@ -12903,7 +12915,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-독문/부선-독문', '', 2150421401, '현대
 금 16:30-17:45 (진리관 11303-김연정)', '4학년 독문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-디자인플래닝융합/융선-문화서비스산업융합/융선-문화예술마케팅융합/융선-실감미디어/융선-아트&게임융합/융선-콘텐츠스타트업', '', 1853678735, '현대예술과문화콘텐츠', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '목 12:00-13:15 (진리관 11401-김태용)
+VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-디자인플래닝융합/융선-문화서비스산업융합/융선-문화예술마케팅융합/융선-실감미디어/융선-아트&게임융합/융선-콘텐츠스타트업', '', 3243112513, '현대예술과문화콘텐츠', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '목 12:00-13:15 (진리관 11401-김태용)
 목 13:30-14:45 (진리관 11401-김태용)', '4학년 문예창작전공, 문화서비스산업융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
