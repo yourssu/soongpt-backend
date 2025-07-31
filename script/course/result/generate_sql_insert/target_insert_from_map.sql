@@ -24164,7 +24164,7 @@ WHERE c.code = 2150421401 AND d.name = '독어독문학과';
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
 FROM course c, department d
-WHERE c.code = 4861455312 AND d.name = '예술창작학부 문예창작전공';
+WHERE c.code = 1853678735 AND d.name = '예술창작학부 문예창작전공';
 
 INSERT INTO target (department_id, course_id, grade) 
 SELECT d.id, c.id, 4
