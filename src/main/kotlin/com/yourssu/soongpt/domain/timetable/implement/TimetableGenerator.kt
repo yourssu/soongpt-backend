@@ -205,25 +205,21 @@ class TimetableGenerator (
         candidates: List<CourseCandidate>,
         codeToRank: Map<Long, Int>
     ): List<CourseCandidate> {
-        val random = Random(System.currentTimeMillis())
         val groupedCandidates = candidates
             .groupBy { it.point }
             .toList()
-            .sortedByDescending { it.first }            // point ↓
+            .sortedByDescending { it.first }
 
         val shuffledCandidates = groupedCandidates.flatMap {
             (_, samePoint) ->
             samePoint
                 .groupBy { codeToRank[it.code] ?: Int.MAX_VALUE }
                 .toList()
-                .sortedBy { it.first }              // star ↓ (rank ↑)
+                .sortedBy { it.first }
                 .flatMap { (_, sameStar) ->
-                    if (sameStar.size > 1)
-                        sameStar.shuffled(random)      // 동점만 섞기
-                    else sameStar
+                    sameStar.shuffled()
                 }
         }
-
         return shuffledCandidates
     }
 
@@ -256,11 +252,22 @@ class TimetableGenerator (
             }
         }
 
-        val codeToRank = ratingReader.findAll()
-            .sortedByDescending { it.star }
-            .mapIndexed { idx, rating -> rating.code to idx }
-            .toMap()
+        val allRatings = ratingReader.findAll()
+        val (highStarRatings, otherRatings) = allRatings.partition { it.star >= 4.3}
+        val highRankCourses = highStarRatings.map { it.code to 0 }
 
+        val otherRankCourses = otherRatings
+            .groupBy { it.star }
+            .entries
+            .sortedByDescending { it.key }
+            .mapIndexed { index, entry ->
+                val rank = index + 1
+                val coursesInGroup = entry.value
+                coursesInGroup.map { it.code to rank }
+            }
+            .flatten()
+
+        val codeToRank = (highRankCourses + otherRankCourses).toMap()
         val preferredCandidates = preferredCourses.map(courseCandidateFactory::create)
         val otherCandidates = otherCourses.map(courseCandidateFactory::create)
 
