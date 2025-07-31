@@ -36,7 +36,9 @@ def create_custom_target_map() -> Dict[int, str]:
         2150146401: "수학과4",  # 응용수학개론
         2150146601: "수학과4",  # 최적화개론
 
-        2150146201: "수학과3"
+        2150146201: "수학과3",
+
+        2150573302: "전체1"
         
         
         # Add more custom mappings here as needed
