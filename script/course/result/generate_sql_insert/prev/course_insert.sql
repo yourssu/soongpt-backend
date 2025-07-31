@@ -7184,13 +7184,13 @@ VALUES ('MAJOR_ELECTIVE', '복필-국제무역', '', 2150657101, '법과무역�
 월 21:00-22:15 (숭덕경상관 02201-허해관)', '1학년 국제무역학과 대상(타학과 수강 불가) ,국제무역 (대상외수강제한)');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101507, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '수 10:30-11:20 (한경직기념관 08110-)', '1학년 자연대,공과대  (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101507, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '수 10:30-11:20 (한경직기념관 08110-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101508, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '수 13:30-14:20 (한경직기념관 08110-)', '1학년 외국국적학생  (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101508, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '수 13:30-14:20 (한경직기념관 08110-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101509, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '수 15:00-15:50 (한경직기념관 08110-)', '1학년 IT대,자유전공학부  (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101509, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '수 15:00-15:50 (한경직기념관 08110-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', NULL, '', 2150678601, '비주얼스토리텔링워크샵', '권종관', '예술창작학부 영화예술전공', NULL, '3.0', '3.0', 0, '화 09:00-10:15 (베어드홀 01102 (한덕우강의실)-권종관)
@@ -7225,22 +7225,22 @@ VALUES ('MAJOR_REQUIRED', '복선-문예창작/부선-문예창작', '', 2150078
 금 18:00-19:15 (진리관 11401-민병훈)', '1학년 문예창작전공');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150078501, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 10:30-11:40 (한경직기념관 소예배실 08106-)', '1학년 사회대(사회복지, 정치외교),경통대 (대상외수강제한)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150078501, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 10:30-11:40 (한경직기념관 소예배실 08106-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150078502, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 13:30-14:40 (한경직기념관 소예배실 08106-)', '1학년 인문대(국문, 불문, 영문, 일문, 중문, 독문) (대상외수강제한)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150078502, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 13:30-14:40 (한경직기념관 소예배실 08106-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150078503, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 15:00-16:10 (한경직기념관 소예배실 08106-)', '1학년 경영대(경영, 벤처중소, 회계) (대상외수강제한)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150078503, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 15:00-16:10 (한경직기념관 소예배실 08106-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150078504, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 10:30-11:40 (한경직기념관 소예배실 08106-)', '1학년 자유전공학부(전자공학 복수전공 선택자),법과대(법),사회대(정보사회,행정,평생교육,언론홍보) (대상외수강제한)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150078504, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 10:30-11:40 (한경직기념관 소예배실 08106-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150078505, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 13:30-14:40 (한경직기념관 소예배실 08106-)', '1학년 인문대(기독교, 철학, 사학, 문예창작, 영화예술, 스포츠) (대상외수강제한)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150078505, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 13:30-14:40 (한경직기념관 소예배실 08106-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150078506, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 15:00-16:10 (한경직기념관 소예배실 08106-)', '1학년 경영대(금융), 자유전공학부(A+C), 법과대(국제법무) (대상외수강제한)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150078506, '소그룹채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '목 15:00-16:10 (한경직기념관 소예배실 08106-)', '전체1');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_REQUIRED', '복선-문예창작/부선-문예창작', '', 2150501101, '스토리텔링의이해', '홍정희', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '화 15:00-16:15 (미래관 20206-홍정희)
@@ -9122,13 +9122,13 @@ VALUES ('MAJOR_ELECTIVE', '복선-행정학부/부선-행정학부/융선-사회
 금 12:00-13:15 (진리관 11309-정지인)', '2학년 행정학부,통일외교및개발협력,사회적기업과사회혁신');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101501, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '월 10:30-11:20 (한경직기념관 08110-)', '2학년 법과대,사회대,공과대 (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101501, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '월 10:30-11:20 (한경직기념관 08110-)', '전체2,전체3,전체4,전체5');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101502, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '월 13:30-14:20 (한경직기념관 08110-)', '2학년 경통대, IT대  (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101502, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '월 13:30-14:20 (한경직기념관 08110-)', '전체2,전체3,전체4,전체5');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101503, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '월 15:00-15:50 (한경직기념관 08110-)', '2학년 인문대,자연대,경영대  (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101503, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '월 15:00-15:50 (한경직기념관 08110-)', '전체2,전체3,전체4,전체5');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-실내건축/부선-실내건축', '', 2150042501, '비주얼머천다이징', '임경란', '건축학부', NULL, '3.0', '3.0', 0, '목 12:00-13:15 (문화관 03111 (토론식강의실)-임경란)
@@ -11159,13 +11159,13 @@ VALUES ('MAJOR_ELECTIVE', '복선-회계학과/부선-회계학과', '', 2150157
 4학년 회계학과');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101504, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '화 10:30-11:20 (한경직기념관 08110-)', '3학년 법과대,사회대,공과대  (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101504, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '화 10:30-11:20 (한경직기념관 08110-)', '전체2,전체3,전체4,전체5');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101505, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '화 13:30-14:20 (한경직기념관 08110-)', '3학년 경통대,IT대  (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101505, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '화 13:30-14:20 (한경직기념관 08110-)', '전체2,전체3,전체4,전체5');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('CHAPEL', NULL, '채플과목', 2150101506, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '화 15:00-15:50 (한경직기념관 08110-)', '3학년 인문대,자연대,경영대  (수강제한:1학년 인문,법,사회,경통,경영)');
+VALUES ('CHAPEL', NULL, '채플과목', 2150101506, '비전채플', NULL, '학원선교팀', NULL, '1.0', '0.5', 0, '화 15:00-15:50 (한경직기념관 08110-)', '전체2,전체3,전체4,전체5');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
 VALUES ('MAJOR_ELECTIVE', '복선-일어일문/부선-일어일문/융선-동아시아경제통상', '', 2150615801, '비즈니스실용일본어회화', 'Kawaguchi Keiko', '일어일문학과', NULL, '3.0', '3.0', 0, '화 12:00-13:15 (교육관 06202-Kawaguchi Keiko)
@@ -12915,7 +12915,7 @@ VALUES ('MAJOR_ELECTIVE', '복선-독문/부선-독문', '', 2150421401, '현대
 금 16:30-17:45 (진리관 11303-김연정)', '4학년 독문');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
-VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-디자인플래닝융합/융선-문화서비스산업융합/융선-문화예술마케팅융합/융선-실감미디어/융선-아트&게임융합/융선-콘텐츠스타트업', '', 9788589320, '현대예술과문화콘텐츠', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '목 12:00-13:15 (진리관 11401-김태용)
+VALUES ('MAJOR_ELECTIVE', '복선-문예창작/부선-문예창작/융선-게임시나리오기획/융선-디자인플래닝융합/융선-문화서비스산업융합/융선-문화예술마케팅융합/융선-실감미디어/융선-아트&게임융합/융선-콘텐츠스타트업', '', 2989579456, '현대예술과문화콘텐츠', '김태용', '예술창작학부 문예창작전공', NULL, '3.0', '3.0', 0, '목 12:00-13:15 (진리관 11401-김태용)
 목 13:30-14:45 (진리관 11401-김태용)', '4학년 문예창작전공, 문화서비스산업융합');
 
 INSERT INTO course (category, sub_category, field, code, name, professor, department, division, time, point, personeel, schedule_room, target) 
