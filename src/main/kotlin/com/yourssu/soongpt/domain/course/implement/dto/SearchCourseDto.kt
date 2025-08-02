@@ -1,7 +1,6 @@
 package com.yourssu.soongpt.domain.course.implement.dto
 
 import com.yourssu.soongpt.domain.course.implement.Course
-import org.springframework.data.domain.Pageable
 
 data class SearchCourseDto(
     val content: List<Course>,
@@ -26,24 +25,5 @@ data class SearchCourseDto(
                 page = number,
             )
         }
-
-        fun empty(pageable: Pageable): SearchCourseDto {
-            return SearchCourseDto(
-                content = listOf(),
-                totalElements = 0L,
-                totalPages = 0,
-                size = pageable.pageSize,
-                page = pageable.pageNumber,
-            )
-        }
-    }
-
-    fun toPageableInfo(): PageableInfo {
-        return PageableInfo(
-            totalElements = totalElements,
-            totalPages = totalPages,
-            size = size,
-            page = page,
-        )
     }
 }

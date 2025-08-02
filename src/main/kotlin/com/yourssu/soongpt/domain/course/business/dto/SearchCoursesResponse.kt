@@ -8,7 +8,7 @@ data class SearchCoursesResponse(
     val totalElements: Long,
     val totalPages: Int,
     val size: Int,
-    val number: Int,
+    val page: Int,
 ) {
     companion object {
         fun from(page: Page<Course>): SearchCoursesResponse {
@@ -18,7 +18,7 @@ data class SearchCoursesResponse(
                 totalElements = page.totalElements,
                 totalPages = page.totalPages,
                 size = page.size,
-                number = page.number,
+                page = page.number,
             )
         }
     }
