@@ -35,6 +35,30 @@ script/run.sh
 - **Swagger UI**: http://localhost:8080/swagger-ui
 - **Default Port**: 8080 (configurable via SERVER_PORT)
 
+### 컨테이너 관리 명령어
+```bash
+# 실행 중인 컨테이너 확인
+docker ps
+
+# 컨테이너 접속
+docker exec -it soongpt-container /bin/bash
+
+# 컨테이너 로그 실시간 확인
+docker logs -f soongpt-container
+
+# 최근 로그 100줄 확인
+docker logs --tail 100 soongpt-container
+
+# 특정 시간 이후 로그 확인
+docker logs --since="2024-01-01T00:00:00" soongpt-container
+
+# 컨테이너 상태 확인
+docker inspect soongpt-container
+
+# 컨테이너 리소스 사용량 확인
+docker stats soongpt-container
+```
+
 ## Architecture
 
 ### Core Structure
