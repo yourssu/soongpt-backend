@@ -1,0 +1,45 @@
+# Gradle
+.gradle/
+build/
+!build/libs/*-SNAPSHOT.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+*.env
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+CLAUDE.md
+*.md
+
+# Test
+src/test/
+
+# CI/CD
+.github/
+script/__pycache__/
+script/course/__pycache__/
+
+# Other
+Claude-Code-Usage-Monitor/
+*.pem
