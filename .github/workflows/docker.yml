@@ -149,13 +149,13 @@ jobs:
           # Pull the latest image
           docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           
-          # Run the container with volume mounts
+          # Run the container with environment variables
           docker run -d \\
             --name $PROJECT_NAME-container \\
             --restart unless-stopped \\
             -p $SERVER_PORT:$SERVER_PORT \\
             -v /home/ubuntu/$PROJECT_NAME-api/logs:/app/logs \\
-            -v /home/ubuntu/$PROJECT_NAME-api/.env:/app/.env:ro \\
+            --env-file /home/ubuntu/$PROJECT_NAME-api/.env \\
             $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           
           # Clean up old images

@@ -9,10 +9,13 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy requirements file first for better Docker layer caching
+COPY script/requirements.txt /tmp/requirements.txt
+
 # Create Python virtual environment and install dependencies
-RUN python3 -m venv /app/venv
-RUN /app/venv/bin/pip install --upgrade pip
-RUN /app/venv/bin/pip install watchdog python-dotenv requests pytz
+RUN python3 -m venv /app/venv && \
+    /app/venv/bin/pip install --upgrade pip --no-cache-dir && \
+    /app/venv/bin/pip install -r /tmp/requirements.txt --no-cache-dir
 
 # Copy pre-built JAR (built in GitHub Actions)
 COPY build/libs/*-SNAPSHOT.jar app.jar
