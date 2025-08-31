@@ -1,10 +1,12 @@
 package com.yourssu.soongpt.domain.timetable.storage
 
+import com.yourssu.soongpt.domain.timetable.implement.Tag
 import com.yourssu.soongpt.domain.timetable.implement.Timetable
 import com.yourssu.soongpt.domain.timetable.implement.TimetableRepository
 import com.yourssu.soongpt.domain.timetable.storage.exception.TimetableNotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
+import kotlin.random.Random
 
 @Repository
 class TimetableRepositoryImpl(
@@ -31,7 +33,28 @@ class TimetableRepositoryImpl(
     override fun count(): Long {
         return timetableJpaRepository.count()
     }
+
+    override fun findRandom(): Timetable? {
+        return timetableJpaRepository.findRandomNative()?.toDomain()
+    }
+
+    override fun findRandomTimetable(): Timetable? {
+        return findRandom()
+    }
 }
 
 interface TimetableJpaRepository: JpaRepository<TimetableEntity, Long> {
+    fun findAllByTag(tag: Tag): List<TimetableEntity>
+
+    @org.springframework.data.jpa.repository.Query(
+        value = "select * from timetable order by rand() limit 1",
+        nativeQuery = true
+    )
+    fun findRandomNative(): TimetableEntity?
+
+    @org.springframework.data.jpa.repository.Query(
+        value = "select * from timetable where tag = :tag order by rand() limit 1",
+        nativeQuery = true
+    )
+    fun findRandomByTagNative(tag: String): TimetableEntity?
 }
