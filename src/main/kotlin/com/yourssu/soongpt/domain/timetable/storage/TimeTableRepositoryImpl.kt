@@ -44,7 +44,6 @@ class TimetableRepositoryImpl(
 }
 
 interface TimetableJpaRepository: JpaRepository<TimetableEntity, Long> {
-    fun findAllByTag(tag: Tag): List<TimetableEntity>
 
     @org.springframework.data.jpa.repository.Query(
         value = "select * from timetable order by rand() limit 1",
@@ -52,9 +51,4 @@ interface TimetableJpaRepository: JpaRepository<TimetableEntity, Long> {
     )
     fun findRandomNative(): TimetableEntity?
 
-    @org.springframework.data.jpa.repository.Query(
-        value = "select * from timetable where tag = :tag order by rand() limit 1",
-        nativeQuery = true
-    )
-    fun findRandomByTagNative(tag: String): TimetableEntity?
 }
