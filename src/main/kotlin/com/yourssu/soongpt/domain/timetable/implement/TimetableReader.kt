@@ -13,4 +13,8 @@ class TimetableReader (
     fun count(): Long {
         return timetableRepository.count()
     }
+
+    fun getRandom(): Timetable? {
+        return timetableRepository.findRandom()
+    }
 }
