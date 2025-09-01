@@ -6,5 +6,5 @@ interface TimetableRepository {
     fun delete(id: Long)
     fun count(): Long
     fun findRandom(): Timetable?
-    fun findRandomTimetable(): Timetable?
+
 }

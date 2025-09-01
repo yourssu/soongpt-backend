@@ -35,20 +35,18 @@ class TimetableRepositoryImpl(
     }
 
     override fun findRandom(): Timetable? {
-        return timetableJpaRepository.findRandomNative()?.toDomain()
+        return timetableJpaRepository.findRandom().firstOrNull()?.toDomain()
     }
 
-    override fun findRandomTimetable(): Timetable? {
-        return findRandom()
-    }
+
 }
 
 interface TimetableJpaRepository: JpaRepository<TimetableEntity, Long> {
 
     @org.springframework.data.jpa.repository.Query(
-        value = "select * from timetable order by rand() limit 1",
-        nativeQuery = true
+        value = "SELECT t FROM TimetableEntity t ORDER BY FUNCTION('RAND')",
+        nativeQuery = false
     )
-    fun findRandomNative(): TimetableEntity?
+    fun findRandom(): List<TimetableEntity>
 
 }
