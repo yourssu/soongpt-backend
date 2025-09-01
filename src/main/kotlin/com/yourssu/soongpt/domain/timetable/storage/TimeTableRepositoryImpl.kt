@@ -1,8 +1,11 @@
 package com.yourssu.soongpt.domain.timetable.storage
 
+import com.querydsl.core.types.dsl.Expressions
+import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.timetable.implement.Tag
 import com.yourssu.soongpt.domain.timetable.implement.Timetable
 import com.yourssu.soongpt.domain.timetable.implement.TimetableRepository
+import com.yourssu.soongpt.domain.timetable.storage.QTimetableEntity.timetableEntity
 import com.yourssu.soongpt.domain.timetable.storage.exception.TimetableNotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
@@ -11,6 +14,7 @@ import kotlin.random.Random
 @Repository
 class TimetableRepositoryImpl(
     private val timetableJpaRepository: TimetableJpaRepository,
+    private val jpaQueryFactory: JPAQueryFactory,
 ): TimetableRepository {
     override fun save(timetable: Timetable): Timetable {
         return timetableJpaRepository.save(TimetableEntity.from(timetable))
@@ -35,18 +39,18 @@ class TimetableRepositoryImpl(
     }
 
     override fun findRandom(): Timetable? {
-        return timetableJpaRepository.findRandom().firstOrNull()?.toDomain()
+        val randomOrder = Expressions.numberTemplate(Double::class.java, "function('RAND')")
+        return jpaQueryFactory
+            .selectFrom(timetableEntity)
+            .orderBy(randomOrder.asc())
+            .limit(1)
+            .fetchOne()
+            ?.toDomain()
     }
 
 
 }
 
 interface TimetableJpaRepository: JpaRepository<TimetableEntity, Long> {
-
-    @org.springframework.data.jpa.repository.Query(
-        value = "SELECT t FROM TimetableEntity t ORDER BY FUNCTION('RAND')",
-        nativeQuery = false
-    )
-    fun findRandom(): List<TimetableEntity>
 
 }
