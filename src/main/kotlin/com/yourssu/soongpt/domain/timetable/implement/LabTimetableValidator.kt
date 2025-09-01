@@ -2,10 +2,15 @@ package com.yourssu.soongpt.domain.timetable.implement
 
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
+import com.yourssu.soongpt.domain.timetable.implement.constant.TIMESLOT_SIZE
+import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
-class LabTimetableValidator {
+class LabTimetableValidator(
+    private val courseCandidateFactory: CourseCandidateFactory,
+) {
     fun filterValidCourses(courses: List<Course>): List<Course> {
         return courses.filter { course ->
             val credit = course.time.toDoubleOrNull()?.toInt() ?: 0
@@ -22,23 +27,16 @@ class LabTimetableValidator {
     }
 
     fun hasOverlap(courses: List<Course>): Boolean {
-        data class Slot(val week: String, val start: Int, val end: Int)
-        val slots = courses.flatMap { course ->
-            CourseTimes.from(course.scheduleRoom).toList().map {
-                Slot(
-                    week = it.week.displayName,
-                    start = it.startTime.time,
-                    end = it.endTime.time,
-                )
-            }
-        }
-        val grouped = slots.groupBy { it.week }
-        for ((_, daySlots) in grouped) {
-            val sorted = daySlots.sortedBy { it.start }
-            for (i in 1 until sorted.size) {
-                val prev = sorted[i - 1]
-                val cur = sorted[i]
-                if (prev.end > cur.start) return true
+        // 기존 TimetableCandidateBuilder의 intersects 로직 활용
+        val candidates = courses.map { courseCandidateFactory.create(it) }
+
+        for (i in candidates.indices) {
+            for (j in i + 1 until candidates.size) {
+                val candidate1 = candidates[i]
+                val candidate2 = candidates[j]
+                if (candidate1.timeSlot.intersects(candidate2.timeSlot)) {
+                    return true
+                }
             }
         }
         return false
