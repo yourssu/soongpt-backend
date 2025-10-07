@@ -4,19 +4,21 @@
 
 ### Request Body
 
-| Name                  | Type      | Required | Constraint                 |
-|-----------------------|-----------|---------|----------------------------|
-| `schoolId`            | integer   | true    | @Range(min = 15, max = 25) |
-| `department`          | string    | true    | @NotBlank                  |
-| `subDepartment`       | string    | false   |                            |
-| `grade`               | integer   | true    | @Range(min = 1, max = 5)   |
-| `isChapel`            | boolean   | false   | default: false             |
-| `majorRequiredCodes`  | integer[] | true    | @NotNull                   |
-| `majorElectiveCodes`  | integer[] | true    | @NotNull                   |
-| `generalRequiredCodes` | integer[] | true    | @NotNull                   |
-| `codes`               | integer[] | true    | @NotNull                   |
-| `generalElectivePoint` | integer   | true    | @Range(min = 0, max = 22)  |
-| `preferredGeneralElectives` | string[]  | true  | @NotNull                   |
+| Name                        | Type      | Required | Constraint                 |
+|-----------------------------|-----------|---------|----------------------------|
+| `studentId`                 | string    | false   |                            |
+| `ssoToken`                  | string    | false   |                            |
+| `schoolId`                  | integer   | false   | @Range(min = 15, max = 25) |
+| `department`                | string    | false   | @NotBlank                  |
+| `subDepartment`             | string    | false   |                            |
+| `grade`                     | integer   | false   | @Range(min = 1, max = 5)   |
+| `isChapel`                  | boolean   | false   | default: false             |
+| `majorRequiredCodes`        | integer[] | false   | @NotNull                   |
+| `majorElectiveCodes`        | integer[] | false   | @NotNull                   |
+| `generalRequiredCodes`      | integer[] | false   | @NotNull                   |
+| `codes`                     | integer[] | false   | @NotNull                   |
+| `generalElectivePoint`      | integer   | false   | @Range(min = 0, max = 22)  |
+| `preferredGeneralElectives` | string[]  | false   | @NotNull                   |
 
 
 **Global Constraint:**  
