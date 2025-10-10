@@ -11,7 +11,8 @@
 
 ## TimeTable
 
-[시간표 생성 (POST /api/timetables)](timetable/create_timetable.md)  
+[유세인트기반 시간표 생성 (POST /api/timetables/usaint)](timetable/create_timetable_usaint.md)  
+[수동 시간표 생성 (POST /api/timetables/manual)](timetable/create_timetable_manual.md)  
 [시간표 조회 (GET /api/timetables/{timetableId})](timetable/get_timetable_id.md)  
 
 ## Contact
