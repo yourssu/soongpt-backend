@@ -4,11 +4,10 @@
 
 ### Request Body
 
-| Name                        | Type      | Required | Constraint                             |
-|-----------------------------|-----------|----------|----------------------------------------|
-| `studentId`                 | string    | true     | @Range(min = 20150000, max = 20259999) |
-| `ssoToken`                  | string    | true     | @NotBlank                              |
-
+| Name          | Type   | Required | Constraint                             |
+| ------------- | ------ | -------- | -------------------------------------- |
+| `studentId` | string | true     | @Range(min = 20150000, max = 20259999) |
+| `sToken`    | string | true     | @NotBlank                              |
 
 ---
 
@@ -17,13 +16,13 @@
 ### Response Body
 
 | name       | type                | description                  |
-|------------|---------------------|------------------------------|
+| ---------- | ------------------- | ---------------------------- |
 | timetables | TimetableResponse[] | List of generated timetables |
 
 #### TimetableResponse
 
 | name        | type      | description                               |
-|-------------|-----------|-------------------------------------------|
+| ----------- | --------- | ----------------------------------------- |
 | timetableId | integer   | Unique ID of the timetable                |
 | tag         | string    | Timetable tag (see Available Tags below)  |
 | score       | integer   | Timetable preference score                |
@@ -32,8 +31,8 @@
 
 #### Courses
 
-| Name           | Type                 | Nullable | Description                                        |
-|----------------|----------------------|----------|----------------------------------------------------| 
+| Name             | Type                 | Nullable | Description                                        |
+| ---------------- | -------------------- | -------- | -------------------------------------------------- |
 | `category`     | string               | No       | Course category                                    |
 | `subCategory`  | string               | Yes      | Course sub category                                |
 | `field`        | string               | Yes      | Curriculum field by admission year                 |
@@ -51,25 +50,25 @@
 
 #### CourseTimeResponse
 
-| Name        | Type   | Nullable | Description                                     |
-|-------------|--------|----------|-------------------------------------------------|
+| Name          | Type   | Nullable | Description                                      |
+| ------------- | ------ | -------- | ------------------------------------------------ |
 | `week`      | string | No       | Day of the week (in Korean, e.g., 월 for Monday) |
-| `start`     | string | No       | Start time of the class (in HH:mm format)       |
-| `end`       | string | No       | End time of the class (in HH:mm format)         |
-| `classroom` | string | No       | Classroom location                              |
+| `start`     | string | No       | Start time of the class (in HH:mm format)        |
+| `end`       | string | No       | End time of the class (in HH:mm format)          |
+| `classroom` | string | No       | Classroom location                               |
 
 ### Available Tags
 
 Each timetable will have one of the following tags:
 
-| Tag                     | Description   |
-|-------------------------|---------------|
-| `DEFAULT`               | 기본 태그         |
-| `NO_MORNING_CLASSES`    | 아침 수업이 없는 시간표 |
-| `HAS_FREE_DAY`          | 공강 날이 있는 시간표  |
-| `NO_LONG_BREAKS`        | 우주 공강이 없는 시간표 |
+| Tag                       | Description              |
+| ------------------------- | ------------------------ |
+| `DEFAULT`               | 기본 태그                |
+| `NO_MORNING_CLASSES`    | 아침 수업이 없는 시간표  |
+| `HAS_FREE_DAY`          | 공강 날이 있는 시간표    |
+| `NO_LONG_BREAKS`        | 우주 공강이 없는 시간표  |
 | `GUARANTEED_LUNCH_TIME` | 점심시간 보장되는 시간표 |
-| `NO_EVENING_CLASSES`    | 저녁수업이 없는 시간표  |
+| `NO_EVENING_CLASSES`    | 저녁수업이 없는 시간표   |
 
 ---
 
@@ -160,4 +159,3 @@ Each timetable will have one of the following tags:
   }
 }
 ```
-
