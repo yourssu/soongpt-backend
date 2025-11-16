@@ -1,0 +1,72 @@
+package com.yourssu.soongpt.domain.usaint.implement
+
+import com.yourssu.soongpt.common.config.RusaintProperties
+import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
+import org.springframework.stereotype.Component
+import org.springframework.web.client.postForEntity
+import java.time.Duration
+
+/**
+ * rusaint-service (Python)와 통신하는 HTTP 클라이언트.
+ *
+ * - 통신은 항상 HTTP+TLS(인프라 레벨) + 내부 JWT(Authorization 헤더)로 보호한다는 가정
+ */
+@Component
+class RusaintServiceClient(
+    restTemplateBuilder: RestTemplateBuilder,
+    private val rusaintProperties: RusaintProperties,
+) {
+
+    private val restTemplate = restTemplateBuilder
+        .rootUri(rusaintProperties.baseUrl)
+        .setConnectTimeout(Duration.ofSeconds(3))
+        .setReadTimeout(Duration.ofSeconds(5))
+        .build()
+
+    /**
+     * studentId + sToken만을 이용해 rusaint-service에 u-saint 데이터 동기화를 요청합니다.
+     *
+     * pseudonym은 WAS 내부에서만 사용하는 식별자이므로 이 계약에 포함하지 않습니다.
+     */
+    fun syncUsaintData(
+        studentId: String,
+        sToken: String,
+    ) {
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            setBearerAuth(createInternalJwt())
+        }
+
+        val body = RusaintSyncRequest(
+            studentId = studentId,
+            sToken = sToken,
+        )
+
+        val requestEntity = HttpEntity(body, headers)
+
+        restTemplate.postForEntity<Void>(
+            "/api/v1/usaint/sync",
+            requestEntity,
+        )
+    }
+
+    /**
+     * WAS <-> rusaint-service 간 내부 인증용 JWT를 생성합니다.
+     *
+     * 현재는 구체적인 JWT 라이브러리를 도입하지 않고,
+     * 이후 구현을 위한 TODO placeholder만 남겨둡니다.
+     */
+    private fun createInternalJwt(): String {
+        // TODO: rusaintProperties 또는 별도 설정의 시크릿/키를 이용해 실제 JWT 생성
+        // 예: issuer=soongpt-backend, subject=usaint-sync, short-lived 토큰 등
+        return "internal-jwt-placeholder"
+    }
+}
+
+data class RusaintSyncRequest(
+    val studentId: String,
+    val sToken: String,
+)
