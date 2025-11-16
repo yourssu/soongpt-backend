@@ -22,6 +22,10 @@ spring:
   cors:
     allowed-origins: [ http://localhost:3000 ]
 
+rusaint:
+  base-url: https://rusaint-service.test
+  pseudonym-secret: test-secret
+
 logging:
   level:
     org.springframework: DEBUG

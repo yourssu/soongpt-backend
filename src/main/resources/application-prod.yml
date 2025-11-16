@@ -21,3 +21,7 @@ spring:
     open-in-view: false
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGIN}
+
+rusaint:
+  base-url: ${RUSAINT_BASE_URL}
+  pseudonym-secret: ${RUSAINT_PSEUDONYM_SECRET}
