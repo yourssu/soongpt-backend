@@ -34,7 +34,7 @@ class RusaintServiceClient(
     fun syncUsaintData(
         studentId: String,
         sToken: String,
-    ) {
+    ): RusaintUsaintDataResponse {
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
             setBearerAuth(createInternalJwt())
@@ -47,10 +47,14 @@ class RusaintServiceClient(
 
         val requestEntity = HttpEntity(body, headers)
 
-        restTemplate.postForEntity<Void>(
-            "/api/v1/usaint/sync",
+        val responseEntity = restTemplate.postForEntity<RusaintUsaintDataResponse>(
+            "/api/usaint/sync",
             requestEntity,
         )
+
+        return requireNotNull(responseEntity.body) {
+            "Empty response from rusaint-service"
+        }
     }
 
     /**
@@ -69,4 +73,47 @@ class RusaintServiceClient(
 data class RusaintSyncRequest(
     val studentId: String,
     val sToken: String,
+)
+
+/**
+ * rusaint-service에서 반환하는 u-saint 스냅샷 응답 DTO.
+ */
+data class RusaintUsaintDataResponse(
+    val takenCourses: List<RusaintTakenCourseDto>,
+    val flags: RusaintStudentFlagsDto,
+    val availableCredits: RusaintAvailableCreditsDto,
+    val basicInfo: RusaintBasicInfoDto,
+    val remainingCredits: RusaintRemainingCreditsDto,
+)
+
+data class RusaintTakenCourseDto(
+    val year: Int,
+    val semester: String,
+    val subjectCode: String,
+)
+
+data class RusaintStudentFlagsDto(
+    val doubleMajor: Boolean,
+    val minor: Boolean,
+    val teaching: Boolean,
+)
+
+data class RusaintAvailableCreditsDto(
+    val previousGpa: Double,
+    val carriedOverCredits: Int,
+    val maxAvailableCredits: Int,
+)
+
+data class RusaintBasicInfoDto(
+    val year: Int,
+    val semester: String,
+    val grade: Int,
+    val department: String,
+)
+
+data class RusaintRemainingCreditsDto(
+    val majorRequired: Int,
+    val majorElective: Int,
+    val generalRequired: Int,
+    val generalElective: Int,
 )
