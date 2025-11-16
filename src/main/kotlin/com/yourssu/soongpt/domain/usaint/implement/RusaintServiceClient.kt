@@ -1,11 +1,15 @@
 package com.yourssu.soongpt.domain.usaint.implement
 
 import com.yourssu.soongpt.common.config.RusaintProperties
+import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpStatusCodeException
+import org.springframework.web.client.RestClientException
 import org.springframework.web.client.postForEntity
 import java.time.Duration
 
@@ -19,6 +23,8 @@ class RusaintServiceClient(
     restTemplateBuilder: RestTemplateBuilder,
     private val rusaintProperties: RusaintProperties,
 ) {
+
+    private val logger = KotlinLogging.logger {}
 
     private val restTemplate = restTemplateBuilder
         .rootUri(rusaintProperties.baseUrl)
@@ -47,13 +53,15 @@ class RusaintServiceClient(
 
         val requestEntity = HttpEntity(body, headers)
 
-        val responseEntity = restTemplate.postForEntity<RusaintUsaintDataResponse>(
-            "/api/usaint/sync",
-            requestEntity,
-        )
+        return executeRusaintCall {
+            val responseEntity = restTemplate.postForEntity<RusaintUsaintDataResponse>(
+                "/api/usaint/sync",
+                requestEntity,
+            )
 
-        return requireNotNull(responseEntity.body) {
-            "Empty response from rusaint-service"
+            requireNotNull(responseEntity.body) {
+                "Empty response from rusaint-service"
+            }
         }
     }
 
@@ -67,6 +75,22 @@ class RusaintServiceClient(
         // TODO: rusaintProperties 또는 별도 설정의 시크릿/키를 이용해 실제 JWT 생성
         // 예: issuer=soongpt-backend, subject=usaint-sync, short-lived 토큰 등
         return "internal-jwt-placeholder"
+    }
+
+    private fun <T> executeRusaintCall(block: () -> T): T {
+        return try {
+            block()
+        } catch (e: HttpStatusCodeException) {
+            logger.error(e) { "rusaint-service 호출 실패: status=${e.statusCode.value()}" }
+            throw RusaintServiceException(
+                message = "rusaint 서비스 호출이 실패했습니다. {{ status=${e.statusCode.value()} }}",
+            )
+        } catch (e: RestClientException) {
+            logger.error(e) { "rusaint-service 통신 중 예외 발생" }
+            throw RusaintServiceException(
+                message = "rusaint 서비스와 통신할 수 없습니다. {{ ${e.message} }}",
+            )
+        }
     }
 }
 
