@@ -4,6 +4,7 @@ import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.usaint.application.dto.UsaintSyncRequest
 import com.yourssu.soongpt.domain.usaint.business.UsaintService
 import com.yourssu.soongpt.domain.usaint.business.dto.UsaintSyncResponse
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -28,11 +29,11 @@ class UsaintController(
      */
     @PostMapping("/sync")
     fun syncTimetable(
-        @RequestBody request: UsaintSyncRequest,
+        @Valid @RequestBody request: UsaintSyncRequest,
     ): ResponseEntity<Response<UsaintSyncResponse>> {
         val response = usaintService.syncUsaintData(request)
         return ResponseEntity
-            .status(HttpStatus.ACCEPTED)
+            .status(HttpStatus.OK)
             .body(Response(result = response))
     }
 }
