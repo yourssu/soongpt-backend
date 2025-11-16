@@ -32,3 +32,6 @@ springdoc:
     display-request-duration: true
     operations-sorter: alpha
 
+rusaint:
+  base-url: ${RUSAINT_BASE_URL}
+  pseudonym-secret: ${RUSAINT_PSEUDONYM_SECRET}
