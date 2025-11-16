@@ -13,6 +13,13 @@ private val logger = KotlinLogging.logger {}
 @ControllerAdvice
 class InternalServerErrorControllerAdvice {
 
+    @ExceptionHandler(InternalServerError::class)
+    fun handleInternalServerError(e: InternalServerError): ResponseEntity<ErrorResponse> {
+        logger.error { e }
+        return ResponseEntity.status(e.status)
+            .body(ErrorResponse.from(e))
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
         logger.error { e }
