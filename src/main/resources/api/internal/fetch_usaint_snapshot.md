@@ -1,8 +1,10 @@
-# sync_usaint_data (POST /api/usaint/sync)
+# fetchUsaintSnapshot (POST /api/usaint/snapshot)
 
 > **Internal API**
 > 이 엔드포인트는 **WAS(Kotlin) ↔ rusaint-service(Python)** 간 통신에만 사용됩니다.
 > 외부 클라이언트에는 노출되지 않습니다.
+> u-saint로부터 **학적/성적 정보를 조회하여 “스냅샷 데이터”를 가져오는 역할**만 하며,
+> SoongPT DB에 실제로 반영할지 여부는 상위 비즈니스 레이어에서 결정합니다.
 
 ---
 
@@ -37,21 +39,21 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
 
 ## Response Body
 
-| Name                   | Type                 | Description                                                                                                      |
-| ---------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `takenCourses`         | TakenCourse[]        | 학기별 수강 과목 코드 목록                                                                                       |
+| Name                     | Type                 | Description                                                                                                                |
+| ------------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `takenCourses`         | TakenCourse[]        | 학기별 수강 과목 코드 목록                                                                                                 |
 | `lowGradeSubjectCodes` | LowGradeSubjectCodes | C/D(통과 저성적)와 F(재수강 필요) 과목 코드 목록을 전필/전선/교필/교선으로 구분한 정보 (실제 성적 값은 절대 포함하지 않음) |
-| `flags`                | Flags                | 복수전공 / 부전공 전공 정보 및 교직 이수 여부                                                                    |
-| `availableCredits`     | AvailableCredits     | 직전 성적 및 올해 최대 신청 가능 학점 정보                                                                       |
-| `basicInfo`            | BasicInfo            | 기본 학적 정보 (학년, 학기, 학과 등)                                                                             |
-| `remainingCredits`     | RemainingCredits     | 졸업까지 남은 전공/교양 이수 학점 정보                                                                           |
+| `flags`                | Flags                | 복수전공 / 부전공 전공 정보 및 교직 이수 여부                                                                              |
+| `availableCredits`     | AvailableCredits     | 직전 성적 및 올해 최대 신청 가능 학점 정보                                                                                 |
+| `basicInfo`            | BasicInfo            | 기본 학적 정보 (학년, 학기, 학과 등)                                                                                       |
+| `remainingCredits`     | RemainingCredits     | 졸업까지 남은 전공/교양 이수 학점 정보                                                                                     |
 
 ### TakenCourse
 
 | Name             | Type     | Required | Description                                               |
 | ---------------- | -------- | -------- | --------------------------------------------------------- |
 | `year`         | integer  | true     | 기준 학년도 (예: 2024)                                    |
-| `semester`     | string   | true     | 학기 (예:`"1"`, `"2"`)                                |
+| `semester`     | integer  | true     | 학기 (1: 1학기, 2: 2학기)                                 |
 | `subjectCodes` | string[] | true     | 해당 학기 수강 과목 코드 리스트 (예:`"2150545501"`, …) |
 
 ### Flags
@@ -72,12 +74,12 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
 
 ### BasicInfo
 
-| Name           | Type    | Required | Description                                                                  |
-| -------------- | ------- | -------- | ---------------------------------------------------------------------------- |
-| `year`       | integer | true     | 기준 연도 (예: 2025)                                                         |
-| `grade`      | integer | true     | 학년 (1~4)                                                                   |
-| `semester`   | integer | true     | 재학 누적 학기 (1~8) <br />예: 3학년 2학기 →`grade` = 3, `semester` = 6 |
-| `department` | string  | true     | 주전공 학과명                                                                |
+| Name           | Type    | Required | Description                                                                 |
+| -------------- | ------- | -------- | --------------------------------------------------------------------------- |
+| `year`       | integer | true     | 기준 연도 (예: 2025)                                                        |
+| `grade`      | integer | true     | 학년 (1~4)                                                                  |
+| `semester`   | integer | true     | 재학 누적 학기 (1~8)<br />예: 3학년 2학기 →`grade` = 3, `semester` = 6 |
+| `department` | string  | true     | 주전공 학과명                                                               |
 
 ### RemainingCredits
 
@@ -90,28 +92,28 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
 
 ### LowGradeSubjectCodes
 
-| Name        | Type                 | Required | Description                                                                                 |
-| ----------- | -------------------- | -------- | ------------------------------------------------------------------------------------------- |
-| `passLow` | GradeBandSubjectCodes | true     | C/D 성적(통과 저성적) 과목 코드 목록을 전필/전선/교필/교선으로 구분한 정보                |
-| `fail`    | GradeBandSubjectCodes | true     | F 성적(재수강 필요) 과목 코드 목록을 전필/전선/교필/교선으로 구분한 정보                  |
+| Name        | Type                  | Required | Description                                                                |
+| ----------- | --------------------- | -------- | -------------------------------------------------------------------------- |
+| `passLow` | GradeBandSubjectCodes | true     | C/D 성적(통과 저성적) 과목 코드 목록을 전필/전선/교필/교선으로 구분한 정보 |
+| `fail`    | GradeBandSubjectCodes | true     | F 성적(재수강 필요) 과목 코드 목록을 전필/전선/교필/교선으로 구분한 정보   |
 
 ### GradeBandSubjectCodes
 
-| Name                | Type     | Required | Description                              |
-| ------------------- | -------- | -------- | ---------------------------------------- |
+| Name                | Type     | Required | Description                                |
+| ------------------- | -------- | -------- | ------------------------------------------ |
 | `majorRequired`   | string[] | true     | 해당 구간에 속하는 전공필수 과목 코드 목록 |
 | `majorElective`   | string[] | true     | 해당 구간에 속하는 전공선택 과목 코드 목록 |
 | `generalRequired` | string[] | true     | 해당 구간에 속하는 교양필수 과목 코드 목록 |
 | `generalElective` | string[] | true     | 해당 구간에 속하는 교양선택 과목 코드 목록 |
 
-### Response Body
+### Response Body 예시
 
 ```json
 {
   "takenCourses": [
     {
       "year": 2024,
-      "semester": "1",
+      "semester": 1,
       "subjectCodes": [
         "2150545501",
         "2150545502",
@@ -120,7 +122,7 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
     },
     {
       "year": 2024,
-      "semester": "2",
+      "semester": 2,
       "subjectCodes": [
         "2150545601",
         "2150545602"
@@ -159,7 +161,7 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
     "year": 2025,
     "grade": 3,
     "semester": 6,
-    "department": "법학과"
+    "department": "컴퓨터학부"
   },
   "remainingCredits": {
     "majorRequired": 12,

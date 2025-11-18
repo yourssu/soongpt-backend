@@ -55,7 +55,7 @@ class RusaintServiceClient(
 
         return executeRusaintCall {
             val responseEntity = restTemplate.postForEntity<RusaintUsaintDataResponse>(
-                "/api/usaint/sync",
+                "/api/usaint/snapshot",
                 requestEntity,
             )
 
@@ -112,7 +112,7 @@ data class RusaintUsaintDataResponse(
 
 data class RusaintTakenCourseDto(
     val year: Int,
-    val semester: String,
+    val semester: Int,
     val subjectCode: String,
 )
 
@@ -130,7 +130,7 @@ data class RusaintAvailableCreditsDto(
 
 data class RusaintBasicInfoDto(
     val year: Int,
-    val semester: String,
+    val semester: Int,
     val grade: Int,
     val department: String,
 )
