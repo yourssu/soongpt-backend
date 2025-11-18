@@ -37,13 +37,14 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
 
 ## Response Body
 
-| Name                 | Type             | Description                                   |
-| -------------------- | ---------------- | --------------------------------------------- |
-| `takenCourses`     | TakenCourse[]    | 학기별 수강 과목 코드 목록                    |
-| `flags`            | Flags            | 복수전공 / 부전공 전공 정보 및 교직 이수 여부 |
-| `availableCredits` | AvailableCredits | 직전 성적 및 올해 최대 신청 가능 학점 정보    |
-| `basicInfo`        | BasicInfo        | 기본 학적 정보 (학년, 학기, 학과 등)          |
-| `remainingCredits` | RemainingCredits | 졸업까지 남은 전공/교양 이수 학점 정보        |
+| Name                   | Type                 | Description                                                                                                      |
+| ---------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `takenCourses`         | TakenCourse[]        | 학기별 수강 과목 코드 목록                                                                                       |
+| `lowGradeSubjectCodes` | LowGradeSubjectCodes | C/D(통과 저성적)와 F(재수강 필요) 과목 코드 목록을 전필/전선/교필/교선으로 구분한 정보 (실제 성적 값은 절대 포함하지 않음) |
+| `flags`                | Flags                | 복수전공 / 부전공 전공 정보 및 교직 이수 여부                                                                    |
+| `availableCredits`     | AvailableCredits     | 직전 성적 및 올해 최대 신청 가능 학점 정보                                                                       |
+| `basicInfo`            | BasicInfo            | 기본 학적 정보 (학년, 학기, 학과 등)                                                                             |
+| `remainingCredits`     | RemainingCredits     | 졸업까지 남은 전공/교양 이수 학점 정보                                                                           |
 
 ### TakenCourse
 
@@ -87,6 +88,22 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
 | `generalRequired` | integer | true     | 남은 교양필수 학점 |
 | `generalElective` | integer | true     | 남은 교양선택 학점 |
 
+### LowGradeSubjectCodes
+
+| Name        | Type                 | Required | Description                                                                                 |
+| ----------- | -------------------- | -------- | ------------------------------------------------------------------------------------------- |
+| `passLow` | GradeBandSubjectCodes | true     | C/D 성적(통과 저성적) 과목 코드 목록을 전필/전선/교필/교선으로 구분한 정보                |
+| `fail`    | GradeBandSubjectCodes | true     | F 성적(재수강 필요) 과목 코드 목록을 전필/전선/교필/교선으로 구분한 정보                  |
+
+### GradeBandSubjectCodes
+
+| Name                | Type     | Required | Description                              |
+| ------------------- | -------- | -------- | ---------------------------------------- |
+| `majorRequired`   | string[] | true     | 해당 구간에 속하는 전공필수 과목 코드 목록 |
+| `majorElective`   | string[] | true     | 해당 구간에 속하는 전공선택 과목 코드 목록 |
+| `generalRequired` | string[] | true     | 해당 구간에 속하는 교양필수 과목 코드 목록 |
+| `generalElective` | string[] | true     | 해당 구간에 속하는 교양선택 과목 코드 목록 |
+
 ### Response Body
 
 ```json
@@ -110,6 +127,24 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
       ]
     }
   ],
+  "lowGradeSubjectCodes": {
+    "passLow": {
+      "majorRequired": [
+        "2150545501"
+      ],
+      "majorElective": [],
+      "generalRequired": [],
+      "generalElective": [
+        "2150152601"
+      ]
+    },
+    "fail": {
+      "majorRequired": [],
+      "majorElective": [],
+      "generalRequired": [],
+      "generalElective": []
+    }
+  },
   "flags": {
     "doubleMajorDepartment": "법학과",
     "minorDepartment": null,
