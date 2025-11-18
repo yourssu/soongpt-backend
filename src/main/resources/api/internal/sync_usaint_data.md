@@ -33,6 +33,60 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
 
 - **200 OK**: u-saint 데이터 스냅샷을 정상적으로 조회하여 반환합니다.
 
+---
+
+## Response Body
+
+| Name                 | Type             | Description                                   |
+| -------------------- | ---------------- | --------------------------------------------- |
+| `takenCourses`     | TakenCourse[]    | 학기별 수강 과목 코드 목록                    |
+| `flags`            | Flags            | 복수전공 / 부전공 전공 정보 및 교직 이수 여부 |
+| `availableCredits` | AvailableCredits | 직전 성적 및 올해 최대 신청 가능 학점 정보    |
+| `basicInfo`        | BasicInfo        | 기본 학적 정보 (학년, 학기, 학과 등)          |
+| `remainingCredits` | RemainingCredits | 졸업까지 남은 전공/교양 이수 학점 정보        |
+
+### TakenCourse
+
+| Name             | Type     | Required | Description                                               |
+| ---------------- | -------- | -------- | --------------------------------------------------------- |
+| `year`         | integer  | true     | 기준 학년도 (예: 2024)                                    |
+| `semester`     | string   | true     | 학기 (예:`"1"`, `"2"`)                                |
+| `subjectCodes` | string[] | true     | 해당 학기 수강 과목 코드 리스트 (예:`"2150545501"`, …) |
+
+### Flags
+
+| Name                      | Type    | Required | Description                         |
+| ------------------------- | ------- | -------- | ----------------------------------- |
+| `doubleMajorDepartment` | string  | false    | 복수전공 학과명 (없으면 `null`)   |
+| `minorDepartment`       | string  | false    | 부전공 학과명 (없으면 `null`)     |
+| `teaching`              | boolean | true     | 교직 이수 여부 (`true`/`false`) |
+
+### AvailableCredits
+
+| Name                    | Type    | Required | Description                   |
+| ----------------------- | ------- | -------- | ----------------------------- |
+| `previousGpa`         | number  | true     | 직전 학기 평점                |
+| `carriedOverCredits`  | integer | true     | 이월 학점                     |
+| `maxAvailableCredits` | integer | true     | 이번 학기 최대 신청 가능 학점 |
+
+### BasicInfo
+
+| Name           | Type    | Required | Description                                                                  |
+| -------------- | ------- | -------- | ---------------------------------------------------------------------------- |
+| `year`       | integer | true     | 기준 연도 (예: 2025)                                                         |
+| `grade`      | integer | true     | 학년 (1~4)                                                                   |
+| `semester`   | integer | true     | 재학 누적 학기 (1~8) <br />예: 3학년 2학기 →`grade` = 3, `semester` = 6 |
+| `department` | string  | true     | 주전공 학과명                                                                |
+
+### RemainingCredits
+
+| Name                | Type    | Required | Description        |
+| ------------------- | ------- | -------- | ------------------ |
+| `majorRequired`   | integer | true     | 남은 전공필수 학점 |
+| `majorElective`   | integer | true     | 남은 전공선택 학점 |
+| `generalRequired` | integer | true     | 남은 교양필수 학점 |
+| `generalElective` | integer | true     | 남은 교양선택 학점 |
+
 ### Response Body
 
 ```json
@@ -41,13 +95,25 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
     {
       "year": 2024,
       "semester": "1",
-      "subjectCode": "2150545501"
+      "subjectCodes": [
+        "2150545501",
+        "2150545502",
+        "2150545503"
+      ]
+    },
+    {
+      "year": 2024,
+      "semester": "2",
+      "subjectCodes": [
+        "2150545601",
+        "2150545602"
+      ]
     }
   ],
   "flags": {
-    "doubleMajor": true,
-    "minor": false,
-    "teaching": false
+    "doubleMajorDepartment": "법학과",
+    "minorDepartment": null,
+    "teaching": true
   },
   "availableCredits": {
     "previousGpa": 4.3,
@@ -56,9 +122,9 @@ WAS는 클라이언트로부터 받은 `studentId`, `sToken`을 그대로 rusain
   },
   "basicInfo": {
     "year": 2025,
-    "semester": "1",
     "grade": 3,
-    "department": "컴퓨터학부"
+    "semester": 6,
+    "department": "법학과"
   },
   "remainingCredits": {
     "majorRequired": 12,
