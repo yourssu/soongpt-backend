@@ -1,4 +1,4 @@
-# sync_usaint_timetable (POST /api/timetables/usaint/sync)
+# refreshUsaintSnapshot (POST /api/usaint/snapshot/refresh)
 
 ## Request Body
 
@@ -13,7 +13,7 @@
 | name          | type   | description                                   |
 | ------------- | ------ | --------------------------------------------- |
 | `timestamp` | string | 응답 생성 시각 (`yyyy-MM-dd HH:mm:ss` 형식) |
-| `result`    | object | 유세인트 동기화 결과ㅇ;                       |
+| `result`    | object | 유세인트 동기화 결과                          |
 
 #### Result
 
@@ -61,3 +61,16 @@
 ```
 
 ---
+
+### 401 Unauthorized
+
+JWT가 없거나, 유효하지 않거나, 만료된 경우입니다.
+
+```json
+{
+  "timestamp": "2025-11-18 14:31:00",
+  "code": "UNAUTHORIZED",
+  "message": "인증 정보가 유효하지 않습니다.",
+  "result": null
+}
+```

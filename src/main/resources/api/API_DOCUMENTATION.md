@@ -12,13 +12,13 @@
 ## TimeTable
 
 [유세인트기반 시간표 생성 (POST /api/timetables/usaint)](timetable/create_timetable_usaint.md)
-[유세인트 정보 동기화 (POST /api/timetables/usaint/sync)](timetable/sync_usaint_timetable.md)
+[유세인트 정보 업데이트 (POST /api/usaint/snapshot/refresh)](timetable/refresh_usaint_snapshot.md)
 [수동 시간표 생성 (POST /api/timetables/manual)](timetable/create_timetable_manual.md)
 [시간표 조회 (GET /api/timetables/{timetableId})](timetable/get_timetable_id.md)
 
 ## Internal
 
-[유세인트 데이터 동기화 (POST /api/usaint/sync)](internal/sync_usaint_data.md)
+[유세인트 데이터 스냅샷 조회 (POST /api/usaint/snapshot)](internal/fetch_usaint_snapshot.md)
 
 ## Contact
 
