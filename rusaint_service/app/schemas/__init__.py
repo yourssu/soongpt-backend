@@ -1,5 +1,5 @@
 from app.schemas.usaint_schemas import (
-    UsaintSyncRequest,
+    UsaintSnapshotRequest,
     UsaintSnapshotResponse,
     TakenCourse,
     LowGradeSubjectCodes,
@@ -11,7 +11,7 @@ from app.schemas.usaint_schemas import (
 )
 
 __all__ = [
-    "UsaintSyncRequest",
+    "UsaintSnapshotRequest",
     "UsaintSnapshotResponse",
     "TakenCourse",
     "LowGradeSubjectCodes",

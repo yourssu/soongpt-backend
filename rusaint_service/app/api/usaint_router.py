@@ -5,7 +5,7 @@ WAS(Kotlin) <-> rusaint-service(Python) 간 내부 통신용 엔드포인트.
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.schemas.usaint_schemas import UsaintSyncRequest, UsaintSnapshotResponse
+from app.schemas.usaint_schemas import UsaintSnapshotRequest, UsaintSnapshotResponse
 from app.services.rusaint_service import RusaintService
 from app.core.security import verify_internal_jwt
 import logging
@@ -31,7 +31,7 @@ def get_rusaint_service() -> RusaintService:
     description="SSO 토큰을 사용하여 유세인트 학적/성적 정보를 조회합니다. (내부 API)",
 )
 async def fetch_usaint_snapshot(
-    request: UsaintSyncRequest,
+    request: UsaintSnapshotRequest,
     _: dict = Depends(verify_internal_jwt),
     rusaint_service: RusaintService = Depends(get_rusaint_service),
 ) -> UsaintSnapshotResponse:
