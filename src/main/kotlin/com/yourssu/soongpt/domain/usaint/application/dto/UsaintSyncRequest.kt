@@ -1,5 +1,8 @@
 package com.yourssu.soongpt.domain.usaint.application.dto
 
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Pattern
+
 /**
  * 클라이언트 -> WAS 요청 DTO.
  *
