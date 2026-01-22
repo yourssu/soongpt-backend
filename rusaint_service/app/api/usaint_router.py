@@ -52,14 +52,17 @@ async def fetch_usaint_snapshot(
 
     except ValueError as e:
         # SSO 토큰 만료 또는 유효하지 않음
-        logger.error(f"SSO 토큰 오류: student_id={request.studentId[:4]}****, error={str(e)}")
+        logger.error(f"SSO 토큰 오류: student_id={request.studentId[:4]}****, error_type={type(e).__name__}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="SSO token is invalid or expired",
         )
     except Exception as e:
         # 기타 서버 오류
-        logger.error(f"유세인트 데이터 조회 중 오류 발생: student_id={request.studentId[:4]}****, error={str(e)}", exc_info=True)
+        logger.error(
+            f"유세인트 데이터 조회 중 오류 발생: student_id={request.studentId[:4]}****, error_type={type(e).__name__}",
+            exc_info=True,
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to fetch usaint data",
