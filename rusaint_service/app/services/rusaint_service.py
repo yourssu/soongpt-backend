@@ -65,7 +65,7 @@ class RusaintService:
             # 3. 각종 정보 조회
             basic_info = await self._fetch_basic_info(grad_app)
             taken_courses = await self._fetch_taken_courses(session)
-            low_grade_codes = await self._fetch_low_grade_subject_codes(session, grad_app)
+            low_grade_codes = await self._fetch_low_grade_subject_codes(session)
             flags = await self._fetch_flags(session)
             available_credits = await self._fetch_available_credits(session)
             remaining_credits = await self._fetch_remaining_credits(grad_app)
@@ -233,7 +233,6 @@ class RusaintService:
     async def _fetch_low_grade_subject_codes(
         self,
         session: rusaint.USaintSession,
-        grad_app,
     ) -> LowGradeSubjectCodes:
         """
         저성적 과목 코드를 조회합니다.
@@ -274,10 +273,10 @@ class RusaintService:
                     code = cls.code
 
                     # 성적이 F인 경우
-                    if rank_str == "F":
+                    if rank_str == settings.FAIL_GRADE:
                         fail_codes.append(code)
                     # 성적이 C 또는 D인 경우 (P/F 제외)
-                    elif rank_str in ["C+", "C0", "C-", "D+", "D0", "D-"]:
+                    elif rank_str in settings.LOW_GRADE_RANKS:
                         pass_low_codes.append(code)
 
             logger.debug(f"저성적 과목: C/D {len(pass_low_codes)}개, F {len(fail_codes)}개")
