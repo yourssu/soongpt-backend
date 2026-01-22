@@ -33,25 +33,16 @@ class TakenCourse(BaseModel):
     subjectCodes: list[str] = Field(default_factory=list, description="해당 학기 수강 과목 코드 리스트")
 
 
-class GradeBandSubjectCodes(BaseModel):
-    """성적 구간별 과목 코드 목록 (전필/전선/교필/교선으로 구분)"""
-
-    majorRequired: list[str] = Field(default_factory=list, description="전공필수 과목 코드 목록")
-    majorElective: list[str] = Field(default_factory=list, description="전공선택 과목 코드 목록")
-    generalRequired: list[str] = Field(default_factory=list, description="교양필수 과목 코드 목록")
-    generalElective: list[str] = Field(default_factory=list, description="교양선택 과목 코드 목록")
-
-
 class LowGradeSubjectCodes(BaseModel):
     """저성적 과목 코드 목록 (C/D 및 F 성적)"""
 
-    passLow: GradeBandSubjectCodes = Field(
-        default_factory=GradeBandSubjectCodes,
-        description="C/D 성적(통과 저성적) 과목 코드 목록",
+    passLow: list[str] = Field(
+        default_factory=list,
+        description="C/D 성적(통과 저성적) 과목 코드 리스트 (이수구분 없이 과목 코드만)",
     )
-    fail: GradeBandSubjectCodes = Field(
-        default_factory=GradeBandSubjectCodes,
-        description="F 성적(재수강 필요) 과목 코드 목록",
+    fail: list[str] = Field(
+        default_factory=list,
+        description="F 성적(재수강 필요) 과목 코드 리스트 (이수구분 없이 과목 코드만)",
     )
 
 
