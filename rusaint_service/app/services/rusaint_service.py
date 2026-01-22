@@ -25,6 +25,10 @@ logger = logging.getLogger(__name__)
 class RusaintService:
     """Rusaint 라이브러리를 사용한 유세인트 데이터 크롤링 서비스"""
 
+    def __init__(self):
+        """RusaintService 초기화"""
+        self._cached_graduation_requirements = None
+
     async def fetch_usaint_snapshot(
         self,
         student_id: str,
@@ -70,13 +74,13 @@ class RusaintService:
             )
 
         except rusaint.RusaintError as e:
-            logger.error(f"Rusaint 오류: {str(e)}")
-            raise ValueError(f"유세인트 로그인 실패: {str(e)}")
+            logger.error(f"Rusaint 오류 (student_id={student_id[:4]}****): {type(e).__name__}")
+            raise ValueError("유세인트 로그인에 실패했습니다. SSO 토큰을 확인해주세요.")
         except ValueError as e:
-            logger.error(f"SSO 토큰 오류: {str(e)}")
+            logger.error(f"SSO 토큰 오류 (student_id={student_id[:4]}****): {type(e).__name__}")
             raise
         except Exception as e:
-            logger.error(f"유세인트 데이터 조회 중 오류 발생: {str(e)}", exc_info=True)
+            logger.error(f"유세인트 데이터 조회 중 오류 발생 (student_id={student_id[:4]}****): {type(e).__name__}", exc_info=True)
             raise
 
     # ============================================================
@@ -103,57 +107,36 @@ class RusaintService:
             logger.debug(f"유세인트 세션 생성 완료: student_id={student_id[:4]}****")
             return session
         except Exception as e:
-            logger.error(f"세션 생성 실패: {str(e)}")
-            raise ValueError(f"SSO 토큰이 유효하지 않거나 만료되었습니다: {str(e)}")
+            logger.error(f"세션 생성 실패 (student_id={student_id[:4]}****): {type(e).__name__}")
+            raise ValueError("SSO 토큰이 유효하지 않거나 만료되었습니다.")
 
     async def _fetch_basic_info(self, session: rusaint.USaintSession) -> BasicInfo:
         """
         기본 학적 정보를 조회합니다.
-        
+
         **민감 정보는 조회하지 않음**: 이름, 주민번호, 주소, 전화번호 등은 가져오지 않습니다.
+        **휴학/엇학기/졸업유예 고려**: 계산이 아니라 유세인트에서 직접 크롤링
         """
         try:
-            # StudentInformationApplication 생성
-            app_builder = rusaint.StudentInformationApplicationBuilder()
-            app = await app_builder.build(session)
+            # GraduationRequirementsApplication에서 정확한 학년/학기 정보 가져오기
+            grad_builder = rusaint.GraduationRequirementsApplicationBuilder()
+            grad_app = await grad_builder.build(session)
+            grad_student = await grad_app.student_info()
 
-            # 학적 상태 정보 조회 (학년/학기만 필요)
-            academic_records = await app.academic_record()
+            # 입학년도, 현재 학년, 재학 누적 학기 (유세인트에서 직접 제공)
+            admission_year = grad_student.apply_year  # 입학년도
+            grade = grad_student.grade  # 현재 학년 (휴학/엇학기 고려됨)
+            semester = grad_student.semester  # 재학 누적 학기
 
-            # 현재 학적 상태 가져오기 (마지막 레코드)
-            current_record = academic_records.records[-1] if academic_records.records else None
+            # 학과 정보 (majors 리스트에서 첫 번째 전공)
+            department = grad_student.majors[0] if grad_student.majors else "알 수 없음"
 
-            if not current_record:
-                raise ValueError("학적 정보를 찾을 수 없습니다")
-
-            # year는 "2023학년도" 형식이므로 숫자만 추출
-            year_str = current_record.year.replace("학년도", "").strip()
-            year = int(year_str)
-
-            # term은 "1학기" 형식
-            term_str = current_record.term.replace("학기", "").strip()
-            
-            # 학년과 학기 계산 (1학기=1, 2학기=2, ... 8학기=8)
-            # term_number는 재학 중 몇 번째 학기인지
-            # grade는 학년 (1~4)
-            
-            # 일반 학생 정보에서 학과명만 조회 (민감정보 제외)
-            student_info = await app.general()
-            department = getattr(student_info, 'department_name', None) or \
-                        getattr(student_info, 'department', None) or \
-                        getattr(student_info, 'dept', None) or "알 수 없음"
-
-            # 학년 계산: 1학기→1학년, 2학기→1학년, 3학기→2학년, ...
-            # academic_records에서 전체 레코드 수로 계산
-            total_semesters = len([r for r in academic_records.records if "학기" in r.term])
-            grade = (total_semesters + 1) // 2  # 1-2학기→1학년, 3-4학기→2학년
-            if grade > 4:
-                grade = 4  # 최대 4학년
+            logger.debug(f"기본 정보: {admission_year}학번 {grade}학년 {semester}학기, {department}")
 
             return BasicInfo(
-                year=year,
-                grade=grade,
-                semester=total_semesters,  # 재학 누적 학기
+                year=admission_year,  # 입학년도
+                grade=grade,  # 현재 학년 (유세인트에서 직접 제공)
+                semester=semester,  # 재학 누적 학기 (유세인트에서 직접 제공)
                 department=department,
             )
         except Exception as e:
@@ -163,8 +146,9 @@ class RusaintService:
     async def _fetch_taken_courses(self, session: rusaint.USaintSession) -> list[TakenCourse]:
         """
         수강 내역을 조회합니다.
-        
+
         **과목 코드만 조회**: 과목명, 교수명, 성적 등 민감정보는 제외
+        **계절학기 포함**: SUMMER(3), WINTER(4)로 구분
         """
         try:
             # CourseGradesApplication 생성
@@ -187,18 +171,25 @@ class RusaintService:
                 # 과목 코드만 추출 (과목명, 교수명 등은 제외)
                 subject_codes = [cls.code for cls in classes]
 
-                # SemesterType.ONE → 1, SemesterType.TWO → 2
-                semester_num = 1 if semester_grade.semester == rusaint.SemesterType.ONE else 2
+                # SemesterType 매핑 (문자열로)
+                # ONE(1학기)="1", TWO(2학기)="2", SUMMER="SUMMER", WINTER="WINTER"
+                semester_map = {
+                    rusaint.SemesterType.ONE: "1",
+                    rusaint.SemesterType.TWO: "2",
+                    rusaint.SemesterType.SUMMER: "SUMMER",
+                    rusaint.SemesterType.WINTER: "WINTER",
+                }
+                semester_str = semester_map.get(semester_grade.semester, "1")
 
                 taken_courses.append(
                     TakenCourse(
                         year=semester_grade.year,
-                        semester=semester_num,
+                        semester=semester_str,
                         subjectCodes=subject_codes,
                     )
                 )
 
-            logger.debug(f"수강 내역 조회 완료: {len(taken_courses)}개 학기")
+            logger.debug(f"수강 내역 조회 완료: {len(taken_courses)}개 학기 (계절학기 포함)")
             return taken_courses
         except Exception as e:
             logger.error(f"수강 내역 조회 실패: {str(e)}")
@@ -210,7 +201,7 @@ class RusaintService:
     ) -> LowGradeSubjectCodes:
         """
         저성적 과목 코드를 조회합니다.
-        
+
         **과목 코드만 조회**: 성적의 절대값(A+, B+ 등)은 C/D/F 판정에만 사용하고 저장하지 않음
         """
         try:
@@ -235,18 +226,19 @@ class RusaintService:
                 )
 
                 for cls in classes:
-                    grade = getattr(cls, 'grade', None) or getattr(cls, 'score', None)
-                    if not grade:
+                    # rank 필드에서 성적 등급 확인 (F, C+, D0 등)
+                    rank = getattr(cls, 'rank', None)
+                    if not rank:
                         continue
 
-                    grade_str = str(grade).upper()
+                    rank_str = str(rank).upper().strip()
 
                     # 성적이 F인 경우
-                    if grade_str == "F":
-                        self._classify_subject_by_type(cls, fail_dict)
+                    if rank_str == "F":
+                        await self._classify_subject_by_type(session, cls, fail_dict)
                     # 성적이 C 또는 D인 경우 (P/F 제외)
-                    elif any(g in grade_str for g in ["C+", "C0", "C-", "D+", "D0", "D-"]):
-                        self._classify_subject_by_type(cls, pass_low_dict)
+                    elif rank_str in ["C+", "C0", "C-", "D+", "D0", "D-"]:
+                        await self._classify_subject_by_type(session, cls, pass_low_dict)
 
             logger.debug(f"저성적 과목: C/D {sum(len(v) for v in pass_low_dict.values())}개, F {sum(len(v) for v in fail_dict.values())}개")
 
@@ -282,37 +274,103 @@ class RusaintService:
                 ),
             )
 
-    def _classify_subject_by_type(self, cls, target_dict: Dict[str, List[str]]):
+    async def _get_course_category(
+        self,
+        session: rusaint.USaintSession,
+        course_code: str,
+        course_name: str,
+    ) -> str:
         """
-        과목을 이수 구분에 따라 분류합니다.
+        졸업요건 정보를 기반으로 과목의 이수구분을 결정합니다.
+
+        Returns:
+            "major_required" | "major_elective" | "general_required" | "general_elective"
         """
-        # TODO: rusaint의 ClassGrade 객체에서 이수 구분(전필/전선/교필/교선) 정보를 추출
-        # 현재는 임시로 과목명이나 코드로 추정
-        # 실제로는 cls.category 또는 cls.type 같은 속성이 있을 수 있음
+        try:
+            # 졸업요건 조회 (캐싱)
+            if self._cached_graduation_requirements is None:
+                grad_builder = rusaint.GraduationRequirementsApplicationBuilder()
+                grad_app = await grad_builder.build(session)
+                self._cached_graduation_requirements = await grad_app.requirements()
+
+            requirements = self._cached_graduation_requirements
+
+            if not hasattr(requirements, 'requirements') or not requirements.requirements:
+                return "major_elective"  # Fallback
+
+            # 과목명 정제 (대괄호 제거)
+            import re
+            course_name_clean = re.sub(r'\[.*?\]', '', course_name).strip()
+
+            # 우선순위: 구체적인 카테고리 먼저 확인
+            priority_categories = {
+                "교양필수": "general_required",
+                "교양선택": "general_elective",
+                "전공": None,  # 세부 구분 필요
+                "전공기초": "major_required",
+            }
+
+            # 각 category별로 lectures를 확인하여 매칭
+            for key, req in requirements.requirements.items():
+                category = req.category
+
+                # 우선순위 카테고리만 확인
+                if category not in priority_categories:
+                    continue
+
+                # lectures에서 과목명으로 매칭
+                for lecture_name in req.lectures:
+                    # 접두사 제거 및 정제
+                    clean_lecture = re.sub(r'^\(.*?\)', '', lecture_name).strip()
+                    clean_lecture = re.sub(r'^\xa0', '', clean_lecture).strip()
+
+                    if not clean_lecture or not course_name_clean:
+                        continue
+
+                    # 부분 문자열 매칭
+                    if (clean_lecture in course_name_clean or
+                        course_name_clean in clean_lecture or
+                        clean_lecture.replace(' ', '') in course_name_clean.replace(' ', '')):
+
+                        # "전공" 카테고리는 세부 구분 필요
+                        if category == "전공":
+                            # requirement name에서 전필/전선 구분
+                            if "전필" in key or "전공필수" in key:
+                                return "major_required"
+                            else:
+                                return "major_elective"
+
+                        return priority_categories[category]
+
+            # 매칭 실패 시 기본값
+            return "major_elective"
+
+        except Exception as e:
+            logger.debug(f"이수구분 분류 실패 ({course_code}): {e}")
+            return "major_elective"  # Fallback
+
+    async def _classify_subject_by_type(
+        self,
+        session: rusaint.USaintSession,
+        cls,
+        target_dict: Dict[str, List[str]],
+    ):
+        """
+        졸업요건 정보를 기반으로 과목을 이수구분에 따라 분류합니다.
+        """
         code = cls.code
-        
-        # 간단한 휴리스틱 (실제로는 더 정확한 분류 필요)
-        if hasattr(cls, 'category') and cls.category:
-            category = str(cls.category).lower()
-            if '전공필수' in category or 'major required' in category:
-                target_dict["major_required"].append(code)
-            elif '전공선택' in category or 'major elective' in category:
-                target_dict["major_elective"].append(code)
-            elif '교양필수' in category or 'general required' in category:
-                target_dict["general_required"].append(code)
-            elif '교양선택' in category or 'general elective' in category:
-                target_dict["general_elective"].append(code)
-            else:
-                # 기본값: 전공선택으로 분류
-                target_dict["major_elective"].append(code)
-        else:
-            # 카테고리 정보가 없으면 일단 전공선택으로 분류
-            target_dict["major_elective"].append(code)
+        course_name = cls.class_name
+
+        # 졸업요건에서 이수구분 조회
+        category_key = await self._get_course_category(session, code, course_name)
+
+        # 분류
+        target_dict[category_key].append(code)
 
     async def _fetch_flags(self, session: rusaint.USaintSession) -> Flags:
         """
         복수전공/부전공 및 교직 이수 정보를 조회합니다.
-        
+
         **학과명만 조회**: 자격증 번호, 날짜 등 민감정보는 제외
         """
         try:
@@ -333,11 +391,11 @@ class RusaintService:
 
             # 일반 학생 정보에서 복수전공/부전공 확인
             student_info = await app.general()
-            
+
             # rusaint의 StudentInformation 구조에서 복수전공/부전공 필드 탐색
             double_major = None
             minor = None
-            
+
             # 가능한 필드명들 시도
             for attr in ['second_major', 'double_major', 'dual_major', 'major_double']:
                 if hasattr(student_info, attr):
@@ -372,7 +430,7 @@ class RusaintService:
     async def _fetch_available_credits(self, session: rusaint.USaintSession) -> AvailableCredits:
         """
         직전 성적 및 최대 신청 가능 학점 정보를 조회합니다.
-        
+
         **평점과 학점만 조회**: 개별 과목 성적은 제외
         """
         try:
@@ -388,7 +446,7 @@ class RusaintService:
 
             # 직전 학기 성적
             last_semester = semesters[-1]
-            
+
             # gpa 필드 확인 (여러 가능성 시도)
             previous_gpa = 0.0
             for attr in ['gpa', 'grade_point_average', 'average']:
@@ -407,13 +465,10 @@ class RusaintService:
                         carried_over = int(value)
                         break
 
-            # 최대 신청 가능 학점 계산 (숭실대 규정)
-            max_credits = 18  # 기본값
+            # 최대 신청 가능 학점 계산
+            max_credits = 19.5  # 기본값
             if previous_gpa >= 4.0:
-                max_credits = 21
-            elif previous_gpa >= 3.5:
-                max_credits = 19
-            
+                max_credits = 22.5
             max_credits += carried_over
 
             logger.debug(f"직전 평점: {previous_gpa}, 최대 신청 가능: {max_credits}학점")
@@ -430,7 +485,7 @@ class RusaintService:
     async def _fetch_remaining_credits(self, session: rusaint.USaintSession) -> RemainingCredits:
         """
         졸업까지 남은 이수 학점 정보를 조회합니다.
-        
+
         **학점 정보만 조회**: 과목별 상세 정보는 제외
         """
         try:
@@ -447,45 +502,30 @@ class RusaintService:
             general_required = 0
             general_elective = 0
 
-            # requirements.requirements가 리스트인지 딕셔너리인지 확인
+            # requirements.requirements는 딕셔너리
             if isinstance(requirements.requirements, dict):
-                # 딕셔너리인 경우
                 for key, req in requirements.requirements.items():
-                    category = str(key).lower() if isinstance(key, str) else ""
-                    remaining = 0
-                    
-                    # remaining 필드 확인
-                    for attr in ['remaining', 'left', 'required']:
-                        if hasattr(req, attr):
-                            value = getattr(req, attr)
-                            if value is not None and value > 0:
-                                remaining = int(value)
-                                break
+                    key_lower = str(key).lower()
+
+                    # difference 필드 확인 (음수면 부족한 학점)
+                    diff = getattr(req, 'difference', None)
+                    if diff is None:
+                        continue
+
+                    # 음수면 절대값 (부족한 학점), 양수면 0 (이미 충족)
+                    remaining = int(abs(diff)) if diff < 0 else 0
 
                     # 카테고리별 분류
-                    if '전공필수' in category or 'major_required' in category:
-                        major_required = remaining
-                    elif '전공선택' in category or 'major_elective' in category:
-                        major_elective = remaining
-                    elif '교양필수' in category or 'general_required' in category:
-                        general_required = remaining
-                    elif '교양선택' in category or 'general_elective' in category:
-                        general_elective = remaining
-            elif isinstance(requirements.requirements, list):
-                # 리스트인 경우
-                for req in requirements.requirements:
-                    if hasattr(req, 'category') and hasattr(req, 'remaining'):
-                        category = str(req.category).lower()
-                        remaining = req.remaining if req.remaining > 0 else 0
+                    if '전필' in key_lower:
+                        major_required += remaining
+                    elif '전선' in key_lower or '전공선택' in key_lower:
+                        major_elective += remaining
+                    elif '교필' in key_lower or '교양필수' in key_lower:
+                        general_required += remaining
+                    elif '교선' in key_lower or '교양선택' in key_lower:
+                        general_elective += remaining
 
-                        if '전공필수' in category or 'major required' in category:
-                            major_required = remaining
-                        elif '전공선택' in category or 'major elective' in category:
-                            major_elective = remaining
-                        elif '교양필수' in category or 'general required' in category:
-                            general_required = remaining
-                        elif '교양선택' in category or 'general elective' in category:
-                            general_elective = remaining
+                    logger.debug(f"졸업요건: {key} - diff={diff}, remaining={remaining}")
 
             logger.debug(f"남은 졸업 학점 - 전필:{major_required} 전선:{major_elective} 교필:{general_required} 교선:{general_elective}")
 

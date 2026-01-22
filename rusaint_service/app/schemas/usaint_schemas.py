@@ -29,7 +29,7 @@ class TakenCourse(BaseModel):
     """학기별 수강 과목 정보"""
 
     year: int = Field(..., description="기준 학년도 (예: 2024)")
-    semester: int = Field(..., ge=1, le=2, description="학기 (1: 1학기, 2: 2학기)")
+    semester: str = Field(..., description="학기 ('1': 1학기, '2': 2학기, 'SUMMER': 여름학기, 'WINTER': 겨울학기)")
     subjectCodes: list[str] = Field(default_factory=list, description="해당 학기 수강 과목 코드 리스트")
 
 
@@ -68,7 +68,7 @@ class AvailableCredits(BaseModel):
 
     previousGpa: float = Field(..., description="직전 학기 평점")
     carriedOverCredits: int = Field(..., description="이월 학점")
-    maxAvailableCredits: int = Field(..., description="이번 학기 최대 신청 가능 학점")
+    maxAvailableCredits: float = Field(..., description="이번 학기 최대 신청 가능 학점 (소수점 포함 가능)")
 
 
 class BasicInfo(BaseModel):
