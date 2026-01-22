@@ -13,10 +13,10 @@ from typing import Optional
 # ============================================================
 
 
-class UsaintSyncRequest(BaseModel):
-    """유세인트 데이터 동기화 요청"""
+class UsaintSnapshotRequest(BaseModel):
+    """유세인트 데이터 스냅샷 요청"""
 
-    studentId: str = Field(..., min_length=8, max_length=8, description="학번 (8자리)")
+    studentId: str = Field(..., pattern=r"^\d{8}$", description="학번 (8자리 숫자)")
     sToken: str = Field(..., min_length=1, description="SSO 토큰")
 
 
