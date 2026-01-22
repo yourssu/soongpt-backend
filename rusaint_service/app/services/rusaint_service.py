@@ -8,7 +8,6 @@ from app.schemas.usaint_schemas import (
     UsaintSnapshotResponse,
     TakenCourse,
     LowGradeSubjectCodes,
-    GradeBandSubjectCodes,
     Flags,
     AvailableCredits,
     BasicInfo,
@@ -243,7 +242,6 @@ class RusaintService:
 
         Args:
             session: 유세인트 세션
-            grad_app: 졸업요건 애플리케이션 (이수구분 판정용)
         """
         try:
             # CourseGradesApplication 생성
@@ -253,9 +251,9 @@ class RusaintService:
             # 학기별 성적 정보 조회 (학부생 과정)
             semesters = await app.semesters(rusaint.CourseType.BACHELOR)
 
-            # 저성적 과목 분류
-            pass_low_dict = {"major_required": [], "major_elective": [], "general_required": [], "general_elective": []}
-            fail_dict = {"major_required": [], "major_elective": [], "general_required": [], "general_elective": []}
+            # 저성적 과목 코드 리스트 (이수구분 없이 과목 코드만)
+            pass_low_codes = []
+            fail_codes = []
 
             for semester_grade in semesters:
                 # 각 학기의 수업 목록 조회 (성적 포함, 상세정보 제외)
@@ -273,144 +271,39 @@ class RusaintService:
                         continue
 
                     rank_str = str(rank).upper().strip()
+                    code = cls.code
 
                     # 성적이 F인 경우
-                    if rank_str == settings.FAIL_GRADE:
-                        await self._classify_subject_by_type(grad_app, cls, fail_dict)
+                    if rank_str == "F":
+                        fail_codes.append(code)
                     # 성적이 C 또는 D인 경우 (P/F 제외)
-                    elif rank_str in settings.LOW_GRADE_RANKS:
-                        await self._classify_subject_by_type(grad_app, cls, pass_low_dict)
+                    elif rank_str in ["C+", "C0", "C-", "D+", "D0", "D-"]:
+                        pass_low_codes.append(code)
 
-            logger.debug(f"저성적 과목: C/D {sum(len(v) for v in pass_low_dict.values())}개, F {sum(len(v) for v in fail_dict.values())}개")
+            logger.debug(f"저성적 과목: C/D {len(pass_low_codes)}개, F {len(fail_codes)}개")
 
             return LowGradeSubjectCodes(
-                passLow=GradeBandSubjectCodes(
-                    majorRequired=pass_low_dict["major_required"],
-                    majorElective=pass_low_dict["major_elective"],
-                    generalRequired=pass_low_dict["general_required"],
-                    generalElective=pass_low_dict["general_elective"],
-                ),
-                fail=GradeBandSubjectCodes(
-                    majorRequired=fail_dict["major_required"],
-                    majorElective=fail_dict["major_elective"],
-                    generalRequired=fail_dict["general_required"],
-                    generalElective=fail_dict["general_elective"],
-                ),
+                passLow=pass_low_codes,
+                fail=fail_codes,
             )
         except Exception as e:
             logger.warning(f"저성적 과목 조회 실패 (선택 정보): {type(e).__name__}")
             # 실패 시 빈 데이터 반환 (필수 정보가 아님)
             return LowGradeSubjectCodes(
-                passLow=GradeBandSubjectCodes(
-                    majorRequired=[],
-                    majorElective=[],
-                    generalRequired=[],
-                    generalElective=[],
-                ),
-                fail=GradeBandSubjectCodes(
-                    majorRequired=[],
-                    majorElective=[],
-                    generalRequired=[],
-                    generalElective=[],
-                ),
+                passLow=[],
+                fail=[],
             )
 
-    async def _get_course_category(
-        self,
-        grad_app,
-        course_code: str,
-        course_name: str,
-    ) -> str:
-        """
-        졸업요건 정보를 기반으로 과목의 이수구분을 결정합니다.
-
-        Args:
-            grad_app: 졸업요건 애플리케이션
-            course_code: 과목 코드
-            course_name: 과목명
-
-        Returns:
-            "major_required" | "major_elective" | "general_required" | "general_elective"
-        """
-        try:
-            requirements = await grad_app.requirements()
-
-            if not hasattr(requirements, 'requirements') or not requirements.requirements:
-                return "major_elective"  # Fallback
-
-            # 과목명 정제 (대괄호 제거)
-            import re
-            course_name_clean = re.sub(r'\[.*?\]', '', course_name).strip()
-
-            # 우선순위: 구체적인 카테고리 먼저 확인
-            priority_categories = {
-                "교양필수": "general_required",
-                "교양선택": "general_elective",
-                "전공": None,  # 세부 구분 필요
-                "전공기초": "major_required",
-            }
-
-            # 각 category별로 lectures를 확인하여 매칭
-            for key, req in requirements.requirements.items():
-                category = req.category
-
-                # 우선순위 카테고리만 확인
-                if category not in priority_categories:
-                    continue
-
-                # lectures에서 과목명으로 매칭
-                for lecture_name in req.lectures:
-                    # 접두사 제거 및 정제
-                    clean_lecture = re.sub(r'^\(.*?\)', '', lecture_name).strip()
-                    clean_lecture = re.sub(r'^\xa0', '', clean_lecture).strip()
-
-                    if not clean_lecture or not course_name_clean:
-                        continue
-
-                    # 부분 문자열 매칭
-                    if (clean_lecture in course_name_clean or
-                        course_name_clean in clean_lecture or
-                        clean_lecture.replace(' ', '') in course_name_clean.replace(' ', '')):
-
-                        # "전공" 카테고리는 세부 구분 필요
-                        if category == "전공":
-                            # requirement name에서 전필/전선 구분
-                            if "전필" in key or "전공필수" in key:
-                                return "major_required"
-                            else:
-                                return "major_elective"
-
-                        return priority_categories[category]
-
-            # 매칭 실패 시 기본값
-            return "major_elective"
-
-        except Exception as e:
-            logger.debug(f"이수구분 분류 실패 ({course_code}): {type(e).__name__}")
-            return "major_elective"  # Fallback
-
-    async def _classify_subject_by_type(
-        self,
-        grad_app,
-        cls,
-        target_dict: Dict[str, List[str]],
-    ):
-        """
-        졸업요건 정보를 기반으로 과목을 이수구분에 따라 분류합니다.
-
-        Args:
-            grad_app: 졸업요건 애플리케이션
-            cls: 과목 정보
-            target_dict: 분류 결과를 저장할 딕셔너리
-        """
-        code = cls.code
-        course_name = cls.class_name
-
-        # 졸업요건에서 이수구분 조회
-        category_key = await self._get_course_category(grad_app, code, course_name)
-
-        # 분류
-        target_dict[category_key].append(code)
+    # ============================================================
+    # DEPRECATED: 이수구분 분류 로직은 Kotlin 서버로 이관
+    # ============================================================
+    # async def _get_course_category(...) - 제거됨
+    # async def _classify_subject_by_type(...) - 제거됨
+    #
+    # 이유: Course DB가 이미 이수구분 정보를 가지고 있으므로
+    #       Python에서 불완전한 휴리스틱으로 분류하는 것보다
+    #       Kotlin에서 DB 조회로 정확하게 분류
+    # ============================================================
 
     async def _fetch_flags(self, session: rusaint.USaintSession) -> Flags:
         """
