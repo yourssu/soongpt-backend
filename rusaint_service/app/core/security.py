@@ -53,7 +53,7 @@ async def verify_internal_jwt(
             headers={"WWW-Authenticate": "Bearer"},
         )
     except jwt.InvalidTokenError as e:
-        logger.error(f"유효하지 않은 JWT 토큰: {str(e)}")
+        logger.error(f"유효하지 않은 JWT 토큰: error_type={type(e).__name__}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid internal JWT token",
