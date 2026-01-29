@@ -70,8 +70,8 @@ Content-Type: application/json
     }
   ],
   "lowGradeSubjectCodes": {
-    "passLow": ["21003", "21004"],
-    "fail": ["21005"]
+    "passLow": ["21001", "21002"],
+    "fail": ["21010"]
   },
   "flags": {
     "doubleMajorDepartment": "컴퓨터학부",
@@ -314,16 +314,17 @@ Content-Type: application/json
 
 ##### GraduationRequirementItem (개별 졸업 요건)
 
-| 필드        | 타입    | 설명                          | 예시                   |
-| ----------- | ------- | ----------------------------- | ---------------------- |
-| name        | string  | 졸업 요건 이름                | `"학부-교양필수 19"` |
-| requirement | int?    | 기준 학점 (**null 가능**: 학점 요구사항이 없는 경우) | `19` or `null` |
-| calculation | float?  | 현재 이수 학점 (**null 가능**: 계산 불가능한 경우) | `17.0` or `null` |
-| difference  | float?  | 차이 (이수-기준, 음수면 부족, **null 가능**) | `-2.0` or `null` |
-| result      | boolean | 충족 여부                     | `false`              |
-| category    | string  | 이수구분                      | `"교양필수"`         |
+| 필드        | 타입    | 설명                                                       | 예시                   |
+| ----------- | ------- | ---------------------------------------------------------- | ---------------------- |
+| name        | string  | 졸업 요건 이름                                             | `"학부-교양필수 19"` |
+| requirement | int?    | 기준 학점 (**null 가능**: 학점 요구사항이 없는 경우) | `19` or `null`     |
+| calculation | float?  | 현재 이수 학점 (**null 가능**: 계산 불가능한 경우)   | `17.0` or `null`   |
+| difference  | float?  | 차이 (이수-기준, 음수면 부족,**null 가능**)          | `-2.0` or `null`   |
+| result      | boolean | 충족 여부                                                  | `false`              |
+| category    | string  | 이수구분                                                   | `"교양필수"`         |
 
 > **Note**: `requirement`, `calculation`, `difference` 필드는 `null` 값을 가질 수 있습니다.
+>
 > - **졸업논문**, **어학시험** 등 학점이 아닌 요건의 경우 `null`이 반환됩니다.
 > - 빈 배열(`[]`)이 반환될 수도 있으므로 클라이언트에서 처리 필요합니다.
 
@@ -376,13 +377,14 @@ Academic API + Graduation API (병렬 호출)
 
 ### Timeout 설정
 
-| API | 정상 응답 시간 | 권장 Timeout | 최대 Timeout |
-|-----|-------------|-------------|-------------|
-| Academic | 4-5초 | 8초 | 10초 |
-| Graduation | 5-6초 | 8초 | 10초 |
-| 전체 (조합) | 9.5-11초 | 15초 | 20초 |
+| API         | 정상 응답 시간 | 권장 Timeout | 최대 Timeout |
+| ----------- | -------------- | ------------ | ------------ |
+| Academic    | 4-5초          | 8초          | 10초         |
+| Graduation  | 5-6초          | 8초          | 10초         |
+| 전체 (조합) | 9.5-11초       | 15초         | 20초         |
 
 **권장 Timeout 설정 (Kotlin)**:
+
 ```kotlin
 private val restTemplate = restTemplateBuilder
     .rootUri(rusaintProperties.baseUrl)
