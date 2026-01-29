@@ -658,6 +658,47 @@ class RusaintService:
                 teaching=False,
             )
 
+    def _classify_remaining_credits(
+        self,
+        requirements_dict: dict
+    ) -> tuple[int, int, int, int]:
+        """
+        졸업 요건 딕셔너리에서 카테고리별 남은 학점을 계산합니다.
+
+        Args:
+            requirements_dict: rusaint requirements.requirements 딕셔너리
+
+        Returns:
+            tuple: (major_required, major_elective, general_required, general_elective)
+        """
+        major_required = 0
+        major_elective = 0
+        general_required = 0
+        general_elective = 0
+
+        for key, req in requirements_dict.items():
+            key_lower = str(key).lower()
+            
+            # difference 필드 확인 (음수면 부족한 학점)
+            diff = getattr(req, 'difference', None)
+            if diff is None:
+                continue
+
+            # 음수면 절대값 (부족한 학점), 양수면 0 (이미 충족)
+            remaining = int(abs(diff)) if diff < 0 else 0
+
+            # 카테고리별 분류
+            if '전필' in key_lower:
+                major_required += remaining
+            elif '전선' in key_lower or '전공선택' in key_lower:
+                major_elective += remaining
+            elif '교필' in key_lower or '교양필수' in key_lower:
+                general_required += remaining
+            elif '교선' in key_lower or '교양선택' in key_lower:
+                general_elective += remaining
+
+        return (major_required, major_elective, general_required, general_elective)
+
     async def _fetch_graduation_requirements(self, grad_app) -> GraduationRequirements:
         """
         졸업 요건 상세 정보를 조회합니다.
@@ -677,21 +718,20 @@ class RusaintService:
             # 개별 요건 리스트
             requirement_list = []
 
-            # 남은 학점 요약 (하위 호환성)
-            major_required = 0
-            major_elective = 0
-            general_required = 0
-            general_elective = 0
-
             # requirements.requirements는 딕셔너리
             if isinstance(requirements.requirements, dict):
+                # 남은 학점 계산 (헬퍼 메서드 사용)
+                major_required, major_elective, general_required, general_elective = \
+                    self._classify_remaining_credits(requirements.requirements)
+
+                # 개별 요건 파싱
                 for key, req in requirements.requirements.items():
                     # 필드 추출 (rusaint GraduationRequirement 객체)
                     # key 예시: "학부-교양필수 19"
                     name = str(key)
                     requirement_value = getattr(req, 'requirement', None)
-                    # 주의: rusaint 라이브러리의 오타 "calcuation" 그대로 사용
-                    calculation_value = getattr(req, 'calcuation', None)
+                    # rusaint 0.14.0 이전 버전의 오타 "calcuation" 호환 지원
+                    calculation_value = getattr(req, 'calculation', None) or getattr(req, 'calcuation', None)
                     difference_value = getattr(req, 'difference', None)
                     result_value = getattr(req, 'result', False)
                     category = getattr(req, 'category', str(key))
@@ -709,27 +749,21 @@ class RusaintService:
                         )
                     )
 
-                    # 남은 학점 계산 (기존 로직 유지)
-                    key_lower = name.lower()
-                    if difference_value is not None:
-                        remaining = int(abs(difference_value)) if difference_value < 0 else 0
-
-                        if '전필' in key_lower:
-                            major_required += remaining
-                        elif '전선' in key_lower or '전공선택' in key_lower:
-                            major_elective += remaining
-                        elif '교필' in key_lower or '교양필수' in key_lower:
-                            general_required += remaining
-                        elif '교선' in key_lower or '교양선택' in key_lower:
-                            general_elective += remaining
-
-            # 남은 학점 요약
-            remaining_credits = RemainingCredits(
-                majorRequired=major_required,
-                majorElective=major_elective,
-                generalRequired=general_required,
-                generalElective=general_elective,
-            )
+                # 남은 학점 요약
+                remaining_credits = RemainingCredits(
+                    majorRequired=major_required,
+                    majorElective=major_elective,
+                    generalRequired=general_required,
+                    generalElective=general_elective,
+                )
+            else:
+                # requirements가 딕셔너리가 아닌 경우 빈 결과 반환
+                remaining_credits = RemainingCredits(
+                    majorRequired=0,
+                    majorElective=0,
+                    generalRequired=0,
+                    generalElective=0,
+                )
 
             return GraduationRequirements(
                 requirements=requirement_list,
@@ -746,6 +780,9 @@ class RusaintService:
 
         **학점 정보만 조회**: 과목별 상세 정보는 제외
         **Deprecated**: _fetch_graduation_requirements 사용 권장
+        
+        **Note**: 기존 /snapshot API의 하위 호환성 유지를 위해 존재합니다.
+                  신규 코드에서는 _fetch_graduation_requirements()를 사용하세요.
 
         Args:
             grad_app: 졸업요건 애플리케이션 (중복 API 호출 방지)
@@ -754,34 +791,13 @@ class RusaintService:
             # 졸업 요건 조회
             requirements = await grad_app.requirements()
 
-            # 남은 학점 추출
-            major_required = 0
-            major_elective = 0
-            general_required = 0
-            general_elective = 0
-
             # requirements.requirements는 딕셔너리
             if isinstance(requirements.requirements, dict):
-                for key, req in requirements.requirements.items():
-                    key_lower = str(key).lower()
-
-                    # difference 필드 확인 (음수면 부족한 학점)
-                    diff = getattr(req, 'difference', None)
-                    if diff is None:
-                        continue
-
-                    # 음수면 절대값 (부족한 학점), 양수면 0 (이미 충족)
-                    remaining = int(abs(diff)) if diff < 0 else 0
-
-                    # 카테고리별 분류
-                    if '전필' in key_lower:
-                        major_required += remaining
-                    elif '전선' in key_lower or '전공선택' in key_lower:
-                        major_elective += remaining
-                    elif '교필' in key_lower or '교양필수' in key_lower:
-                        general_required += remaining
-                    elif '교선' in key_lower or '교양선택' in key_lower:
-                        general_elective += remaining
+                # 헬퍼 메서드로 학점 분류
+                major_required, major_elective, general_required, general_elective = \
+                    self._classify_remaining_credits(requirements.requirements)
+            else:
+                major_required = major_elective = general_required = general_elective = 0
 
             return RemainingCredits(
                 majorRequired=major_required,
