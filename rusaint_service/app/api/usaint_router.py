@@ -131,7 +131,8 @@ async def fetch_usaint_graduation_info(
     유세인트 졸업사정표 정보를 조회합니다.
 
     포함 데이터:
-    - 남은 졸업 학점 (remainingCredits)
+    - 개별 졸업 요건 상세 정보 (requirements: 이름, 기준학점, 이수학점, 차이, 충족여부, 카테고리)
+    - 남은 졸업 학점 요약 (remainingCredits: 하위 호환성)
 
     내부 JWT 인증이 필요합니다.
     """
