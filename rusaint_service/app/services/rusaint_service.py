@@ -58,54 +58,41 @@ class RusaintService:
 
         session: Optional[rusaint.USaintSession] = None
         try:
-            # 1. SSO 토큰으로 세션 생성 (타임아웃 적용)
-            t1 = time.time()
-            session = await self._create_session(student_id, s_token)
-            logger.info(f"[성능] 세션 생성: {time.time() - t1:.2f}초")
+            # 1. SSO 토큰으로 세션 4개 병렬 생성
+            session_grad, session_course1, session_course2, session_student = await asyncio.gather(
+                self._create_session(student_id, s_token),
+                self._create_session(student_id, s_token),
+                self._create_session(student_id, s_token),
+                self._create_session(student_id, s_token),
+            )
 
-            # 2. Application 객체 생성 (2+1 전략: 안정성 확보)
-            t2 = time.time()
-
+            # 2. Application 4개 병렬 생성 (GraduationRequirements, CourseGrades x2, StudentInformation)
             try:
-                # 핵심 2개는 병렬로
-                logger.debug("Application 생성 시작: GraduationRequirements + CourseGrades (병렬)")
-                grad_app, course_grades_app = await asyncio.gather(
-                    self._get_graduation_app(session),
-                    self._get_course_grades_app(session),
+                grad_app, course_grades_app1, course_grades_app2, student_info_app = await asyncio.gather(
+                    self._get_graduation_app(session_grad),
+                    self._get_course_grades_app(session_course1),
+                    self._get_course_grades_app(session_course2),
+                    self._get_student_info_app(session_student),
                 )
-                logger.debug("병렬 생성 완료")
-
-                # 짧은 딜레이로 서버 안정화
-                await asyncio.sleep(0.08)
-
-                # 마지막 1개는 순차로
-                logger.debug("Application 생성 시작: StudentInformation (순차)")
-                student_info_app = await self._get_student_info_app(session)
-                logger.debug("순차 생성 완료")
-
-                logger.info(f"[성능] Application 생성 (2+1): {time.time() - t2:.2f}초")
             except Exception as e:
                 logger.error(
-                    f"Application 생성 실패: {type(e).__name__}\n"
-                    f"에러 메시지: {str(e)}",
+                    f"Application 생성 실패: {type(e).__name__} - {str(e)}",
                     exc_info=True
                 )
                 raise
 
-            # 3. 각 Application으로 데이터 병렬 조회
-            t3 = time.time()
+            # 3. 데이터 병렬 조회
             (
                 basic_info,
                 (taken_courses, low_grade_codes, available_credits),
                 flags,
                 remaining_credits,
             ) = await asyncio.gather(
-                self._fetch_basic_info(grad_app),
-                self._fetch_all_course_data(course_grades_app),  # 통합!
+                self._fetch_basic_info(student_info_app),
+                self._fetch_all_course_data_parallel(course_grades_app1, course_grades_app2),
                 self._fetch_flags(student_info_app),
                 self._fetch_remaining_credits(grad_app),
             )
-            logger.info(f"[성능] 데이터 조회 (병렬): {time.time() - t3:.2f}초")
 
             total_time = time.time() - start_time
             logger.info(f"유세인트 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)")
@@ -140,13 +127,202 @@ class RusaintService:
             )
             raise
         finally:
-            # 세션 명시적 종료
-            if session and hasattr(session, 'close'):
+            # 모든 세션 명시적 종료
+            sessions = []
+            if 'session_grad' in locals():
+                sessions.append(('grad', session_grad))
+            if 'session_course1' in locals():
+                sessions.append(('course1', session_course1))
+            if 'session_course2' in locals():
+                sessions.append(('course2', session_course2))
+            if 'session_student' in locals():
+                sessions.append(('student', session_student))
+
+            for name, sess in sessions:
+                if sess and hasattr(sess, 'close'):
+                    try:
+                        await sess.close()
+                    except Exception as e:
+                        logger.warning(f"세션 종료 중 오류 ({name}): {type(e).__name__}")
+
+    async def fetch_usaint_snapshot_academic(
+        self,
+        student_id: str,
+        s_token: str,
+    ) -> dict:
+        """
+        학적/성적 이력 조회 (졸업사정표 제외, 약 4-5초)
+
+        포함 데이터:
+        - 수강 내역 (takenCourses)
+        - 저성적 과목 (lowGradeSubjectCodes)
+        - 신청 가능 학점 (availableCredits)
+        - 복수전공/교직 정보 (flags)
+        - 기본 정보 (basicInfo)
+
+        Args:
+            student_id: 학번
+            s_token: SSO 토큰
+
+        Returns:
+            dict: 학적/성적 이력 데이터
+        """
+        start_time = time.time()
+        logger.info(f"유세인트 Academic 데이터 조회 시작: student_id={student_id[:4]}****")
+
+        try:
+            # 1. 세션 3개 병렬 생성 (GraduationRequirements 제외!)
+            session_course1, session_course2, session_student = await asyncio.gather(
+                self._create_session(student_id, s_token),
+                self._create_session(student_id, s_token),
+                self._create_session(student_id, s_token),
+            )
+
+            # 2. Application 3개 병렬 생성
+            try:
+                course_grades_app1, course_grades_app2, student_info_app = await asyncio.gather(
+                    self._get_course_grades_app(session_course1),
+                    self._get_course_grades_app(session_course2),
+                    self._get_student_info_app(session_student),
+                )
+            except Exception as e:
+                logger.error(
+                    f"Application 생성 실패: {type(e).__name__} - {str(e)}",
+                    exc_info=True
+                )
+                raise
+
+            # 3. 데이터 병렬 조회
+            (
+                basic_info,
+                (taken_courses, low_grade_codes, available_credits),
+                flags,
+            ) = await asyncio.gather(
+                self._fetch_basic_info(student_info_app),
+                self._fetch_all_course_data_parallel(course_grades_app1, course_grades_app2),
+                self._fetch_flags(student_info_app),
+            )
+
+            total_time = time.time() - start_time
+            logger.info(f"유세인트 Academic 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)")
+
+            return {
+                "takenCourses": taken_courses,
+                "lowGradeSubjectCodes": low_grade_codes,
+                "flags": flags,
+                "availableCredits": available_credits,
+                "basicInfo": basic_info,
+            }
+
+        except rusaint.RusaintError as e:
+            logger.error(
+                f"Rusaint 오류 (student_id={student_id[:4]}****): {type(e).__name__}\n"
+                f"에러 메시지: {str(e)}",
+                exc_info=True
+            )
+            raise ValueError("유세인트 로그인에 실패했습니다. SSO 토큰을 확인해주세요.")
+        except ValueError as e:
+            logger.error(f"SSO 토큰 오류 (student_id={student_id[:4]}****): {str(e)}")
+            raise
+        except asyncio.TimeoutError:
+            logger.error(f"유세인트 연결 시간 초과 (student_id={student_id[:4]}****)")
+            raise ValueError("유세인트 연결 시간이 초과되었습니다.")
+        except Exception as e:
+            logger.error(
+                f"유세인트 Academic 데이터 조회 중 오류 발생 (student_id={student_id[:4]}****): {type(e).__name__}\n"
+                f"에러 메시지: {str(e)}",
+                exc_info=True
+            )
+            raise
+        finally:
+            # 모든 세션 명시적 종료
+            sessions = []
+            if 'session_course1' in locals():
+                sessions.append(('course1', session_course1))
+            if 'session_course2' in locals():
+                sessions.append(('course2', session_course2))
+            if 'session_student' in locals():
+                sessions.append(('student', session_student))
+
+            for name, sess in sessions:
+                if sess and hasattr(sess, 'close'):
+                    try:
+                        await sess.close()
+                    except Exception as e:
+                        logger.warning(f"세션 종료 중 오류 ({name}): {type(e).__name__}")
+
+    async def fetch_usaint_graduation_info(
+        self,
+        student_id: str,
+        s_token: str,
+    ) -> dict:
+        """
+        졸업사정표 정보 조회 (약 5-6초)
+
+        포함 데이터:
+        - 남은 졸업 학점 (remainingCredits)
+
+        Args:
+            student_id: 학번
+            s_token: SSO 토큰
+
+        Returns:
+            dict: 졸업사정표 데이터
+        """
+        start_time = time.time()
+        logger.info(f"유세인트 Graduation 데이터 조회 시작: student_id={student_id[:4]}****")
+
+        try:
+            # 1. 세션 1개 생성
+            session_grad = await self._create_session(student_id, s_token)
+
+            # 2. GraduationRequirements Application 생성
+            try:
+                grad_app = await self._get_graduation_app(session_grad)
+            except Exception as e:
+                logger.error(
+                    f"Application 생성 실패: {type(e).__name__} - {str(e)}",
+                    exc_info=True
+                )
+                raise
+
+            # 3. 남은 졸업 학점 조회
+            remaining_credits = await self._fetch_remaining_credits(grad_app)
+
+            total_time = time.time() - start_time
+            logger.info(f"유세인트 Graduation 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)")
+
+            return {
+                "remainingCredits": remaining_credits,
+            }
+
+        except rusaint.RusaintError as e:
+            logger.error(
+                f"Rusaint 오류 (student_id={student_id[:4]}****): {type(e).__name__}\n"
+                f"에러 메시지: {str(e)}",
+                exc_info=True
+            )
+            raise ValueError("유세인트 로그인에 실패했습니다. SSO 토큰을 확인해주세요.")
+        except ValueError as e:
+            logger.error(f"SSO 토큰 오류 (student_id={student_id[:4]}****): {str(e)}")
+            raise
+        except asyncio.TimeoutError:
+            logger.error(f"유세인트 연결 시간 초과 (student_id={student_id[:4]}****)")
+            raise ValueError("유세인트 연결 시간이 초과되었습니다.")
+        except Exception as e:
+            logger.error(
+                f"유세인트 Graduation 데이터 조회 중 오류 발생 (student_id={student_id[:4]}****): {type(e).__name__}\n"
+                f"에러 메시지: {str(e)}",
+                exc_info=True
+            )
+            raise
+        finally:
+            # 세션 종료
+            if 'session_grad' in locals() and session_grad and hasattr(session_grad, 'close'):
                 try:
-                    await session.close()
-                    logger.debug("유세인트 세션 종료 완료")
+                    await session_grad.close()
                 except Exception as e:
-                    logger.warning(f"세션 종료 중 오류: {type(e).__name__}")
+                    logger.warning(f"세션 종료 중 오류 (grad): {type(e).__name__}")
 
     # ============================================================
     # Private Methods - rusaint 라이브러리 실제 구현
@@ -173,7 +349,6 @@ class RusaintService:
                 builder.with_token(student_id, s_token),
                 timeout=settings.rusaint_timeout,
             )
-            logger.debug(f"유세인트 세션 생성 완료: student_id={student_id[:4]}****")
             return session
         except asyncio.TimeoutError:
             logger.error(f"세션 생성 시간 초과 (student_id={student_id[:4]}****)")
@@ -200,7 +375,6 @@ class RusaintService:
         """
         grad_builder = rusaint.GraduationRequirementsApplicationBuilder()
         grad_app = await grad_builder.build(session)
-        logger.debug("GraduationRequirementsApplication 생성 완료")
         return grad_app
 
     async def _get_course_grades_app(self, session: rusaint.USaintSession):
@@ -217,7 +391,6 @@ class RusaintService:
         """
         app_builder = rusaint.CourseGradesApplicationBuilder()
         app = await app_builder.build(session)
-        logger.debug("CourseGradesApplication 생성 완료")
         return app
 
     async def _get_student_info_app(self, session: rusaint.USaintSession):
@@ -234,10 +407,9 @@ class RusaintService:
         """
         app_builder = rusaint.StudentInformationApplicationBuilder()
         app = await app_builder.build(session)
-        logger.debug("StudentInformationApplication 생성 완료")
         return app
 
-    async def _fetch_basic_info(self, grad_app) -> BasicInfo:
+    async def _fetch_basic_info(self, student_info_app) -> BasicInfo:
         """
         기본 학적 정보를 조회합니다.
 
@@ -245,67 +417,92 @@ class RusaintService:
         **휴학/엇학기/졸업유예 고려**: 계산이 아니라 유세인트에서 직접 크롤링
 
         Args:
-            grad_app: 졸업요건 애플리케이션 (중복 API 호출 방지)
+            student_info_app: 학생정보 애플리케이션
         """
         try:
-            grad_student = await grad_app.student_info()
+            student_info = await student_info_app.general()
 
-            # 입학년도, 현재 학년, 재학 누적 학기 (유세인트에서 직접 제공)
-            admission_year = grad_student.apply_year  # 입학년도
-            grade = grad_student.grade  # 현재 학년 (휴학/엇학기 고려됨)
-            semester = grad_student.semester  # 재학 누적 학기
+            # 입학년도, 현재 학년, 재학 누적 학기
+            admission_year = getattr(student_info, 'apply_year', None) or getattr(student_info, 'admission_year', 2020)
+            grade = getattr(student_info, 'grade', 1)
+            semester = getattr(student_info, 'semester', 1)
 
-            # 학과 정보 (majors 리스트에서 첫 번째 전공)
-            department = grad_student.majors[0] if grad_student.majors else "알 수 없음"
-
-            logger.debug(f"기본 정보: {admission_year}학번 {grade}학년 {semester}학기, {department}")
+            # 학과 정보
+            department = getattr(student_info, 'major', None) or getattr(student_info, 'department', "알 수 없음")
+            if hasattr(student_info, 'majors') and student_info.majors:
+                department = student_info.majors[0]
 
             return BasicInfo(
-                year=admission_year,  # 입학년도
-                grade=grade,  # 현재 학년 (유세인트에서 직접 제공)
-                semester=semester,  # 재학 누적 학기 (유세인트에서 직접 제공)
+                year=admission_year,
+                grade=grade,
+                semester=semester,
                 department=department,
             )
         except Exception as e:
             logger.error(f"기본 학적 정보 조회 실패: {type(e).__name__}")
             raise
 
-    async def _fetch_all_course_data(
+    async def _fetch_all_course_data_parallel(
         self,
-        course_grades_app,
+        course_grades_app1,
+        course_grades_app2,
     ) -> tuple[list[TakenCourse], LowGradeSubjectCodes, AvailableCredits]:
         """
-        CourseGradesApplication을 재사용하여 모든 성적 관련 데이터를 조회합니다.
+        2개의 CourseGradesApplication으로 학기를 나눠서 병렬 조회합니다.
 
-        **최대 최적화**: Application 재사용 + semesters() 한 번만 호출
-        - 수강 내역 (takenCourses)
-        - 저성적 과목 (lowGradeSubjectCodes)
-        - 신청 가능 학점 (availableCredits)
+        **최대 성능 최적화**:
+        - App 1: 학기 전반부 담당
+        - App 2: 학기 후반부 담당
+        - 진짜 병렬 처리로 classes() 호출 시간 단축!
 
         Args:
-            course_grades_app: CourseGradesApplication 인스턴스
+            course_grades_app1: CourseGradesApplication 인스턴스 #1
+            course_grades_app2: CourseGradesApplication 인스턴스 #2
 
         Returns:
             tuple: (taken_courses, low_grade_codes, available_credits)
         """
         try:
-            # 학기별 성적 정보 조회 (한 번만!)
-            semesters = await course_grades_app.semesters(rusaint.CourseType.BACHELOR)
+            # 먼저 App 1에서 학기 목록 조회
+            semesters = await course_grades_app1.semesters(rusaint.CourseType.BACHELOR)
 
             if not semesters:
                 raise ValueError("학기 정보가 없습니다")
 
-            # 🚀 핵심 최적화: 모든 학기의 classes를 병렬로 조회
-            tasks = [
-                course_grades_app.classes(
+            # 학기를 2개 그룹으로 분할하여 각 Application에서 병렬 조회
+            mid_point = len(semesters) // 2
+            semesters_group1 = semesters[:mid_point]
+            semesters_group2 = semesters[mid_point:]
+
+            # 각 그룹별로 classes() 호출 준비
+            tasks_group1 = [
+                course_grades_app1.classes(
                     rusaint.CourseType.BACHELOR,
-                    semester_grade.year,
-                    semester_grade.semester,
+                    sem.year,
+                    sem.semester,
                     include_details=False,
                 )
-                for semester_grade in semesters
+                for sem in semesters_group1
             ]
-            all_semester_classes = await asyncio.gather(*tasks)
+
+            tasks_group2 = [
+                course_grades_app2.classes(
+                    rusaint.CourseType.BACHELOR,
+                    sem.year,
+                    sem.semester,
+                    include_details=False,
+                )
+                for sem in semesters_group2
+            ]
+
+            # 두 그룹을 병렬 실행
+            classes_group1, classes_group2 = await asyncio.gather(
+                asyncio.gather(*tasks_group1),
+                asyncio.gather(*tasks_group2),
+            )
+
+            # 결과 합치기
+            all_semester_classes = list(classes_group1) + list(classes_group2)
 
             taken_courses = []
             pass_low_codes = []
@@ -379,218 +576,11 @@ class RusaintService:
                 maxAvailableCredits=max_credits,
             )
 
-            logger.debug(
-                f"통합 조회 완료 - 수강: {len(taken_courses)}개 학기, "
-                f"저성적: C/D {len(pass_low_codes)}개 F {len(fail_codes)}개, "
-                f"평점: {previous_gpa}, 최대학점: {max_credits}"
-            )
-
             return taken_courses, low_grade_codes, available_credits
 
         except Exception as e:
-            logger.error(f"성적 관련 데이터 조회 실패: {type(e).__name__}")
+            logger.error(f"성적 관련 데이터 조회 실패 (병렬): {type(e).__name__}")
             raise
-
-    async def _fetch_courses_and_grades(
-        self,
-        session: rusaint.USaintSession,
-    ) -> tuple[list[TakenCourse], LowGradeSubjectCodes]:
-        """
-        수강 내역과 저성적 과목을 한 번에 조회합니다 (성능 최적화).
-
-        **DEPRECATED**: _fetch_all_course_data() 사용 권장
-        **중복 제거**: CourseGradesApplication과 semesters() API 호출을 한 번만 수행
-        **과목 코드만 조회**: 과목명, 교수명 등 민감정보는 제외
-        **계절학기 포함**: SUMMER(3), WINTER(4)로 구분
-
-        Returns:
-            tuple: (taken_courses, low_grade_codes)
-        """
-        try:
-            # CourseGradesApplication 생성 (한 번만)
-            app_builder = rusaint.CourseGradesApplicationBuilder()
-            app = await app_builder.build(session)
-
-            # 학기별 성적 정보 조회 (한 번만)
-            semesters = await app.semesters(rusaint.CourseType.BACHELOR)
-
-            taken_courses = []
-            pass_low_codes = []
-            fail_codes = []
-
-            for semester_grade in semesters:
-                # 각 학기의 수업 목록 조회 (상세 성적 제외)
-                classes = await app.classes(
-                    rusaint.CourseType.BACHELOR,
-                    semester_grade.year,
-                    semester_grade.semester,
-                    include_details=False,
-                )
-
-                # 과목 코드 추출
-                subject_codes = [cls.code for cls in classes]
-
-                # SemesterType 매핑
-                semester_str = self.SEMESTER_TYPE_MAP.get(semester_grade.semester, "1")
-
-                # 수강 내역 추가
-                taken_courses.append(
-                    TakenCourse(
-                        year=semester_grade.year,
-                        semester=semester_str,
-                        subjectCodes=subject_codes,
-                    )
-                )
-
-                # 저성적 과목 분류
-                for cls in classes:
-                    rank = getattr(cls, 'rank', None)
-                    if not rank:
-                        continue
-
-                    rank_str = str(rank).upper().strip()
-                    code = cls.code
-
-                    if rank_str == settings.FAIL_GRADE:
-                        fail_codes.append(code)
-                    elif rank_str in settings.LOW_GRADE_RANKS:
-                        pass_low_codes.append(code)
-
-            logger.debug(
-                f"수강 내역: {len(taken_courses)}개 학기, "
-                f"저성적: C/D {len(pass_low_codes)}개, F {len(fail_codes)}개"
-            )
-
-            low_grade_codes = LowGradeSubjectCodes(
-                passLow=pass_low_codes,
-                fail=fail_codes,
-            )
-
-            return taken_courses, low_grade_codes
-
-        except Exception as e:
-            logger.error(f"수강 내역/저성적 조회 실패: {type(e).__name__}")
-            raise
-
-    async def _fetch_taken_courses(self, session: rusaint.USaintSession) -> list[TakenCourse]:
-        """
-        수강 내역을 조회합니다.
-
-        **DEPRECATED**: _fetch_courses_and_grades() 사용 권장
-        **과목 코드만 조회**: 과목명, 교수명, 성적 등 민감정보는 제외
-        **계절학기 포함**: SUMMER(3), WINTER(4)로 구분
-        """
-        try:
-            # CourseGradesApplication 생성
-            app_builder = rusaint.CourseGradesApplicationBuilder()
-            app = await app_builder.build(session)
-
-            # 학기별 성적 정보 조회 (학부생 과정)
-            semesters = await app.semesters(rusaint.CourseType.BACHELOR)
-
-            taken_courses = []
-            for semester_grade in semesters:
-                # 각 학기의 수업 목록 조회 (상세 성적 제외)
-                classes = await app.classes(
-                    rusaint.CourseType.BACHELOR,
-                    semester_grade.year,
-                    semester_grade.semester,
-                    include_details=False,  # 상세 성적은 불필요
-                )
-
-                # 과목 코드만 추출 (과목명, 교수명 등은 제외)
-                subject_codes = [cls.code for cls in classes]
-
-                # SemesterType 매핑 (클래스 상수 사용)
-                semester_str = self.SEMESTER_TYPE_MAP.get(semester_grade.semester, "1")
-
-                taken_courses.append(
-                    TakenCourse(
-                        year=semester_grade.year,
-                        semester=semester_str,
-                        subjectCodes=subject_codes,
-                    )
-                )
-
-            logger.debug(f"수강 내역 조회 완료: {len(taken_courses)}개 학기 (계절학기 포함)")
-            return taken_courses
-        except Exception as e:
-            logger.error(f"수강 내역 조회 실패: {type(e).__name__}")
-            raise
-
-    async def _fetch_low_grade_subject_codes(
-        self,
-        session: rusaint.USaintSession,
-    ) -> LowGradeSubjectCodes:
-        """
-        저성적 과목 코드를 조회합니다.
-
-        **과목 코드만 조회**: 성적의 절대값(A+, B+ 등)은 C/D/F 판정에만 사용하고 저장하지 않음
-
-        Args:
-            session: 유세인트 세션
-        """
-        try:
-            # CourseGradesApplication 생성
-            app_builder = rusaint.CourseGradesApplicationBuilder()
-            app = await app_builder.build(session)
-
-            # 학기별 성적 정보 조회 (학부생 과정)
-            semesters = await app.semesters(rusaint.CourseType.BACHELOR)
-
-            # 저성적 과목 코드 리스트 (이수구분 없이 과목 코드만)
-            pass_low_codes = []
-            fail_codes = []
-
-            for semester_grade in semesters:
-                # 각 학기의 수업 목록 조회 (성적 포함, 상세정보 제외)
-                classes = await app.classes(
-                    rusaint.CourseType.BACHELOR,
-                    semester_grade.year,
-                    semester_grade.semester,
-                    include_details=False,
-                )
-
-                for cls in classes:
-                    # rank 필드에서 성적 등급 확인 (F, C+, D0 등)
-                    rank = getattr(cls, 'rank', None)
-                    if not rank:
-                        continue
-
-                    rank_str = str(rank).upper().strip()
-                    code = cls.code
-
-                    # 성적이 F인 경우
-                    if rank_str == settings.FAIL_GRADE:
-                        fail_codes.append(code)
-                    # 성적이 C 또는 D인 경우 (P/F 제외)
-                    elif rank_str in settings.LOW_GRADE_RANKS:
-                        pass_low_codes.append(code)
-
-            logger.debug(f"저성적 과목: C/D {len(pass_low_codes)}개, F {len(fail_codes)}개")
-
-            return LowGradeSubjectCodes(
-                passLow=pass_low_codes,
-                fail=fail_codes,
-            )
-        except Exception as e:
-            logger.warning(f"저성적 과목 조회 실패 (선택 정보): {type(e).__name__}")
-            # 실패 시 빈 데이터 반환 (필수 정보가 아님)
-            return LowGradeSubjectCodes(
-                passLow=[],
-                fail=[],
-            )
-
-    # ============================================================
-    # DEPRECATED: 이수구분 분류 로직은 Kotlin 서버로 이관
-    # ============================================================
-    # async def _get_course_category(...) - 제거됨
-    # async def _classify_subject_by_type(...) - 제거됨
-    #
-    # 이유: Course DB가 이미 이수구분 정보를 가지고 있으므로
-    #       Python에서 불완전한 휴리스틱으로 분류하는 것보다
-    #       Kotlin에서 DB 조회로 정확하게 분류
-    # ============================================================
 
     async def _fetch_flags(self, student_info_app) -> Flags:
         """
@@ -611,7 +601,6 @@ class RusaintService:
                 teaching_info = qualifications.teaching_major
                 # major_name이 None이 아니면 교직 이수 중으로 판단
                 teaching = teaching_info.major_name is not None
-                logger.debug(f"교직 이수: {teaching}, 전공: {teaching_info.major_name}")
 
             # 일반 학생 정보에서 복수전공/부전공 확인
             student_info = await student_info_app.general()
@@ -635,8 +624,6 @@ class RusaintService:
                         minor = value
                         break
 
-            logger.debug(f"복수전공: {double_major}, 부전공: {minor}")
-
             return Flags(
                 doubleMajorDepartment=double_major,
                 minorDepartment=minor,
@@ -650,62 +637,6 @@ class RusaintService:
                 minorDepartment=None,
                 teaching=False,
             )
-
-    async def _fetch_available_credits(self, session: rusaint.USaintSession) -> AvailableCredits:
-        """
-        직전 성적 및 최대 신청 가능 학점 정보를 조회합니다.
-
-        **DEPRECATED**: _fetch_all_course_data() 사용 권장
-        **평점과 학점만 조회**: 개별 과목 성적은 제외
-        """
-        try:
-            # CourseGradesApplication 생성
-            app_builder = rusaint.CourseGradesApplicationBuilder()
-            app = await app_builder.build(session)
-
-            # 학기별 성적 조회 (학부생 과정)
-            semesters = await app.semesters(rusaint.CourseType.BACHELOR)
-
-            if not semesters:
-                raise ValueError("학기 정보가 없습니다")
-
-            # 직전 학기 성적
-            last_semester = semesters[-1]
-
-            # gpa 필드 확인 (여러 가능성 시도)
-            previous_gpa = 0.0
-            for attr in ['gpa', 'grade_point_average', 'average']:
-                if hasattr(last_semester, attr):
-                    value = getattr(last_semester, attr)
-                    if value is not None:
-                        previous_gpa = float(value)
-                        break
-
-            # 이월 학점 확인 (rusaint API에서 제공하지 않을 수 있음)
-            carried_over = 0
-            for attr in ['carried_over', 'carry_over', 'transferred_credits']:
-                if hasattr(last_semester, attr):
-                    value = getattr(last_semester, attr)
-                    if value is not None:
-                        carried_over = int(value)
-                        break
-
-            # 최대 신청 가능 학점 계산
-            max_credits = 19.5  # 기본값
-            if previous_gpa >= 4.0:
-                max_credits = 22.5
-            max_credits += carried_over
-
-            logger.debug(f"직전 평점: {previous_gpa}, 최대 신청 가능: {max_credits}학점")
-
-            return AvailableCredits(
-                previousGpa=previous_gpa,
-                carriedOverCredits=carried_over,
-                maxAvailableCredits=max_credits,
-            )
-        except Exception as e:
-            logger.error(f"신청 가능 학점 정보 조회 실패: {type(e).__name__}")
-            raise
 
     async def _fetch_remaining_credits(self, grad_app) -> RemainingCredits:
         """
@@ -748,10 +679,6 @@ class RusaintService:
                         general_required += remaining
                     elif '교선' in key_lower or '교양선택' in key_lower:
                         general_elective += remaining
-
-                    logger.debug(f"졸업요건: {key} - diff={diff}, remaining={remaining}")
-
-            logger.debug(f"남은 졸업 학점 - 전필:{major_required} 전선:{major_elective} 교필:{general_required} 교선:{general_elective}")
 
             return RemainingCredits(
                 majorRequired=major_required,
