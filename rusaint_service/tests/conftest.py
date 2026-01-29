@@ -7,7 +7,7 @@ import os
 import sys
 import jwt
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi.testclient import TestClient
 
 # PYTHONPATH에 rusaint_service 디렉토리 추가
@@ -43,7 +43,7 @@ def valid_jwt_token(test_settings):
     """유효한 JWT 토큰"""
     payload = {
         "sub": "test-user",
-        "exp": datetime.utcnow() + timedelta(hours=1),
+        "exp": datetime.now(timezone.utc) + timedelta(hours=1),
     }
     return jwt.encode(
         payload,
@@ -57,7 +57,7 @@ def expired_jwt_token(test_settings):
     """만료된 JWT 토큰"""
     payload = {
         "sub": "test-user",
-        "exp": datetime.utcnow() - timedelta(hours=1),
+        "exp": datetime.now(timezone.utc) - timedelta(hours=1),
     }
     return jwt.encode(
         payload,
