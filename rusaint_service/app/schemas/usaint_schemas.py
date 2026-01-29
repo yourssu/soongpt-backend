@@ -80,6 +80,30 @@ class RemainingCredits(BaseModel):
     generalElective: int = Field(..., description="남은 교양선택 학점")
 
 
+class GraduationRequirementItem(BaseModel):
+    """개별 졸업 요건 항목"""
+
+    name: str = Field(..., description="졸업요건 이름 (예: '학부-교양필수 19')")
+    requirement: Optional[int] = Field(None, description="기준 학점 (None일 경우 요구사항 없음)")
+    calculation: Optional[float] = Field(None, description="현재 이수 학점")
+    difference: Optional[float] = Field(None, description="차이 (이수-기준, 음수면 부족)")
+    result: bool = Field(..., description="충족 여부 (true: 충족, false: 미충족)")
+    category: str = Field(..., description="이수구분 (예: '전공필수', '교양선택')")
+
+
+class GraduationRequirements(BaseModel):
+    """졸업 요건 전체 목록 및 요약"""
+
+    requirements: list[GraduationRequirementItem] = Field(
+        default_factory=list,
+        description="개별 졸업 요건 항목 목록"
+    )
+    remainingCredits: RemainingCredits = Field(
+        ...,
+        description="졸업까지 남은 이수 학점 요약 (하위 호환성)"
+    )
+
+
 class UsaintSnapshotResponse(BaseModel):
     """유세인트 데이터 스냅샷 응답"""
 
