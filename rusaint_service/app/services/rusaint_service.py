@@ -21,6 +21,7 @@ import logging
 import asyncio
 import time
 from typing import Dict, List, Optional
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 logger = logging.getLogger(__name__)
 
@@ -63,12 +64,14 @@ class RusaintService:
         
         try:
             # 1. SSO 토큰으로 세션 4개 병렬 생성
+            session_start = time.time()
             session_grad, session_course1, session_course2, session_student = await asyncio.gather(
                 self._create_session(student_id, s_token),
                 self._create_session(student_id, s_token),
                 self._create_session(student_id, s_token),
                 self._create_session(student_id, s_token),
             )
+            logger.info(f"세션 생성 완료: {time.time() - session_start:.2f}초")
             
             # 생성된 세션 즉시 추적 리스트에 추가
             sessions = [
@@ -80,6 +83,7 @@ class RusaintService:
 
             # 2. Application 4개 병렬 생성 (GraduationRequirements, CourseGrades x2, StudentInformation)
             try:
+                app_start = time.time()
                 grad_app, course_grades_app1, course_grades_app2, student_info_app = await asyncio.gather(
                     self._get_graduation_app(session_grad),
                     self._get_course_grades_app(session_course1),
@@ -94,8 +98,10 @@ class RusaintService:
                 # Application 생성 실패 시 명시적 세션 정리
                 await self._cleanup_sessions(sessions)
                 raise
+            logger.info(f"Application 생성 완료: {time.time() - app_start:.2f}초")
 
             # 3. 데이터 병렬 조회
+            data_start = time.time()
             (
                 basic_info,
                 (taken_courses, low_grade_codes, available_credits),
@@ -107,6 +113,7 @@ class RusaintService:
                 self._fetch_flags(student_info_app),
                 self._fetch_remaining_credits(grad_app),
             )
+            logger.info(f"데이터 조회 완료: {time.time() - data_start:.2f}초")
 
             total_time = time.time() - start_time
             logger.info(f"유세인트 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)")
@@ -174,11 +181,13 @@ class RusaintService:
         
         try:
             # 1. 세션 3개 병렬 생성 (GraduationRequirements 제외!)
+            session_start = time.time()
             session_course1, session_course2, session_student = await asyncio.gather(
                 self._create_session(student_id, s_token),
                 self._create_session(student_id, s_token),
                 self._create_session(student_id, s_token),
             )
+            logger.info(f"세션 생성 완료: {time.time() - session_start:.2f}초")
             
             # 생성된 세션 즉시 추적 리스트에 추가
             sessions = [
@@ -189,6 +198,7 @@ class RusaintService:
 
             # 2. Application 3개 병렬 생성
             try:
+                app_start = time.time()
                 course_grades_app1, course_grades_app2, student_info_app = await asyncio.gather(
                     self._get_course_grades_app(session_course1),
                     self._get_course_grades_app(session_course2),
@@ -202,8 +212,10 @@ class RusaintService:
                 # Application 생성 실패 시 명시적 세션 정리
                 await self._cleanup_sessions(sessions)
                 raise
+            logger.info(f"Application 생성 완료: {time.time() - app_start:.2f}초")
 
             # 3. 데이터 병렬 조회
+            data_start = time.time()
             (
                 basic_info,
                 (taken_courses, low_grade_codes, available_credits),
@@ -213,6 +225,7 @@ class RusaintService:
                 self._fetch_all_course_data_parallel(course_grades_app1, course_grades_app2),
                 self._fetch_flags(student_info_app),
             )
+            logger.info(f"데이터 조회 완료: {time.time() - data_start:.2f}초")
 
             total_time = time.time() - start_time
             logger.info(f"유세인트 Academic 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)")
@@ -276,14 +289,18 @@ class RusaintService:
         
         try:
             # 1. 세션 1개 생성
+            session_start = time.time()
             session_grad = await self._create_session(student_id, s_token)
+            logger.info(f"세션 생성 완료: {time.time() - session_start:.2f}초")
             
             # 생성된 세션 즉시 추적 리스트에 추가
             sessions = [('grad', session_grad)]
 
             # 2. GraduationRequirements Application 생성
             try:
+                app_start = time.time()
                 grad_app = await self._get_graduation_app(session_grad)
+                logger.info(f"Application 생성 완료: {time.time() - app_start:.2f}초")
             except Exception as e:
                 logger.error(
                     f"Application 생성 실패: {type(e).__name__} - {str(e)}",
@@ -294,7 +311,9 @@ class RusaintService:
                 raise
 
             # 3. 졸업 요건 상세 정보 조회
+            data_start = time.time()
             graduation_reqs = await self._fetch_graduation_requirements(grad_app)
+            logger.info(f"데이터 조회 완료: {time.time() - data_start:.2f}초")
 
             total_time = time.time() - start_time
             logger.info(f"유세인트 Graduation 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)")
@@ -348,9 +367,20 @@ class RusaintService:
                 except Exception as e:
                     logger.warning(f"세션 종료 중 오류 ({name}): {type(e).__name__} - {str(e)}")
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        retry=retry_if_exception_type(asyncio.TimeoutError),
+        reraise=True
+    )
     async def _create_session(self, student_id: str, s_token: str) -> rusaint.USaintSession:
         """
         SSO 토큰으로 유세인트 세션을 생성합니다.
+        
+        네트워크 일시적 오류 시 최대 3회 재시도합니다.
+        - 1차 실패: 2초 대기 후 재시도
+        - 2차 실패: 4초 대기 후 재시도
+        - 3차 실패: 예외 발생
 
         Args:
             student_id: 학번
@@ -361,7 +391,7 @@ class RusaintService:
 
         Raises:
             ValueError: SSO 토큰이 유효하지 않을 때
-            asyncio.TimeoutError: 연결 시간 초과
+            asyncio.TimeoutError: 연결 시간 초과 (3회 재시도 후)
         """
         try:
             builder = rusaint.USaintSessionBuilder()
@@ -371,7 +401,7 @@ class RusaintService:
             )
             return session
         except asyncio.TimeoutError:
-            logger.error(f"세션 생성 시간 초과 (student_id={student_id[:4]}****)")
+            logger.warning(f"세션 생성 시간 초과 (student_id={student_id[:4]}****) - 재시도 중...")
             raise
         except Exception as e:
             logger.error(
@@ -381,7 +411,10 @@ class RusaintService:
             )
             raise ValueError("SSO 토큰이 유효하지 않거나 만료되었습니다.")
 
-    async def _get_graduation_app(self, session: rusaint.USaintSession):
+    async def _get_graduation_app(
+        self,
+        session: rusaint.USaintSession
+    ) -> rusaint.GraduationRequirementsApplication:
         """
         졸업요건 애플리케이션을 생성합니다.
 
@@ -397,7 +430,10 @@ class RusaintService:
         grad_app = await grad_builder.build(session)
         return grad_app
 
-    async def _get_course_grades_app(self, session: rusaint.USaintSession):
+    async def _get_course_grades_app(
+        self,
+        session: rusaint.USaintSession
+    ) -> rusaint.CourseGradesApplication:
         """
         성적 조회 애플리케이션을 생성합니다.
 
@@ -413,7 +449,10 @@ class RusaintService:
         app = await app_builder.build(session)
         return app
 
-    async def _get_student_info_app(self, session: rusaint.USaintSession):
+    async def _get_student_info_app(
+        self,
+        session: rusaint.USaintSession
+    ) -> rusaint.StudentInformationApplication:
         """
         학생 정보 애플리케이션을 생성합니다.
 
@@ -442,15 +481,32 @@ class RusaintService:
         try:
             student_info = await student_info_app.general()
 
-            # 입학년도, 현재 학년, 재학 누적 학기
-            admission_year = getattr(student_info, 'apply_year', None) or getattr(student_info, 'admission_year', 2020)
-            grade = getattr(student_info, 'grade', 1)
-            semester = getattr(student_info, 'semester', 1)
+            # 입학년도 (필수 정보)
+            admission_year = getattr(student_info, 'apply_year', None) or getattr(student_info, 'admission_year', None)
+            if admission_year is None:
+                logger.error("입학년도 정보를 찾을 수 없습니다")
+                raise ValueError("필수 학적 정보(입학년도)를 조회할 수 없습니다")
 
-            # 학과 정보
-            department = getattr(student_info, 'major', None) or getattr(student_info, 'department', "알 수 없음")
+            # 학년 (필수 정보)
+            grade = getattr(student_info, 'grade', None)
+            if grade is None:
+                logger.error("학년 정보를 찾을 수 없습니다")
+                raise ValueError("필수 학적 정보(학년)를 조회할 수 없습니다")
+
+            # 재학 누적 학기 (필수 정보)
+            semester = getattr(student_info, 'semester', None)
+            if semester is None:
+                logger.error("학기 정보를 찾을 수 없습니다")
+                raise ValueError("필수 학적 정보(학기)를 조회할 수 없습니다")
+
+            # 학과 정보 (필수 정보)
+            department = getattr(student_info, 'major', None) or getattr(student_info, 'department', None)
             if hasattr(student_info, 'majors') and student_info.majors:
                 department = student_info.majors[0]
+
+            if not department:
+                logger.error("학과 정보를 찾을 수 없습니다")
+                raise ValueError("필수 학적 정보(학과)를 조회할 수 없습니다")
 
             return BasicInfo(
                 year=admission_year,
@@ -458,6 +514,8 @@ class RusaintService:
                 semester=semester,
                 department=department,
             )
+        except ValueError:
+            raise
         except Exception as e:
             logger.error(f"기본 학적 정보 조회 실패: {type(e).__name__}")
             raise
@@ -490,11 +548,16 @@ class RusaintService:
                 raise ValueError("학기 정보가 없습니다")
 
             # 학기를 2개 그룹으로 분할하여 각 Application에서 병렬 조회
-            mid_point = len(semesters) // 2
-            semesters_group1 = semesters[:mid_point]
-            semesters_group2 = semesters[mid_point:]
+            # 엣지 케이스: 학기가 1개 이하면 group1에만 할당
+            if len(semesters) <= 1:
+                semesters_group1 = semesters
+                semesters_group2 = []
+            else:
+                mid_point = (len(semesters) + 1) // 2
+                semesters_group1 = semesters[:mid_point]
+                semesters_group2 = semesters[mid_point:]
 
-            # 각 그룹별로 classes() 호출 준비
+            # 각 그룹별로 classes() 호출 준비 (빈 그룹 처리)
             tasks_group1 = [
                 course_grades_app1.classes(
                     rusaint.CourseType.BACHELOR,
@@ -503,7 +566,7 @@ class RusaintService:
                     include_details=False,
                 )
                 for sem in semesters_group1
-            ]
+            ] if semesters_group1 else []
 
             tasks_group2 = [
                 course_grades_app2.classes(
@@ -513,13 +576,20 @@ class RusaintService:
                     include_details=False,
                 )
                 for sem in semesters_group2
-            ]
+            ] if semesters_group2 else []
 
-            # 두 그룹을 병렬 실행
-            classes_group1, classes_group2 = await asyncio.gather(
-                asyncio.gather(*tasks_group1),
-                asyncio.gather(*tasks_group2),
-            )
+            # 두 그룹을 병렬 실행 (빈 그룹은 실행하지 않음)
+            if tasks_group1 and tasks_group2:
+                classes_group1, classes_group2 = await asyncio.gather(
+                    asyncio.gather(*tasks_group1),
+                    asyncio.gather(*tasks_group2),
+                )
+            elif tasks_group1:
+                classes_group1 = await asyncio.gather(*tasks_group1)
+                classes_group2 = []
+            else:
+                classes_group1 = []
+                classes_group2 = await asyncio.gather(*tasks_group2)
 
             # 결과 합치기
             all_semester_classes = list(classes_group1) + list(classes_group2)
