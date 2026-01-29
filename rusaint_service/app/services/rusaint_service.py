@@ -12,6 +12,8 @@ from app.schemas.usaint_schemas import (
     AvailableCredits,
     BasicInfo,
     RemainingCredits,
+    GraduationRequirementItem,
+    GraduationRequirements,
 )
 from app.core.config import settings
 import rusaint
@@ -56,7 +58,9 @@ class RusaintService:
         start_time = time.time()
         logger.info(f"유세인트 데이터 조회 시작: student_id={student_id[:4]}****")
 
-        session: Optional[rusaint.USaintSession] = None
+        # 세션 명시적 추적
+        sessions: List[tuple[str, Optional[rusaint.USaintSession]]] = []
+        
         try:
             # 1. SSO 토큰으로 세션 4개 병렬 생성
             session_grad, session_course1, session_course2, session_student = await asyncio.gather(
@@ -65,6 +69,14 @@ class RusaintService:
                 self._create_session(student_id, s_token),
                 self._create_session(student_id, s_token),
             )
+            
+            # 생성된 세션 즉시 추적 리스트에 추가
+            sessions = [
+                ('grad', session_grad),
+                ('course1', session_course1),
+                ('course2', session_course2),
+                ('student', session_student),
+            ]
 
             # 2. Application 4개 병렬 생성 (GraduationRequirements, CourseGrades x2, StudentInformation)
             try:
@@ -79,6 +91,8 @@ class RusaintService:
                     f"Application 생성 실패: {type(e).__name__} - {str(e)}",
                     exc_info=True
                 )
+                # Application 생성 실패 시 명시적 세션 정리
+                await self._cleanup_sessions(sessions)
                 raise
 
             # 3. 데이터 병렬 조회
@@ -127,23 +141,8 @@ class RusaintService:
             )
             raise
         finally:
-            # 모든 세션 명시적 종료
-            sessions = []
-            if 'session_grad' in locals():
-                sessions.append(('grad', session_grad))
-            if 'session_course1' in locals():
-                sessions.append(('course1', session_course1))
-            if 'session_course2' in locals():
-                sessions.append(('course2', session_course2))
-            if 'session_student' in locals():
-                sessions.append(('student', session_student))
-
-            for name, sess in sessions:
-                if sess and hasattr(sess, 'close'):
-                    try:
-                        await sess.close()
-                    except Exception as e:
-                        logger.warning(f"세션 종료 중 오류 ({name}): {type(e).__name__}")
+            # 모든 세션 명시적 종료 (예외 발생 여부와 무관하게 실행)
+            await self._cleanup_sessions(sessions)
 
     async def fetch_usaint_snapshot_academic(
         self,
@@ -170,6 +169,9 @@ class RusaintService:
         start_time = time.time()
         logger.info(f"유세인트 Academic 데이터 조회 시작: student_id={student_id[:4]}****")
 
+        # 세션 명시적 추적
+        sessions: List[tuple[str, Optional[rusaint.USaintSession]]] = []
+        
         try:
             # 1. 세션 3개 병렬 생성 (GraduationRequirements 제외!)
             session_course1, session_course2, session_student = await asyncio.gather(
@@ -177,6 +179,13 @@ class RusaintService:
                 self._create_session(student_id, s_token),
                 self._create_session(student_id, s_token),
             )
+            
+            # 생성된 세션 즉시 추적 리스트에 추가
+            sessions = [
+                ('course1', session_course1),
+                ('course2', session_course2),
+                ('student', session_student),
+            ]
 
             # 2. Application 3개 병렬 생성
             try:
@@ -190,6 +199,8 @@ class RusaintService:
                     f"Application 생성 실패: {type(e).__name__} - {str(e)}",
                     exc_info=True
                 )
+                # Application 생성 실패 시 명시적 세션 정리
+                await self._cleanup_sessions(sessions)
                 raise
 
             # 3. 데이터 병렬 조회
@@ -235,21 +246,8 @@ class RusaintService:
             )
             raise
         finally:
-            # 모든 세션 명시적 종료
-            sessions = []
-            if 'session_course1' in locals():
-                sessions.append(('course1', session_course1))
-            if 'session_course2' in locals():
-                sessions.append(('course2', session_course2))
-            if 'session_student' in locals():
-                sessions.append(('student', session_student))
-
-            for name, sess in sessions:
-                if sess and hasattr(sess, 'close'):
-                    try:
-                        await sess.close()
-                    except Exception as e:
-                        logger.warning(f"세션 종료 중 오류 ({name}): {type(e).__name__}")
+            # 모든 세션 명시적 종료 (예외 발생 여부와 무관하게 실행)
+            await self._cleanup_sessions(sessions)
 
     async def fetch_usaint_graduation_info(
         self,
@@ -260,21 +258,28 @@ class RusaintService:
         졸업사정표 정보 조회 (약 5-6초)
 
         포함 데이터:
-        - 남은 졸업 학점 (remainingCredits)
+        - 개별 졸업 요건 상세 정보 (requirements)
+        - 남은 졸업 학점 요약 (remainingCredits)
 
         Args:
             student_id: 학번
             s_token: SSO 토큰
 
         Returns:
-            dict: 졸업사정표 데이터
+            dict: 졸업사정표 데이터 (GraduationRequirements)
         """
         start_time = time.time()
         logger.info(f"유세인트 Graduation 데이터 조회 시작: student_id={student_id[:4]}****")
 
+        # 세션 명시적 추적
+        sessions: List[tuple[str, Optional[rusaint.USaintSession]]] = []
+        
         try:
             # 1. 세션 1개 생성
             session_grad = await self._create_session(student_id, s_token)
+            
+            # 생성된 세션 즉시 추적 리스트에 추가
+            sessions = [('grad', session_grad)]
 
             # 2. GraduationRequirements Application 생성
             try:
@@ -284,16 +289,18 @@ class RusaintService:
                     f"Application 생성 실패: {type(e).__name__} - {str(e)}",
                     exc_info=True
                 )
+                # Application 생성 실패 시 명시적 세션 정리
+                await self._cleanup_sessions(sessions)
                 raise
 
-            # 3. 남은 졸업 학점 조회
-            remaining_credits = await self._fetch_remaining_credits(grad_app)
+            # 3. 졸업 요건 상세 정보 조회
+            graduation_reqs = await self._fetch_graduation_requirements(grad_app)
 
             total_time = time.time() - start_time
             logger.info(f"유세인트 Graduation 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)")
 
             return {
-                "remainingCredits": remaining_credits,
+                "graduationRequirements": graduation_reqs,
             }
 
         except rusaint.RusaintError as e:
@@ -317,16 +324,29 @@ class RusaintService:
             )
             raise
         finally:
-            # 세션 종료
-            if 'session_grad' in locals() and session_grad and hasattr(session_grad, 'close'):
-                try:
-                    await session_grad.close()
-                except Exception as e:
-                    logger.warning(f"세션 종료 중 오류 (grad): {type(e).__name__}")
+            # 모든 세션 명시적 종료 (예외 발생 여부와 무관하게 실행)
+            await self._cleanup_sessions(sessions)
 
     # ============================================================
     # Private Methods - rusaint 라이브러리 실제 구현
     # ============================================================
+
+    async def _cleanup_sessions(self, sessions: List[tuple[str, Optional[rusaint.USaintSession]]]) -> None:
+        """
+        세션 리스트를 안전하게 종료합니다.
+        
+        모든 세션에 대해 close()를 호출하며, 개별 세션 종료 실패는 로깅만 하고 계속 진행합니다.
+        
+        Args:
+            sessions: (세션명, 세션객체) 튜플의 리스트
+        """
+        for name, sess in sessions:
+            if sess and hasattr(sess, 'close'):
+                try:
+                    await sess.close()
+                    logger.debug(f"세션 종료 완료: {name}")
+                except Exception as e:
+                    logger.warning(f"세션 종료 중 오류 ({name}): {type(e).__name__} - {str(e)}")
 
     async def _create_session(self, student_id: str, s_token: str) -> rusaint.USaintSession:
         """
@@ -638,11 +658,94 @@ class RusaintService:
                 teaching=False,
             )
 
+    async def _fetch_graduation_requirements(self, grad_app) -> GraduationRequirements:
+        """
+        졸업 요건 상세 정보를 조회합니다.
+
+        **개별 요건 정보 포함**: 각 요건의 이름, 기준학점, 이수학점, 충족여부 등
+
+        Args:
+            grad_app: 졸업요건 애플리케이션
+
+        Returns:
+            GraduationRequirements: 개별 요건 목록 + 남은 학점 요약
+        """
+        try:
+            # 졸업 요건 조회
+            requirements = await grad_app.requirements()
+
+            # 개별 요건 리스트
+            requirement_list = []
+
+            # 남은 학점 요약 (하위 호환성)
+            major_required = 0
+            major_elective = 0
+            general_required = 0
+            general_elective = 0
+
+            # requirements.requirements는 딕셔너리
+            if isinstance(requirements.requirements, dict):
+                for key, req in requirements.requirements.items():
+                    # 필드 추출 (rusaint GraduationRequirement 객체)
+                    # key 예시: "학부-교양필수 19"
+                    name = str(key)
+                    requirement_value = getattr(req, 'requirement', None)
+                    # 주의: rusaint 라이브러리의 오타 "calcuation" 그대로 사용
+                    calculation_value = getattr(req, 'calcuation', None)
+                    difference_value = getattr(req, 'difference', None)
+                    result_value = getattr(req, 'result', False)
+                    category = getattr(req, 'category', str(key))
+                    # lectures 필드는 의도적으로 제외
+
+                    # GraduationRequirementItem 객체 생성
+                    requirement_list.append(
+                        GraduationRequirementItem(
+                            name=name,
+                            requirement=requirement_value,
+                            calculation=calculation_value,
+                            difference=difference_value,
+                            result=result_value,
+                            category=category,
+                        )
+                    )
+
+                    # 남은 학점 계산 (기존 로직 유지)
+                    key_lower = name.lower()
+                    if difference_value is not None:
+                        remaining = int(abs(difference_value)) if difference_value < 0 else 0
+
+                        if '전필' in key_lower:
+                            major_required += remaining
+                        elif '전선' in key_lower or '전공선택' in key_lower:
+                            major_elective += remaining
+                        elif '교필' in key_lower or '교양필수' in key_lower:
+                            general_required += remaining
+                        elif '교선' in key_lower or '교양선택' in key_lower:
+                            general_elective += remaining
+
+            # 남은 학점 요약
+            remaining_credits = RemainingCredits(
+                majorRequired=major_required,
+                majorElective=major_elective,
+                generalRequired=general_required,
+                generalElective=general_elective,
+            )
+
+            return GraduationRequirements(
+                requirements=requirement_list,
+                remainingCredits=remaining_credits,
+            )
+
+        except Exception as e:
+            logger.error(f"졸업 요건 조회 실패: {type(e).__name__}")
+            raise
+
     async def _fetch_remaining_credits(self, grad_app) -> RemainingCredits:
         """
         졸업까지 남은 이수 학점 정보를 조회합니다.
 
         **학점 정보만 조회**: 과목별 상세 정보는 제외
+        **Deprecated**: _fetch_graduation_requirements 사용 권장
 
         Args:
             grad_app: 졸업요건 애플리케이션 (중복 API 호출 방지)
