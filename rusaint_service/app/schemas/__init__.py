@@ -1,3 +1,21 @@
-"""
-요청/응답에 사용하는 Pydantic 스키마 모음.
-"""
+from app.schemas.usaint_schemas import (
+    UsaintSnapshotRequest,
+    UsaintSnapshotResponse,
+    TakenCourse,
+    LowGradeSubjectCodes,
+    Flags,
+    AvailableCredits,
+    BasicInfo,
+    RemainingCredits,
+)
+
+__all__ = [
+    "UsaintSnapshotRequest",
+    "UsaintSnapshotResponse",
+    "TakenCourse",
+    "LowGradeSubjectCodes",
+    "Flags",
+    "AvailableCredits",
+    "BasicInfo",
+    "RemainingCredits",
+]

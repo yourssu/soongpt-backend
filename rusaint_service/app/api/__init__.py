@@ -1,3 +1,3 @@
-"""
-v1 API 네임스페이스.
-"""
+from app.api.usaint_router import router as usaint_router
+
+__all__ = ["usaint_router"]
