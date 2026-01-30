@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements file first for better Docker layer caching
-COPY script/requirements.txt /tmp/requirements.txt
+COPY script/25-2/requirements.txt /tmp/requirements.txt
 
 # Create Python virtual environment and install dependencies
 RUN python3 -m venv /app/venv && \
@@ -27,7 +27,7 @@ RUN python3 -m venv /app/venv && \
 COPY build/libs/*-SNAPSHOT.jar app.jar
 
 # Copy observer scripts
-COPY script/ /app/script/
+COPY script/25-2/ /app/script/
 
 # Create logs directory
 RUN mkdir -p /app/logs

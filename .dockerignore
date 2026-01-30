@@ -37,8 +37,8 @@ src/test/
 
 # CI/CD
 .github/
-script/__pycache__/
-script/course/__pycache__/
+script/25-2/__pycache__/
+script/25-2/course/__pycache__/
 
 # Other
 Claude-Code-Usage-Monitor/
