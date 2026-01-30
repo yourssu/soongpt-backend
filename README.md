@@ -1,5 +1,10 @@
 # soongpt-backend
 
+## 역사
+
+- 2026.01.29
+    - leopold, moru, piki
+
 ## API Documentation
 [API_DOCUMENTATION](./src/main/resources/api/API_DOCUMENTATION.md)
 
