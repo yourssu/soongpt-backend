@@ -74,5 +74,5 @@ def process_target_map(file_path: str) -> None:
     print(f"처리 완료: {file_path}")
 
 if __name__ == "__main__":
-    file_path = "/Users/leo/Documents/development/soongpt-backend/script/course/result/target_map/target_map.json"
+    file_path = "/25-2/course/result/target_map/target_map.json"
     process_target_map(file_path)
