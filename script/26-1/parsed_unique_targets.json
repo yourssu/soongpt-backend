@@ -243,6 +243,15 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": true,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "소프트웨어학부",
         "minGrade": 2,
         "maxGrade": 2,
@@ -767,6 +776,15 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": true,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "소프트웨어학부",
         "minGrade": 1,
         "maxGrade": 1,
@@ -887,6 +905,15 @@
     "original_text": "전체학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부",
     "count": 9,
     "parsed_targets": [
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -1048,6 +1075,15 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "소프트웨어학부",
         "minGrade": 3,
         "maxGrade": 3,
@@ -1190,15 +1226,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "글로벌미디어학부",
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI소프트웨어학과",
         "minGrade": 1,
         "maxGrade": 1,
         "isExcluded": false,
@@ -1369,6 +1396,15 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "소프트웨어학부",
         "minGrade": 2,
         "maxGrade": 2,
@@ -1381,6 +1417,15 @@
         "departmentName": "AI융합학부",
         "minGrade": 2,
         "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 3,
+        "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false
       },
@@ -1438,6 +1483,15 @@
     "original_text": "3학년  AI소프트웨어학부, 소프트웨어학부, AI융합학부",
     "count": 8,
     "parsed_targets": [
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -1880,15 +1934,6 @@
         "maxGrade": 2,
         "isExcluded": false,
         "isForeignerOnly": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI소프트웨어학과",
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false
       }
     ]
   },
@@ -1911,6 +1956,15 @@
     "original_text": "2학년 AI소프트웨어학부, 소프트웨어학부,AI융합학부 (대상외수강제한)",
     "count": 7,
     "parsed_targets": [
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": true,
+        "isForeignerOnly": false
+      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -2088,6 +2142,15 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "소프트웨어학부",
         "minGrade": 4,
         "maxGrade": 4,
@@ -2182,15 +2245,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "글로벌미디어학부",
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI소프트웨어학과",
         "minGrade": 1,
         "maxGrade": 1,
         "isExcluded": false,
@@ -3240,6 +3294,15 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "소프트웨어학부",
         "minGrade": 3,
         "maxGrade": 3,
@@ -3252,6 +3315,15 @@
         "departmentName": "AI융합학부",
         "minGrade": 3,
         "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 4,
+        "maxGrade": 4,
         "isExcluded": false,
         "isForeignerOnly": false
       },
@@ -3369,6 +3441,15 @@
     "original_text": "4학년 4학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부",
     "count": 5,
     "parsed_targets": [
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false
+      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -3531,6 +3612,15 @@
     "original_text": "1학년  AI소프트웨어학부, 소프트웨어학부, AI융합학부 (대상외수강제한)",
     "count": 4,
     "parsed_targets": [
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": true,
+        "isForeignerOnly": false
+      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -3738,6 +3828,15 @@
     "original_text": "2학년  AI소프트웨어학부, 소프트웨어학부, AI융합학부 (대상외수강제한)",
     "count": 4,
     "parsed_targets": [
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": true,
+        "isForeignerOnly": false
+      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -7372,6 +7471,15 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "산업정보시스템공학과",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "AI소프트웨어학부",
         "minGrade": 1,
         "maxGrade": 5,
         "isExcluded": true,
