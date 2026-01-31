@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수강대상 파싱 검증 - 플래시카드</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-front {
+            background: white;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            transform: rotateY(180deg);
+        }
+
+        .card-number {
+            font-size: 14px;
+            color: #999;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: right;
+            width: 100%;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+
+
+        .original-text {
+            font-size: 24px;
+            line-height: 1.6;
+            font-weight: 500;
+            color: #2d3748;
+            white-space: pre-wrap;
+        }
+
+        .parsed-content {
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .target-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .target-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Update controls in renderCard */
+        /* Since we can't easily edit renderCard func, we hook into it via existing call sites or override it. */
+        /* I will replace the END of renderCard to call updateControls */
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-university {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-college {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .badge-department {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .badge-excluded {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .badge-foreigner {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .target-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .field {
+            font-size: 13px;
+        }
+
+        .field-label {
+            color: #718096;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .field-value {
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 15px;
+            /* Larger text */
+        }
+
+        .grade-circles {
+            display: flex;
+            gap: 4px;
+        }
+
+        .grade-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #edf2f7;
+            color: #cbd5e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .grade-circle.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .target-main-info {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2b6cb0;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .target-sub-info {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 12px;
+        }
+
+        .field-value input,
+        .field-value select {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-prev,
+        .btn-next {
+            background: white;
+            color: #667eea;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            padding: 0;
+            justify-content: center;
+        }
+
+        .btn-review-complete {
+            background: #48bb78;
+            color: white;
+            padding: 12px 32px;
+            font-size: 16px;
+        }
+
+        .btn-flip {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-save {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-filter {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .progress {
+            width: 100%;
+            max-width: 800px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .keyboard-shortcuts {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: block;
+            /* Always visible */
+        }
+
+        /* Removed .show class as it is always visible */
+
+        .keyboard-shortcuts kbd {
+            background: #555;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 0 3px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        select {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        select option {
+            background: #667eea;
+            color: white;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .status-indicator.show {
+            opacity: 1;
+        }
+
+        .status-correct {
+            background: #48bb78;
+            color: white;
+        }
+
+        .status-incorrect {
+            background: #f56565;
+            color: white;
+        }
+
+        .edit-mode-banner {
+            background: #fbbf24;
+            color: #78350f;
+            padding: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .card-container.slide-right {
+            animation: slideInRight 0.4s ease;
+        }
+
+        .card-container.slide-left {
+            animation: slideInLeft 0.4s ease;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                padding: 20px;
+            }
+
+
+            .original-text {
+                font-size: 22px;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            /* Increased width for JSON view */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .error-list {
+            padding: 10px;
+            background: #2d3748;
+            color: #e2e8f0;
+            border: 1px solid #4a5568;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            text-align: left;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            flex-grow: 1;
+            min-height: 300px;
+            margin-bottom: 10px;
+        }
+
+        .btn-error {
+            background: #fc8181;
+            color: white;
+        }
+
+        .btn-error.active {
+            background: #e53e3e;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            font-size: 12px;
+            color: #999;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .content-section {
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>📚 수강대상 파싱 검증</h1>
+        <div class="stats">
+            <div class="stat">📊 <span id="current-num">1</span> / <span id="total-count">0</span></div>
+            <div class="stat">✅ 완료: <span id="reviewed-count">0</span></div>
+            <div class="stat">⏳ 남음: <span id="pending-count">0</span></div>
+        </div>
+    </div>
+
+    <div class="progress">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="filters">
+        <select id="scope-filter" onchange="applyFilters()">
+            <option value="all">🎯 모든 Scope</option>
+            <option value="UNIVERSITY">🏫 UNIVERSITY</option>
+            <option value="COLLEGE">🏛️ COLLEGE</option>
+            <option value="DEPARTMENT">🎓 DEPARTMENT</option>
+        </select>
+        <select id="status-filter" onchange="applyFilters()">
+            <option value="all">📋 모든 상태</option>
+            <option value="pending">⏳ 미검토</option>
+            <option value="reviewed">✅ 검토완료</option>
+        </select>
+    </div>
+
+    <div class="card-container" id="card-container">
+        <div class="card" id="card">
+            <div class="card-number">
+                <span id="card-number">1 / 0</span> | <span style="color: #667eea" id="card-count">0건</span>
+            </div>
+            <div class="status-indicator" id="status-indicator"></div>
+
+            <div>
+                <div class="section-title">ORIGINAL TEXT</div>
+                <div class="content-section">
+                    <div class="original-text" id="original-text">
+                        파일을 불러오는 중...
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-title">PARSED TARGETS</div>
+                <div class="parsed-content" id="parsed-content">
+                    <!-- Parsed targets will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-prev" onclick="prevCard()" title="이전 (←)">
+            ◀
+        </button>
+
+        <button class="btn btn-filter" onclick="toggleError()" id="error-btn" title="오류 표시 (E)">
+            ⚠️ 오류 표시
+        </button>
+
+        <button class="btn btn-next" onclick="nextCard()" title="다음 (→)">
+            ▶
+        </button>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-filter" onclick="openFile()" title="파일 열기 (O)">
+            📂 열기
+        </button>
+        <button class="btn btn-filter" onclick="nextUnreviewed()" title="다음 미검토">
+            ⏩ 다음 미검토
+        </button>
+        <button class="btn btn-save" onclick="showReport()" title="결과 리포트 (U)">
+            📊 결과 리포트
+        </button>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal" id="report-modal">
+        <div class="modal-content">
+            <div class="modal-title">📉 오류 항목 원본 리스트</div>
+            <div class="modal-body" style="display: flex; flex-direction: column; height: 100%;">
+                <p style="margin-bottom: 10px; font-size: 13px; color: #666;">
+                    아래는 <strong>오류 표시됨</strong> 항목들의 원본 JSON입니다.<br>
+                    전체를 복사하여 수정용 JSON 파일을 만드는데 사용하세요.
+                </p>
+                <textarea class="error-list" id="report-indices" readonly>
+                        -
+                    </textarea>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-save" onclick="copyIndices()" style="flex: 1;">
+                        📋 복사하기
+                    </button>
+                    <button class="btn" onclick="closeReport()"
+                        style="flex: 0 0 100px; background: #cbd5e0; color: #2d3748;">종료</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="keyboard-shortcuts" id="keyboard-shortcuts">
+        <div style="margin-bottom: 10px; font-weight: 600;">⌨️ 키보드 단축키 (Mac: Cmd 필수)</div>
+        <div><kbd>←</kbd> <kbd>→</kbd> 이전/다음</div>
+        <div><kbd>Enter</kbd> 다음 카드</div>
+        <div><kbd>E</kbd> 오류 표시 토글</div>
+        <div><kbd>U</kbd> 오류 리포트 보기</div>
+    </div>
+
+
+
+    <input type="file" id="file-input" accept=".json" style="display: none;" onchange="handleFileSelect(event)">
+
+    <script>
+        let data = [];
+        let filteredData = [];
+        let currentIndex = 0;
+        let reviews = {};
+        let editMode = false;
+        let fileHandle = null;
+
+        async function openFile() {
+            // Basic file input fallback only
+            document.getElementById('file-input').click();
+        }
+
+        function loadData(jsonText) {
+            try {
+                const loaded = JSON.parse(jsonText);
+                if (Array.isArray(loaded)) {
+                    data = loaded;
+                } else if (loaded.data && Array.isArray(loaded.data)) {
+                    data = loaded.data;
+                } else {
+                    throw new Error('올바르지 않은 JSON 형식입니다.');
+                }
+
+                filteredData = [...data];
+                reviews = {};
+                data.forEach((item, index) => {
+                    if (item.review_status === 'reviewed') {
+                        reviews[index] = 'reviewed';
+                    }
+                });
+
+                currentIndex = 0;
+                renderCard();
+                updateStats();
+            } catch (error) {
+                alert('JSON 파싱 오류: ' + error.message);
+            }
+        }
+
+        window.onload = async function () {
+            // Auto open if handled via fetch
+            try {
+                const response = await fetch('parsed_unique_targets.json');
+                if (response.ok) {
+                    const text = await response.text();
+                    loadData(text);
+                }
+            } catch (e) {
+                console.log('Auto-fetch failed, waiting for user input');
+                document.getElementById('original-text').textContent =
+                    '파일을 불러오세요 (📂 열기 버튼)';
+            }
+        };
+
+        function renderCard() {
+            if (filteredData.length === 0) {
+                document.getElementById('original-text').textContent = '표시할 항목이 없습니다.';
+                return;
+            }
+
+            const item = filteredData[currentIndex];
+            const cardNum = `${currentIndex + 1} / ${filteredData.length}`;
+
+            document.getElementById('card-number').textContent = cardNum;
+            document.getElementById('card-count').textContent = `${item.count}건`;
+            document.getElementById('original-text').textContent = item.original_text;
+            document.getElementById('current-num').textContent = currentIndex + 1;
+
+            // Updated Parsed Content
+            const parsedHtml = item.parsed_targets.map((target, tIndex) => {
+                const editableClass = editMode ? 'editable' : '';
+                return `
+                    <div class="target-item">
+                        <div class="target-header">
+                            <span class="badge badge-${target.scopeType.toLowerCase()}">${target.scopeType}</span>
+                            ${target.isExcluded ? '<span class="badge badge-excluded">🚫 대상외수강제한</span>' : ''}
+                            ${target.isForeignerOnly ? '<span class="badge badge-foreigner">🌏 외국인전용</span>' : ''}
+                        </div>
+                        
+                        <div class="target-main-info">
+                            ${target.departmentName || target.collegeName || '(전체)'}
+                        </div>
+                        <div class="target-sub-info">
+                            ${target.departmentName ? (target.collegeName || '') : ''} 
+                        </div>
+
+                        <div class="target-grid">
+                            <div class="field">
+                                <div class="field-label">학년</div>
+                                <div class="field-value">
+                                    <div class="grade-circles">
+                                        ${[1, 2, 3, 4, 5].map(g => {
+                    const isActive = g >= target.minGrade && g <= target.maxGrade;
+                    return `<div class="grade-circle ${isActive ? 'active' : ''}">${g}</div>`;
+                }).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Simple text fallback removed in favor of circles -->
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('parsed-content').innerHTML = parsedHtml;
+            updateControls();
+        }
+
+        function updateTarget(targetIndex, field, value) {
+            const originalIndex = getOriginalIndex(currentIndex);
+            if (field === 'collegeName' || field === 'departmentName') {
+                data[originalIndex].parsed_targets[targetIndex][field] = value || null;
+            } else {
+                data[originalIndex].parsed_targets[targetIndex][field] = value;
+            }
+            renderCard();
+        }
+
+        function updateBooleanTarget(targetIndex, field, checked) {
+            const originalIndex = getOriginalIndex(currentIndex);
+            data[originalIndex].parsed_targets[targetIndex][field] = checked;
+            renderCard();
+        }
+
+        function updateGradeRange(targetIndex, value) {
+            const originalIndex = getOriginalIndex(currentIndex);
+            const [min, max] = value.split('-').map(v => parseInt(v.trim()));
+            if (!isNaN(min) && !isNaN(max)) {
+                data[originalIndex].parsed_targets[targetIndex].minGrade = min;
+                data[originalIndex].parsed_targets[targetIndex].maxGrade = max;
+                renderCard();
+            }
+        }
+
+        function nextCard() {
+            // Auto-review when moving to next if not already reviewed
+            const originalIndex = getOriginalIndex(currentIndex);
+            if (!reviews[originalIndex]) {
+                markReviewed(false); // Do not advance in markReviewed, we do it here
+            }
+
+            if (currentIndex < filteredData.length - 1) {
+                currentIndex++;
+                document.getElementById('card-container').classList.remove('slide-left', 'slide-right');
+                setTimeout(() => {
+                    document.getElementById('card-container').classList.add('slide-right');
+                    renderCard();
+                }, 10);
+            } else {
+                alert('마지막 항목입니다.');
+            }
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                document.getElementById('card-container').classList.remove('slide-left', 'slide-right');
+                setTimeout(() => {
+                    document.getElementById('card-container').classList.add('slide-left');
+                    renderCard();
+                }, 10);
+            }
+        }
+
+        function toggleError() {
+            const originalIndex = getOriginalIndex(currentIndex);
+            if (data[originalIndex].isError) {
+                data[originalIndex].isError = false;
+                showStatus('오류 해제', 'status-correct');
+            } else {
+                data[originalIndex].isError = true;
+                reviews[originalIndex] = 'reviewed'; // Marking error counts as reviewed
+                showStatus('오류 표시됨 ⚠️', 'status-incorrect');
+            }
+            renderCard();
+            updateStats();
+        }
+
+        function markReviewed(shouldAdvance = true) {
+            const originalIndex = getOriginalIndex(currentIndex);
+
+            // 편집 모드가 항상 켜져있어 토글 필요 없음
+
+            if (reviews[originalIndex] !== 'reviewed') {
+                reviews[originalIndex] = 'reviewed';
+                showStatus('검토 완료 ✅', 'status-correct');
+                updateStats();
+            }
+
+            if (shouldAdvance) {
+                setTimeout(() => {
+                    if (currentIndex < filteredData.length - 1) {
+                        nextUnreviewed() || nextCard();
+                    } else {
+                        alert('검토가 완료되었습니다.');
+                    }
+                }, 200);
+            }
+        }
+
+        function showStatus(text, className) {
+            const indicator = document.getElementById('status-indicator');
+            indicator.textContent = text;
+            indicator.className = 'status-indicator show ' + className;
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 1500);
+        }
+
+        function nextUnreviewed() {
+            for (let i = currentIndex + 1; i < filteredData.length; i++) {
+                const originalIndex = getOriginalIndex(i);
+                if (!reviews[originalIndex]) {
+                    currentIndex = i;
+                    renderCard();
+                    return true;
+                }
+            }
+            // 처음부터 다시 찾기
+            for (let i = 0; i < currentIndex; i++) {
+                const originalIndex = getOriginalIndex(i);
+                if (!reviews[originalIndex]) {
+                    currentIndex = i;
+                    renderCard();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function getOriginalIndex(filteredIndex) {
+            return data.indexOf(filteredData[filteredIndex]);
+        }
+
+        function updateStats() {
+            const total = data.length;
+            const reviewed = Object.values(reviews).filter(r => r === 'reviewed').length;
+            const pending = total - reviewed;
+
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('reviewed-count').textContent = reviewed;
+            document.getElementById('pending-count').textContent = pending;
+
+            const percentage = total > 0 ? (reviewed / total) * 100 : 0;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+
+        function applyFilters() {
+            const scopeFilter = document.getElementById('scope-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+
+            filteredData = data.filter((item, index) => {
+                // Scope filter
+                if (scopeFilter !== 'all') {
+                    const hasScope = item.parsed_targets.some(t => t.scopeType === scopeFilter);
+                    if (!hasScope) return false;
+                }
+
+                // Status filter
+                if (statusFilter !== 'all') {
+                    const status = reviews[index];
+                    if (statusFilter === 'pending' && status) return false;
+                    if (statusFilter === 'reviewed' && status !== 'reviewed') return false;
+                }
+
+                return true;
+            });
+
+            currentIndex = 0;
+            renderCard();
+        }
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            const btn = document.getElementById('edit-btn-main');
+            btn.textContent = editMode ? '👁️ 보기' : '✏️ 수정';
+            // 버튼 스타일 토글을 위해 클래스 조작
+            if (editMode) {
+                btn.style.background = '#fbbf24';
+                btn.style.color = '#78350f';
+            } else {
+                btn.style.background = ''; // 원래 스타일로 복귀 (CSS 클래스에 의존)
+                btn.style.color = '';
+            }
+            renderCard();
+        }
+
+        async function exportResults() {
+            // 현재 상태를 반영한 데이터 생성
+            const exportData = data.map((item, index) => ({
+                ...item,
+                review_status: reviews[index] || 'pending'
+            }));
+
+            // File System Access API 사용 시도 (Chrome, Edge 등)
+            if (window.showSaveFilePicker) {
+                try {
+                    const options = {
+                        types: [{
+                            description: 'JSON Files',
+                            accept: { 'application/json': ['.json'] },
+                        }],
+                    };
+
+                    // 파일 핸들이 있으면 그것 사용 (덮어쓰기), 없으면 저장 대화상자
+                    // 보안상 항상 대화상자가 뜰 수 있음
+                    const handle = fileHandle || await window.showSaveFilePicker(options);
+                    const writable = await handle.createWritable();
+                    await writable.write(JSON.stringify(exportData, null, 2));
+                    await writable.close();
+
+                    showStatus('저장 완료 ✅', 'status-correct');
+                    return;
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.error('File System Access API Error:', err);
+                        // 실패시 다운로드 방식으로 폴백
+                    } else {
+                        return; // 사용자가 취소함
+                    }
+                }
+            }
+
+            // Fallback: 기존 다운로드 방식
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `parsed_unique_targets_reviewed.json`; // 기본 파일명 변경
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showStatus('저장 완료 (다운로드) 💾', 'status-correct');
+        }
+
+        function updateControls() {
+            const originalIndex = getOriginalIndex(currentIndex);
+            const isErr = data[originalIndex].isError;
+            const errBtn = document.getElementById('error-btn');
+            if (errBtn) {
+                if (isErr) {
+                    errBtn.classList.add('active');
+                    errBtn.style.background = '#e53e3e';
+                } else {
+                    errBtn.classList.remove('active');
+                    errBtn.style.background = '';
+                }
+            }
+        }
+
+        function showReport() {
+            // Collect Error Items (Full JSON)
+            const errorItems = data.filter(item => item.isError).map(item => {
+                // We probably want to exclude transient fields like isError if saving as clean JSON, 
+                // but user asked for "Original JSON".
+                const { isError, review_status, ...rest } = item;
+                return rest;
+            });
+
+            const jsonString = JSON.stringify(errorItems, null, 2);
+            document.getElementById('report-indices').value = jsonString; // Use value for textarea
+            document.getElementById('report-modal').classList.add('show');
+        }
+
+        function closeReport() {
+            document.getElementById('report-modal').classList.remove('show');
+        }
+
+        function copyIndices() {
+            const text = document.getElementById('report-indices').value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('복사되었습니다 (' + text.length + ' 자)');
+            });
+        }
+
+        function downloadJson() {
+            const exportData = data.map((item, index) => ({
+                ...item,
+                review_status: reviews[index] || 'pending'
+            }));
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `parsed_unique_targets_reviewed.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // toggleHelp function removed
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                loadData(e.target.result);
+            };
+            reader.readAsText(file);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // 입력 필드에서는 단축키 비활성화
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+            switch (e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    prevCard();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nextCard();
+                    break;
+
+                case 'Enter':
+                    e.preventDefault();
+                    // Just next, no special review mark needed as default is pending/viewed
+                    nextCard();
+                    break;
+
+                case 'e':
+                case 'E':
+                    e.preventDefault();
+                    toggleError();
+                    break;
+                case 's':
+                case 'S':
+                    e.preventDefault();
+                    exportResults();
+                    break;
+                case 'm':
+                case 'M':
+                    // M shortcut removed
+                    break;
+                case 'u':
+                case 'U':
+                    e.preventDefault();
+                    showReport();
+                    break;
+                // Help toggle removed
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
