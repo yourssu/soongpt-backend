@@ -608,6 +608,10 @@
             ⚠️ 오류 표시
         </button>
 
+        <button class="btn btn-filter" onclick="toggleEditMode()" id="edit-btn-main" title="수정 모드">
+            ✏️ 수정
+        </button>
+
         <button class="btn btn-next" onclick="nextCard()" title="다음 (→)">
             ▶
         </button>
@@ -641,6 +645,8 @@
                     <button class="btn btn-save" onclick="copyIndices()" style="flex: 1;">
                         📋 복사하기
                     </button>
+                    <button class="btn" onclick="resetErrors()"
+                        style="flex: 0 0 100px; background: #fc8181; color: white;">초기화</button>
                     <button class="btn" onclick="closeReport()"
                         style="flex: 0 0 100px; background: #cbd5e0; color: #2d3748;">종료</button>
                 </div>
@@ -700,7 +706,48 @@
             }
         }
 
+
+
+        // Local Storage Key
+        const STORAGE_KEY = 'flashcard_data_v1';
+
+        function saveToLocalStorage() {
+            const state = {
+                data: data,
+                reviews: reviews,
+                lastIndex: currentIndex
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function clearLocalStorage() {
+            if (confirm('저장된 데이터를 초기화하시겠습니까?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+
         window.onload = async function () {
+            // Try loading from LocalStorage first
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.data) {
+                        data = parsed.data;
+                        reviews = parsed.reviews || {};
+                        filteredData = [...data];
+                        currentIndex = parsed.lastIndex || 0;
+                        updateStats(); // Initial stats update
+                        renderCard();
+                        console.log('Restored from LocalStorage');
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Storage load failed', e);
+                }
+            }
+
             // Auto open if handled via fetch
             try {
                 const response = await fetch('parsed_unique_targets.json');
@@ -731,7 +778,50 @@
 
             // Updated Parsed Content
             const parsedHtml = item.parsed_targets.map((target, tIndex) => {
-                const editableClass = editMode ? 'editable' : '';
+                if (editMode) {
+                    return `
+                        <div class="target-item">
+                            <div class="target-grid">
+                                <div class="field">
+                                    <div class="field-label">Scope</div>
+                                    <div class="field-value">
+                                        <select onchange="updateTarget(${tIndex}, 'scopeType', this.value)">
+                                            <option value="UNIVERSITY" ${target.scopeType === 'UNIVERSITY' ? 'selected' : ''}>University</option>
+                                            <option value="COLLEGE" ${target.scopeType === 'COLLEGE' ? 'selected' : ''}>College</option>
+                                            <option value="DEPARTMENT" ${target.scopeType === 'DEPARTMENT' ? 'selected' : ''}>Department</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="field-label">College</div>
+                                    <div class="field-value">
+                                        <input type="text" value="${target.collegeName || ''}" onchange="updateTarget(${tIndex}, 'collegeName', this.value)" placeholder="-">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="field-label">Dept</div>
+                                    <div class="field-value">
+                                        <input type="text" value="${target.departmentName || ''}" onchange="updateTarget(${tIndex}, 'departmentName', this.value)" placeholder="-">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="field-label">Grade (1-5)</div>
+                                    <div class="field-value">
+                                        <input type="text" value="${target.minGrade}-${target.maxGrade}" onchange="updateGradeRange(${tIndex}, this.value)" style="width: 60px;">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="field-label">Options</div>
+                                    <div class="field-value" style="display: flex; gap: 10px; font-size: 13px;">
+                                        <label><input type="checkbox" ${target.isExcluded ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isExcluded', this.checked)"> 제한</label>
+                                        <label><input type="checkbox" ${target.isForeignerOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isForeignerOnly', this.checked)"> 외국인</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     `;
+                }
+
                 return `
                     <div class="target-item">
                         <div class="target-header">
@@ -777,12 +867,14 @@
                 data[originalIndex].parsed_targets[targetIndex][field] = value;
             }
             renderCard();
+            saveToLocalStorage(); // Auto-save
         }
 
         function updateBooleanTarget(targetIndex, field, checked) {
             const originalIndex = getOriginalIndex(currentIndex);
             data[originalIndex].parsed_targets[targetIndex][field] = checked;
             renderCard();
+            saveToLocalStorage(); // Auto-save
         }
 
         function updateGradeRange(targetIndex, value) {
@@ -792,6 +884,7 @@
                 data[originalIndex].parsed_targets[targetIndex].minGrade = min;
                 data[originalIndex].parsed_targets[targetIndex].maxGrade = max;
                 renderCard();
+                saveToLocalStorage(); // Auto-save
             }
         }
 
@@ -837,6 +930,7 @@
             }
             renderCard();
             updateStats();
+            saveToLocalStorage(); // Auto-save
         }
 
         function markReviewed(shouldAdvance = true) {
@@ -848,6 +942,7 @@
                 reviews[originalIndex] = 'reviewed';
                 showStatus('검토 완료 ✅', 'status-correct');
                 updateStats();
+                saveToLocalStorage(); // Auto-save
             }
 
             if (shouldAdvance) {
@@ -1034,6 +1129,22 @@
             navigator.clipboard.writeText(text).then(() => {
                 alert('복사되었습니다 (' + text.length + ' 자)');
             });
+        }
+
+        function resetErrors() {
+            if (!confirm('정말 모든 오류 표시를 초기화하시겠습니까? (되돌릴 수 없습니다)')) return;
+
+            data.forEach(item => {
+                item.isError = false;
+            });
+
+            // Re-calc stats and save
+            updateStats();
+            renderCard(); // Update UI if current card was error
+            saveToLocalStorage();
+
+            alert('모든 오류 표시가 초기화되었습니다.');
+            closeReport();
         }
 
         function downloadJson() {
