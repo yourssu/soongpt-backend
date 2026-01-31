@@ -577,7 +577,10 @@
     <div class="card-container" id="card-container">
         <div class="card" id="card">
             <div class="card-number">
-                <span id="card-number">1 / 0</span> | <span style="color: #667eea" id="card-count">0건</span>
+                <input type="number" id="jump-input"
+                    style="width: 60px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 14px;"
+                    onchange="jumpToCard(this.value)" placeholder="1">
+                / <span id="total-card-count">0</span> | <span style="color: #667eea" id="card-count">0건</span>
             </div>
             <div class="status-indicator" id="status-indicator"></div>
 
@@ -769,12 +772,15 @@
             }
 
             const item = filteredData[currentIndex];
-            const cardNum = `${currentIndex + 1} / ${filteredData.length}`;
 
-            document.getElementById('card-number').textContent = cardNum;
+            const currentNum = currentIndex + 1;
+            const totalNum = filteredData.length;
+
+            document.getElementById('jump-input').value = currentNum;
+            document.getElementById('total-card-count').textContent = totalNum;
             document.getElementById('card-count').textContent = `${item.count}건`;
             document.getElementById('original-text').textContent = item.original_text;
-            document.getElementById('current-num').textContent = currentIndex + 1;
+            document.getElementById('current-num').textContent = currentNum;
 
             // Updated Parsed Content
             const parsedHtml = item.parsed_targets.map((target, tIndex) => {
@@ -1001,6 +1007,18 @@
 
             const percentage = total > 0 ? (reviewed / total) * 100 : 0;
             document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+
+
+        function jumpToCard(val) {
+            const num = parseInt(val);
+            if (!isNaN(num) && num >= 1 && num <= filteredData.length) {
+                currentIndex = num - 1;
+                renderCard();
+            } else {
+                alert('유효하지 않은 번호입니다.');
+                document.getElementById('jump-input').value = currentIndex + 1;
+            }
         }
 
         function applyFilters() {
