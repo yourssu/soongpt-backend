@@ -25,7 +25,7 @@ DEPT_ALIAS = {
     "IT융합전공": "전자정보공학부 IT융합전공",
     
     # Engineering
-    "기계": "기계공학부",
+    "기계": "기계공학부",1
     "화공": "화학공학과",
     "화학공학": "화학공학과",
     "전기": "전기공학부",
@@ -182,7 +182,10 @@ def parse_target(text, id_manager):
     text = text.replace(",", " , ").replace(";", " ; ") # Pad delimiters
     
     # Flags
-    is_excluded = "대상외수강제한" in text or "타학과수강제한" in text
+    has_strict_flag = "대상외수강제한" in text or "타학과수강제한" in text
+    has_exclude_keyword = "제외" in text
+    
+    is_excluded = has_strict_flag or has_exclude_keyword
     is_foreigner_only = "순수외국인" in text or "외국국적" in text or "외국인" in text
     
     # Remove flags for cleaner parsing
@@ -222,6 +225,15 @@ def parse_target(text, id_manager):
             res, unmapped = parse_target(line, id_manager)
             results.extend(res)
             unmapped_tokens.extend(unmapped)
+            
+        # Propagate STRICT flags only. Do not propagate 'exclude' keyword as it is local or handled by base addition.
+        if has_strict_flag:
+            for r in results:
+                r["isExcluded"] = True
+        if is_foreigner_only:
+            for r in results:
+                r["isForeignerOnly"] = True
+                
         return results, unmapped_tokens
 
     # Regex for "N학년 ..." or "N~M학년 ..." or "전체학년 ..."
@@ -309,6 +321,21 @@ def parse_target(text, id_manager):
             del t["token"]
             final_targets.append(t)
             
+    # Logic to add UNIVERSITY scope if 'exclude' keyword is present (Blacklist logic)
+    # But ONLY if we have some targets extracted (the targets being excluded)
+    if has_exclude_keyword and final_targets:
+         # Check if UNIVERSITY scope is already present (avoid duplication)
+         if not any(t["scopeType"] == "UNIVERSITY" for t in final_targets):
+             final_targets.insert(0, {
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": min_grade,
+                "maxGrade": max_grade,
+                "isExcluded": False, # The base scope is ALLOWED
+                "isForeignerOnly": is_foreigner_only # Inherit global foreigner flag? Maybe.
+            })
+
     return final_targets, unmapped_tokens
 
 def main():
