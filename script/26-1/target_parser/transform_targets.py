@@ -31,8 +31,9 @@ DEPT_ALIAS = {
     "화학공학": "화학공학과",
     "전기": "전기공학부",
     "전기공학": "전기공학부",
-    "건축": "건축학부",
+    "건축": "건축학부 건축학전공",
     "건축학": "건축학부 건축학전공",
+    "건축학부": "건축학부 건축학전공",
     "건축공학": "건축학부 건축공학전공",
     "실내건축": "건축학부 실내건축전공",
     "신소재": "신소재공학과",
@@ -101,8 +102,8 @@ DEPT_ALIAS = {
     
     # New Depts
     "차세대반도체": "차세대반도체학과",
-    "AI소프트": "AI소프트웨어학과",
-    "AI소프트웨어": "AI소프트웨어학과",
+    "AI소프트": "AI소프트웨어학부",
+    "AI소프트웨어": "AI소프트웨어학부",
 }
 
 COLLEGE_ALIAS = {
@@ -323,10 +324,19 @@ def parse_target(text, id_manager):
     
     # Post-process targets with grade info
     final_targets = []
+    seen_targets = set()
+
+    def add_target(t):
+        # Create a unique key for deduplication
+        key = (t["scopeType"], t.get("collegeName"), t.get("departmentName"))
+        if key not in seen_targets:
+            seen_targets.add(key)
+            final_targets.append(t)
+
     if not current_targets:
         # If no dept/college found, but has grade spec (e.g. "1학년" -> University wide 1 grade)
         if has_grade_spec and not unmapped_tokens:
-             final_targets.append({
+             add_target({
                 "scopeType": "UNIVERSITY",
                 "collegeName": None,
                 "departmentName": None,
@@ -338,7 +348,7 @@ def parse_target(text, id_manager):
             })
         # Special Case: Empty text but specific flags (e.g. "순수외국인 제외")
         elif is_foreigner_only or is_military_only:
-             final_targets.append({
+             add_target({
                 "scopeType": "UNIVERSITY",
                 "collegeName": None,
                 "departmentName": None,
@@ -355,12 +365,14 @@ def parse_target(text, id_manager):
             t["isExcluded"] = is_excluded
             t["isForeignerOnly"] = is_foreigner_only
             t["isMilitaryOnly"] = is_military_only
-            del t["token"]
-            final_targets.append(t)
+            if "token" in t:
+                del t["token"]
+            add_target(t)
             
     # Logic to add UNIVERSITY scope if 'exclude' keyword is present (Blacklist logic)
     # But ONLY if we have some targets extracted (the targets being excluded)
-    if has_exclude_keyword and final_targets:
+    # AND if we are NOT in strict mode (Strict mode implies Whitelist, so we shouldn't add a "Rest Allowed" base)
+    if has_exclude_keyword and final_targets and not has_strict_flag:
          # Check if UNIVERSITY scope is already present (avoid duplication)
          if not any(t["scopeType"] == "UNIVERSITY" for t in final_targets):
              final_targets.insert(0, {
