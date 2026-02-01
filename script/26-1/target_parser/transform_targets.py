@@ -19,13 +19,14 @@ DEPT_ALIAS = {
     "글미": "글로벌미디어학부",
     "글로벌미디어": "글로벌미디어학부",
     "미디어경영": "미디어경영학과",
+    "디지털미디어": "미디어경영학과",
     "정보보호": "정보보호학과",
     "정통전": "전자정보공학부 IT융합전공",
     "전자공학전공": "전자정보공학부 전자공학전공",
     "IT융합전공": "전자정보공학부 IT융합전공",
     
     # Engineering
-    "기계": "기계공학부",1
+    "기계": "기계공학부",
     "화공": "화학공학과",
     "화학공학": "화학공학과",
     "전기": "전기공학부",
@@ -183,14 +184,16 @@ def parse_target(text, id_manager):
     
     # Flags
     has_strict_flag = "대상외수강제한" in text or "타학과수강제한" in text
-    has_exclude_keyword = "제외" in text
+    has_exclude_keyword = "제외" in text or "제한" in text
     
     is_excluded = has_strict_flag or has_exclude_keyword
     is_foreigner_only = "순수외국인" in text or "외국국적" in text or "외국인" in text
+    is_military_only = "군위탁" in text
     
     # Remove flags for cleaner parsing
     clean_text = re.sub(r'\(.*?(대상외수강제한|타학과수강제한|수강제한).*?\)', '', text)
     clean_text = re.sub(r'순수외국인[^\s]*', '', clean_text)
+    clean_text = clean_text.replace("군위탁", "").replace("입학생", "").replace("제한", "")
     clean_text = clean_text.strip()
     
     results = []
@@ -205,18 +208,25 @@ def parse_target(text, id_manager):
             "minGrade": 1, 
             "maxGrade": 5,
             "isExcluded": is_excluded,
-            "isForeignerOnly": is_foreigner_only
+            "isForeignerOnly": is_foreigner_only,
+            "isMilitaryOnly": is_military_only
         }], []
-    if clean_text == "전체":
-        return [{
-            "scopeType": "UNIVERSITY",
-            "collegeName": None,
-            "departmentName": None,
-            "minGrade": 1, 
-            "maxGrade": 5,
-            "isExcluded": is_excluded,
-            "isForeignerOnly": is_foreigner_only
-        }], []
+    if clean_text == "전체" or clean_text == "":
+         # If text became empty after cleaning (e.g. "순수외국인 제한" -> ""), it might be a global constraint
+         if is_foreigner_only or is_military_only:
+             # Fall through to specific handling below instead of early return
+             pass
+         elif clean_text == "전체":
+             return [{
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": 1, 
+                "maxGrade": 5,
+                "isExcluded": is_excluded,
+                "isForeignerOnly": is_foreigner_only,
+                "isMilitaryOnly": is_military_only
+            }], []
         
     # Split by lines if any
     lines = clean_text.split('\n')
@@ -233,6 +243,9 @@ def parse_target(text, id_manager):
         if is_foreigner_only:
             for r in results:
                 r["isForeignerOnly"] = True
+        if is_military_only:
+            for r in results:
+                r["isMilitaryOnly"] = True
                 
         return results, unmapped_tokens
 
@@ -262,16 +275,26 @@ def parse_target(text, id_manager):
     # Extract candidate words
     # Remove grade part
     text_no_grade = re.sub(r'(?:(\d)~(\d)|(\d))학년|전체학년', ' ', clean_text)
-    # Remove special chars
-    text_no_grade = re.sub(r'[(),;\n]', ' ', text_no_grade)
+    
+    # Ensure delimiters are spaced out BEFORE removing other chars, if not done already
+    text_no_grade = text_no_grade.replace(",", " , ").replace(";", " ; ")
+    
+    # Remove special chars (keep spaces and alphanumeric/Korean)
+    # Removing () as they are handled or irrelevant for token extraction now
+    text_no_grade = re.sub(r'[();]', ' ', text_no_grade)
     
     tokens = [t.strip() for t in text_no_grade.split() if t.strip()]
     
     current_targets = []
     
     for token in tokens:
-        if token in ["대상외수강제한", "순수외국인", "입학생", "제외", "포함", "수강제한", "타학과수강제한", "전체"]:
+        if token in ["대상외수강제한", "순수외국인", "입학생", "제외", "포함", "수강제한", "타학과수강제한", "군위탁"]:
             continue
+            
+        # Skip "전체" ONLY IF it stands alone or doesn't have exclusion context.
+        # But actually, we just need to ensure we don't treat "전체" as a department token.
+        if token == "전체":
+             continue
             
         # Checking Department
         dept_id = id_manager.get_department_id(token)
@@ -310,7 +333,20 @@ def parse_target(text, id_manager):
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
                 "isExcluded": is_excluded,
-                "isForeignerOnly": is_foreigner_only
+                "isForeignerOnly": is_foreigner_only,
+                "isMilitaryOnly": is_military_only
+            })
+        # Special Case: Empty text but specific flags (e.g. "순수외국인 제외")
+        elif is_foreigner_only or is_military_only:
+             final_targets.append({
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": min_grade,
+                "maxGrade": max_grade,
+                "isExcluded": is_excluded,
+                "isForeignerOnly": is_foreigner_only,
+                "isMilitaryOnly": is_military_only
             })
     else:
         for t in current_targets:
@@ -318,6 +354,7 @@ def parse_target(text, id_manager):
             t["maxGrade"] = max_grade
             t["isExcluded"] = is_excluded
             t["isForeignerOnly"] = is_foreigner_only
+            t["isMilitaryOnly"] = is_military_only
             del t["token"]
             final_targets.append(t)
             
@@ -333,7 +370,8 @@ def parse_target(text, id_manager):
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
                 "isExcluded": False, # The base scope is ALLOWED
-                "isForeignerOnly": is_foreigner_only # Inherit global foreigner flag? Maybe.
+                "isForeignerOnly": False, # Base target is for GENERAL population
+                "isMilitaryOnly": False
             })
 
     return final_targets, unmapped_tokens
