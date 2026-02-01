@@ -252,7 +252,7 @@
         "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -263,7 +263,7 @@
         "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -274,7 +274,7 @@
         "departmentName": null,
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -285,7 +285,7 @@
         "departmentName": null,
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -7518,7 +7518,7 @@
         "departmentName": null,
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -7529,7 +7529,7 @@
         "departmentName": null,
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -8434,7 +8434,7 @@
         "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -8445,7 +8445,7 @@
         "departmentName": null,
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -8456,7 +8456,7 @@
         "departmentName": null,
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -12023,7 +12023,7 @@
         "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -12034,7 +12034,7 @@
         "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -12045,7 +12045,7 @@
         "departmentName": null,
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -12056,7 +12056,7 @@
         "departmentName": null,
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -12073,7 +12073,7 @@
         "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -12084,7 +12084,7 @@
         "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -12095,7 +12095,7 @@
         "departmentName": null,
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -12106,7 +12106,7 @@
         "departmentName": null,
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13786,7 +13786,7 @@
         "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13797,7 +13797,7 @@
         "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13808,7 +13808,7 @@
         "departmentName": null,
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13926,7 +13926,7 @@
         "departmentName": "회계세무학과",
         "minGrade": 2,
         "maxGrade": 2,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13937,7 +13937,7 @@
         "departmentName": "회계학과",
         "minGrade": 2,
         "maxGrade": 2,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13948,7 +13948,7 @@
         "departmentName": "회계세무학과",
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13959,7 +13959,7 @@
         "departmentName": "회계학과",
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13970,7 +13970,7 @@
         "departmentName": "회계세무학과",
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -13981,7 +13981,7 @@
         "departmentName": "회계학과",
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -14149,7 +14149,7 @@
         "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -14160,7 +14160,7 @@
         "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -14171,7 +14171,7 @@
         "departmentName": null,
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -14182,7 +14182,7 @@
         "departmentName": null,
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15805,7 +15805,7 @@
         "departmentName": "컴퓨터학부",
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15816,7 +15816,7 @@
         "departmentName": "AI융합학부",
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15827,7 +15827,7 @@
         "departmentName": "글로벌미디어학부",
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15838,7 +15838,7 @@
         "departmentName": "전자정보공학부 IT융합전공",
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15849,7 +15849,7 @@
         "departmentName": "컴퓨터학부",
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15860,7 +15860,7 @@
         "departmentName": "AI융합학부",
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15871,7 +15871,7 @@
         "departmentName": "글로벌미디어학부",
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15882,7 +15882,7 @@
         "departmentName": "전자정보공학부 IT융합전공",
         "minGrade": 4,
         "maxGrade": 4,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15893,7 +15893,7 @@
         "departmentName": "컴퓨터학부",
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15904,7 +15904,7 @@
         "departmentName": "AI융합학부",
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15915,7 +15915,7 @@
         "departmentName": "글로벌미디어학부",
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -15926,7 +15926,7 @@
         "departmentName": "전자정보공학부 IT융합전공",
         "minGrade": 5,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false

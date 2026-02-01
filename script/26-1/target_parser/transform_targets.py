@@ -314,11 +314,8 @@ def parse_target(text, id_manager):
             results.extend(res)
             unmapped_tokens.extend(unmapped)
             
-        # Propagate STRICT flags only. 
-        if has_strict_flag:
-            for r in results:
-                r["isExcluded"] = True
-        # For FOREIGNER/MILITARY/TEACHING_CERT, propagate?
+        # Don't propagate strict flags in multiline - each line is independent
+        # For FOREIGNER/MILITARY/TEACHING_CERT, propagate
         if is_foreigner_only: 
              for r in results: r["isForeignerOnly"] = True
         if is_military_only:
