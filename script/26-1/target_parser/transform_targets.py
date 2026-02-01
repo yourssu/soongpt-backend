@@ -478,9 +478,14 @@ def parse_target(text, id_manager):
             add_target(t)
             
     # Logic to add UNIVERSITY scope if 'exclude' keyword is present (Blacklist logic)
-    # But ONLY if we have some targets extracted (the targets being excluded)
-    # AND if we are NOT in strict mode (Strict mode implies Whitelist, so we shouldn't add a "Rest Allowed" base)
-    if has_exclude_keyword and final_targets and not has_strict_flag:
+    # But ONLY if:
+    # 1. We have exclusion targets (final_targets)
+    # 2. NOT in strict mode (strict implies whitelist)
+    # 3. Main text had NO explicit targets (e.g., "전체(중문 제외)" vs "전자공학(IT융합 제한)")
+    # Check: if current_targets was empty before extending with results, then we need UNIVERSITY base
+    has_main_text_targets = len(current_targets) > len(results)  # current_targets = main + results
+    
+    if has_exclude_keyword and final_targets and not has_strict_flag and not has_main_text_targets:
          # Check if UNIVERSITY scope is already present (avoid duplication)
          if not any(t["scopeType"] == "UNIVERSITY" for t in final_targets):
              final_targets.insert(0, {
