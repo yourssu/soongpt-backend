@@ -226,11 +226,12 @@ def parse_target(text, id_manager):
     is_excluded = has_strict_flag or has_exclude_keyword
     is_foreigner_only = "순수외국인" in text or "외국국적" in text or "외국인" in text
     is_military_only = "군위탁" in text
+    is_teaching_cert = "교직이수자" in text or "교직이수" in text
     
     # Remove flags for cleaner parsing
     clean_text = re.sub(r'\(.*?(대상외수강제한|타학과수강제한|수강제한).*?\)', '', text)
     clean_text = re.sub(r'순수외국인[^\s]*', '', clean_text)
-    clean_text = clean_text.replace("군위탁", "").replace("입학생", "").replace("제한", "")
+    clean_text = clean_text.replace("군위탁", "").replace("입학생", "").replace("제한", "").replace("교직이수자", "").replace("교직이수", "")
     clean_text = clean_text.strip()
     
     results = []
@@ -246,7 +247,8 @@ def parse_target(text, id_manager):
             "maxGrade": 5,
             "isExcluded": is_excluded,
             "isForeignerOnly": is_foreigner_only,
-            "isMilitaryOnly": is_military_only
+            "isMilitaryOnly": is_military_only,
+            "isTeachingCertificateStudent": is_teaching_cert
         }], []
     if clean_text == "전체" or clean_text == "":
          # If text became empty after cleaning (e.g. "순수외국인 제한" -> ""), it might be a global constraint
@@ -262,7 +264,8 @@ def parse_target(text, id_manager):
                 "maxGrade": 5,
                 "isExcluded": is_excluded,
                 "isForeignerOnly": is_foreigner_only,
-                "isMilitaryOnly": is_military_only
+                "isMilitaryOnly": is_military_only,
+                "isTeachingCertificateStudent": is_teaching_cert
             }], []
         
     # Pre-parse exclusion blocks in parentheses e.g. (중문 제외), (영어영문학과제외)
@@ -313,11 +316,13 @@ def parse_target(text, id_manager):
         if has_strict_flag:
             for r in results:
                 r["isExcluded"] = True
-        # For FOREIGNER/MILITARY, propagate?
+        # For FOREIGNER/MILITARY/TEACHING_CERT, propagate?
         if is_foreigner_only: 
              for r in results: r["isForeignerOnly"] = True
         if is_military_only:
              for r in results: r["isMilitaryOnly"] = True
+        if is_teaching_cert:
+             for r in results: r["isTeachingCertificateStudent"] = True
 
         return results, unmapped_tokens
         
@@ -360,7 +365,7 @@ def parse_target(text, id_manager):
     current_targets = []
     
     for token in tokens:
-        if token in ["대상외수강제한", "순수외국인", "입학생", "제외", "포함", "수강제한", "타학과수강제한", "군위탁"]:
+        if token in ["교직이수자", "대상외수강제한", "순수외국인", "입학생", "제외", "포함", "수강제한", "타학과수강제한", "군위탁"]:
             continue
             
         # Skip "전체" ONLY IF it stands alone or doesn't have exclusion context.
@@ -410,6 +415,7 @@ def parse_target(text, id_manager):
             
         t["isForeignerOnly"] = is_foreigner_only
         t["isMilitaryOnly"] = is_military_only
+        t["isTeachingCertificateStudent"] = is_teaching_cert
         if "token" in t: del t["token"]
         
     # Also update the exclusion_matches results with the grade info if they didn't have it
@@ -421,9 +427,10 @@ def parse_target(text, id_manager):
              r["minGrade"] = min_grade
              r["maxGrade"] = max_grade
              
-        # Also inherit foreigner/military flags?
+        # Also inherit foreigner/military/teaching cert flags?
         if is_foreigner_only: r["isForeignerOnly"] = True
         if is_military_only: r["isMilitaryOnly"] = True
+        if is_teaching_cert: r["isTeachingCertificateStudent"] = True
         
     # Merge
     current_targets.extend(results) # Add pre-parsed exclusions
@@ -450,7 +457,8 @@ def parse_target(text, id_manager):
                 "maxGrade": max_grade,
                 "isExcluded": is_excluded,
                 "isForeignerOnly": is_foreigner_only,
-                "isMilitaryOnly": is_military_only
+                "isMilitaryOnly": is_military_only,
+                 "isTeachingCertificateStudent": is_teaching_cert
             })
         # Special Case: Empty text but specific flags (e.g. "순수외국인 제외")
         elif is_foreigner_only or is_military_only:
@@ -462,7 +470,8 @@ def parse_target(text, id_manager):
                 "maxGrade": max_grade,
                 "isExcluded": is_excluded,
                 "isForeignerOnly": is_foreigner_only,
-                "isMilitaryOnly": is_military_only
+                "isMilitaryOnly": is_military_only,
+                 "isTeachingCertificateStudent": is_teaching_cert
             })
     else:
         for t in current_targets:
@@ -489,7 +498,8 @@ def parse_target(text, id_manager):
                 "maxGrade": max_grade,
                 "isExcluded": False, # The base scope is ALLOWED
                 "isForeignerOnly": False, # Base target is for GENERAL population
-                "isMilitaryOnly": False
+                "isMilitaryOnly": False,
+                "isTeachingCertificateStudent": False
             })
 
     return final_targets, unmapped_tokens
