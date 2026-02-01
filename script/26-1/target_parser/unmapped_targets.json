@@ -303,8 +303,7 @@
   {
     "original_text": "전체(중문 제외),(중국국적학생 제외)",
     "unmapped_tokens": [
-      ",",
-      "중국국적학생"
+      ","
     ]
   },
   {
@@ -454,24 +453,6 @@
     "unmapped_tokens": [
       ",",
       "스포츠마케팅융합"
-    ]
-  },
-  {
-    "original_text": "전체학년 전체(영어영문학과제외)",
-    "unmapped_tokens": [
-      "영어영문학과제외"
-    ]
-  },
-  {
-    "original_text": "전체(글로벌통상제외)",
-    "unmapped_tokens": [
-      "글로벌통상제외"
-    ]
-  },
-  {
-    "original_text": "전체(불문제외)",
-    "unmapped_tokens": [
-      "불문제외"
     ]
   },
   {
@@ -843,12 +824,6 @@
     ]
   },
   {
-    "original_text": "전체(법대제외)",
-    "unmapped_tokens": [
-      "법대제외"
-    ]
-  },
-  {
     "original_text": "전체학년 ICT유통물류융합",
     "unmapped_tokens": [
       "ICT유통물류융합"
@@ -890,12 +865,6 @@
     "original_text": "1학년 ;순수외국인입학생 ,언론홍보",
     "unmapped_tokens": [
       ","
-    ]
-  },
-  {
-    "original_text": "1학년 전자공학(대상외수강제한)",
-    "unmapped_tokens": [
-      "전자공학"
     ]
   },
   {
@@ -1370,12 +1339,6 @@
     ]
   },
   {
-    "original_text": "전체(철학과제외)",
-    "unmapped_tokens": [
-      "철학과제외"
-    ]
-  },
-  {
     "original_text": "전체학년 경영학부, 벤처중소, 스포츠마케팅융합, ICT유통물류융합, 사회적기업혁신융합",
     "unmapped_tokens": [
       ",",
@@ -1463,12 +1426,6 @@
   },
   {
     "original_text": "전체학년 글로벌통상, 순수외국인입학생 (대상외수강제한)",
-    "unmapped_tokens": [
-      ","
-    ]
-  },
-  {
-    "original_text": "전체(컴퓨터,소프트 제외)",
     "unmapped_tokens": [
       ","
     ]
@@ -1826,8 +1783,7 @@
       ",",
       ",",
       ",",
-      ",",
-      "전"
+      ","
     ]
   },
   {
@@ -2185,12 +2141,10 @@
       ",",
       ",",
       ",",
-      "전자정보",
       "교직이수자",
       ",",
       ",",
-      ",",
-      "전자정보"
+      ","
     ]
   },
   {
