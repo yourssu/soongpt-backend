@@ -171,6 +171,30 @@
             color: #e65100;
         }
 
+        .badge-confidence-low {
+            background: #ffebee;
+            color: #c62828;
+            font-weight: 700;
+        }
+
+        .badge-confidence-medium {
+            background: #fff3e0;
+            color: #e65100;
+            font-weight: 700;
+        }
+
+        .badge-confidence-high {
+            background: #e8f5e9;
+            color: #388e3c;
+            font-weight: 700;
+        }
+
+        .badge-issue {
+            background: #e3f2fd;
+            color: #1565c0;
+            font-size: 11px;
+        }
+
         .target-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -584,6 +608,14 @@
             </div>
             <div class="status-indicator" id="status-indicator"></div>
 
+            <!-- Metadata Section (for suspicious items) -->
+            <div id="metadata-section" style="display: none; margin-bottom: 20px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                    <div id="confidence-badge" class="badge" style="font-size: 14px;"></div>
+                    <div id="issues-badges" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                </div>
+            </div>
+
             <div>
                 <div class="section-title">ORIGINAL TEXT</div>
                 <div class="content-section">
@@ -781,6 +813,45 @@
             document.getElementById('card-count').textContent = `${item.count}건`;
             document.getElementById('original-text').textContent = item.original_text;
             document.getElementById('current-num').textContent = currentNum;
+
+            // Render metadata if available (for suspicious items)
+            const metadataSection = document.getElementById('metadata-section');
+            if (item._metadata) {
+                const confidence = item._metadata.confidence || 'unknown';
+                const issues = item._metadata.issues || [];
+
+                // Confidence badge
+                const confidenceMap = {
+                    'low': { text: '🔴 신뢰도: 낮음', class: 'badge-confidence-low' },
+                    'medium': { text: '🟡 신뢰도: 보통', class: 'badge-confidence-medium' },
+                    'high': { text: '🟢 신뢰도: 높음', class: 'badge-confidence-high' }
+                };
+                const confInfo = confidenceMap[confidence] || { text: '❓ 신뢰도: 미상', class: 'badge' };
+
+                document.getElementById('confidence-badge').textContent = confInfo.text;
+                document.getElementById('confidence-badge').className = 'badge ' + confInfo.class;
+
+                // Issue badges
+                const issueNames = {
+                    'unmapped_tokens': '❌ 미매핑 토큰',
+                    'no_parsing': '⚠️ 파싱 실패',
+                    'multiple_departments': '📚 다중 학과',
+                    'strict_without_specifics': '🎯 애매한 제한',
+                    'ambiguous_university_scope': '🏫 애매한 전체',
+                    'oversimplified': '📉 과단순화',
+                    'exclusion_without_base': '🚫 기준 누락'
+                };
+
+                const issueHtml = issues.map(issue => {
+                    const displayName = issueNames[issue] || issue;
+                    return `<span class="badge badge-issue">${displayName}</span>`;
+                }).join('');
+
+                document.getElementById('issues-badges').innerHTML = issueHtml;
+                metadataSection.style.display = 'block';
+            } else {
+                metadataSection.style.display = 'none';
+            }
 
             // Updated Parsed Content
             const parsedHtml = item.parsed_targets.map((target, tIndex) => {
