@@ -11,6 +11,7 @@ OUTPUT_JSON_PATH = os.path.join(BASE_DIR, "parsed_unique_targets.json")
 UNMAPPED_JSON_PATH = os.path.join(BASE_DIR, "unmapped_targets.json")
 
 # Department Aliases (Based on PLAN.md)
+# Values can be string or list of strings
 DEPT_ALIAS = {
     # IT College
     "컴퓨터": "컴퓨터학부",
@@ -31,9 +32,9 @@ DEPT_ALIAS = {
     "화학공학": "화학공학과",
     "전기": "전기공학부",
     "전기공학": "전기공학부",
-    "건축": "건축학부 건축학전공",
-    "건축학": "건축학부 건축학전공",
-    "건축학부": "건축학부 건축학전공",
+    "건축": ["건축학부 건축학전공", "건축학부 실내건축전공", "건축학부 건축공학전공"],
+    "건축학": ["건축학부 건축학전공", "건축학부 실내건축전공", "건축학부 건축공학전공"], # Generic match triggers all
+    "건축학부": ["건축학부 건축학전공", "건축학부 실내건축전공", "건축학부 건축공학전공"],
     "건축공학": "건축학부 건축공학전공",
     "실내건축": "건축학부 실내건축전공",
     "신소재": "신소재공학과",
@@ -161,22 +162,57 @@ class IdManager:
             return self.college_map.get(mapped_name)
         return None
 
-    def get_department_id(self, name):
+    def get_department_ids(self, name):
+        """Returns a list of department IDs."""
         name = name.strip()
+        ids = []
+        
+        # Helper to resolve a single name to an ID
+        def resolve_single(n):
+             if n in self.department_map:
+                 return self.department_map[n]
+             return None
+
         # Direct match
-        if name in self.department_map:
-            return self.department_map[name]
+        direct_id = resolve_single(name)
+        if direct_id:
+            return [direct_id]
+            
         # Alias match
         if name in DEPT_ALIAS:
-            mapped_name = DEPT_ALIAS[name]
-            return self.department_map.get(mapped_name)
+            mapped = DEPT_ALIAS[name]
+            if isinstance(mapped, list):
+                for m in mapped:
+                    mid = resolve_single(m)
+                    if mid: ids.append(mid)
+            else:
+                mid = resolve_single(mapped)
+                if mid: ids.append(mid)
+            return ids
             
         # Partial match heuristic (risky but useful for "국어국문" vs "국어국문학과")
-        for stored_name in self.department_map.keys():
-            if name in stored_name: # e.g. "컴퓨터" in "컴퓨터학부"
-                 # Prefer exact alias first, but if not found...
-                 pass 
-        return None
+        # Removing legacy partial match if not needed, or keeping it but ensuring it doesn't conflict
+        # For safety, let's keep it limited or remove if confident in aliases. 
+        # Given the "AI소프트" case, if it wasn't in alias, this loop might have helped IF "AI소프트" was in dept name.
+        # But "AI소프트웨어학부" contains "AI소프트".
+        # Let's keep it but make it return ALL matches? No, unsafe.
+        # Only return if exactly one match or strong match?
+        # I will iterate keys and if 'name' is substring of key, add it.
+        # But "건축" is substring of "건축공학", "건축학", "실내건축".
+        # If I return all containing "건축", "건축공학" query would work, but "건축" query would return everything.
+        # This acts like one-to-many.
+        
+        partial_matches = []
+        for stored_name, stored_id in self.department_map.items():
+            if name in stored_name: 
+                 partial_matches.append(stored_id)
+        
+        if partial_matches:
+            # If we found matches via substring, use them.
+            # But duplicate filtering later handles over-matching?
+            return partial_matches
+
+        return []
 
 def parse_target(text, id_manager):
     # Normalize
@@ -229,7 +265,43 @@ def parse_target(text, id_manager):
                 "isMilitaryOnly": is_military_only
             }], []
         
-    # Split by lines if any
+    # Pre-parse exclusion blocks in parentheses e.g. (중문 제외), (영어영문학과제외)
+    # This must be done BEFORE splitting tokens to preserve context
+    exclusion_matches = re.findall(r'\(([^)]*?제외[^)]*?)\)', clean_text)
+    
+    # We will invoke parse_target recursively on these blocks, but force isExcluded=True on results
+    # And we need to remove them from clean_text so they don't get added as positive targets
+    for match in exclusion_matches:
+        # Remove "제외" from the match string so it parses as a dept
+        inner_text = match.replace("제외", "")
+        
+        # Recursive parse (using a dummy ID manager? No, use real one)
+        # We assume inner text defines the departments to exclude
+        ex_targets, _ = parse_target(inner_text, id_manager)
+        
+        for t in ex_targets:
+            # Force exclusion flag
+            t["isExcluded"] = True
+            # Also inherit other flags? Maybe grade, but usually these are purely dept exclusions
+            # Ensure we don't accidentally inherit 'University' scope from empty inner text
+            if t["scopeType"] != "UNIVERSITY":
+                # Add to results directly? Or current_targets?
+                # We add to results but we need to track them.
+                # Let's add to final_targets list accumulation logic.
+                # We can add to results immediately, but we need to ensure grade info is synced if missing?
+                # Usually (Dep Except) implies the same grade as main text. 
+                # But parse_target recursion might return defaults.
+                pass 
+            
+        results.extend(ex_targets)
+        
+        # Remove this block from clean_text
+        clean_text = clean_text.replace(f"({match})", " ")
+        
+    # Re-evaluate flags after modification? No, flags were global.
+    # But if we removed all text, we might be left with empty string or "전체"
+    
+    # Split by lines if any (continue with modified clean_text)
     lines = clean_text.split('\n')
     if len(lines) > 1:
         for line in lines:
@@ -237,19 +309,18 @@ def parse_target(text, id_manager):
             results.extend(res)
             unmapped_tokens.extend(unmapped)
             
-        # Propagate STRICT flags only. Do not propagate 'exclude' keyword as it is local or handled by base addition.
+        # Propagate STRICT flags only. 
         if has_strict_flag:
             for r in results:
                 r["isExcluded"] = True
-        if is_foreigner_only:
-            for r in results:
-                r["isForeignerOnly"] = True
+        # For FOREIGNER/MILITARY, propagate?
+        if is_foreigner_only: 
+             for r in results: r["isForeignerOnly"] = True
         if is_military_only:
-            for r in results:
-                r["isMilitaryOnly"] = True
-                
-        return results, unmapped_tokens
+             for r in results: r["isMilitaryOnly"] = True
 
+        return results, unmapped_tokens
+        
     # Regex for "N학년 ..." or "N~M학년 ..." or "전체학년 ..."
     # Pattern: (Grade Part) (Dept/College Part)
     
@@ -293,19 +364,19 @@ def parse_target(text, id_manager):
             continue
             
         # Skip "전체" ONLY IF it stands alone or doesn't have exclusion context.
-        # But actually, we just need to ensure we don't treat "전체" as a department token.
         if token == "전체":
              continue
             
-        # Checking Department
-        dept_id = id_manager.get_department_id(token)
-        if dept_id:
-            current_targets.append({
-                "scopeType": "DEPARTMENT",
-                "collegeName": None,
-                "departmentName": id_manager.department_id_to_name[dept_id],
-                "token": token
-            })
+        # Checking Department (returns LIST of IDs now)
+        dept_ids = id_manager.get_department_ids(token)
+        if dept_ids:
+            for d_id in dept_ids:
+                current_targets.append({
+                    "scopeType": "DEPARTMENT",
+                    "collegeName": None,
+                    "departmentName": id_manager.department_id_to_name[d_id],
+                    "token": token
+                })
             continue
             
         # Checking College
@@ -321,6 +392,41 @@ def parse_target(text, id_manager):
             
         # If reached here, token is unmapped
         unmapped_tokens.append(token)
+        
+    # Apply grade/flags to newly parsed positive matches
+    for t in current_targets:
+        t["minGrade"] = min_grade
+        t["maxGrade"] = max_grade
+        t["isExcluded"] = is_excluded # Inherit global exclude? Or false? 
+        # CAREFUL: if we had (Excluded) blocks, global is_excluded might be True.
+        # But positive matches (outside parens) should probably follow global logic.
+        # IF has_strict_flag -> True.
+        # IF has_exclude_keyword -> The positive matches are ALLOWED, only the 'exclude' keyword targets are Excluded.
+        # So if has_exclude_keyword is True (and not strict), positive matches should be False.
+        if has_exclude_keyword and not has_strict_flag:
+            t["isExcluded"] = False
+        else:
+            t["isExcluded"] = is_excluded
+            
+        t["isForeignerOnly"] = is_foreigner_only
+        t["isMilitaryOnly"] = is_military_only
+        if "token" in t: del t["token"]
+        
+    # Also update the exclusion_matches results with the grade info if they didn't have it
+    # Because exclusion blocks usually lack grade info (e.g. "전체 (중문 제외)")
+    # We should apply the main grade spec to them too.
+    for r in results:
+        # Check if they look like recursion defaults (1-5 grade) and we have specific grade
+        if has_grade_spec:
+             r["minGrade"] = min_grade
+             r["maxGrade"] = max_grade
+             
+        # Also inherit foreigner/military flags?
+        if is_foreigner_only: r["isForeignerOnly"] = True
+        if is_military_only: r["isMilitaryOnly"] = True
+        
+    # Merge
+    current_targets.extend(results) # Add pre-parsed exclusions
     
     # Post-process targets with grade info
     final_targets = []
