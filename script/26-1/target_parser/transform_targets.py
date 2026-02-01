@@ -32,6 +32,7 @@ DEPT_ALIAS = {
     "화학공학": "화학공학과",
     "전기": "전기공학부",
     "전기공학": "전기공학부",
+    "전자공학": "전자정보공학부 전자공학전공",
     "건축": ["건축학부 건축학전공", "건축학부 실내건축전공", "건축학부 건축공학전공"],
     "건축학": ["건축학부 건축학전공", "건축학부 실내건축전공", "건축학부 건축공학전공"], # Generic match triggers all
     "건축학부": ["건축학부 건축학전공", "건축학부 실내건축전공", "건축학부 건축공학전공"],
@@ -232,7 +233,7 @@ def parse_target(text, id_manager):
     # Remove flags for cleaner parsing
     clean_text = re.sub(r"\(\s*(대상외수강제한|타학과수강제한|수강제한)\s*\)", "", text)
     clean_text = re.sub(r'순수외국인[^\s]*', '', clean_text)
-    clean_text = clean_text.replace("군위탁", "").replace("입학생", "").replace("제한", "").replace("교직이수자", "").replace("교직이수", "")
+    clean_text = clean_text.replace("군위탁", "").replace("입학생", "").replace("교직이수자", "").replace("교직이수", "")
     clean_text = clean_text.strip()
     
     results = []
@@ -269,15 +270,15 @@ def parse_target(text, id_manager):
                 "isTeachingCertificateStudent": is_teaching_cert
             }], []
         
-    # Pre-parse exclusion blocks in parentheses e.g. (중문 제외), (영어영문학과제외)
+    # Pre-parse exclusion blocks in parentheses e.g. (중문 제외), (영어영문학과제외), (전자공학수강제한)
     # This must be done BEFORE splitting tokens to preserve context
-    exclusion_matches = re.findall(r'\(([^)]*?제외[^)]*?)\)', clean_text)
+    exclusion_matches = re.findall(r'\(([^)]*?(?:제외|수강제한)[^)]*?)\)', clean_text)
     
     # We will invoke parse_target recursively on these blocks, but force isExcluded=True on results
     # And we need to remove them from clean_text so they don't get added as positive targets
     for match in exclusion_matches:
         # Remove "제외" from the match string so it parses as a dept
-        inner_text = match.replace("제외", "")
+        inner_text = match.replace("제외", "").replace("수강제한", "").replace("수강", "").replace("제한", "")
         
         # Recursive parse (using a dummy ID manager? No, use real one)
         # We assume inner text defines the departments to exclude
@@ -403,16 +404,9 @@ def parse_target(text, id_manager):
     for t in current_targets:
         t["minGrade"] = min_grade
         t["maxGrade"] = max_grade
-        t["isExcluded"] = is_excluded # Inherit global exclude? Or false? 
-        # CAREFUL: if we had (Excluded) blocks, global is_excluded might be True.
-        # But positive matches (outside parens) should probably follow global logic.
-        # IF has_strict_flag -> True.
-        # IF has_exclude_keyword -> The positive matches are ALLOWED, only the 'exclude' keyword targets are Excluded.
-        # So if has_exclude_keyword is True (and not strict), positive matches should be False.
-        if has_exclude_keyword and not has_strict_flag:
-            t["isExcluded"] = False
-        else:
-            t["isExcluded"] = is_excluded
+        # Main text targets (outside parenthetical exclusions) are ALWAYS allowed
+        # Only targets from exclusion blocks (results list) will be marked as excluded
+        t["isExcluded"] = False
             
         t["isForeignerOnly"] = is_foreigner_only
         t["isMilitaryOnly"] = is_military_only
@@ -476,13 +470,6 @@ def parse_target(text, id_manager):
             })
     else:
         for t in current_targets:
-            t["minGrade"] = min_grade
-            t["maxGrade"] = max_grade
-            t["isExcluded"] = is_excluded
-            t["isForeignerOnly"] = is_foreigner_only
-            t["isMilitaryOnly"] = is_military_only
-            if "token" in t:
-                del t["token"]
             add_target(t)
             
     # Logic to add UNIVERSITY scope if 'exclude' keyword is present (Blacklist logic)
