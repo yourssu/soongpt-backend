@@ -250,7 +250,8 @@ def parse_target(text, id_manager):
             "isExcluded": is_excluded,
             "isForeignerOnly": is_foreigner_only,
             "isMilitaryOnly": is_military_only,
-            "isTeachingCertificateStudent": is_teaching_cert
+            "isTeachingCertificateStudent": is_teaching_cert,
+            "isStrictRestriction": has_strict_flag
         }], []
     if clean_text == "전체" or clean_text == "":
          # If text became empty after cleaning (e.g. "순수외국인 제한" -> ""), it might be a global constraint
@@ -267,7 +268,8 @@ def parse_target(text, id_manager):
                 "isExcluded": is_excluded,
                 "isForeignerOnly": is_foreigner_only,
                 "isMilitaryOnly": is_military_only,
-                "isTeachingCertificateStudent": is_teaching_cert
+                "isTeachingCertificateStudent": is_teaching_cert,
+                "isStrictRestriction": has_strict_flag
             }], []
         
     # Pre-parse exclusion blocks in parentheses e.g. (중문 제외), (영어영문학과제외), (전자공학수강제한)
@@ -315,13 +317,15 @@ def parse_target(text, id_manager):
             unmapped_tokens.extend(unmapped)
             
         # Don't propagate strict flags in multiline - each line is independent
-        # For FOREIGNER/MILITARY/TEACHING_CERT, propagate
+        # For FOREIGNER/MILITARY/TEACHING_CERT/STRICT_RESTRICTION, propagate
         if is_foreigner_only: 
              for r in results: r["isForeignerOnly"] = True
         if is_military_only:
              for r in results: r["isMilitaryOnly"] = True
         if is_teaching_cert:
              for r in results: r["isTeachingCertificateStudent"] = True
+        if has_strict_flag:
+             for r in results: r["isStrictRestriction"] = True
 
         return results, unmapped_tokens
         
@@ -379,7 +383,8 @@ def parse_target(text, id_manager):
                     "scopeType": "DEPARTMENT",
                     "collegeName": None,
                     "departmentName": id_manager.department_id_to_name[d_id],
-                    "token": token
+                    "token": token,
+                    "isStrictRestriction": has_strict_flag
                 })
             continue
             
@@ -390,7 +395,8 @@ def parse_target(text, id_manager):
                 "scopeType": "COLLEGE",
                 "collegeName": id_manager.college_id_to_name[col_id],
                 "departmentName": None,
-                "token": token
+                "token": token,
+                "isStrictRestriction": has_strict_flag
             })
             continue
             
@@ -408,6 +414,7 @@ def parse_target(text, id_manager):
         t["isForeignerOnly"] = is_foreigner_only
         t["isMilitaryOnly"] = is_military_only
         t["isTeachingCertificateStudent"] = is_teaching_cert
+        t["isStrictRestriction"] = has_strict_flag
         if "token" in t: del t["token"]
         
     # Also update the exclusion_matches results with the grade info if they didn't have it
@@ -419,10 +426,11 @@ def parse_target(text, id_manager):
              r["minGrade"] = min_grade
              r["maxGrade"] = max_grade
              
-        # Also inherit foreigner/military/teaching cert flags?
+        # Also inherit foreigner/military/teaching cert/strict flags
         if is_foreigner_only: r["isForeignerOnly"] = True
         if is_military_only: r["isMilitaryOnly"] = True
         if is_teaching_cert: r["isTeachingCertificateStudent"] = True
+        if has_strict_flag: r["isStrictRestriction"] = True
         
     # Merge
     current_targets.extend(results) # Add pre-parsed exclusions
@@ -484,7 +492,8 @@ def parse_target(text, id_manager):
                 "isExcluded": False, # The base scope is ALLOWED
                 "isForeignerOnly": False, # Base target is for GENERAL population
                 "isMilitaryOnly": False,
-                "isTeachingCertificateStudent": False
+                "isTeachingCertificateStudent": False,
+                "isStrictRestriction": False  # Base UNIVERSITY target for exclusion is not strict
             })
 
     return final_targets, unmapped_tokens

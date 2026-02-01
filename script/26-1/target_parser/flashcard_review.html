@@ -818,9 +818,12 @@
                                 </div>
                                 <div class="field">
                                     <div class="field-label">Options</div>
-                                    <div class="field-value" style="display: flex; gap: 10px; font-size: 13px;">
+                                    <div class="field-value" style="display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px;">
                                         <label><input type="checkbox" ${target.isExcluded ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isExcluded', this.checked)"> 제한</label>
                                         <label><input type="checkbox" ${target.isForeignerOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isForeignerOnly', this.checked)"> 외국인</label>
+                                        <label><input type="checkbox" ${target.isMilitaryOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isMilitaryOnly', this.checked)"> 군위탁</label>
+                                        <label><input type="checkbox" ${target.isTeachingCertificateStudent ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isTeachingCertificateStudent', this.checked)"> 교직</label>
+                                        <label><input type="checkbox" ${target.isStrictRestriction ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isStrictRestriction', this.checked)"> 대상외</label>
                                     </div>
                                 </div>
                             </div>
@@ -832,8 +835,11 @@
                     <div class="target-item">
                         <div class="target-header">
                             <span class="badge badge-${target.scopeType.toLowerCase()}">${target.scopeType}</span>
-                            ${target.isExcluded ? '<span class="badge badge-excluded">🚫 대상외수강제한</span>' : ''}
-                            ${target.isForeignerOnly ? '<span class="badge badge-foreigner">🌏 외국인전용</span>' : ''}
+                            ${target.isExcluded ? '<span class="badge badge-excluded">🚫 제외</span>' : ''}
+                            ${target.isForeignerOnly ? '<span class="badge badge-foreigner">🌏 외국인</span>' : ''}
+                            ${target.isMilitaryOnly ? '<span class="badge" style="background: #fef3c7; color: #92400e;">🎖️ 군위탁</span>' : ''}
+                            ${target.isTeachingCertificateStudent ? '<span class="badge" style="background: #dbeafe; color: #1e40af;">👨‍🏫 교직</span>' : ''}
+                            ${target.isStrictRestriction ? '<span class="badge" style="background: #fee2e2; color: #991b1b;">⚠️ 대상외</span>' : ''}
                         </div>
                         
                         <div class="target-main-info">
