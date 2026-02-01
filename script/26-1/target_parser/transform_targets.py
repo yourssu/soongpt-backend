@@ -110,6 +110,7 @@ DEPT_ALIAS = {
 COLLEGE_ALIAS = {
     "IT대": "IT대학",
     "공과대": "공과대학",
+    "공대": "공과대학",
     "인문대": "인문대학",
     "자연대": "자연과학대학",
     "경상대": "경영대학", # 구 명칭줘
@@ -229,7 +230,7 @@ def parse_target(text, id_manager):
     is_teaching_cert = "교직이수자" in text or "교직이수" in text
     
     # Remove flags for cleaner parsing
-    clean_text = re.sub(r'\(.*?(대상외수강제한|타학과수강제한|수강제한).*?\)', '', text)
+    clean_text = re.sub(r"\(\s*(대상외수강제한|타학과수강제한|수강제한)\s*\)", "", text)
     clean_text = re.sub(r'순수외국인[^\s]*', '', clean_text)
     clean_text = clean_text.replace("군위탁", "").replace("입학생", "").replace("제한", "").replace("교직이수자", "").replace("교직이수", "")
     clean_text = clean_text.strip()
