@@ -1433,6 +1433,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 1,
         "maxGrade": 1,
@@ -2079,6 +2089,26 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
       }
     ]
   },
@@ -2136,6 +2166,26 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
@@ -2532,6 +2582,26 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 1,
         "maxGrade": 1,
         "isExcluded": false,
@@ -3505,6 +3575,26 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
       }
     ]
   },
@@ -3943,13 +4033,54 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 5,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
+        "minGrade": 5,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
       }
     ]
   },
   {
     "original_text": "전체학년 전체(영어영문학과제외)",
     "count": 4,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "영어영문학과",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      }
+    ]
   },
   {
     "original_text": "전체학년 경영학부",
@@ -3970,12 +4101,54 @@
   {
     "original_text": "전체(글로벌통상제외)",
     "count": 4,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "글로벌통상학과",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      }
+    ]
   },
   {
     "original_text": "전체(불문제외)",
     "count": 4,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "불어불문학과",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      }
+    ]
   },
   {
     "original_text": "1학년 영화예술전공 (타학과수강제한)",
@@ -4253,6 +4426,26 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
@@ -4979,6 +5172,26 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
       }
     ]
   },
@@ -5212,6 +5425,26 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 1,
         "maxGrade": 5,
         "isExcluded": false,
@@ -6259,6 +6492,26 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
       }
     ]
   },
@@ -6609,7 +6862,28 @@
   {
     "original_text": "전체(법대제외)",
     "count": 2,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "법과대학",
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      }
+    ]
   },
   {
     "original_text": "전체학년 ICT유통물류융합",
@@ -6893,7 +7167,18 @@
   {
     "original_text": "1학년 전자공학(대상외수강제한)",
     "count": 2,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 전자공학전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      }
+    ]
   },
   {
     "original_text": "1학년 신소재",
@@ -7581,6 +7866,26 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
@@ -8478,6 +8783,26 @@
         "isExcluded": true,
         "isForeignerOnly": false,
         "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
       }
     ]
   },
@@ -8589,7 +8914,28 @@
   {
     "original_text": "전체(철학과제외)",
     "count": 1,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "철학과",
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      }
+    ]
   },
   {
     "original_text": "전체학년 경영학부, 벤처중소, 스포츠마케팅융합, ICT유통물류융합, 사회적기업혁신융합",
@@ -8935,6 +9281,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 1,
         "maxGrade": 1,
@@ -8961,6 +9317,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 1,
         "maxGrade": 1,
@@ -8978,6 +9344,16 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
         "minGrade": 1,
         "maxGrade": 1,
         "isExcluded": false,
@@ -10023,6 +10399,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 2,
         "maxGrade": 2,
@@ -10049,6 +10435,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 2,
         "maxGrade": 2,
@@ -10066,6 +10462,16 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
@@ -10299,6 +10705,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 2,
         "maxGrade": 2,
@@ -10389,6 +10805,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 3,
         "maxGrade": 3,
@@ -10479,6 +10905,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 4,
         "maxGrade": 4,
@@ -10490,6 +10926,56 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "AI융합학부",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 IT융합전공",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 전자공학전공",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "자유전공학부",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "예술창작학부 문예창작전공",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "예술창작학부 영화예술전공",
         "minGrade": 4,
         "maxGrade": 4,
         "isExcluded": false,
@@ -10538,6 +11024,26 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
@@ -11199,6 +11705,16 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
         "minGrade": 2,
         "maxGrade": 2,
@@ -11582,6 +12098,16 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
       }
     ]
   },
@@ -11702,6 +12228,26 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "전자정보공학부 IT융합전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 전자공학전공",
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "전기공학부",
         "minGrade": 4,
         "maxGrade": 4,
@@ -11713,6 +12259,26 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "화학공학과",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 IT융합전공",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 전자공학전공",
         "minGrade": 4,
         "maxGrade": 4,
         "isExcluded": false,
@@ -13374,7 +13940,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "건축학부 건축공학전공",
+        "departmentName": "건축학부 실내건축전공",
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
@@ -13384,7 +13950,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "건축학부 실내건축전공",
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
@@ -13548,6 +14114,16 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
       }
     ]
   },
@@ -13568,7 +14144,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "건축학부 건축공학전공",
+        "departmentName": "건축학부 실내건축전공",
         "minGrade": 4,
         "maxGrade": 4,
         "isExcluded": false,
@@ -13578,7 +14154,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "건축학부 실내건축전공",
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 4,
         "maxGrade": 4,
         "isExcluded": false,
@@ -14210,6 +14786,26 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축학전공",
+        "minGrade": 5,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 실내건축전공",
+        "minGrade": 5,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "건축학부 건축공학전공",
         "minGrade": 5,
         "maxGrade": 5,
         "isExcluded": false,
