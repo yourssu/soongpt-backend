@@ -25,6 +25,7 @@ DEPT_ALIAS = {
     "정통전": "전자정보공학부 IT융합전공",
     "전자공학전공": "전자정보공학부 전자공학전공",
     "IT융합전공": "전자정보공학부 IT융합전공",
+    "IT융합": "전자정보공학부 IT융합전공",
     
     # Engineering
     "기계": "기계공학부",
@@ -122,6 +123,14 @@ COLLEGE_ALIAS = {
     "법대": "법과대학",
     "법과대": "법과대학", # 추가
     "AI대": "AI대학", # 가칭/신설
+    
+    # Short aliases (1-2 chars)
+    "인문": "인문대학",
+    "법": "법과대학",
+    "사회": "사회과학대학",
+    "경통": "경제통상대학",
+    "경영": "경영대학",
+    "자연": "자연과학대학",
 }
 
 # Category to College Mapping
@@ -603,7 +612,8 @@ def parse_target(text, id_manager):
 
         # Skip tokens containing "융합" or special fusion major patterns (non-existent majors)
         # e.g., "순환경제·친환경화학소재", "빅데이터컴퓨팅융합", "ICT유통물류융합"
-        if "융합" in token or ("·" in token and "소재" in token):
+        # BUT allow if the token exists in DEPT_ALIAS (e.g., "AI융합", "IT융합")
+        if ("융합" in token or ("·" in token and "소재" in token)) and token not in DEPT_ALIAS:
             unmapped_tokens.append(token)
             continue
 
@@ -614,7 +624,8 @@ def parse_target(text, id_manager):
 
         # Skip very short tokens (1-2 Korean characters) to avoid false partial matches
         # e.g., "수" should not match "수학과"
-        if re.match(r'^[가-힣]{1,2}$', token):
+        # BUT allow if the token exists in DEPT_ALIAS or COLLEGE_ALIAS (e.g., "전기", "기계", "화공", "법", "인문")
+        if re.match(r'^[가-힣]{1,2}$', token) and token not in DEPT_ALIAS and token not in COLLEGE_ALIAS:
             unmapped_tokens.append(token)
             continue
 
@@ -632,6 +643,20 @@ def parse_target(text, id_manager):
                     })
             continue
 
+        # Check COLLEGE_ALIAS first (before department partial matching)
+        # This ensures "법" -> "법과대학" instead of partial matching to "법학과"
+        if token in COLLEGE_ALIAS:
+            col_id = id_manager.get_college_id(token)
+            if col_id:
+                current_targets.append({
+                    "scopeType": "COLLEGE",
+                    "collegeName": id_manager.college_id_to_name[col_id],
+                    "departmentName": None,
+                    "token": token,
+                    "isStrictRestriction": has_strict_flag
+                })
+                continue
+
         # Checking Department (returns LIST of IDs now)
         dept_ids = id_manager.get_department_ids(token)
         if dept_ids:
@@ -645,7 +670,7 @@ def parse_target(text, id_manager):
                 })
             continue
 
-        # Checking College
+        # Checking College (for tokens not in COLLEGE_ALIAS but still valid college names)
         col_id = id_manager.get_college_id(token)
         if col_id:
             current_targets.append({
