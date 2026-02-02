@@ -30,7 +30,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -44,10 +45,11 @@
         "departmentName": null,
         "minGrade": 1,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": true
       }
     ]
   },
@@ -415,7 +417,7 @@
         "departmentName": null,
         "minGrade": 1,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false,
@@ -548,18 +550,6 @@
         "minGrade": 1,
         "maxGrade": 5,
         "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false,
-        "isStrictRestriction": true
-      },
-      {
-        "scopeType": "UNIVERSITY",
-        "collegeName": null,
-        "departmentName": null,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false,
@@ -1214,20 +1204,10 @@
         "minGrade": 1,
         "maxGrade": 5,
         "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "UNIVERSITY",
-        "collegeName": null,
-        "departmentName": null,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -2834,7 +2814,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "UNIVERSITY",
@@ -2845,7 +2826,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -5688,7 +5670,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": true
+        "isTeachingCertificateStudent": true,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "UNIVERSITY",
@@ -5699,7 +5682,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": true
+        "isTeachingCertificateStudent": true,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -6457,10 +6441,11 @@
         "departmentName": null,
         "minGrade": 1,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": true
       }
     ]
   },
@@ -6651,7 +6636,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -6821,10 +6807,11 @@
         "departmentName": null,
         "minGrade": 1,
         "maxGrade": 1,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": true
       }
     ]
   },
@@ -7159,7 +7146,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "UNIVERSITY",
@@ -7170,7 +7158,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "UNIVERSITY",
@@ -7181,7 +7170,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -7195,10 +7185,11 @@
         "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": true
       }
     ]
   },
@@ -9448,10 +9439,11 @@
         "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": true
       }
     ]
   },
@@ -9780,7 +9772,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -10757,7 +10750,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -10781,7 +10775,7 @@
         "departmentName": null,
         "minGrade": 1,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false,
@@ -10865,7 +10859,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -11053,10 +11048,11 @@
         "departmentName": null,
         "minGrade": 1,
         "maxGrade": 5,
-        "isExcluded": true,
+        "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": true
       }
     ]
   },
@@ -15015,7 +15011,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "UNIVERSITY",
@@ -15026,7 +15023,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "UNIVERSITY",
@@ -15037,7 +15035,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
@@ -17996,7 +17995,20 @@
   {
     "original_text": "4학년 ;교직이수자 (실습학교 확정된 학생만 수강 가능)",
     "count": 1,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": true,
+        "isStrictRestriction": false
+      }
+    ]
   },
   {
     "original_text": "4학년 전자공학전공, AI로봇융합",
@@ -18131,7 +18143,8 @@
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       }
     ]
   },
