@@ -43,6 +43,12 @@ out/
 !**/src/test/**/out/
 logs/
 
+### vscode ###
+.vscode/
+
+### claude ###
+CLAUDE.md
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
