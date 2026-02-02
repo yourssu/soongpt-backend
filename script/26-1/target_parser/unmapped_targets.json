@@ -1,45 +1,8 @@
 [
   {
-    "original_text": "2학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부 (대상외수강제한)",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
-    "original_text": "1학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부 (대상외수강제한)",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
-    "original_text": "전체학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
-    "original_text": "3학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
-    "original_text": "2학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부\n3학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부",
-    "unmapped_tokens": [
-      "AI융합학부",
-      "AI융합학부"
-    ]
-  },
-  {
     "original_text": "2학년 전기,에너지공학융합",
     "unmapped_tokens": [
       "에너지공학융합"
-    ]
-  },
-  {
-    "original_text": "3학년  AI소프트웨어학부, 소프트웨어학부, AI융합학부",
-    "unmapped_tokens": [
-      "AI융합학부"
     ]
   },
   {
@@ -55,27 +18,9 @@
     ]
   },
   {
-    "original_text": "2학년 소프트 ,AI융합학부 ,AI소프트웨어",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
-    "original_text": "2학년 AI소프트웨어학부, 소프트웨어학부,AI융합학부 (대상외수강제한)",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
     "original_text": "3학년 전기,에너지공학융합",
     "unmapped_tokens": [
       "에너지공학융합"
-    ]
-  },
-  {
-    "original_text": "4학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부",
-    "unmapped_tokens": [
-      "AI융합학부"
     ]
   },
   {
@@ -85,22 +30,9 @@
     ]
   },
   {
-    "original_text": "3학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부\n4학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부",
-    "unmapped_tokens": [
-      "AI융합학부",
-      "AI융합학부"
-    ]
-  },
-  {
     "original_text": "3학년 법학,지식재산융합",
     "unmapped_tokens": [
       "지식재산융합"
-    ]
-  },
-  {
-    "original_text": "4학년 4학년 AI소프트웨어학부, 소프트웨어학부, AI융합학부",
-    "unmapped_tokens": [
-      "AI융합학부"
     ]
   },
   {
@@ -116,21 +48,9 @@
     ]
   },
   {
-    "original_text": "1학년  AI소프트웨어학부, 소프트웨어학부, AI융합학부 (대상외수강제한)",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
     "original_text": "2학년 경영학부, 사회적기업혁신융합",
     "unmapped_tokens": [
       "사회적기업혁신융합"
-    ]
-  },
-  {
-    "original_text": "2학년  AI소프트웨어학부, 소프트웨어학부, AI융합학부 (대상외수강제한)",
-    "unmapped_tokens": [
-      "AI융합학부"
     ]
   },
   {
@@ -624,12 +544,6 @@
     ]
   },
   {
-    "original_text": "전체(IT융합전공 ,컴퓨터 ,소프트 ,AI융합학부 ,글로벌미디어, 정보보호학과, 학점교류생 제한) (대상외수강제한)",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
     "original_text": "전체학년 글로벌미디어,뉴미디어콘텐츠융합",
     "unmapped_tokens": [
       "뉴미디어콘텐츠융합"
@@ -648,18 +562,6 @@
     "unmapped_tokens": [
       "GTEP",
       "실습생"
-    ]
-  },
-  {
-    "original_text": "전체학년 IT융합전공 ,컴퓨터 ,소프트 ,AI융합학부 ,글로벌미디어, 경영학부, 산업정보시스템공학과,AI소프트웨어학부 (대상외수강제한)",
-    "unmapped_tokens": [
-      "AI융합학부"
-    ]
-  },
-  {
-    "original_text": "전체학년 IT융합전공 ,컴퓨터 ,소프트 ,AI융합학부 ,글로벌미디어, 경영학부, 산업정보시스템공학과 (대상외수강제한)",
-    "unmapped_tokens": [
-      "AI융합학부"
     ]
   },
   {
@@ -1306,11 +1208,8 @@
     "original_text": "3학년 컴퓨터학부, SW학부, AI융합학부, 글로벌미디어학부 ,IT융합전공\n4학년 컴퓨터학부, SW학부, AI융합학부, 글로벌미디어학부 ,IT융합전공\n5학년 컴퓨터학부, SW학부, AI융합학부, 글로벌미디어학부 ,IT융합전공 (대상외수강제한)",
     "unmapped_tokens": [
       "SW학부",
-      "AI융합학부",
       "SW학부",
-      "AI융합학부",
-      "SW학부",
-      "AI융합학부"
+      "SW학부"
     ]
   },
   {
