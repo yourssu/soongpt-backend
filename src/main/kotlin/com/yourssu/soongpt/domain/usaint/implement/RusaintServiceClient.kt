@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.usaint.implement
 
+import com.yourssu.soongpt.common.config.InternalJwtIssuer
 import com.yourssu.soongpt.common.config.RusaintProperties
 import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -23,6 +24,7 @@ import java.time.Duration
 class RusaintServiceClient(
     restTemplateBuilder: RestTemplateBuilder,
     private val rusaintProperties: RusaintProperties,
+    private val internalJwtIssuer: InternalJwtIssuer,
 ) {
 
     private val logger = KotlinLogging.logger {}
@@ -79,7 +81,9 @@ class RusaintServiceClient(
         val academic = getAcademicSnapshot(studentId, sToken)
         Thread.sleep(500)
         val graduation = getGraduationSnapshot(studentId, sToken)
+        val pseudonym = academic.pseudonym.ifBlank { graduation.pseudonym }
         return RusaintUsaintDataResponse(
+            pseudonym = pseudonym,
             takenCourses = academic.takenCourses,
             lowGradeSubjectCodes = academic.lowGradeSubjectCodes,
             flags = academic.flags,
@@ -99,10 +103,7 @@ class RusaintServiceClient(
         return HttpEntity(body, headers)
     }
 
-    private fun createInternalJwt(): String {
-        // TODO: rusaintProperties 또는 별도 설정의 시크릿/키를 이용해 실제 JWT 생성
-        return "internal-jwt-placeholder"
-    }
+    private fun createInternalJwt(): String = internalJwtIssuer.issueToken()
 
     private fun <T> executeRusaintCall(block: () -> T): T {
         return try {
@@ -126,8 +127,9 @@ data class RusaintSyncRequest(
     val sToken: String,
 )
 
-/** rusaint-service `/snapshot/academic` 응답 (졸업사정표 제외). */
+/** rusaint-service `/snapshot/academic` 응답 (졸업사정표 제외). PSEUDONYM_SECRET 미설정 시 서버가 기동하지 않으므로 pseudonym은 항상 존재. */
 data class RusaintAcademicResponseDto(
+    val pseudonym: String,
     val takenCourses: List<RusaintTakenCourseDto>,
     val lowGradeSubjectCodes: RusaintLowGradeSubjectCodesDto,
     val flags: RusaintStudentFlagsDto,
@@ -137,11 +139,13 @@ data class RusaintAcademicResponseDto(
 
 /** rusaint-service `/snapshot/graduation` 응답. */
 data class RusaintGraduationResponseDto(
+    val pseudonym: String,
     val graduationRequirements: RusaintGraduationRequirementsDto,
 )
 
 /** academic + graduation 병합 스냅샷. */
 data class RusaintUsaintDataResponse(
+    val pseudonym: String,
     val takenCourses: List<RusaintTakenCourseDto>,
     val lowGradeSubjectCodes: RusaintLowGradeSubjectCodesDto,
     val flags: RusaintStudentFlagsDto,
