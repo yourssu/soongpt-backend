@@ -508,7 +508,21 @@ def parse_target(text, id_manager):
         
     # Merge
     current_targets.extend(results) # Add pre-parsed exclusions
-    
+
+    # Post-processing: Handle "College(Dept1, Dept2)" pattern
+    # If we have both a college AND departments, and the pattern is "CollegeName(...)",
+    # remove the college (keep only the departments)
+    has_college = any(t["scopeType"] == "COLLEGE" for t in current_targets)
+    has_departments = any(t["scopeType"] == "DEPARTMENT" for t in current_targets)
+
+    if has_college and has_departments:
+        # Check if the pattern matches "단과대(학과들)" in the text
+        # Look for college name followed by parentheses
+        college_with_parens_pattern = r'(인문대|자연대|사회대|법대|경통대|경영대|공대|공과대|IT대|AI대)\s*\([^)]+\)'
+        if re.search(college_with_parens_pattern, original_text):
+            # Remove college targets, keep only departments
+            current_targets = [t for t in current_targets if t["scopeType"] != "COLLEGE"]
+
     # Post-process targets with grade info
     final_targets = []
     seen_targets = set()
