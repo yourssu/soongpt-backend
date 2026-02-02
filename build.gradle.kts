@@ -25,6 +25,7 @@ val springCloudVersion = "2024.0.0"
 val mockitoKotlinVersion = "3.2.0"
 val loggingVersion = "7.0.3"
 val jjwtVersion = "0.12.6"
+val coroutinesVersion = "1.8.0"
 
 java {
 	toolchain {
@@ -47,6 +48,8 @@ dependencies {
 
 	implementation("io.github.oshai:kotlin-logging-jvm:$loggingVersion")
 
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion")
 
 	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
 	implementation("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
