@@ -38,6 +38,7 @@ class UsaintService(
 
         return UsaintSyncResponse(
             summary = "usaint data synced",
+            pseudonym = pseudonym,
         )
     }
 }
