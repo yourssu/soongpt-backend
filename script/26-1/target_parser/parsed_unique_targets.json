@@ -11004,7 +11004,44 @@
   {
     "original_text": "전체학년 인문사회계열/자연과학계열 전체 (대상외수강제한)",
     "count": 1,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "인문대학",
+        "departmentName": null,
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "사회과학대학",
+        "departmentName": null,
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "자연과학대학",
+        "departmentName": null,
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      }
+    ]
   },
   {
     "original_text": "전체학년 전체 (대상외수강제한)",
@@ -11746,6 +11783,30 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "수학과",
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "정보통계보험수리학과",
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -12075,6 +12136,30 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "자유전공학부",
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "수학과",
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "정보통계보험수리학과",
         "isStrictRestriction": true,
         "minGrade": 1,
         "maxGrade": 1,
