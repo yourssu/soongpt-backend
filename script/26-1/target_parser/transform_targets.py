@@ -897,6 +897,53 @@ def parse_target(text, id_manager):
 
     return final_targets, unmapped_tokens
 
+def format_to_iam(target):
+    """Convert internal target format to AWS IAM policy style."""
+    
+    # Build Resource
+    scope_type = target.get("scopeType", "UNIVERSITY")
+    if scope_type == "UNIVERSITY":
+        resource = "university"
+    elif scope_type == "COLLEGE":
+        resource = f"college/{target.get('collegeName', '')}"
+    elif scope_type == "DEPARTMENT":
+        resource = f"department/{target.get('departmentName', '')}"
+    else:
+        resource = "unknown"
+    
+    # Build Condition
+    condition = {}
+    
+    # Grade condition
+    min_grade = target.get("minGrade", 1)
+    max_grade = target.get("maxGrade", 5)
+    condition["Grade"] = {"min": min_grade, "max": max_grade}
+    
+    # StudentType condition
+    student_types = []
+    if target.get("isForeignerOnly"):
+        student_types.append("foreigner")
+    if target.get("isMilitaryOnly"):
+        student_types.append("military")
+    if target.get("isTeachingCertificateStudent"):
+        student_types.append("teaching_cert")
+    if not student_types:
+        student_types.append("general")
+    condition["StudentType"] = student_types
+    
+    # Build result
+    result = {
+        "Effect": target.get("Effect", "Allow"),
+        "Resource": resource,
+        "Condition": condition
+    }
+    
+    # Add Strict only if true
+    if target.get("isStrictRestriction"):
+        result["Strict"] = True
+    
+    return result
+
 def main():
     print("Loading ID mappings...")
     id_manager = IdManager()
@@ -919,10 +966,13 @@ def main():
         
         parsed, unmapped = parse_target(text, id_manager)
         
+        # Convert to IAM style
+        iam_targets = [format_to_iam(t) for t in parsed]
+        
         output_data.append({
             "original_text": text,
             "count": count,
-            "parsed_targets": parsed
+            "parsed_targets": iam_targets
         })
         
         if unmapped:
