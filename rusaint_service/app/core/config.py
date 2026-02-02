@@ -2,10 +2,16 @@
 rusaint-service 설정 관리.
 
 환경 변수를 통해 설정을 로드합니다.
+.env는 rusaint_service/ 폴더 기준으로 로드 (실행 위치와 무관).
 """
+
+from pathlib import Path
 
 from pydantic_settings import BaseSettings
 from typing import Optional
+
+# rusaint_service/ 디렉터리 (config.py → app/core → app → rusaint_service)
+_RUSAINT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 class Settings(BaseSettings):
@@ -22,6 +28,8 @@ class Settings(BaseSettings):
 
     # Rusaint 설정
     rusaint_timeout: int = 30  # 초 단위 (Kotlin timeout보다 충분히 길게)
+    # WAS와 동일한 시크릿 사용 (pseudonym = HMAC-SHA256(student_id)). 미설정 시 서버 기동 실패.
+    pseudonym_secret: str = ""
 
     # 성적 등급 상수
     LOW_GRADE_RANKS: set[str] = {"C+", "C0", "C-", "D+", "D0", "D-"}
@@ -48,9 +56,15 @@ class Settings(BaseSettings):
                 "INTERNAL_JWT_SECRET is required in production environment. "
                 "Please set the environment variable or create a .env file."
             )
+        if not (self.pseudonym_secret or "").strip():
+            raise ValueError(
+                "PSEUDONYM_SECRET is required. "
+                "Please set the environment variable or add it to .env file."
+            )
 
     class Config:
-        env_file = ".env"
+        # 실행 위치(cwd)가 아니라 rusaint_service/ 폴더의 .env 로드
+        env_file = _RUSAINT_ROOT / ".env"
         env_file_encoding = "utf-8"
 
 
