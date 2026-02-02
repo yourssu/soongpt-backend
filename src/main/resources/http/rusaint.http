@@ -1,0 +1,95 @@
+### ========================================
+### Kotlin WAS: 유세인트 동기화 (two-track)
+### WAS가 rusaint-service를 academic → 0.5초 후 graduation 호출 후 병합·저성적 분류
+### ========================================
+POST http://localhost:8080/api/usaint/sync
+Content-Type: application/json
+
+{
+  "studentId": "20233009",
+  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769181290zPy86400zAy34zEyx2BMhleBx2FAx79Bx7ALhQqBx7At8MMtMRKx78x2BQr2rR8brKj2BY5dNx2BIEfbEXA2woCcecLi7FKXzKyx78cF0PwCq3qKjwdVDpx78HeITEmuFWHVlvx78Eci99Afcl3Yx3DzSSy00001985033zUURy83e3be9b1309f182zMydl7hVkJpSgUx3Dz"
+}
+
+###
+
+### ========================================
+### Python rusaint_service 직접 호출 (참고, two-track용 엔드포인트만)
+### ========================================
+
+### 학적/성적 이력 조회 (약 4-5초)
+POST http://localhost:8000/api/usaint/snapshot/academic
+Authorization: Bearer internal-jwt-placeholder
+Content-Type: application/json
+
+{
+  "studentId": "20233009",
+  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769181290zPy86400zAy34zEyx2BMhleBx2FAx79Bx7ALhQqBx7At8MMtMRKx78x2BQr2rR8brKj2BY5dNx2BIEfbEXA2woCcecLi7FKXzKyx78cF0PwCq3qKjwdVDpx78HeITEmuFWHVlvx78Eci99Afcl3Yx3DzSSy00001985033UURy83e3be9b1309f182zMydl7hVkJpSgUx3Dz"
+}
+
+###
+
+### 졸업사정표 조회 (약 5-6초)
+POST http://localhost:8000/api/usaint/snapshot/graduation
+Authorization: Bearer internal-jwt-placeholder
+Content-Type: application/json
+
+{
+  "studentId": "20233009",
+  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769675386zPy86400zAy34zEyx2FU18ORx78CEE71rf2GfqmXhDBV4IinpaNDDfgx2BHk0gigx79D1BlLMx7AIJgB2jkx79nlDVBlzKyAx78QE26sQmP591Pb2ex2BKWw80fYZlmGVo2kuLfL3x7AbEBIx3DzSSy00003976033zUURy34c2d25c2adadc44zMyiWx2F3ANNEdr0x3Dz"
+}
+
+###
+
+### 🚀 Orchestrated 요청: Academic → 0.5초 딜레이 → Graduation
+### Academic API 실행 (4-5초)
+POST http://localhost:8000/api/usaint/snapshot/academic
+Authorization: Bearer internal-jwt-placeholder
+Content-Type: application/json
+
+{
+  "studentId": "20233009",
+  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769181290zPy86400zAy34zEyx2BMhleBx2FAx79Bx7ALhQqBx7At8MMtMRKx78x2BQr2rR8brKj2BY5dNx2BIEfbEXA2woCcecLi7FKXzKyx78cF0PwCq3qKjwdVDpx78HeITEmuFWHVlvx78Eci99Afcl3Yx3DzSSy00001985033zUURy83e3be9b1309f182zMydl7hVkJpSgUx3Dz"
+}
+
+> {%
+    // Academic API 응답 저장
+    client.global.set("academicResponse", JSON.stringify(response.body));
+
+    // 0.5초 딜레이 후 Graduation API 호출
+    setTimeout(function() {
+        client.log("Academic API 완료! 0.5초 후 Graduation API 호출...");
+    }, 500);
+%}
+
+###
+
+### Graduation API 실행 (5-6초) - 위 요청 완료 0.5초 후 수동 실행
+POST http://localhost:8000/api/usaint/snapshot/graduation
+Authorization: Bearer internal-jwt-placeholder
+Content-Type: application/json
+
+{
+  "studentId": "20233009",
+  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769181290zPy86400zAy34zEyx2BMhleBx2FAx79Bx7ALhQqBx7At8MMtMRKx78x2BQr2rR8brKj2BY5dNx2BIEfbEXA2woCcecLi7FKXzKyx78cF0PwCq3qKjwdVDpx78HeITEmuFWHVlvx78Eci99Afcl3Yx3DzSSy00001985033zUURy83e3be9b1309f182zMydl7hVkJpSgUx3Dz"
+}
+
+> {%
+    // Graduation API 응답 저장
+    client.global.set("graduationResponse", JSON.stringify(response.body));
+
+    // 전체 결과 합치기
+    const academicData = JSON.parse(client.global.get("academicResponse"));
+    const graduationData = response.body;
+
+    const fullSnapshot = {
+        ...academicData,
+        ...graduationData
+    };
+
+    client.log("=== 전체 스냅샷 완료 ===");
+    client.log("개별 졸업 요건: " + graduationData.graduationRequirements.requirements.length + "개");
+    client.log("미충족 요건: " + graduationData.graduationRequirements.requirements.filter(r => !r.result).length + "개");
+    client.log(JSON.stringify(fullSnapshot, null, 2));
+%}
+
+###
