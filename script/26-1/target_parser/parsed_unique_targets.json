@@ -359,6 +359,20 @@
           ]
         },
         "Strict": true
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 2,
+            "max": 2
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
       }
     ]
   },
@@ -1103,6 +1117,20 @@
           ]
         },
         "Strict": true
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 1
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
       }
     ]
   },
@@ -1256,6 +1284,19 @@
       {
         "Effect": "Allow",
         "Resource": "department/소프트웨어학부",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -1494,6 +1535,19 @@
             "general"
           ]
         }
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 3,
+            "max": 3
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
       }
     ]
   },
@@ -1649,8 +1703,21 @@
     "count": 8,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/일어일문학과",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -1945,6 +2012,19 @@
       },
       {
         "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 2,
+            "max": 2
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Allow",
         "Resource": "department/AI소프트웨어학부",
         "Condition": {
           "Grade": {
@@ -1959,6 +2039,19 @@
       {
         "Effect": "Allow",
         "Resource": "department/소프트웨어학부",
+        "Condition": {
+          "Grade": {
+            "min": 3,
+            "max": 3
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 3,
@@ -2029,6 +2122,19 @@
       {
         "Effect": "Allow",
         "Resource": "department/소프트웨어학부",
+        "Condition": {
+          "Grade": {
+            "min": 3,
+            "max": 3
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 3,
@@ -2699,6 +2805,19 @@
       },
       {
         "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 2,
+            "max": 2
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Allow",
         "Resource": "department/AI소프트웨어학부",
         "Condition": {
           "Grade": {
@@ -2752,6 +2871,20 @@
       {
         "Effect": "Allow",
         "Resource": "department/소프트웨어학부",
+        "Condition": {
+          "Grade": {
+            "min": 2,
+            "max": 2
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 2,
@@ -2983,6 +3116,19 @@
       {
         "Effect": "Allow",
         "Resource": "department/소프트웨어학부",
+        "Condition": {
+          "Grade": {
+            "min": 4,
+            "max": 4
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 4,
@@ -4632,6 +4778,19 @@
       },
       {
         "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 3,
+            "max": 3
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Allow",
         "Resource": "department/AI소프트웨어학부",
         "Condition": {
           "Grade": {
@@ -4646,6 +4805,19 @@
       {
         "Effect": "Allow",
         "Resource": "department/소프트웨어학부",
+        "Condition": {
+          "Grade": {
+            "min": 4,
+            "max": 4
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 4,
@@ -4815,6 +4987,19 @@
             "general"
           ]
         }
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 4,
+            "max": 4
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
       }
     ]
   },
@@ -4938,8 +5123,21 @@
     "count": 4,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/글로벌통상학과",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -4957,8 +5155,21 @@
     "count": 4,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/불어불문학과",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -5098,6 +5309,20 @@
       {
         "Effect": "Allow",
         "Resource": "department/소프트웨어학부",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 1
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -5394,6 +5619,20 @@
       {
         "Effect": "Allow",
         "Resource": "department/소프트웨어학부",
+        "Condition": {
+          "Grade": {
+            "min": 2,
+            "max": 2
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 2,
@@ -6756,8 +6995,21 @@
     "count": 3,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/화학과",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -6775,8 +7027,21 @@
     "count": 3,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/독어독문학과",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -8353,8 +8618,21 @@
     "count": 2,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "college/법과대학",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -8377,8 +8655,21 @@
     "count": 2,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/예술창작학부 영화예술전공",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -10405,6 +10696,20 @@
       },
       {
         "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
         "Resource": "department/글로벌미디어학부",
         "Condition": {
           "Grade": {
@@ -10577,6 +10882,20 @@
       },
       {
         "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
         "Resource": "department/글로벌미디어학부",
         "Condition": {
           "Grade": {
@@ -10681,6 +11000,20 @@
       },
       {
         "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
         "Resource": "department/글로벌미디어학부",
         "Condition": {
           "Grade": {
@@ -10728,8 +11061,47 @@
     "count": 1,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/건축학부 건축학전공",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/건축학부 실내건축전공",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/건축학부 건축공학전공",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -11013,8 +11385,21 @@
     "count": 1,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/철학과",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -11398,8 +11783,34 @@
     "count": 1,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/컴퓨터학부",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/소프트웨어학부",
         "Condition": {
           "Grade": {
             "min": 1,
@@ -17516,6 +17927,20 @@
       },
       {
         "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 3,
+            "max": 3
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
         "Resource": "department/글로벌미디어학부",
         "Condition": {
           "Grade": {
@@ -17558,6 +17983,20 @@
       },
       {
         "Effect": "Allow",
+        "Resource": "department/AI융합학부",
+        "Condition": {
+          "Grade": {
+            "min": 4,
+            "max": 4
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
         "Resource": "department/글로벌미디어학부",
         "Condition": {
           "Grade": {
@@ -17587,6 +18026,20 @@
       {
         "Effect": "Allow",
         "Resource": "department/컴퓨터학부",
+        "Condition": {
+          "Grade": {
+            "min": 5,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        },
+        "Strict": true
+      },
+      {
+        "Effect": "Allow",
+        "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
             "min": 5,

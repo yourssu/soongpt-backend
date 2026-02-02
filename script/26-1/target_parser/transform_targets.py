@@ -17,6 +17,7 @@ DEPT_ALIAS = {
     "컴퓨터": "컴퓨터학부",
     "소프트": "소프트웨어학부",
     "AI융합": "AI융합학부",
+    "AI융합학부": "AI융합학부",
     "글미": "글로벌미디어학부",
     "글로벌미디어": "글로벌미디어학부",
     "미디어경영": "미디어경영학과",
@@ -412,11 +413,11 @@ def parse_target(text, id_manager):
             ex_targets, _ = parse_target(inner_text, id_manager)
 
             for t in ex_targets:
+                # Only COLLEGE and DEPARTMENT can be excluded, not UNIVERSITY
+                if t["scopeType"] == "UNIVERSITY":
+                    continue
                 t["Effect"] = "Deny"
-                if t["scopeType"] != "UNIVERSITY":
-                    pass
-
-            dept_college_exclusions.extend(ex_targets)
+                dept_college_exclusions.append(t)
 
     # Now remove flags for cleaner parsing
     clean_text = re.sub(r"\(\s*(대상외수강제한|타학과수강제한|수강제한)\s*\)", "", text)
@@ -511,6 +512,21 @@ def parse_target(text, id_manager):
                     "isTeachingCertificateStudent": is_teaching_cert,
                     "isStrictRestriction": True
                 }], []
+             elif dept_college_exclusions:
+                 # "전체(일어일문 제외)" case - add UNIVERSITY Allow and continue to merge exclusions
+                 results.append({
+                    "scopeType": "UNIVERSITY",
+                    "collegeName": None,
+                    "departmentName": None,
+                    "minGrade": 1,
+                    "maxGrade": 5,
+                    "Effect": "Allow",
+                    "isForeignerOnly": is_foreigner_only,
+                    "isMilitaryOnly": is_military_only,
+                    "isTeachingCertificateStudent": is_teaching_cert,
+                    "isStrictRestriction": has_strict_flag
+                })
+                 # Continue to merge dept_college_exclusions at the end
              else:
                  return [{
                     "scopeType": "UNIVERSITY",
