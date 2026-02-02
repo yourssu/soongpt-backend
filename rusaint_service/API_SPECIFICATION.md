@@ -4,11 +4,13 @@
 
 유세인트(u-Saint) 데이터를 크롤링하여 제공하는 Python FastAPI 서비스입니다.
 
-**Base URL**: `http://localhost:8001` (개발), `http://rusaint-service:8001` (프로덕션)
+**Base URL**: `http://localhost:8000` (로컬), `http://localhost:8001` (개발), `http://rusaint-service:8001` (프로덕션)
 
 **인증**: 모든 API는 내부 JWT 인증이 필요합니다.
 
-- Header: `Authorization: Bearer {internal-jwt-token}`
+- **Header**: `Authorization: Bearer {internal-jwt-token}`
+- **JWT 발급**: WAS(Kotlin)의 `InternalJwtIssuer`가 HS256으로 발급. 유효기간은 `rusaint.internal-jwt-validity-minutes`(env: `RUSAINT_INTERNAL_JWT_VALIDITY_MINUTES`, 기본 15분)로 설정. WAS와 rusaint-service는 **동일한 시크릿**(`RUSAINT_INTERNAL_JWT_SECRET` / `INTERNAL_JWT_SECRET`)으로 서명·검증합니다.
+- **개발 모드**: `DEBUG=true`일 때만 `Bearer internal-jwt-placeholder` 허용 (프로덕션에서는 유효한 JWT 필수).
 
 ---
 
@@ -27,7 +29,7 @@ POST /api/usaint/snapshot/academic
 **Headers**
 
 ```
-Authorization: Bearer internal-jwt-placeholder
+Authorization: Bearer {WAS가 발급한 내부 JWT}
 Content-Type: application/json
 ```
 
@@ -57,6 +59,7 @@ Content-Type: application/json
 
 ```json
 {
+  "pseudonym": "base64url_hmac_sha256_of_student_id",
   "takenCourses": [
     {
       "year": 2024,
@@ -96,6 +99,7 @@ Content-Type: application/json
 
 ```json
 {
+  "pseudonym": "base64url_hmac_sha256_of_student_id",
   "takenCourses": [],
   "lowGradeSubjectCodes": {
     "passLow": [],
@@ -121,6 +125,12 @@ Content-Type: application/json
 ```
 
 #### 응답 스키마
+
+##### pseudonym (학번 식별자)
+
+| 필드      | 타입   | 설명                                                                                                                                               |
+| --------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| pseudonym | string | WAS와 동일한 시크릿(`PSEUDONYM_SECRET`)으로 HMAC-SHA256(studentId) → base64url 생성. **PSEUDONYM_SECRET 미설정 시 서버 기동 실패(에러).** |
 
 ##### takenCourses (학기별 수강 과목)
 
@@ -195,7 +205,7 @@ POST /api/usaint/snapshot/graduation
 **Headers**
 
 ```
-Authorization: Bearer internal-jwt-placeholder
+Authorization: Bearer {WAS가 발급한 내부 JWT}
 Content-Type: application/json
 ```
 
@@ -225,6 +235,7 @@ Content-Type: application/json
 
 ```json
 {
+  "pseudonym": "base64url_hmac_sha256_of_student_id",
   "graduationRequirements": {
     "requirements": [
       {
@@ -249,7 +260,7 @@ Content-Type: application/json
         "calculation": 18.0,
         "difference": -6.0,
         "result": false,
-        "category": "전공선택"
+        "category": "전공"
       }
     ],
     "remainingCredits": {
@@ -266,6 +277,7 @@ Content-Type: application/json
 
 ```json
 {
+  "pseudonym": "base64url_hmac_sha256_of_student_id",
   "graduationRequirements": {
     "requirements": [
       {
@@ -291,6 +303,7 @@ Content-Type: application/json
 
 ```json
 {
+  "pseudonym": "base64url_hmac_sha256_of_student_id",
   "graduationRequirements": {
     "requirements": [],
     "remainingCredits": {
@@ -304,6 +317,12 @@ Content-Type: application/json
 ```
 
 #### 응답 스키마
+
+##### pseudonym (학번 식별자)
+
+| 필드      | 타입   | 설명                                                                           |
+| --------- | ------ | ------------------------------------------------------------------------------ |
+| pseudonym | string | Academic API와 동일.**PSEUDONYM_SECRET 미설정 시 서버 기동 실패(에러).** |
 
 ##### graduationRequirements (졸업 요건 전체)
 

@@ -1,9 +1,12 @@
 """
 내부 인증 관련 보안 유틸리티.
 
-WAS(Kotlin) <-> rusaint-service(Python) 간 내부 JWT 검증을 담당합니다.
+WAS(Kotlin) <-> rusaint-service(Python) 간 내부 JWT 검증 및 pseudonym 발급을 담당합니다.
 """
 
+import base64
+import hmac
+import hashlib
 from fastapi import HTTPException, Security, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from app.core.config import settings
@@ -59,3 +62,16 @@ async def verify_internal_jwt(
             detail="Invalid internal JWT token",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+
+def generate_pseudonym(student_id: str, secret: str) -> str:
+    """
+    WAS PseudonymGenerator와 동일한 방식으로 pseudonym 생성.
+    HMAC-SHA256(student_id, secret) → base64url (패딩 제거).
+    """
+    digest = hmac.new(
+        secret.encode("utf-8"),
+        student_id.encode("utf-8"),
+        hashlib.sha256,
+    ).digest()
+    return base64.urlsafe_b64encode(digest).rstrip(b"=").decode("ascii")
