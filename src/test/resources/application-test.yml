@@ -25,6 +25,7 @@ spring:
 rusaint:
   base-url: https://rusaint-service.test
   pseudonym-secret: test-secret
+  internal-jwt-secret: test-jwt-secret
 
 logging:
   level:
