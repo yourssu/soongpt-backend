@@ -27,8 +27,8 @@ Authorization: Bearer internal-jwt-placeholder
 Content-Type: application/json
 
 {
-  "studentId": "20233009",
-  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1770044376zPy86400zAy34zEyGrGx79he35OJgHqLgx78Fx2FiY8RdNd7fx7Ad5x2FUAPTSaSrEYXJW543x2B0MvBsx2FtvvXx78X1kVQzKy3gwRx2B7XMeq9Ax78ipDVro7PIU2U14p8Hssx7Ajmve6CsjXMx3DzSSy00004041033zUURy938a8b9dffcd3656zMytu4tDjpx78KK4x3Dz"
+  "studentId": "{{studentId}}",
+  "sToken": "{{sToken}}"
 }
 
 ###
@@ -39,31 +39,6 @@ Authorization: Bearer internal-jwt-placeholder
 Content-Type: application/json
 
 {
-  "studentId": "20233009",
-  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1770044376zPy86400zAy34zEyGrGx79he35OJgHqLgx78Fx2FiY8RdNd7fx7Ad5x2FUAPTSaSrEYXJW543x2B0MvBsx2FtvvXx78X1kVQzKy3gwRx2B7XMeq9Ax78ipDVro7PIU2U14p8Hssx7Ajmve6CsjXMx3DzSSy00004041033zUURy938a8b9dffcd3656zMytu4tDjpx78KK4x3Dz"
-}
-
-###
-
-### Orchestrated: Academic → 0.5초 후 Graduation (수동 2회 호출)
-POST http://localhost:8000/api/usaint/snapshot/academic
-Authorization: Bearer {{internalJwt}}
-Content-Type: application/json
-
-{
   "studentId": "{{studentId}}",
   "sToken": "{{sToken}}"
 }
-
-###
-
-POST http://localhost:8000/api/usaint/snapshot/graduation
-Authorization: Bearer {{internalJwt}}
-Content-Type: application/json
-
-{
-  "studentId": "{{studentId}}",
-  "sToken": "{{sToken}}"
-}
-
-###
