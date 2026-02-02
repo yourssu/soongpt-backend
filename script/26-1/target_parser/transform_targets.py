@@ -229,7 +229,7 @@ class IdManager:
 def parse_target(text, id_manager):
     # Normalize
     original_text = text
-    text = text.replace(",", " , ").replace(";", " ; ").replace("-", " ") # Pad delimiters, replace hyphens
+    text = text.replace(",", " , ").replace(";", " ; ").replace("/", " / ").replace("-", " ") # Pad delimiters, replace hyphens
     
     # Flags
     has_strict_flag = "대상외수강제한" in text or "타학과수강제한" in text
@@ -416,7 +416,7 @@ def parse_target(text, id_manager):
         "교직이수자", "대상외수강제한", "순수외국인", "입학생",
         "제외", "포함", "수강제한", "타학과수강제한", "군위탁",
         # Delimiters and common words
-        ",", ";", "제한", "및", "가능", "수강신청", "수강불가", "등", "구",
+        ",", ";", "/", "제한", "및", "가능", "수강신청", "수강불가", "등", "구",
         # Special student categories (교환학생 removed - treated as foreigner)
         "학점교류생", "국내대학", "외국국적학생",
         "계약학과", "선취업후진학학과", "장기해외봉사", "현장실습",
