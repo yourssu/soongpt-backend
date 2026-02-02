@@ -11,10 +11,10 @@
 
 ## TimeTable
 
-[유세인트기반 시간표 생성 (POST /api/timetables/usaint)](timetable/create_timetable_usaint.md)
-[유세인트 정보 업데이트 (POST /api/usaint/snapshot/refresh)](timetable/refresh_usaint_snapshot.md)
+[유세인트 동기화 (POST /api/usaint/sync)](usaint/sync_usaint.md)
 [수동 시간표 생성 (POST /api/timetables/manual)](timetable/create_timetable_manual.md)
 [시간표 조회 (GET /api/timetables/{timetableId})](timetable/get_timetable_id.md)
+[재수강 가능 과목 조회 (GET /api/usaint/retake)](usaint/get_retake_courses.md)
 
 ## Internal
 
