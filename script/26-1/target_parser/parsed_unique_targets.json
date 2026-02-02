@@ -540,7 +540,19 @@
   {
     "original_text": "전체학년 교환학생(대상외수강제한)",
     "count": 12,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      }
+    ]
   },
   {
     "original_text": "1학년 문예창작전공 ,영화예술전공 ,스포츠",
@@ -6328,6 +6340,18 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "전자정보공학부 전자공학전공",
+        "isStrictRestriction": false,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "AI융합학부",
         "isStrictRestriction": false,
         "minGrade": 1,
@@ -10479,6 +10503,18 @@
         "isTeachingCertificateStudent": false
       },
       {
+        "scopeType": "COLLEGE",
+        "collegeName": "경영대학",
+        "departmentName": null,
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "자유전공학부",
@@ -10663,7 +10699,19 @@
   {
     "original_text": "전체학년 순환경제·친환경화학소재",
     "count": 1,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      }
+    ]
   },
   {
     "original_text": "전체학년 사회적기업혁신융합",
@@ -11790,6 +11838,18 @@
     "count": 1,
     "parsed_targets": [
       {
+        "scopeType": "COLLEGE",
+        "collegeName": "법과대학",
+        "departmentName": null,
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "법학과",
@@ -11831,6 +11891,18 @@
     "original_text": "1학년 경영대(경영,회계,벤처중소,금융(A그룹/목)) (대상외수강제한)",
     "count": 1,
     "parsed_targets": [
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "경영대학",
+        "departmentName": null,
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -12054,6 +12126,18 @@
     "count": 1,
     "parsed_targets": [
       {
+        "scopeType": "COLLEGE",
+        "collegeName": "법과대학",
+        "departmentName": null,
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "법학과",
@@ -12095,6 +12179,18 @@
     "original_text": "1학년 경영대(경영,회계,벤처중소,금융(B그룹/목)) (대상외수강제한)",
     "count": 1,
     "parsed_targets": [
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "경영대학",
+        "departmentName": null,
+        "isStrictRestriction": true,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -12329,6 +12425,18 @@
     "original_text": "1학년 경영대 ,자연대 ,공대 ,자유전공학부",
     "count": 1,
     "parsed_targets": [
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "경영대학",
+        "departmentName": null,
+        "isStrictRestriction": false,
+        "minGrade": 1,
+        "maxGrade": 1,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
       {
         "scopeType": "COLLEGE",
         "collegeName": "자연과학대학",
@@ -13232,6 +13340,30 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
+        "departmentName": "전자정보공학부 IT융합전공",
+        "isStrictRestriction": false,
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 전자공학전공",
+        "isStrictRestriction": false,
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
         "departmentName": "컴퓨터학부",
         "isStrictRestriction": false,
         "minGrade": 2,
@@ -13341,6 +13473,30 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "AI융합학부",
+        "isStrictRestriction": false,
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 IT융합전공",
+        "isStrictRestriction": false,
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "DEPARTMENT",
+        "collegeName": null,
+        "departmentName": "전자정보공학부 전자공학전공",
         "isStrictRestriction": false,
         "minGrade": 3,
         "maxGrade": 3,
@@ -14112,6 +14268,18 @@
         "isTeachingCertificateStudent": false
       },
       {
+        "scopeType": "COLLEGE",
+        "collegeName": "경영대학",
+        "departmentName": null,
+        "isStrictRestriction": false,
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "국제법무학과",
@@ -14189,6 +14357,18 @@
     "original_text": "2학년 법과대, 사회대, 공과대  (수강제한:1학년 인문,법,사회,경통,경영,자유전공)",
     "count": 1,
     "parsed_targets": [
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "법과대학",
+        "departmentName": null,
+        "isStrictRestriction": false,
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
       {
         "scopeType": "COLLEGE",
         "collegeName": "사회과학대학",
@@ -14776,7 +14956,41 @@
   {
     "original_text": "2학년 지식재산융합\n3학년 지식재산융합\n4학년 지식재산융합",
     "count": 1,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 2,
+        "maxGrade": 2,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 4,
+        "maxGrade": 4,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      }
+    ]
   },
   {
     "original_text": "2학년 평생교육,통일외교 및 개발협력융합",
@@ -15665,6 +15879,18 @@
         "isTeachingCertificateStudent": false
       },
       {
+        "scopeType": "COLLEGE",
+        "collegeName": "경영대학",
+        "departmentName": null,
+        "isStrictRestriction": false,
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "국제법무학과",
@@ -15742,6 +15968,18 @@
     "original_text": "3학년 법과대, 사회대, 공과대  (수강제한:1학년 인문,법,사회,경통,경영,자유전공)",
     "count": 1,
     "parsed_targets": [
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "법과대학",
+        "departmentName": null,
+        "isStrictRestriction": false,
+        "minGrade": 3,
+        "maxGrade": 3,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
       {
         "scopeType": "COLLEGE",
         "collegeName": "사회과학대학",
