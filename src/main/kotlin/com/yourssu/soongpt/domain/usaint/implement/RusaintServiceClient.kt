@@ -1,13 +1,12 @@
 package com.yourssu.soongpt.domain.usaint.implement
 
-import com.yourssu.soongpt.common.config.InternalJwtIssuer
 import com.yourssu.soongpt.common.config.RusaintProperties
 import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAcademicResponseDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationResponseDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.web.client.RestTemplateBuilder
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestClientException
@@ -17,14 +16,16 @@ import java.time.Duration
 /**
  * rusaint-service (Python)와 통신하는 HTTP 클라이언트.
  *
+ * 책임: HTTP 호출 및 예외 변환만 담당.
  * - two-track: /snapshot/academic 먼저 호출 → 0.5초 후 /snapshot/graduation 호출 후 병합
- * - 통신은 내부 JWT(Authorization 헤더)로 보호한다는 가정
+ * - 요청 생성은 [RusaintRequestBuilder], 병합은 [RusaintSnapshotMerger]에 위임.
  */
 @Component
 class RusaintServiceClient(
     restTemplateBuilder: RestTemplateBuilder,
-    private val rusaintProperties: RusaintProperties,
-    private val internalJwtIssuer: InternalJwtIssuer,
+    rusaintProperties: RusaintProperties,
+    private val rusaintRequestBuilder: RusaintRequestBuilder,
+    private val rusaintSnapshotMerger: RusaintSnapshotMerger,
 ) {
 
     private val logger = KotlinLogging.logger {}
@@ -43,7 +44,7 @@ class RusaintServiceClient(
         studentId: String,
         sToken: String,
     ): RusaintAcademicResponseDto {
-        val requestEntity = buildRequestEntity(studentId, sToken)
+        val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
         return executeRusaintCall {
             val responseEntity = restTemplate.postForEntity<RusaintAcademicResponseDto>(
                 "/api/usaint/snapshot/academic",
@@ -61,7 +62,7 @@ class RusaintServiceClient(
         studentId: String,
         sToken: String,
     ): RusaintGraduationResponseDto {
-        val requestEntity = buildRequestEntity(studentId, sToken)
+        val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
         return executeRusaintCall {
             val responseEntity = restTemplate.postForEntity<RusaintGraduationResponseDto>(
                 "/api/usaint/snapshot/graduation",
@@ -81,29 +82,8 @@ class RusaintServiceClient(
         val academic = getAcademicSnapshot(studentId, sToken)
         Thread.sleep(500)
         val graduation = getGraduationSnapshot(studentId, sToken)
-        val pseudonym = academic.pseudonym.ifBlank { graduation.pseudonym }
-        return RusaintUsaintDataResponse(
-            pseudonym = pseudonym,
-            takenCourses = academic.takenCourses,
-            lowGradeSubjectCodes = academic.lowGradeSubjectCodes,
-            flags = academic.flags,
-            availableCredits = academic.availableCredits,
-            basicInfo = academic.basicInfo,
-            remainingCredits = graduation.graduationRequirements.remainingCredits,
-            graduationRequirements = graduation.graduationRequirements,
-        )
+        return rusaintSnapshotMerger.merge(academic, graduation)
     }
-
-    private fun buildRequestEntity(studentId: String, sToken: String): HttpEntity<*> {
-        val headers = HttpHeaders().apply {
-            contentType = MediaType.APPLICATION_JSON
-            setBearerAuth(createInternalJwt())
-        }
-        val body = RusaintSyncRequest(studentId = studentId, sToken = sToken)
-        return HttpEntity(body, headers)
-    }
-
-    private fun createInternalJwt(): String = internalJwtIssuer.issueToken()
 
     private fun <T> executeRusaintCall(block: () -> T): T {
         return try {
@@ -121,87 +101,3 @@ class RusaintServiceClient(
         }
     }
 }
-
-data class RusaintSyncRequest(
-    val studentId: String,
-    val sToken: String,
-)
-
-/** rusaint-service `/snapshot/academic` 응답 (졸업사정표 제외). PSEUDONYM_SECRET 미설정 시 서버가 기동하지 않으므로 pseudonym은 항상 존재. */
-data class RusaintAcademicResponseDto(
-    val pseudonym: String,
-    val takenCourses: List<RusaintTakenCourseDto>,
-    val lowGradeSubjectCodes: RusaintLowGradeSubjectCodesDto,
-    val flags: RusaintStudentFlagsDto,
-    val availableCredits: RusaintAvailableCreditsDto,
-    val basicInfo: RusaintBasicInfoDto,
-)
-
-/** rusaint-service `/snapshot/graduation` 응답. */
-data class RusaintGraduationResponseDto(
-    val pseudonym: String,
-    val graduationRequirements: RusaintGraduationRequirementsDto,
-)
-
-/** academic + graduation 병합 스냅샷. */
-data class RusaintUsaintDataResponse(
-    val pseudonym: String,
-    val takenCourses: List<RusaintTakenCourseDto>,
-    val lowGradeSubjectCodes: RusaintLowGradeSubjectCodesDto,
-    val flags: RusaintStudentFlagsDto,
-    val availableCredits: RusaintAvailableCreditsDto,
-    val basicInfo: RusaintBasicInfoDto,
-    val remainingCredits: RusaintRemainingCreditsDto,
-    val graduationRequirements: RusaintGraduationRequirementsDto? = null,
-)
-
-data class RusaintTakenCourseDto(
-    val year: Int,
-    val semester: String,
-    val subjectCodes: List<String>,
-)
-
-data class RusaintLowGradeSubjectCodesDto(
-    val passLow: List<String>,
-    val fail: List<String>,
-)
-
-data class RusaintStudentFlagsDto(
-    val doubleMajorDepartment: String?,
-    val minorDepartment: String?,
-    val teaching: Boolean,
-)
-
-data class RusaintAvailableCreditsDto(
-    val previousGpa: Double,
-    val carriedOverCredits: Int,
-    val maxAvailableCredits: Double,
-)
-
-data class RusaintBasicInfoDto(
-    val year: Int,
-    val semester: Int,
-    val grade: Int,
-    val department: String,
-)
-
-data class RusaintRemainingCreditsDto(
-    val majorRequired: Int,
-    val majorElective: Int,
-    val generalRequired: Int,
-    val generalElective: Int,
-)
-
-data class RusaintGraduationRequirementItemDto(
-    val name: String,
-    val requirement: Int?,
-    val calculation: Double?,
-    val difference: Double?,
-    val result: Boolean,
-    val category: String,
-)
-
-data class RusaintGraduationRequirementsDto(
-    val requirements: List<RusaintGraduationRequirementItemDto>,
-    val remainingCredits: RusaintRemainingCreditsDto,
-)
