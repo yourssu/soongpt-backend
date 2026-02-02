@@ -479,25 +479,42 @@ def parse_target(text, id_manager):
             })
         # Case 1c: Simple target (no special category handling)
         else:
-            targets.append({
-                "scopeType": "UNIVERSITY",
-                "collegeName": None,
-                "departmentName": None,
-                "minGrade": 1,
-                "maxGrade": 5,
-                "Effect": "Deny" if is_excluded else "Allow",
-                "isForeignerOnly": is_foreigner_only,
-                "isMilitaryOnly": is_military_only,
-                "isTeachingCertificateStudent": is_teaching_cert,
-                "isStrictRestriction": has_strict_flag
-            })
-        return targets, []
-    if clean_text == "전체" or clean_text == "":
+            # If there are dept/college exclusions, add Allow target and continue to merge
+            if dept_college_exclusions:
+                results.append({
+                    "scopeType": "UNIVERSITY",
+                    "collegeName": None,
+                    "departmentName": None,
+                    "minGrade": 1,
+                    "maxGrade": 5,
+                    "Effect": "Allow",
+                    "isForeignerOnly": is_foreigner_only,
+                    "isMilitaryOnly": is_military_only,
+                    "isTeachingCertificateStudent": is_teaching_cert,
+                    "isStrictRestriction": has_strict_flag
+                })
+                # Continue to merge dept_college_exclusions at the end (don't return here)
+            else:
+                return [{
+                    "scopeType": "UNIVERSITY",
+                    "collegeName": None,
+                    "departmentName": None,
+                    "minGrade": 1,
+                    "maxGrade": 5,
+                    "Effect": "Deny" if is_excluded else "Allow",
+                    "isForeignerOnly": is_foreigner_only,
+                    "isMilitaryOnly": is_military_only,
+                    "isTeachingCertificateStudent": is_teaching_cert,
+                    "isStrictRestriction": has_strict_flag
+                }], []
+    # Handle "전체학년 전체" same as "전체"
+    is_university_scope = clean_text in ["전체", "전체학년 전체", ""]
+    if is_university_scope:
          # If text became empty after cleaning (e.g. "순수외국인 제한" -> ""), it might be a global constraint
          if is_foreigner_only or is_military_only:
              # Fall through to specific handling below instead of early return
              pass
-         elif clean_text == "전체":
+         elif clean_text in ["전체", "전체학년 전체"]:
              # Check if this is a strict restriction case
              if has_strict_flag and (is_foreigner_only or is_military_only or is_teaching_cert):
                  return [{
