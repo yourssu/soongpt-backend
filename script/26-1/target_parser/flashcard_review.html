@@ -856,45 +856,46 @@
             // Updated Parsed Content
             const parsedHtml = item.parsed_targets.map((target, tIndex) => {
                 if (editMode) {
+                    const minGrade = target.Condition?.Grade?.min || 1;
+                    const maxGrade = target.Condition?.Grade?.max || 5;
+                    const studentTypes = target.Condition?.StudentType || ['general'];
                     return `
                         <div class="target-item">
                             <div class="target-grid">
                                 <div class="field">
-                                    <div class="field-label">Scope</div>
+                                    <div class="field-label">Effect</div>
                                     <div class="field-value">
-                                        <select onchange="updateTarget(${tIndex}, 'scopeType', this.value)">
-                                            <option value="UNIVERSITY" ${target.scopeType === 'UNIVERSITY' ? 'selected' : ''}>University</option>
-                                            <option value="COLLEGE" ${target.scopeType === 'COLLEGE' ? 'selected' : ''}>College</option>
-                                            <option value="DEPARTMENT" ${target.scopeType === 'DEPARTMENT' ? 'selected' : ''}>Department</option>
+                                        <select onchange="updateTarget(${tIndex}, 'Effect', this.value)">
+                                            <option value="Allow" ${target.Effect === 'Allow' ? 'selected' : ''}>Allow</option>
+                                            <option value="Deny" ${target.Effect === 'Deny' ? 'selected' : ''}>Deny</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <div class="field-label">College</div>
+                                    <div class="field-label">Resource</div>
                                     <div class="field-value">
-                                        <input type="text" value="${target.collegeName || ''}" onchange="updateTarget(${tIndex}, 'collegeName', this.value)" placeholder="-">
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="field-label">Dept</div>
-                                    <div class="field-value">
-                                        <input type="text" value="${target.departmentName || ''}" onchange="updateTarget(${tIndex}, 'departmentName', this.value)" placeholder="-">
+                                        <input type="text" value="${target.Resource || ''}" onchange="updateTarget(${tIndex}, 'Resource', this.value)" placeholder="university">
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="field-label">Grade (1-5)</div>
                                     <div class="field-value">
-                                        <input type="text" value="${target.minGrade}-${target.maxGrade}" onchange="updateGradeRange(${tIndex}, this.value)" style="width: 60px;">
+                                        <input type="text" value="${minGrade}-${maxGrade}" onchange="updateGradeRange(${tIndex}, this.value)" style="width: 60px;">
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <div class="field-label">Options</div>
+                                    <div class="field-label">StudentType</div>
                                     <div class="field-value" style="display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px;">
-                                        <label><input type="checkbox" ${target.isExcluded ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isExcluded', this.checked)"> 🚫 제외</label>
-                                        <label><input type="checkbox" ${target.isStrictRestriction ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isStrictRestriction', this.checked)"> ⚠️ 대상외</label>
-                                        <label><input type="checkbox" ${target.isForeignerOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isForeignerOnly', this.checked)"> 🌏 외국인</label>
-                                        <label><input type="checkbox" ${target.isMilitaryOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isMilitaryOnly', this.checked)"> 🎖️ 군위탁</label>
-                                        <label><input type="checkbox" ${target.isTeachingCertificateStudent ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isTeachingCertificateStudent', this.checked)"> 👨‍🏫 교직</label>
+                                        <label><input type="checkbox" ${studentTypes.includes('general') ? 'checked' : ''} onchange="updateStudentType(${tIndex}, 'general', this.checked)"> 일반</label>
+                                        <label><input type="checkbox" ${studentTypes.includes('foreigner') ? 'checked' : ''} onchange="updateStudentType(${tIndex}, 'foreigner', this.checked)"> 🌏 외국인</label>
+                                        <label><input type="checkbox" ${studentTypes.includes('military') ? 'checked' : ''} onchange="updateStudentType(${tIndex}, 'military', this.checked)"> �️ 군위탁</label>
+                                        <label><input type="checkbox" ${studentTypes.includes('teaching_cert') ? 'checked' : ''} onchange="updateStudentType(${tIndex}, 'teaching_cert', this.checked)"> 👨‍� 교직</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="field-label">Strict</div>
+                                    <div class="field-value">
+                                        <label><input type="checkbox" ${target.Strict ? 'checked' : ''} onchange="updateTarget(${tIndex}, 'Strict', this.checked)"> ⚠️ Strict</label>
                                     </div>
                                 </div>
                             </div>
@@ -902,22 +903,41 @@
                      `;
                 }
 
+                // Parse Resource to get scopeType and name
+                const resource = target.Resource || 'university';
+                let scopeType, displayName;
+                if (resource === 'university') {
+                    scopeType = 'UNIVERSITY';
+                    displayName = '(전체)';
+                } else if (resource.startsWith('college/')) {
+                    scopeType = 'COLLEGE';
+                    displayName = resource.replace('college/', '');
+                } else if (resource.startsWith('department/')) {
+                    scopeType = 'DEPARTMENT';
+                    displayName = resource.replace('department/', '');
+                } else {
+                    scopeType = 'UNKNOWN';
+                    displayName = resource;
+                }
+
+                const isExcluded = target.Effect === 'Deny';
+                const isForeignerOnly = target.Condition?.StudentType?.includes('foreigner');
+                const isMilitaryOnly = target.Condition?.StudentType?.includes('military');
+                const isTeachingCert = target.Condition?.StudentType?.includes('teaching_cert');
+
                 return `
                     <div class="target-item">
                         <div class="target-header">
-                            <span class="badge badge-${target.scopeType.toLowerCase()}">${target.scopeType}</span>
-                            ${target.isExcluded ? '<span class="badge badge-excluded">🚫 제외</span>' : ''}
-                            ${target.isForeignerOnly ? '<span class="badge badge-foreigner">🌏 외국인</span>' : ''}
-                            ${target.isMilitaryOnly ? '<span class="badge" style="background: #fef3c7; color: #92400e;">🎖️ 군위탁</span>' : ''}
-                            ${target.isTeachingCertificateStudent ? '<span class="badge" style="background: #dbeafe; color: #1e40af;">👨‍🏫 교직</span>' : ''}
-                            ${target.isStrictRestriction ? '<span class="badge" style="background: #fee2e2; color: #991b1b;">⚠️ 대상외</span>' : ''}
+                            <span class="badge badge-${scopeType.toLowerCase()}">${scopeType}</span>
+                            ${isExcluded ? '<span class="badge badge-excluded">🚫 제외</span>' : ''}
+                            ${isForeignerOnly ? '<span class="badge badge-foreigner">🌏 외국인</span>' : ''}
+                            ${isMilitaryOnly ? '<span class="badge" style="background: #fef3c7; color: #92400e;">🎖️ 군위탁</span>' : ''}
+                            ${isTeachingCert ? '<span class="badge" style="background: #dbeafe; color: #1e40af;">👨‍🏫 교직</span>' : ''}
+                            ${target.Strict ? '<span class="badge" style="background: #fee2e2; color: #991b1b;">⚠️ 대상외</span>' : ''}
                         </div>
                         
                         <div class="target-main-info">
-                            ${target.departmentName || target.collegeName || '(전체)'}
-                        </div>
-                        <div class="target-sub-info">
-                            ${target.departmentName ? (target.collegeName || '') : ''} 
+                            ${displayName}
                         </div>
 
                         <div class="target-grid">
@@ -926,13 +946,14 @@
                                 <div class="field-value">
                                     <div class="grade-circles">
                                         ${[1, 2, 3, 4, 5].map(g => {
-                    const isActive = g >= target.minGrade && g <= target.maxGrade;
+                    const minGrade = target.Condition?.Grade?.min || 1;
+                    const maxGrade = target.Condition?.Grade?.max || 5;
+                    const isActive = g >= minGrade && g <= maxGrade;
                     return `<div class="grade-circle ${isActive ? 'active' : ''}">${g}</div>`;
                 }).join('')}
                                     </div>
                                 </div>
                             </div>
-                            <!-- Simple text fallback removed in favor of circles -->
                         </div>
                     </div>
                 `;
@@ -964,11 +985,35 @@
             const originalIndex = getOriginalIndex(currentIndex);
             const [min, max] = value.split('-').map(v => parseInt(v.trim()));
             if (!isNaN(min) && !isNaN(max)) {
-                data[originalIndex].parsed_targets[targetIndex].minGrade = min;
-                data[originalIndex].parsed_targets[targetIndex].maxGrade = max;
+                const target = data[originalIndex].parsed_targets[targetIndex];
+                if (!target.Condition) target.Condition = {};
+                target.Condition.Grade = { min, max };
                 renderCard();
                 saveToLocalStorage(); // Auto-save
             }
+        }
+
+        function updateStudentType(targetIndex, type, checked) {
+            const originalIndex = getOriginalIndex(currentIndex);
+            const target = data[originalIndex].parsed_targets[targetIndex];
+            if (!target.Condition) target.Condition = {};
+            if (!target.Condition.StudentType) target.Condition.StudentType = ['general'];
+
+            let types = [...target.Condition.StudentType];
+            if (checked && !types.includes(type)) {
+                types.push(type);
+                // Remove 'general' if a specific type is added
+                if (type !== 'general') {
+                    types = types.filter(t => t !== 'general');
+                }
+            } else if (!checked) {
+                types = types.filter(t => t !== type);
+                // Default to 'general' if all types removed
+                if (types.length === 0) types = ['general'];
+            }
+            target.Condition.StudentType = types;
+            renderCard();
+            saveToLocalStorage();
         }
 
         function nextCard() {
@@ -1103,9 +1148,16 @@
             const statusFilter = document.getElementById('status-filter').value;
 
             filteredData = data.filter((item, index) => {
-                // Scope filter
+                // Scope filter (based on Resource prefix)
                 if (scopeFilter !== 'all') {
-                    const hasScope = item.parsed_targets.some(t => t.scopeType === scopeFilter);
+                    const resourcePrefix = scopeFilter.toLowerCase();
+                    const hasScope = item.parsed_targets.some(t => {
+                        const resource = t.Resource || '';
+                        if (resourcePrefix === 'university') return resource === 'university';
+                        if (resourcePrefix === 'college') return resource.startsWith('college/');
+                        if (resourcePrefix === 'department') return resource.startsWith('department/');
+                        return false;
+                    });
                     if (!hasScope) return false;
                 }
 
