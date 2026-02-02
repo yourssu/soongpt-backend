@@ -230,7 +230,110 @@ def parse_target(text, id_manager):
     # Normalize
     original_text = text
     text = text.replace(",", " , ").replace(";", " ; ").replace("/", " / ").replace("-", " ") # Pad delimiters, replace hyphens
-    
+
+    # Hardcoded pattern 1: "{학과/단과대} 제외" or "{학과/단과대} 수강제한"
+    # Pattern: Simple exclusion like "스포츠학부 제외"
+    # This means: Everyone allowed EXCEPT the specified department/college
+    simple_exclusion_pattern = r'^([가-힣A-Za-z]+(?:학부|학과|대학|대))\s*(제외|수강제한)$'
+    simple_match = re.match(simple_exclusion_pattern, original_text.strip())
+
+    if simple_match:
+        target_name = simple_match.group(1)
+
+        # Try to parse the target (dept or college)
+        dept_ids = id_manager.get_department_ids(target_name)
+        col_id = id_manager.get_college_id(target_name)
+
+        results = []
+
+        # Add UNIVERSITY scope (everyone allowed)
+        results.append({
+            "scopeType": "UNIVERSITY",
+            "collegeName": None,
+            "departmentName": None,
+            "minGrade": 1,
+            "maxGrade": 5,
+            "isExcluded": False,
+            "isForeignerOnly": False,
+            "isMilitaryOnly": False,
+            "isTeachingCertificateStudent": False,
+            "isStrictRestriction": False
+        })
+
+        # Add excluded target(s)
+        if dept_ids:
+            for d_id in dept_ids:
+                results.append({
+                    "scopeType": "DEPARTMENT",
+                    "collegeName": None,
+                    "departmentName": id_manager.department_id_to_name[d_id],
+                    "minGrade": 1,
+                    "maxGrade": 5,
+                    "isExcluded": True,
+                    "isForeignerOnly": False,
+                    "isMilitaryOnly": False,
+                    "isTeachingCertificateStudent": False,
+                    "isStrictRestriction": False
+                })
+        elif col_id:
+            results.append({
+                "scopeType": "COLLEGE",
+                "collegeName": id_manager.college_id_to_name[col_id],
+                "departmentName": None,
+                "minGrade": 1,
+                "maxGrade": 5,
+                "isExcluded": True,
+                "isForeignerOnly": False,
+                "isMilitaryOnly": False,
+                "isTeachingCertificateStudent": False,
+                "isStrictRestriction": False
+            })
+
+        return results, [] if (dept_ids or col_id) else [target_name]
+
+    # Hardcoded pattern 2: "{특수학생카테고리} 제한"
+    # Pattern: Category restriction like "순수외국인입학생 제한", "교환학생 제한"
+    # This means: Everyone allowed EXCEPT the specified category
+    category_exclusion_pattern = r'^(순수외국인|외국국적|외국인|교환학생|군위탁|교직이수자?)(?:입학생|학생)?\s*(제한|제외)$'
+    category_match = re.match(category_exclusion_pattern, original_text.strip())
+
+    if category_match:
+        category = category_match.group(1)
+
+        # Determine category flags
+        is_foreigner = category in ["순수외국인", "외국국적", "외국인", "교환학생"]
+        is_military = category == "군위탁"
+        is_teaching = category in ["교직이수자", "교직이수"]
+
+        return [
+            # Base allowed target (everyone)
+            {
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": 1,
+                "maxGrade": 5,
+                "isExcluded": False,
+                "isForeignerOnly": False,
+                "isMilitaryOnly": False,
+                "isTeachingCertificateStudent": False,
+                "isStrictRestriction": False
+            },
+            # Excluded category
+            {
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": 1,
+                "maxGrade": 5,
+                "isExcluded": True,
+                "isForeignerOnly": is_foreigner,
+                "isMilitaryOnly": is_military,
+                "isTeachingCertificateStudent": is_teaching,
+                "isStrictRestriction": False
+            }
+        ], []
+
     # Flags
     has_strict_flag = "대상외수강제한" in text or "타학과수강제한" in text
     # Exclude keywords EXCLUDING strict flags (strict flags are whitelist, not blacklist)
@@ -240,21 +343,64 @@ def parse_target(text, id_manager):
         ("수강불가" in text)
     )
 
-    # isExcluded is separate from strict restriction
+    # Detect flags ONLY from text outside parentheses (to avoid false positives from exclusions)
+    text_without_parens = text
+    for paren_match in re.findall(r'\([^)]*\)', text):
+        text_without_parens = text_without_parens.replace(paren_match, "")
+
     is_excluded = has_exclude_keyword
-    is_foreigner_only = "순수외국인" in text or "외국국적" in text or "외국인" in text or "교환학생" in text
-    is_military_only = "군위탁" in text
-    is_teaching_cert = "교직이수자" in text or "교직이수" in text
-    
-    # Remove flags for cleaner parsing
+    is_foreigner_only = "순수외국인" in text_without_parens or "외국국적" in text_without_parens or "외국인" in text_without_parens or "교환학생" in text_without_parens
+    is_military_only = "군위탁" in text_without_parens
+    is_teaching_cert = "교직이수자" in text_without_parens or "교직이수" in text_without_parens
+
+    results = []
+    unmapped_tokens = []
+
+    # Pre-parse exclusion blocks BEFORE removing flags
+    # e.g. (중문 제외), (영어영문학과제외), (전자공학수강제한), (자연대 수강불가), (순수외국인입학생 제한)
+    # Use original text to preserve content
+    exclusion_matches = re.findall(
+        r'\(([^)]*?(?:제외|수강제한|수강불가|(?:순수외국인|외국국적|외국인|교환학생|군위탁|교직이수자?)(?:입학생|학생)?\s*제한)[^)]*?)\)',
+        text  # Use original text, not clean_text
+    )
+
+    # Store category restrictions separately - will be applied to main targets later
+    category_restrictions = []
+    dept_college_exclusions = []
+
+    for match in exclusion_matches:
+        # Check if this is a special category restriction (e.g., "순수외국인입학생 제한")
+        category_match = re.match(r'(순수외국인|외국국적|외국인|교환학생|군위탁|교직이수자?)(?:입학생|학생)?\s*(제한|제외)', match.strip())
+
+        if category_match:
+            # Store category info for later
+            category = category_match.group(1)
+            category_restrictions.append({
+                'is_foreigner': category in ["순수외국인", "외국국적", "외국인", "교환학생"],
+                'is_military': category == "군위탁",
+                'is_teaching': category in ["교직이수자", "교직이수"]
+            })
+        else:
+            # Department/College exclusion - process now
+            inner_text = match.replace("제외", "").replace("수강제한", "").replace("수강불가", "").replace("수강", "").replace("제한", "")
+            ex_targets, _ = parse_target(inner_text, id_manager)
+
+            for t in ex_targets:
+                t["isExcluded"] = True
+                if t["scopeType"] != "UNIVERSITY":
+                    pass
+
+            dept_college_exclusions.extend(ex_targets)
+
+    # Now remove flags for cleaner parsing
     clean_text = re.sub(r"\(\s*(대상외수강제한|타학과수강제한|수강제한)\s*\)", "", text)
     clean_text = re.sub(r'순수외국인[^\s]*', '', clean_text)
     clean_text = re.sub(r'외국국적[^\s]*', '', clean_text)
     clean_text = clean_text.replace("교환학생", "").replace("군위탁", "").replace("입학생", "").replace("교직이수자", "").replace("교직이수", "")
+    # Remove parentheses with exclusion keywords
+    for match in exclusion_matches:
+        clean_text = clean_text.replace(f"({match})", " ")
     clean_text = clean_text.strip()
-    
-    results = []
-    unmapped_tokens = []
     
     # Case 1: University Wide (전체, 전체학년)
     if "전체학년" in clean_text and clean_text == "전체학년":
@@ -353,42 +499,8 @@ def parse_target(text, id_manager):
                     "isStrictRestriction": has_strict_flag
                 }], []
         
-    # Pre-parse exclusion blocks in parentheses e.g. (중문 제외), (영어영문학과제외), (전자공학수강제한), (자연대 수강불가)
-    # This must be done BEFORE splitting tokens to preserve context
-    exclusion_matches = re.findall(r'\(([^)]*?(?:제외|수강제한|수강불가)[^)]*?)\)', clean_text)
-    
-    # We will invoke parse_target recursively on these blocks, but force isExcluded=True on results
-    # And we need to remove them from clean_text so they don't get added as positive targets
-    for match in exclusion_matches:
-        # Remove exclusion keywords from the match string so it parses as a dept/college
-        inner_text = match.replace("제외", "").replace("수강제한", "").replace("수강불가", "").replace("수강", "").replace("제한", "")
-        
-        # Recursive parse (using a dummy ID manager? No, use real one)
-        # We assume inner text defines the departments to exclude
-        ex_targets, _ = parse_target(inner_text, id_manager)
-        
-        for t in ex_targets:
-            # Force exclusion flag
-            t["isExcluded"] = True
-            # Also inherit other flags? Maybe grade, but usually these are purely dept exclusions
-            # Ensure we don't accidentally inherit 'University' scope from empty inner text
-            if t["scopeType"] != "UNIVERSITY":
-                # Add to results directly? Or current_targets?
-                # We add to results but we need to track them.
-                # Let's add to final_targets list accumulation logic.
-                # We can add to results immediately, but we need to ensure grade info is synced if missing?
-                # Usually (Dep Except) implies the same grade as main text. 
-                # But parse_target recursion might return defaults.
-                pass 
-            
-        results.extend(ex_targets)
-        
-        # Remove this block from clean_text
-        clean_text = clean_text.replace(f"({match})", " ")
-        
-    # Re-evaluate flags after modification? No, flags were global.
-    # But if we removed all text, we might be left with empty string or "전체"
-    
+    # (Exclusion matches already processed above before flag removal)
+
     # Split by lines if any (continue with modified clean_text)
     lines = clean_text.split('\n')
     if len(lines) > 1:
@@ -681,7 +793,26 @@ def parse_target(text, id_manager):
     else:
         for t in current_targets:
             add_target(t)
-            
+
+    # Add dept/college exclusions from parentheses
+    for t in dept_college_exclusions:
+        add_target(t)
+
+    # Apply category restrictions to main targets
+    # For each category restriction, create excluded versions of all main (non-excluded) targets
+    if category_restrictions and final_targets:
+        main_targets = [t for t in final_targets if not t.get("isExcluded")]
+
+        for restriction in category_restrictions:
+            for main_target in main_targets:
+                # Create excluded version of this target with category flags
+                excluded_version = main_target.copy()
+                excluded_version["isExcluded"] = True
+                excluded_version["isForeignerOnly"] = restriction['is_foreigner']
+                excluded_version["isMilitaryOnly"] = restriction['is_military']
+                excluded_version["isTeachingCertificateStudent"] = restriction['is_teaching']
+                add_target(excluded_version)
+
     # Logic to add UNIVERSITY scope if 'exclude' keyword is present (Blacklist logic)
     # But ONLY if:
     # 1. We have exclusion targets (final_targets)
