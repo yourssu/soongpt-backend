@@ -1,0 +1,396 @@
+"""
+유세인트에서 데이터를 조회하는 함수들.
+
+기본 정보, 수강/성적, 복수전공·교직, 졸업 요건 등을 가져옵니다.
+"""
+
+import asyncio
+import logging
+from typing import Any, Dict
+
+import rusaint
+
+from app.core.config import settings
+from app.schemas.usaint_schemas import (
+    AvailableCredits,
+    BasicInfo,
+    Flags,
+    GraduationRequirementItem,
+    GraduationRequirements,
+    LowGradeSubjectCodes,
+    RemainingCredits,
+    TakenCourse,
+)
+
+logger = logging.getLogger(__name__)
+
+
+async def fetch_basic_info(student_info_app) -> BasicInfo:
+    """
+    기본 학적 정보를 조회합니다.
+
+    **민감 정보는 조회하지 않음**: 이름, 주민번호, 주소, 전화번호 등은 가져오지 않습니다.
+    **휴학/엇학기/졸업유예 고려**: 계산이 아니라 유세인트에서 직접 크롤링
+
+    Args:
+        student_info_app: 학생정보 애플리케이션
+    """
+    try:
+        student_info = await student_info_app.general()
+
+        # rusaint가 필드를 안 주는 경우 fallback 사용 (53de94e 이전 동작 복원)
+        admission_year = getattr(student_info, "apply_year", None) or getattr(
+            student_info, "admission_year", None
+        )
+        if admission_year is None:
+            logger.warning("입학년도 정보를 찾을 수 없음 → 기본값 2020 사용")
+            admission_year = 2020
+
+        grade = getattr(student_info, "grade", None)
+        if grade is None:
+            logger.warning("학년 정보를 찾을 수 없음 → 기본값 1 사용")
+            grade = 1
+
+        semester = getattr(student_info, "semester", None)
+        if semester is None:
+            logger.warning("학기 정보를 찾을 수 없음 → 기본값 1 사용 (rusaint 필드명/경로 확인 권장)")
+            semester = 1
+
+        department = getattr(student_info, "major", None) or getattr(
+            student_info, "department", None
+        )
+        if hasattr(student_info, "majors") and student_info.majors:
+            department = student_info.majors[0]
+        if not department:
+            logger.warning("학과 정보를 찾을 수 없음 → 기본값 사용")
+            department = "알 수 없음"
+
+        return BasicInfo(
+            year=admission_year,
+            grade=grade,
+            semester=semester,
+            department=department,
+        )
+    except ValueError:
+        raise
+    except Exception as e:
+        logger.error(f"기본 학적 정보 조회 실패: {type(e).__name__}")
+        raise
+
+
+async def fetch_all_course_data_parallel(
+    course_grades_app1,
+    course_grades_app2,
+    semester_type_map: Dict[Any, str],
+) -> tuple[list[TakenCourse], LowGradeSubjectCodes, AvailableCredits]:
+    """
+    2개의 CourseGradesApplication으로 학기를 나눠서 병렬 조회합니다.
+
+    Args:
+        course_grades_app1: CourseGradesApplication 인스턴스 #1
+        course_grades_app2: CourseGradesApplication 인스턴스 #2
+        semester_type_map: 학기 타입 매핑 (SEMESTER_TYPE_MAP)
+
+    Returns:
+        tuple: (taken_courses, low_grade_codes, available_credits)
+    """
+    try:
+        semesters = await course_grades_app1.semesters(rusaint.CourseType.BACHELOR)
+
+        if not semesters:
+            raise ValueError("학기 정보가 없습니다")
+
+        if len(semesters) <= 1:
+            semesters_group1 = semesters
+            semesters_group2 = []
+        else:
+            mid_point = (len(semesters) + 1) // 2
+            semesters_group1 = semesters[:mid_point]
+            semesters_group2 = semesters[mid_point:]
+
+        tasks_group1 = [
+            course_grades_app1.classes(
+                rusaint.CourseType.BACHELOR,
+                sem.year,
+                sem.semester,
+                include_details=False,
+            )
+            for sem in semesters_group1
+        ] if semesters_group1 else []
+
+        tasks_group2 = [
+            course_grades_app2.classes(
+                rusaint.CourseType.BACHELOR,
+                sem.year,
+                sem.semester,
+                include_details=False,
+            )
+            for sem in semesters_group2
+        ] if semesters_group2 else []
+
+        if tasks_group1 and tasks_group2:
+            classes_group1, classes_group2 = await asyncio.gather(
+                asyncio.gather(*tasks_group1),
+                asyncio.gather(*tasks_group2),
+            )
+        elif tasks_group1:
+            classes_group1 = await asyncio.gather(*tasks_group1)
+            classes_group2 = []
+        else:
+            classes_group1 = []
+            classes_group2 = await asyncio.gather(*tasks_group2)
+
+        all_semester_classes = list(classes_group1) + list(classes_group2)
+
+        taken_courses = []
+        pass_low_codes = []
+        fail_codes = []
+
+        for semester_grade, classes in zip(semesters, all_semester_classes):
+            subject_codes = [cls.code for cls in classes]
+            semester_str = semester_type_map.get(semester_grade.semester, "1")
+
+            taken_courses.append(
+                TakenCourse(
+                    year=semester_grade.year,
+                    semester=semester_str,
+                    subjectCodes=subject_codes,
+                )
+            )
+
+            for cls in classes:
+                rank = getattr(cls, "rank", None)
+                if not rank:
+                    continue
+
+                rank_str = str(rank).upper().strip()
+                code = cls.code
+
+                if rank_str == settings.FAIL_GRADE:
+                    fail_codes.append(code)
+                elif rank_str in settings.LOW_GRADE_RANKS:
+                    pass_low_codes.append(code)
+
+        low_grade_codes = LowGradeSubjectCodes(
+            passLow=pass_low_codes,
+            fail=fail_codes,
+        )
+
+        last_semester = semesters[-1]
+
+        previous_gpa = 0.0
+        for attr in ["gpa", "grade_point_average", "average"]:
+            if hasattr(last_semester, attr):
+                value = getattr(last_semester, attr)
+                if value is not None:
+                    previous_gpa = float(value)
+                    break
+
+        carried_over = 0
+        for attr in ["carried_over", "carry_over", "transferred_credits"]:
+            if hasattr(last_semester, attr):
+                value = getattr(last_semester, attr)
+                if value is not None:
+                    carried_over = int(value)
+                    break
+
+        max_credits = 19.5
+        if previous_gpa >= 4.0:
+            max_credits = 22.5
+        max_credits += carried_over
+
+        available_credits = AvailableCredits(
+            previousGpa=previous_gpa,
+            carriedOverCredits=carried_over,
+            maxAvailableCredits=max_credits,
+        )
+
+        return taken_courses, low_grade_codes, available_credits
+
+    except Exception as e:
+        logger.error(f"성적 관련 데이터 조회 실패 (병렬): {type(e).__name__}")
+        raise
+
+
+async def fetch_flags(student_info_app) -> Flags:
+    """
+    복수전공/부전공 및 교직 이수 정보를 조회합니다.
+
+    **학과명만 조회**: 자격증 번호, 날짜 등 민감정보는 제외
+
+    Args:
+        student_info_app: StudentInformationApplication 인스턴스 (재사용)
+    """
+    try:
+        qualifications = await student_info_app.qualifications()
+
+        teaching = False
+        if qualifications.teaching_major:
+            teaching_info = qualifications.teaching_major
+            teaching = teaching_info.major_name is not None
+
+        student_info = await student_info_app.general()
+
+        double_major = None
+        minor = None
+
+        for attr in ["second_major", "double_major", "dual_major", "major_double"]:
+            if hasattr(student_info, attr):
+                value = getattr(student_info, attr)
+                if value and str(value).strip():
+                    double_major = value
+                    break
+
+        for attr in ["minor", "minor_major", "submajor"]:
+            if hasattr(student_info, attr):
+                value = getattr(student_info, attr)
+                if value and str(value).strip():
+                    minor = value
+                    break
+
+        return Flags(
+            doubleMajorDepartment=double_major,
+            minorDepartment=minor,
+            teaching=teaching,
+        )
+    except Exception as e:
+        logger.warning(f"복수전공/교직 정보 조회 실패 (선택 정보): {type(e).__name__}")
+        return Flags(
+            doubleMajorDepartment=None,
+            minorDepartment=None,
+            teaching=False,
+        )
+
+
+def classify_remaining_credits(requirements_dict: Dict) -> tuple[int, int, int, int]:
+    """
+    졸업 요건 딕셔너리에서 카테고리별 남은 학점을 계산합니다.
+
+    Args:
+        requirements_dict: rusaint requirements.requirements 딕셔너리
+
+    Returns:
+        tuple: (major_required, major_elective, general_required, general_elective)
+    """
+    major_required = 0
+    major_elective = 0
+    general_required = 0
+    general_elective = 0
+
+    for key, req in requirements_dict.items():
+        key_lower = str(key).lower()
+
+        diff = getattr(req, "difference", None)
+        if diff is None:
+            continue
+
+        remaining = int(abs(diff)) if diff < 0 else 0
+
+        if "전필" in key_lower:
+            major_required += remaining
+        elif "전선" in key_lower or "전공선택" in key_lower:
+            major_elective += remaining
+        elif "교필" in key_lower or "교양필수" in key_lower:
+            general_required += remaining
+        elif "교선" in key_lower or "교양선택" in key_lower:
+            general_elective += remaining
+
+    return (major_required, major_elective, general_required, general_elective)
+
+
+async def fetch_graduation_requirements(grad_app) -> GraduationRequirements:
+    """
+    졸업 요건 상세 정보를 조회합니다.
+
+    **개별 요건 정보 포함**: 각 요건의 이름, 기준학점, 이수학점, 충족여부 등
+
+    Args:
+        grad_app: 졸업요건 애플리케이션
+
+    Returns:
+        GraduationRequirements: 개별 요건 목록 + 남은 학점 요약
+    """
+    try:
+        requirements = await grad_app.requirements()
+        requirement_list = []
+
+        if isinstance(requirements.requirements, dict):
+            major_required, major_elective, general_required, general_elective = (
+                classify_remaining_credits(requirements.requirements)
+            )
+
+            for key, req in requirements.requirements.items():
+                name = str(key)
+                requirement_value = getattr(req, "requirement", None)
+                calculation_value = getattr(req, "calculation", None) or getattr(
+                    req, "calcuation", None
+                )
+                difference_value = getattr(req, "difference", None)
+                result_value = getattr(req, "result", False)
+                category = getattr(req, "category", str(key))
+
+                requirement_list.append(
+                    GraduationRequirementItem(
+                        name=name,
+                        requirement=requirement_value,
+                        calculation=calculation_value,
+                        difference=difference_value,
+                        result=result_value,
+                        category=category,
+                    )
+                )
+
+            remaining_credits = RemainingCredits(
+                majorRequired=major_required,
+                majorElective=major_elective,
+                generalRequired=general_required,
+                generalElective=general_elective,
+            )
+        else:
+            remaining_credits = RemainingCredits(
+                majorRequired=0,
+                majorElective=0,
+                generalRequired=0,
+                generalElective=0,
+            )
+
+        return GraduationRequirements(
+            requirements=requirement_list,
+            remainingCredits=remaining_credits,
+        )
+
+    except Exception as e:
+        logger.error(f"졸업 요건 조회 실패: {type(e).__name__}")
+        raise
+
+
+async def fetch_remaining_credits(grad_app) -> RemainingCredits:
+    """
+    졸업까지 남은 이수 학점 정보를 조회합니다.
+
+    **학점 정보만 조회**: 과목별 상세 정보는 제외
+    **Note**: 기존 /snapshot API의 하위 호환성 유지를 위해 존재합니다.
+              신규 코드에서는 fetch_graduation_requirements()를 사용하세요.
+
+    Args:
+        grad_app: 졸업요건 애플리케이션 (중복 API 호출 방지)
+    """
+    try:
+        requirements = await grad_app.requirements()
+
+        if isinstance(requirements.requirements, dict):
+            major_required, major_elective, general_required, general_elective = (
+                classify_remaining_credits(requirements.requirements)
+            )
+        else:
+            major_required = major_elective = general_required = general_elective = 0
+
+        return RemainingCredits(
+            majorRequired=major_required,
+            majorElective=major_elective,
+            generalRequired=general_required,
+            generalElective=general_elective,
+        )
+    except Exception as e:
+        logger.error(f"졸업 요건 조회 실패: {type(e).__name__}")
+        raise
