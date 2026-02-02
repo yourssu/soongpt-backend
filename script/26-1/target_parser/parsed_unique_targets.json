@@ -5072,7 +5072,7 @@
     "count": 4,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
         "Condition": {
           "Grade": {
@@ -11191,8 +11191,21 @@
     "count": 1,
     "parsed_targets": [
       {
-        "Effect": "Deny",
+        "Effect": "Allow",
         "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
+        "Resource": "department/기독교학과",
         "Condition": {
           "Grade": {
             "min": 1,
