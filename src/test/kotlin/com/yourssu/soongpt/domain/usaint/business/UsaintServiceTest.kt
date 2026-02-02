@@ -1,7 +1,5 @@
 package com.yourssu.soongpt.domain.usaint.business
 
-import com.yourssu.soongpt.domain.course.implement.CourseRepository
-import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.usaint.application.dto.UsaintSyncRequest
 import com.yourssu.soongpt.domain.usaint.business.dto.UsaintSyncResponse
 import com.yourssu.soongpt.domain.usaint.implement.PseudonymGenerator
@@ -27,15 +25,14 @@ class UsaintServiceTest : BehaviorSpec({
     given("UsaintService.syncUsaintData") {
         val pseudonymGenerator = mock<PseudonymGenerator>()
         val rusaintServiceClient = mock<RusaintServiceClient>()
-        val courseRepository = mock<CourseRepository>()
 
         val service = UsaintService(
             pseudonymGenerator = pseudonymGenerator,
             rusaintServiceClient = rusaintServiceClient,
-            courseRepository = courseRepository,
         )
 
         val sampleSnapshot = RusaintUsaintDataResponse(
+            pseudonym = "pseudonym-from-rusaint",
             takenCourses = emptyList(),
             lowGradeSubjectCodes = RusaintLowGradeSubjectCodesDto(
                 passLow = emptyList(),
@@ -76,14 +73,6 @@ class UsaintServiceTest : BehaviorSpec({
 
         whenever(pseudonymGenerator.generate(any())).thenReturn("pseudonym-test")
         whenever(rusaintServiceClient.syncUsaintData(any(), any())).thenReturn(sampleSnapshot)
-        whenever(courseRepository.groupByCategory(any())).thenReturn(
-            GroupedCoursesByCategoryDto(
-                majorRequiredCourses = emptyList(),
-                majorElectiveCourses = emptyList(),
-                generalRequiredCourses = emptyList(),
-                generalElectiveCourses = emptyList(),
-            ),
-        )
 
         `when`("유효한 UsaintSyncRequest로 호출하면") {
             val request = UsaintSyncRequest(
@@ -105,36 +94,6 @@ class UsaintServiceTest : BehaviorSpec({
 
             then("pseudonymGenerator.generate가 studentId로 호출된다") {
                 verify(pseudonymGenerator).generate(eq("20233009"))
-            }
-        }
-
-        `when`("rusaint가 저성적 과목 코드를 반환하면") {
-            val snapshotWithLowGrades = sampleSnapshot.copy(
-                lowGradeSubjectCodes = RusaintLowGradeSubjectCodesDto(
-                    passLow = listOf("21505395"),
-                    fail = listOf("21501015"),
-                ),
-            )
-            whenever(rusaintServiceClient.syncUsaintData(any(), any())).thenReturn(snapshotWithLowGrades)
-            whenever(courseRepository.groupByCategory(any())).thenReturn(
-                GroupedCoursesByCategoryDto(
-                    majorRequiredCourses = emptyList(),
-                    majorElectiveCourses = emptyList(),
-                    generalRequiredCourses = emptyList(),
-                    generalElectiveCourses = emptyList(),
-                ),
-            )
-
-            val request = UsaintSyncRequest(studentId = "20233009", sToken = "token")
-            val result = service.syncUsaintData(request)
-
-            then("저성적 분류를 위해 courseRepository.groupByCategory가 호출된다") {
-                verify(courseRepository).groupByCategory(listOf(21505395L))
-                verify(courseRepository).groupByCategory(listOf(21501015L))
-            }
-
-            then("summary가 포함된 응답을 반환한다") {
-                result.summary shouldBe "usaint data synced"
             }
         }
     }
