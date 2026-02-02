@@ -228,14 +228,15 @@ def parse_target(text, id_manager):
     has_exclude_keyword = "제외" in text or "제한" in text
     
     is_excluded = has_strict_flag or has_exclude_keyword
-    is_foreigner_only = "순수외국인" in text or "외국국적" in text or "외국인" in text
+    is_foreigner_only = "순수외국인" in text or "외국국적" in text or "외국인" in text or "교환학생" in text
     is_military_only = "군위탁" in text
     is_teaching_cert = "교직이수자" in text or "교직이수" in text
     
     # Remove flags for cleaner parsing
     clean_text = re.sub(r"\(\s*(대상외수강제한|타학과수강제한|수강제한)\s*\)", "", text)
     clean_text = re.sub(r'순수외국인[^\s]*', '', clean_text)
-    clean_text = clean_text.replace("군위탁", "").replace("입학생", "").replace("교직이수자", "").replace("교직이수", "")
+    clean_text = re.sub(r'외국국적[^\s]*', '', clean_text)
+    clean_text = clean_text.replace("교환학생", "").replace("군위탁", "").replace("입학생", "").replace("교직이수자", "").replace("교직이수", "")
     clean_text = clean_text.strip()
     
     results = []
@@ -243,18 +244,50 @@ def parse_target(text, id_manager):
     
     # Case 1: University Wide (전체, 전체학년)
     if "전체학년" in clean_text and clean_text == "전체학년":
-        return [{
-            "scopeType": "UNIVERSITY",
-            "collegeName": None,
-            "departmentName": None,
-            "minGrade": 1, 
-            "maxGrade": 5,
-            "isExcluded": is_excluded,
-            "isForeignerOnly": is_foreigner_only,
-            "isMilitaryOnly": is_military_only,
-            "isTeachingCertificateStudent": is_teaching_cert,
-            "isStrictRestriction": has_strict_flag
-        }], []
+        targets = []
+        # If category exclusion (e.g., "전체학년 교환학생(대상외수강제한)")
+        if (is_foreigner_only or is_military_only) and has_exclude_keyword:
+            # Base allowed target
+            targets.append({
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": 1,
+                "maxGrade": 5,
+                "isExcluded": False,
+                "isForeignerOnly": False,
+                "isMilitaryOnly": False,
+                "isTeachingCertificateStudent": False,
+                "isStrictRestriction": has_strict_flag
+            })
+            # Category excluded target
+            targets.append({
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": 1,
+                "maxGrade": 5,
+                "isExcluded": True,
+                "isForeignerOnly": is_foreigner_only,
+                "isMilitaryOnly": is_military_only,
+                "isTeachingCertificateStudent": is_teaching_cert,
+                "isStrictRestriction": has_strict_flag
+            })
+        else:
+            # Single target
+            targets.append({
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": 1,
+                "maxGrade": 5,
+                "isExcluded": is_excluded,
+                "isForeignerOnly": is_foreigner_only,
+                "isMilitaryOnly": is_military_only,
+                "isTeachingCertificateStudent": is_teaching_cert,
+                "isStrictRestriction": has_strict_flag
+            })
+        return targets, []
     if clean_text == "전체" or clean_text == "":
          # If text became empty after cleaning (e.g. "순수외국인 제한" -> ""), it might be a global constraint
          if is_foreigner_only or is_military_only:
@@ -376,8 +409,8 @@ def parse_target(text, id_manager):
         "제외", "포함", "수강제한", "타학과수강제한", "군위탁",
         # Delimiters and common words
         ",", ";", "제한", "및", "가능", "수강신청", "수강불가", "등", "구",
-        # Special student categories
-        "교환학생", "학점교류생", "국내대학", "외국국적학생",
+        # Special student categories (교환학생 removed - treated as foreigner)
+        "학점교류생", "국내대학", "외국국적학생",
         "계약학과", "선취업후진학학과", "장기해외봉사", "현장실습",
         "축구단", "장애학생", "승인자에", "한함", "실습학교", "확정된", "학생만",
         # Category-level terms (not supported yet)
@@ -460,7 +493,17 @@ def parse_target(text, id_manager):
 
     def add_target(t):
         # Create a unique key for deduplication
-        key = (t["scopeType"], t.get("collegeName"), t.get("departmentName"))
+        # Include exclusion flags to distinguish between allowed and excluded targets
+        key = (
+            t["scopeType"],
+            t.get("collegeName"),
+            t.get("departmentName"),
+            t.get("isExcluded"),
+            t.get("isForeignerOnly"),
+            t.get("isMilitaryOnly"),
+            t.get("minGrade"),
+            t.get("maxGrade")
+        )
         if key not in seen_targets:
             seen_targets.add(key)
             final_targets.append(t)
@@ -479,7 +522,34 @@ def parse_target(text, id_manager):
                 "isMilitaryOnly": is_military_only,
                  "isTeachingCertificateStudent": is_teaching_cert
             })
-        # Special Case: Empty text but specific flags (e.g. "순수외국인 제외")
+        # Special Case: Category exclusion (e.g. "순수외국인 제한", "교환학생 제외")
+        # Create TWO targets: base allowed + category excluded
+        elif (is_foreigner_only or is_military_only) and has_exclude_keyword:
+             # Target 1: Base allowed (everyone can take)
+             add_target({
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": min_grade,
+                "maxGrade": max_grade,
+                "isExcluded": False,  # Base is allowed
+                "isForeignerOnly": False,
+                "isMilitaryOnly": False,
+                "isTeachingCertificateStudent": False
+            })
+             # Target 2: Category excluded
+             add_target({
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": min_grade,
+                "maxGrade": max_grade,
+                "isExcluded": True,  # This category is excluded
+                "isForeignerOnly": is_foreigner_only,
+                "isMilitaryOnly": is_military_only,
+                "isTeachingCertificateStudent": is_teaching_cert
+            })
+        # Special Case: Category inclusion without exclusion keyword
         elif is_foreigner_only or is_military_only:
              add_target({
                 "scopeType": "UNIVERSITY",
