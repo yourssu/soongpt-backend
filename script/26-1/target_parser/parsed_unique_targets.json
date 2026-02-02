@@ -158,18 +158,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -326,18 +314,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": true,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -346,16 +322,16 @@
     "count": 17,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -475,18 +451,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "전자정보공학부 전자공학전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": false,
         "minGrade": 1,
         "maxGrade": 1,
@@ -1028,18 +992,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -1069,18 +1021,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "전자정보공학부 전자공학전공",
-        "isStrictRestriction": false,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": false,
         "minGrade": 2,
         "maxGrade": 2,
@@ -1183,18 +1123,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": false,
         "minGrade": 1,
         "maxGrade": 5,
@@ -1418,18 +1346,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -1475,18 +1391,6 @@
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -1854,18 +1758,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": false,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "AI소프트웨어학부",
         "isStrictRestriction": false,
         "minGrade": 3,
@@ -1879,18 +1771,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": false,
         "minGrade": 3,
         "maxGrade": 3,
@@ -1957,18 +1837,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": false,
         "minGrade": 3,
         "maxGrade": 3,
@@ -2592,18 +2460,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": false,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "AI소프트웨어학부",
         "isStrictRestriction": false,
         "minGrade": 2,
@@ -2653,18 +2509,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": true,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": true,
         "minGrade": 2,
         "maxGrade": 2,
@@ -2881,18 +2725,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": false,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": false,
         "minGrade": 4,
         "maxGrade": 4,
@@ -4434,18 +4266,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "AI소프트웨어학부",
         "isStrictRestriction": false,
         "minGrade": 4,
@@ -4459,18 +4279,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": false,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": false,
         "minGrade": 4,
         "maxGrade": 4,
@@ -4558,16 +4366,16 @@
     "count": 5,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -4621,18 +4429,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": false,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": false,
         "minGrade": 4,
         "maxGrade": 4,
@@ -4903,18 +4699,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": true,
         "minGrade": 1,
         "maxGrade": 1,
@@ -5198,18 +4982,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": true,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -5336,18 +5108,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -5471,18 +5231,6 @@
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -5792,18 +5540,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -5873,18 +5609,6 @@
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -6348,18 +6072,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "물리학과",
         "isStrictRestriction": false,
         "minGrade": 1,
@@ -6702,18 +6414,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "전자정보공학부 전자공학전공",
         "isStrictRestriction": false,
         "minGrade": 1,
@@ -6812,18 +6512,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -6886,16 +6574,16 @@
     "count": 3,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 1,
         "maxGrade": 1,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -7646,18 +7334,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -7666,16 +7342,16 @@
     "count": 3,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -8014,18 +7690,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "컴퓨터학부",
         "isStrictRestriction": true,
         "minGrade": 1,
@@ -8039,18 +7703,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": true,
         "minGrade": 1,
         "maxGrade": 5,
@@ -8251,18 +7903,6 @@
     "original_text": "1학년 IT융합전공(전자공학수강제한) (대상외수강제한)",
     "count": 2,
     "parsed_targets": [
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -8558,16 +8198,16 @@
     "count": 2,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -9060,18 +8700,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -9080,16 +8708,16 @@
     "count": 2,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -9308,16 +8936,16 @@
     "count": 2,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -9458,16 +9086,16 @@
     "count": 2,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -9495,18 +9123,6 @@
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -9604,18 +9220,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": false,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "소프트웨어학부",
         "isStrictRestriction": false,
         "minGrade": 4,
@@ -9630,20 +9234,7 @@
   {
     "original_text": "4학년 IT융합전공",
     "count": 2,
-    "parsed_targets": [
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      }
-    ]
+    "parsed_targets": []
   },
   {
     "original_text": "4학년 통계보험",
@@ -9850,18 +9441,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "컴퓨터학부",
         "isStrictRestriction": true,
         "minGrade": 1,
@@ -9875,18 +9454,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": true,
         "minGrade": 1,
         "maxGrade": 5,
@@ -10018,18 +9585,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "컴퓨터학부",
         "isStrictRestriction": true,
         "minGrade": 1,
@@ -10043,18 +9598,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": true,
         "minGrade": 1,
         "maxGrade": 5,
@@ -10120,18 +9663,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "컴퓨터학부",
         "isStrictRestriction": true,
         "minGrade": 1,
@@ -10145,18 +9676,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "소프트웨어학부",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": true,
         "minGrade": 1,
         "maxGrade": 5,
@@ -10607,45 +10126,20 @@
         "scopeType": "UNIVERSITY",
         "collegeName": null,
         "departmentName": null,
-        "minGrade": 1,
-        "maxGrade": 5,
+        "minGrade": 2,
+        "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": true,
-        "isMilitaryOnly": true,
+        "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false,
         "isStrictRestriction": true
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "정보보호학과",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
   {
     "original_text": "전체학년 순환경제·친환경화학소재",
     "count": 1,
-    "parsed_targets": [
-      {
-        "scopeType": "UNIVERSITY",
-        "collegeName": null,
-        "departmentName": null,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false,
-        "isStrictRestriction": false
-      }
-    ]
+    "parsed_targets": []
   },
   {
     "original_text": "전체학년 사회적기업혁신융합",
@@ -11227,18 +10721,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -11246,18 +10728,6 @@
     "original_text": "1학년 IT융합전공 ,전자공학전공 (대상외수강제한)",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -13241,18 +12711,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": false,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": false,
         "minGrade": 2,
@@ -13385,18 +12843,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": false,
         "minGrade": 3,
@@ -13518,18 +12964,6 @@
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "건축학부 건축공학전공",
-        "isStrictRestriction": false,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "AI융합학부",
         "isStrictRestriction": false,
         "minGrade": 4,
         "maxGrade": 4,
@@ -13683,16 +13117,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -14775,16 +14209,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -14805,16 +14239,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -14869,44 +14303,7 @@
   {
     "original_text": "2학년 지식재산융합\n3학년 지식재산융합\n4학년 지식재산융합",
     "count": 1,
-    "parsed_targets": [
-      {
-        "scopeType": "UNIVERSITY",
-        "collegeName": null,
-        "departmentName": null,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false,
-        "isStrictRestriction": false
-      },
-      {
-        "scopeType": "UNIVERSITY",
-        "collegeName": null,
-        "departmentName": null,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false,
-        "isStrictRestriction": false
-      },
-      {
-        "scopeType": "UNIVERSITY",
-        "collegeName": null,
-        "departmentName": null,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false,
-        "isStrictRestriction": false
-      }
-    ]
+    "parsed_targets": []
   },
   {
     "original_text": "2학년 평생교육,통일외교 및 개발협력융합",
@@ -15401,7 +14798,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
+        "departmentName": "전자정보공학부 전자공학전공",
         "isStrictRestriction": false,
         "minGrade": 3,
         "maxGrade": 3,
@@ -15413,7 +14810,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 전자공학전공",
+        "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": false,
         "minGrade": 3,
         "maxGrade": 3,
@@ -15449,7 +14846,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
+        "departmentName": "전자정보공학부 전자공학전공",
         "isStrictRestriction": false,
         "minGrade": 4,
         "maxGrade": 4,
@@ -15461,7 +14858,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 전자공학전공",
+        "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": false,
         "minGrade": 4,
         "maxGrade": 4,
@@ -15583,18 +14980,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -15602,18 +14987,6 @@
     "original_text": "3학년 IT융합전공(전자공학 수강제한),차세대반도체학과",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -15644,18 +15017,6 @@
     "original_text": "3학년 IT융합전공(전자공학 수강제한),차세대반도체학과 ,차세대반도체학과",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -16667,31 +16028,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": true,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "글로벌미디어학부",
-        "isStrictRestriction": true,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": true,
         "minGrade": 3,
         "maxGrade": 3,
@@ -16715,31 +16052,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": true,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "글로벌미디어학부",
-        "isStrictRestriction": true,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": true,
         "minGrade": 4,
         "maxGrade": 4,
@@ -16763,31 +16076,7 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "AI융합학부",
-        "isStrictRestriction": true,
-        "minGrade": 5,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "글로벌미디어학부",
-        "isStrictRestriction": true,
-        "minGrade": 5,
-        "maxGrade": 5,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
         "isStrictRestriction": true,
         "minGrade": 5,
         "maxGrade": 5,
@@ -17091,16 +16380,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -17157,16 +16446,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -17187,16 +16476,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -17635,18 +16924,6 @@
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
       }
     ]
   },
@@ -17901,16 +17178,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "DEPARTMENT",
+        "scopeType": "UNIVERSITY",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
+        "departmentName": null,
         "minGrade": 4,
         "maxGrade": 4,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -18185,18 +17462,6 @@
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
         "departmentName": "차세대반도체학과",
         "isStrictRestriction": false,
         "minGrade": 4,
@@ -18248,18 +17513,6 @@
     "original_text": "4학년 IT융합전공, 차세대반도체학과",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "DEPARTMENT",
-        "collegeName": null,
-        "departmentName": "전자정보공학부 IT융합전공",
-        "isStrictRestriction": false,
-        "minGrade": 4,
-        "maxGrade": 4,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,

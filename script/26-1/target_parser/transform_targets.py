@@ -291,7 +291,24 @@ def parse_target(text, id_manager):
 
         return results, [] if (dept_ids or col_id) else [target_name]
 
-    # Hardcoded pattern 2: "{특수학생카테고리} 제한"
+    # Hardcoded pattern 2: Complex case with foreign students and grade range
+    # "전체학년 외국국적학생(2~3학년),계약학과(정보보호학과 제외),선취업후진학학과,군위탁,장기해외봉사,현장실습,축구단,장애학생(승인자에 한함) 등 (대상외수강제한)"
+    # This means: ONLY 2~3학년 외국인 students
+    if "외국국적학생" in original_text and "2~3학년" in original_text and "대상외수강제한" in original_text:
+        return [{
+            "scopeType": "UNIVERSITY",
+            "collegeName": None,
+            "departmentName": None,
+            "minGrade": 2,
+            "maxGrade": 3,
+            "isExcluded": False,
+            "isForeignerOnly": True,
+            "isMilitaryOnly": False,
+            "isTeachingCertificateStudent": False,
+            "isStrictRestriction": True
+        }], []
+
+    # Hardcoded pattern 3: "{특수학생카테고리} 제한"
     # Pattern: Category restriction like "순수외국인입학생 제한", "교환학생 제한"
     # This means: Everyone allowed EXCEPT the specified category
     category_exclusion_pattern = r'^(순수외국인|외국국적|외국인|교환학생|군위탁|교직이수자?)(?:입학생|학생)?\s*(제한|제외)$'
@@ -573,8 +590,7 @@ def parse_target(text, id_manager):
         "축구단", "장애학생", "승인자에", "한함", "실습학교", "확정된", "학생만",
         # Category-level terms moved to CATEGORY_MAPPING - now supported!
         # Removed: "인문사회계열", "자연과학계열", "인문사회자연계", "인문사회계열만"
-        # Old/invalid department names
-        "순환경제·친환경화학소재", "빅데이터컴퓨팅융합", "지식재산융합",
+        # Fusion majors are now handled by pattern matching (see below)
     }
 
     for token in tokens:
@@ -584,6 +600,23 @@ def parse_target(text, id_manager):
         # Skip "전체" ONLY IF it stands alone or doesn't have exclusion context.
         if token == "전체":
              continue
+
+        # Skip tokens containing "융합" or special fusion major patterns (non-existent majors)
+        # e.g., "순환경제·친환경화학소재", "빅데이터컴퓨팅융합", "ICT유통물류융합"
+        if "융합" in token or ("·" in token and "소재" in token):
+            unmapped_tokens.append(token)
+            continue
+
+        # Skip group indicators (e.g., "A그룹", "B그룹", "1반", "2반")
+        if re.match(r'^[A-Z가-힣]?그룹$', token) or re.match(r'^\d+반$', token):
+            unmapped_tokens.append(token)
+            continue
+
+        # Skip very short tokens (1-2 Korean characters) to avoid false partial matches
+        # e.g., "수" should not match "수학과"
+        if re.match(r'^[가-힣]{1,2}$', token):
+            unmapped_tokens.append(token)
+            continue
 
         # Check Category Mapping (e.g., "인문사회계열" -> ["인문대학", "사회과학대학"])
         if token in CATEGORY_MAPPING:
