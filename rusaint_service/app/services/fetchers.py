@@ -38,23 +38,34 @@ async def fetch_basic_info(student_info_app) -> BasicInfo:
     try:
         student_info = await student_info_app.general()
 
-        # rusaint가 필드를 안 주는 경우 fallback 사용 (53de94e 이전 동작 복원)
+        # basicInfo.semester = 재학 누적 학기 (1~8). 학년+현재학기(1/2)로 계산 (예: 3학년 2학기 → 6).
         admission_year = getattr(student_info, "apply_year", None) or getattr(
             student_info, "admission_year", None
         )
         if admission_year is None:
-            logger.warning("입학년도 정보를 찾을 수 없음 → 기본값 2020 사용")
-            admission_year = 2020
+            logger.error("입학년도 정보를 찾을 수 없습니다")
+            raise ValueError("필수 학적 정보(입학년도)를 조회할 수 없습니다")
 
         grade = getattr(student_info, "grade", None)
         if grade is None:
-            logger.warning("학년 정보를 찾을 수 없음 → 기본값 1 사용")
-            grade = 1
+            logger.error("학년 정보를 찾을 수 없습니다")
+            raise ValueError("필수 학적 정보(학년)를 조회할 수 없습니다")
 
-        semester = getattr(student_info, "semester", None)
-        if semester is None:
-            logger.warning("학기 정보를 찾을 수 없음 → 기본값 1 사용 (rusaint 필드명/경로 확인 권장)")
-            semester = 1
+        # 재학 누적 학기: 3학년 2학기 → 6학기. (학년, 현재학기 1/2)로 계산.
+        # rusaint의 term/semester는 "현재 학기(1학기=1, 2학기=2)" 또는 이미 "누적 학기(1~8)"일 수 있음.
+        term_raw = getattr(student_info, "term", None) or getattr(
+            student_info, "semester", None
+        )
+        if term_raw is None:
+            logger.error("학기 정보를 찾을 수 없습니다 (term/semester)")
+            raise ValueError("필수 학적 정보(학기)를 조회할 수 없습니다")
+        if 1 <= term_raw <= 2:
+            # 현재 학기(1/2) → 재학 누적 학기 계산: (학년-1)*2 + 현재학기
+            semester = (grade - 1) * 2 + term_raw
+        else:
+            # 이미 1~8 누적 학기로 온 경우 그대로 사용
+            semester = term_raw
+        semester = max(1, min(8, semester))
 
         department = getattr(student_info, "major", None) or getattr(
             student_info, "department", None
@@ -62,8 +73,8 @@ async def fetch_basic_info(student_info_app) -> BasicInfo:
         if hasattr(student_info, "majors") and student_info.majors:
             department = student_info.majors[0]
         if not department:
-            logger.warning("학과 정보를 찾을 수 없음 → 기본값 사용")
-            department = "알 수 없음"
+            logger.error("학과 정보를 찾을 수 없습니다")
+            raise ValueError("필수 학적 정보(학과)를 조회할 수 없습니다")
 
         return BasicInfo(
             year=admission_year,
