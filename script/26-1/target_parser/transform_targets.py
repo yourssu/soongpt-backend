@@ -114,11 +114,13 @@ COLLEGE_ALIAS = {
     "공대": "공과대학",
     "인문대": "인문대학",
     "자연대": "자연과학대학",
-    "경상대": "경영대학", # 구 명칭줘
-    
+    "경상대": "경영대학", # 구 명칭
+    "경영대": "경영대학", # 추가
+
     "경통대": "경제통상대학",
     "사회대": "사회과학대학",
     "법대": "법과대학",
+    "법과대": "법과대학", # 추가
     "AI대": "AI대학", # 가칭/신설
 }
 
@@ -219,7 +221,7 @@ class IdManager:
 def parse_target(text, id_manager):
     # Normalize
     original_text = text
-    text = text.replace(",", " , ").replace(";", " ; ") # Pad delimiters
+    text = text.replace(",", " , ").replace(";", " ; ").replace("-", " ") # Pad delimiters, replace hyphens
     
     # Flags
     has_strict_flag = "대상외수강제한" in text or "타학과수강제한" in text
@@ -367,10 +369,27 @@ def parse_target(text, id_manager):
     
     current_targets = []
     
+    # Define skip tokens (administrative terms, delimiters, special categories)
+    SKIP_TOKENS = {
+        # Basic administrative terms
+        "교직이수자", "대상외수강제한", "순수외국인", "입학생",
+        "제외", "포함", "수강제한", "타학과수강제한", "군위탁",
+        # Delimiters and common words
+        ",", ";", "제한", "및", "가능", "수강신청", "수강불가", "등", "구",
+        # Special student categories
+        "교환학생", "학점교류생", "국내대학", "외국국적학생",
+        "계약학과", "선취업후진학학과", "장기해외봉사", "현장실습",
+        "축구단", "장애학생", "승인자에", "한함", "실습학교", "확정된", "학생만",
+        # Category-level terms (not supported yet)
+        "인문사회계열", "자연과학계열", "인문사회자연계", "인문사회계열만",
+        # Old/invalid department names
+        "순환경제·친환경화학소재", "빅데이터컴퓨팅융합", "지식재산융합",
+    }
+
     for token in tokens:
-        if token in ["교직이수자", "대상외수강제한", "순수외국인", "입학생", "제외", "포함", "수강제한", "타학과수강제한", "군위탁"]:
+        if token in SKIP_TOKENS:
             continue
-            
+
         # Skip "전체" ONLY IF it stands alone or doesn't have exclusion context.
         if token == "전체":
              continue
