@@ -1,19 +1,24 @@
 ### ========================================
 ### Kotlin WAS: 유세인트 동기화 (two-track)
-### WAS가 rusaint-service를 academic → 0.5초 후 graduation 호출 후 병합·저성적 분류
+###
+### 1) JWT: 이 요청에는 JWT 안 넣어도 됨. WAS가 받은 뒤 내부에서 rusaint 호출할 때만 JWT 사용.
+### 2) 변수: studentId, sToken 은 http-client.private.env.json 의 "local" 에서 가져옴.
+### 3) "local" 선택: Run 버튼 옆/위 환경 드롭다운에서 "local" 선택 후 실행.
+###    (선택 안 하면 {{studentId}} 가 비어서 에러)
 ### ========================================
+# @name syncUsaint
 POST http://localhost:8080/api/usaint/sync
 Content-Type: application/json
 
 {
-  "studentId": "20233009",
-  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769181290zPy86400zAy34zEyx2BMhleBx2FAx79Bx7ALhQqBx7At8MMtMRKx78x2BQr2rR8brKj2BY5dNx2BIEfbEXA2woCcecLi7FKXzKyx78cF0PwCq3qKjwdVDpx78HeITEmuFWHVlvx78Eci99Afcl3Yx3DzSSy00001985033zUURy83e3be9b1309f182zMydl7hVkJpSgUx3Dz"
+  "studentId": "{{studentId}}",
+  "sToken": "{{sToken}}"
 }
 
 ###
 
 ### ========================================
-### Python rusaint_service 직접 호출 (참고, two-track용 엔드포인트만)
+### Python rusaint_service 직접 호출 (참고)
 ### ========================================
 
 ### 학적/성적 이력 조회 (약 4-5초)
@@ -23,7 +28,7 @@ Content-Type: application/json
 
 {
   "studentId": "20233009",
-  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769181290zPy86400zAy34zEyx2BMhleBx2FAx79Bx7ALhQqBx7At8MMtMRKx78x2BQr2rR8brKj2BY5dNx2BIEfbEXA2woCcecLi7FKXzKyx78cF0PwCq3qKjwdVDpx78HeITEmuFWHVlvx78Eci99Afcl3Yx3DzSSy00001985033UURy83e3be9b1309f182zMydl7hVkJpSgUx3Dz"
+  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1770044376zPy86400zAy34zEyGrGx79he35OJgHqLgx78Fx2FiY8RdNd7fx7Ad5x2FUAPTSaSrEYXJW543x2B0MvBsx2FtvvXx78X1kVQzKy3gwRx2B7XMeq9Ax78ipDVro7PIU2U14p8Hssx7Ajmve6CsjXMx3DzSSy00004041033zUURy938a8b9dffcd3656zMytu4tDjpx78KK4x3Dz"
 }
 
 ###
@@ -35,61 +40,30 @@ Content-Type: application/json
 
 {
   "studentId": "20233009",
-  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769675386zPy86400zAy34zEyx2FU18ORx78CEE71rf2GfqmXhDBV4IinpaNDDfgx2BHk0gigx79D1BlLMx7AIJgB2jkx79nlDVBlzKyAx78QE26sQmP591Pb2ex2BKWw80fYZlmGVo2kuLfL3x7AbEBIx3DzSSy00003976033zUURy34c2d25c2adadc44zMyiWx2F3ANNEdr0x3Dz"
+  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1770044376zPy86400zAy34zEyGrGx79he35OJgHqLgx78Fx2FiY8RdNd7fx7Ad5x2FUAPTSaSrEYXJW543x2B0MvBsx2FtvvXx78X1kVQzKy3gwRx2B7XMeq9Ax78ipDVro7PIU2U14p8Hssx7Ajmve6CsjXMx3DzSSy00004041033zUURy938a8b9dffcd3656zMytu4tDjpx78KK4x3Dz"
 }
 
 ###
 
-### 🚀 Orchestrated 요청: Academic → 0.5초 딜레이 → Graduation
-### Academic API 실행 (4-5초)
+### Orchestrated: Academic → 0.5초 후 Graduation (수동 2회 호출)
 POST http://localhost:8000/api/usaint/snapshot/academic
-Authorization: Bearer internal-jwt-placeholder
+Authorization: Bearer {{internalJwt}}
 Content-Type: application/json
 
 {
-  "studentId": "20233009",
-  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769181290zPy86400zAy34zEyx2BMhleBx2FAx79Bx7ALhQqBx7At8MMtMRKx78x2BQr2rR8brKj2BY5dNx2BIEfbEXA2woCcecLi7FKXzKyx78cF0PwCq3qKjwdVDpx78HeITEmuFWHVlvx78Eci99Afcl3Yx3DzSSy00001985033zUURy83e3be9b1309f182zMydl7hVkJpSgUx3Dz"
+  "studentId": "{{studentId}}",
+  "sToken": "{{sToken}}"
 }
-
-> {%
-    // Academic API 응답 저장
-    client.global.set("academicResponse", JSON.stringify(response.body));
-
-    // 0.5초 딜레이 후 Graduation API 호출
-    setTimeout(function() {
-        client.log("Academic API 완료! 0.5초 후 Graduation API 호출...");
-    }, 500);
-%}
 
 ###
 
-### Graduation API 실행 (5-6초) - 위 요청 완료 0.5초 후 수동 실행
 POST http://localhost:8000/api/usaint/snapshot/graduation
-Authorization: Bearer internal-jwt-placeholder
+Authorization: Bearer {{internalJwt}}
 Content-Type: application/json
 
 {
-  "studentId": "20233009",
-  "sToken": "Vy3zFySFx5FASzTyGIDx5FDEMO1zCy1769181290zPy86400zAy34zEyx2BMhleBx2FAx79Bx7ALhQqBx7At8MMtMRKx78x2BQr2rR8brKj2BY5dNx2BIEfbEXA2woCcecLi7FKXzKyx78cF0PwCq3qKjwdVDpx78HeITEmuFWHVlvx78Eci99Afcl3Yx3DzSSy00001985033zUURy83e3be9b1309f182zMydl7hVkJpSgUx3Dz"
+  "studentId": "{{studentId}}",
+  "sToken": "{{sToken}}"
 }
-
-> {%
-    // Graduation API 응답 저장
-    client.global.set("graduationResponse", JSON.stringify(response.body));
-
-    // 전체 결과 합치기
-    const academicData = JSON.parse(client.global.get("academicResponse"));
-    const graduationData = response.body;
-
-    const fullSnapshot = {
-        ...academicData,
-        ...graduationData
-    };
-
-    client.log("=== 전체 스냅샷 완료 ===");
-    client.log("개별 졸업 요건: " + graduationData.graduationRequirements.requirements.length + "개");
-    client.log("미충족 요건: " + graduationData.graduationRequirements.requirements.filter(r => !r.result).length + "개");
-    client.log(JSON.stringify(fullSnapshot, null, 2));
-%}
 
 ###
