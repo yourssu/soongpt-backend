@@ -67,6 +67,11 @@ async def fetch_basic_info(student_info_app) -> BasicInfo:
             semester = term_raw
         semester = max(1, min(8, semester))
 
+        # TODO(PT-87): 2025년 3월 이후 삭제 예정 - 숭피티 출시 전까지 다음 학기 추천을 위한 임시 +1학기 보정
+        # 현재 유세인트는 이전 학기(예: 3학년 6학기)를 반환하지만, 숭피티는 다음 학기(4학년 7학기) 기준으로 추천함
+        semester = min(8, semester + 1)
+        grade = min(4, (semester - 1) // 2 + 1)
+
         department = getattr(student_info, "major", None) or getattr(
             student_info, "department", None
         )
