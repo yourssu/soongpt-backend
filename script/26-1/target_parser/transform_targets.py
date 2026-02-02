@@ -262,7 +262,7 @@ def parse_target(text, id_manager):
             "departmentName": None,
             "minGrade": 1,
             "maxGrade": 5,
-            "isExcluded": False,
+            "Effect": "Allow",
             "isForeignerOnly": False,
             "isMilitaryOnly": False,
             "isTeachingCertificateStudent": False,
@@ -278,7 +278,7 @@ def parse_target(text, id_manager):
                     "departmentName": id_manager.department_id_to_name[d_id],
                     "minGrade": 1,
                     "maxGrade": 5,
-                    "isExcluded": True,
+                    "Effect": "Deny",
                     "isForeignerOnly": False,
                     "isMilitaryOnly": False,
                     "isTeachingCertificateStudent": False,
@@ -291,7 +291,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": 1,
                 "maxGrade": 5,
-                "isExcluded": True,
+                "Effect": "Deny",
                 "isForeignerOnly": False,
                 "isMilitaryOnly": False,
                 "isTeachingCertificateStudent": False,
@@ -310,7 +310,7 @@ def parse_target(text, id_manager):
             "departmentName": None,
             "minGrade": 2,
             "maxGrade": 3,
-            "isExcluded": False,
+            "Effect": "Allow",
             "isForeignerOnly": True,
             "isMilitaryOnly": False,
             "isTeachingCertificateStudent": False,
@@ -339,7 +339,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": 1,
                 "maxGrade": 5,
-                "isExcluded": False,
+                "Effect": "Allow",
                 "isForeignerOnly": False,
                 "isMilitaryOnly": False,
                 "isTeachingCertificateStudent": False,
@@ -352,7 +352,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": 1,
                 "maxGrade": 5,
-                "isExcluded": True,
+                "Effect": "Deny",
                 "isForeignerOnly": is_foreigner,
                 "isMilitaryOnly": is_military,
                 "isTeachingCertificateStudent": is_teaching,
@@ -412,7 +412,7 @@ def parse_target(text, id_manager):
             ex_targets, _ = parse_target(inner_text, id_manager)
 
             for t in ex_targets:
-                t["isExcluded"] = True
+                t["Effect"] = "Deny"
                 if t["scopeType"] != "UNIVERSITY":
                     pass
 
@@ -441,7 +441,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": 1,
                 "maxGrade": 5,
-                "isExcluded": False,  # Not excluded - this IS the allowed group
+                "Effect": "Allow",  # Not excluded - this IS the allowed group
                 "isForeignerOnly": is_foreigner_only,
                 "isMilitaryOnly": is_military_only,
                 "isTeachingCertificateStudent": is_teaching_cert,
@@ -457,7 +457,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": 1,
                 "maxGrade": 5,
-                "isExcluded": False,
+                "Effect": "Allow",
                 "isForeignerOnly": False,
                 "isMilitaryOnly": False,
                 "isTeachingCertificateStudent": False,
@@ -470,7 +470,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": 1,
                 "maxGrade": 5,
-                "isExcluded": True,
+                "Effect": "Deny",
                 "isForeignerOnly": is_foreigner_only,
                 "isMilitaryOnly": is_military_only,
                 "isTeachingCertificateStudent": is_teaching_cert,
@@ -484,7 +484,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": 1,
                 "maxGrade": 5,
-                "isExcluded": is_excluded,
+                "Effect": "Deny" if is_excluded else "Allow",
                 "isForeignerOnly": is_foreigner_only,
                 "isMilitaryOnly": is_military_only,
                 "isTeachingCertificateStudent": is_teaching_cert,
@@ -505,7 +505,7 @@ def parse_target(text, id_manager):
                     "departmentName": None,
                     "minGrade": 1,
                     "maxGrade": 5,
-                    "isExcluded": False,
+                    "Effect": "Allow",
                     "isForeignerOnly": is_foreigner_only,
                     "isMilitaryOnly": is_military_only,
                     "isTeachingCertificateStudent": is_teaching_cert,
@@ -518,7 +518,7 @@ def parse_target(text, id_manager):
                     "departmentName": None,
                     "minGrade": 1,
                     "maxGrade": 5,
-                    "isExcluded": is_excluded,
+                    "Effect": "Deny" if is_excluded else "Allow",
                     "isForeignerOnly": is_foreigner_only,
                     "isMilitaryOnly": is_military_only,
                     "isTeachingCertificateStudent": is_teaching_cert,
@@ -691,7 +691,7 @@ def parse_target(text, id_manager):
         t["maxGrade"] = max_grade
         # Main text targets (outside parenthetical exclusions) are ALWAYS allowed
         # Only targets from exclusion blocks (results list) will be marked as excluded
-        t["isExcluded"] = False
+        t["Effect"] = "Allow"
             
         t["isForeignerOnly"] = is_foreigner_only
         t["isMilitaryOnly"] = is_military_only
@@ -751,7 +751,7 @@ def parse_target(text, id_manager):
             t["scopeType"],
             t.get("collegeName"),
             t.get("departmentName"),
-            t.get("isExcluded"),
+            t.get("Effect"),
             t.get("isForeignerOnly"),
             t.get("isMilitaryOnly"),
             t.get("minGrade"),
@@ -770,7 +770,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
-                "isExcluded": False,
+                "Effect": "Allow",
                 "isForeignerOnly": False,
                 "isMilitaryOnly": False,
                 "isTeachingCertificateStudent": False,
@@ -784,7 +784,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
-                "isExcluded": is_excluded,
+                "Effect": "Deny" if is_excluded else "Allow",
                 "isForeignerOnly": is_foreigner_only,
                 "isMilitaryOnly": is_military_only,
                 "isTeachingCertificateStudent": is_teaching_cert,
@@ -799,7 +799,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
-                "isExcluded": False,  # Not excluded - this IS the allowed group
+                "Effect": "Allow",  # Not excluded - this IS the allowed group
                 "isForeignerOnly": is_foreigner_only,
                 "isMilitaryOnly": is_military_only,
                 "isTeachingCertificateStudent": is_teaching_cert,
@@ -815,7 +815,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
-                "isExcluded": False,  # Base is allowed
+                "Effect": "Allow",  # Base is allowed
                 "isForeignerOnly": False,
                 "isMilitaryOnly": False,
                 "isTeachingCertificateStudent": False,
@@ -828,7 +828,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
-                "isExcluded": True,  # This category is excluded
+                "Effect": "Deny",  # This category is excluded
                 "isForeignerOnly": is_foreigner_only,
                 "isMilitaryOnly": is_military_only,
                 "isTeachingCertificateStudent": is_teaching_cert,
@@ -842,7 +842,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
-                "isExcluded": is_excluded,
+                "Effect": "Deny" if is_excluded else "Allow",
                 "isForeignerOnly": is_foreigner_only,
                 "isMilitaryOnly": is_military_only,
                 "isTeachingCertificateStudent": is_teaching_cert,
@@ -859,13 +859,13 @@ def parse_target(text, id_manager):
     # Apply category restrictions to main targets
     # For each category restriction, create excluded versions of all main (non-excluded) targets
     if category_restrictions and final_targets:
-        main_targets = [t for t in final_targets if not t.get("isExcluded")]
+        main_targets = [t for t in final_targets if t.get("Effect") == "Allow"]
 
         for restriction in category_restrictions:
             for main_target in main_targets:
                 # Create excluded version of this target with category flags
                 excluded_version = main_target.copy()
-                excluded_version["isExcluded"] = True
+                excluded_version["Effect"] = "Deny"
                 excluded_version["isForeignerOnly"] = restriction['is_foreigner']
                 excluded_version["isMilitaryOnly"] = restriction['is_military']
                 excluded_version["isTeachingCertificateStudent"] = restriction['is_teaching']
@@ -888,7 +888,7 @@ def parse_target(text, id_manager):
                 "departmentName": None,
                 "minGrade": min_grade,
                 "maxGrade": max_grade,
-                "isExcluded": False, # The base scope is ALLOWED
+                "Effect": "Allow", # The base scope is ALLOWED
                 "isForeignerOnly": False, # Base target is for GENERAL population
                 "isMilitaryOnly": False,
                 "isTeachingCertificateStudent": False,
