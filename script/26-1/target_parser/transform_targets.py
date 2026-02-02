@@ -494,9 +494,12 @@ def parse_target(text, id_manager):
     # Also update the exclusion_matches results with the grade info if they didn't have it
     # Because exclusion blocks usually lack grade info (e.g. "전체 (중문 제외)")
     # We should apply the main grade spec to them too.
+    # BUT: Don't override if the exclusion block had its own grade spec (e.g., "수강제한:1학년 ...")
     for r in results:
         # Check if they look like recursion defaults (1-5 grade) and we have specific grade
-        if has_grade_spec:
+        # Only override if the target is using default grades (1-5) and main text has specific grade
+        is_using_defaults = (r.get("minGrade") == 1 and r.get("maxGrade") == 5)
+        if has_grade_spec and is_using_defaults:
              r["minGrade"] = min_grade
              r["maxGrade"] = max_grade
              
@@ -517,11 +520,17 @@ def parse_target(text, id_manager):
 
     if has_college and has_departments:
         # Check if the pattern matches "단과대(학과들)" in the text
-        # Look for college name followed by parentheses
-        college_with_parens_pattern = r'(인문대|자연대|사회대|법대|경통대|경영대|공대|공과대|IT대|AI대)\s*\([^)]+\)'
-        if re.search(college_with_parens_pattern, original_text):
-            # Remove college targets, keep only departments
-            current_targets = [t for t in current_targets if t["scopeType"] != "COLLEGE"]
+        # Look for college name followed by parentheses with department names inside
+        # More strict: college name with max 1 space before paren, and must NOT contain keywords like "수강제한", "제외"
+        college_with_parens_pattern = r'(인문대|자연대|사회대|법대|경통대|경영대|공대|공과대|IT대|AI대)\s?\(([^)]+)\)'
+        match = re.search(college_with_parens_pattern, original_text)
+        if match:
+            paren_content = match.group(2)
+            # Only remove colleges if the parentheses contain department names, not exclusion keywords
+            has_exclusion_keywords = any(kw in paren_content for kw in ['수강제한', '제외', '수강불가', '계약'])
+            if not has_exclusion_keywords:
+                # Remove college targets, keep only departments
+                current_targets = [t for t in current_targets if t["scopeType"] != "COLLEGE"]
 
     # Post-process targets with grade info
     final_targets = []
