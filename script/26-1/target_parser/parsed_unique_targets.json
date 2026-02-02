@@ -11557,28 +11557,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "자연과학대학",
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
         "departmentName": null,
-        "isStrictRestriction": false,
         "minGrade": 1,
         "maxGrade": 1,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "공과대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -11658,30 +11646,6 @@
     "original_text": "1학년 외국국적학생(1학년), IT대, AI대(정보보호학과(계약) 포함)  (수강제한:1학년 인문,법,사회,경통,경영,자유전공)",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "IT대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": true,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "AI대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": true,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -11815,18 +11779,6 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "인문대학",
-        "departmentName": null,
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "기독교학과",
@@ -11892,18 +11844,6 @@
     "original_text": "1학년 인문대(사학,문예창작,영화예술,스포츠) (대상외수강제한)",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "인문대학",
-        "departmentName": null,
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -12013,18 +11953,6 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "경영대학",
-        "departmentName": null,
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "경영학부",
@@ -12078,18 +12006,6 @@
     "original_text": "1학년 사회대(행정,정보사회,언론홍보) (대상외수강제한)",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "사회과학대학",
-        "departmentName": null,
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -12175,18 +12091,6 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "인문대학",
-        "departmentName": null,
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "영어영문학과",
@@ -12228,18 +12132,6 @@
     "original_text": "1학년 경통대(경제,글로벌통상) (대상외수강제한)",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "경제통상대학",
-        "departmentName": null,
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -12325,18 +12217,6 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "경영대학",
-        "departmentName": null,
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
         "departmentName": "경영학부",
@@ -12390,18 +12270,6 @@
     "original_text": "1학년 사회대(사회복지,정치외교,평생교육) (대상외수강제한)",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "사회과학대학",
-        "departmentName": null,
-        "isStrictRestriction": true,
-        "minGrade": 1,
-        "maxGrade": 1,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
@@ -14389,40 +14257,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "인문대학",
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
         "departmentName": null,
-        "isStrictRestriction": false,
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "자연과학대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "경영대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -14503,40 +14347,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "법과대학",
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
         "departmentName": null,
-        "isStrictRestriction": false,
         "minGrade": 2,
         "maxGrade": 2,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "사회과학대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "공과대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 2,
-        "maxGrade": 2,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -16000,40 +15820,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "인문대학",
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
         "departmentName": null,
-        "isStrictRestriction": false,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "자연과학대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "경영대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -16114,40 +15910,16 @@
     "count": 1,
     "parsed_targets": [
       {
-        "scopeType": "COLLEGE",
-        "collegeName": "법과대학",
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
         "departmentName": null,
-        "isStrictRestriction": false,
         "minGrade": 3,
         "maxGrade": 3,
         "isExcluded": false,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "사회과학대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "공과대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": false
       },
       {
         "scopeType": "DEPARTMENT",
@@ -16227,42 +15999,6 @@
     "original_text": "3학년 경통대, IT대, AI대(정보보호학과(계약) 포함)  (수강제한:1학년 인문,법,사회,경통,경영,자유전공)",
     "count": 1,
     "parsed_targets": [
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "경제통상대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "IT대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
-      {
-        "scopeType": "COLLEGE",
-        "collegeName": "AI대학",
-        "departmentName": null,
-        "isStrictRestriction": false,
-        "minGrade": 3,
-        "maxGrade": 3,
-        "isExcluded": false,
-        "isForeignerOnly": false,
-        "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
-      },
       {
         "scopeType": "DEPARTMENT",
         "collegeName": null,
