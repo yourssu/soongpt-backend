@@ -124,6 +124,14 @@ COLLEGE_ALIAS = {
     "AI대": "AI대학", # 가칭/신설
 }
 
+# Category to College Mapping
+CATEGORY_MAPPING = {
+    "인문사회계열": ["인문대학", "사회과학대학"],
+    "인문사회계열만": ["인문대학", "사회과학대학"],  # "~만" 포함
+    "자연과학계열": ["자연과학대학"],
+    "인문사회자연계": ["인문대학", "사회과학대학", "자연과학대학"],
+}
+
 class IdManager:
     def __init__(self):
         self.college_map = {} # name -> id
@@ -307,15 +315,15 @@ def parse_target(text, id_manager):
                 "isStrictRestriction": has_strict_flag
             }], []
         
-    # Pre-parse exclusion blocks in parentheses e.g. (중문 제외), (영어영문학과제외), (전자공학수강제한)
+    # Pre-parse exclusion blocks in parentheses e.g. (중문 제외), (영어영문학과제외), (전자공학수강제한), (자연대 수강불가)
     # This must be done BEFORE splitting tokens to preserve context
-    exclusion_matches = re.findall(r'\(([^)]*?(?:제외|수강제한)[^)]*?)\)', clean_text)
+    exclusion_matches = re.findall(r'\(([^)]*?(?:제외|수강제한|수강불가)[^)]*?)\)', clean_text)
     
     # We will invoke parse_target recursively on these blocks, but force isExcluded=True on results
     # And we need to remove them from clean_text so they don't get added as positive targets
     for match in exclusion_matches:
-        # Remove "제외" from the match string so it parses as a dept
-        inner_text = match.replace("제외", "").replace("수강제한", "").replace("수강", "").replace("제한", "")
+        # Remove exclusion keywords from the match string so it parses as a dept/college
+        inner_text = match.replace("제외", "").replace("수강제한", "").replace("수강불가", "").replace("수강", "").replace("제한", "")
         
         # Recursive parse (using a dummy ID manager? No, use real one)
         # We assume inner text defines the departments to exclude
@@ -413,8 +421,8 @@ def parse_target(text, id_manager):
         "학점교류생", "국내대학", "외국국적학생",
         "계약학과", "선취업후진학학과", "장기해외봉사", "현장실습",
         "축구단", "장애학생", "승인자에", "한함", "실습학교", "확정된", "학생만",
-        # Category-level terms (not supported yet)
-        "인문사회계열", "자연과학계열", "인문사회자연계", "인문사회계열만",
+        # Category-level terms moved to CATEGORY_MAPPING - now supported!
+        # Removed: "인문사회계열", "자연과학계열", "인문사회자연계", "인문사회계열만"
         # Old/invalid department names
         "순환경제·친환경화학소재", "빅데이터컴퓨팅융합", "지식재산융합",
     }
@@ -426,7 +434,21 @@ def parse_target(text, id_manager):
         # Skip "전체" ONLY IF it stands alone or doesn't have exclusion context.
         if token == "전체":
              continue
-            
+
+        # Check Category Mapping (e.g., "인문사회계열" -> ["인문대학", "사회과학대학"])
+        if token in CATEGORY_MAPPING:
+            for college_name in CATEGORY_MAPPING[token]:
+                col_id = id_manager.get_college_id(college_name)
+                if col_id:
+                    current_targets.append({
+                        "scopeType": "COLLEGE",
+                        "collegeName": id_manager.college_id_to_name[col_id],
+                        "departmentName": None,
+                        "token": token,
+                        "isStrictRestriction": has_strict_flag
+                    })
+            continue
+
         # Checking Department (returns LIST of IDs now)
         dept_ids = id_manager.get_department_ids(token)
         if dept_ids:
@@ -439,7 +461,7 @@ def parse_target(text, id_manager):
                     "isStrictRestriction": has_strict_flag
                 })
             continue
-            
+
         # Checking College
         col_id = id_manager.get_college_id(token)
         if col_id:
@@ -451,7 +473,7 @@ def parse_target(text, id_manager):
                 "isStrictRestriction": has_strict_flag
             })
             continue
-            
+
         # If reached here, token is unmapped
         unmapped_tokens.append(token)
         
@@ -509,8 +531,21 @@ def parse_target(text, id_manager):
             final_targets.append(t)
 
     if not current_targets:
+        # Special case: "국내대학 학점교류생 제외" -> UNIVERSITY allowed
+        if "국내대학" in original_text and "학점교류생" in original_text and has_exclude_keyword:
+             add_target({
+                "scopeType": "UNIVERSITY",
+                "collegeName": None,
+                "departmentName": None,
+                "minGrade": min_grade,
+                "maxGrade": max_grade,
+                "isExcluded": False,
+                "isForeignerOnly": False,
+                "isMilitaryOnly": False,
+                "isTeachingCertificateStudent": False
+            })
         # If no dept/college found, but has grade spec (e.g. "1학년" -> University wide 1 grade)
-        if has_grade_spec and not unmapped_tokens:
+        elif has_grade_spec and not unmapped_tokens:
              add_target({
                 "scopeType": "UNIVERSITY",
                 "collegeName": None,
