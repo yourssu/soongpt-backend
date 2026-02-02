@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Pattern
  */
 data class UsaintSyncRequest(
     @field:NotBlank
-    @field:Pattern(regexp = "^20(1[5-9]|2[0-5])\\d{4}$", message = "학번 형식이 올바르지 않습니다")
+    @field:Pattern(regexp = "^20(1[5-9]|2[0-6])\\d{4}$", message = "학번 형식이 올바르지 않습니다")
     val studentId: String,
 
     @field:NotBlank
