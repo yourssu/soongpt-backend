@@ -18,9 +18,10 @@ sys.path.insert(0, str(root_dir))
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """테스트 환경 설정"""
-    # 테스트용 환경 변수 설정
+    # 테스트용 환경 변수 설정 (PSEUDONYM_SECRET 미설정 시 서버 기동 실패)
     os.environ["DEBUG"] = "true"
     os.environ["INTERNAL_JWT_SECRET"] = "test-secret-key-for-testing"
+    os.environ["PSEUDONYM_SECRET"] = "test-pseudonym-secret"
     yield
 
 
