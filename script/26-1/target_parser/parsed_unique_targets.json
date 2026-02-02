@@ -547,6 +547,18 @@
         "departmentName": null,
         "minGrade": 1,
         "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": true
+      },
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
         "isExcluded": true,
         "isForeignerOnly": true,
         "isMilitaryOnly": false,
@@ -1203,6 +1215,17 @@
         "maxGrade": 5,
         "isExcluded": false,
         "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
+        "isForeignerOnly": true,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
       }
@@ -10403,12 +10426,36 @@
     "parsed_targets": [
       {
         "scopeType": "COLLEGE",
-        "collegeName": "자연과학대학",
+        "collegeName": "인문대학",
         "departmentName": null,
         "isStrictRestriction": false,
         "minGrade": 1,
         "maxGrade": 5,
         "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "사회과학대학",
+        "departmentName": null,
+        "isStrictRestriction": false,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      },
+      {
+        "scopeType": "COLLEGE",
+        "collegeName": "자연과학대학",
+        "departmentName": null,
+        "isStrictRestriction": false,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": true,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -10420,7 +10467,7 @@
         "isStrictRestriction": false,
         "minGrade": 1,
         "maxGrade": 5,
-        "isExcluded": false,
+        "isExcluded": true,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -10432,7 +10479,7 @@
         "isStrictRestriction": false,
         "minGrade": 1,
         "maxGrade": 5,
-        "isExcluded": false,
+        "isExcluded": true,
         "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
@@ -10457,7 +10504,7 @@
       },
       {
         "scopeType": "COLLEGE",
-        "collegeName": "자연과학대학",
+        "collegeName": "사회과학대학",
         "departmentName": null,
         "isStrictRestriction": true,
         "minGrade": 1,
@@ -10469,7 +10516,7 @@
       },
       {
         "scopeType": "COLLEGE",
-        "collegeName": "사회과학대학",
+        "collegeName": "자연과학대학",
         "departmentName": null,
         "isStrictRestriction": true,
         "minGrade": 1,
@@ -10808,7 +10855,19 @@
   {
     "original_text": "국내대학 학점교류생 제외",
     "count": 1,
-    "parsed_targets": []
+    "parsed_targets": [
+      {
+        "scopeType": "UNIVERSITY",
+        "collegeName": null,
+        "departmentName": null,
+        "minGrade": 1,
+        "maxGrade": 5,
+        "isExcluded": false,
+        "isForeignerOnly": false,
+        "isMilitaryOnly": false,
+        "isTeachingCertificateStudent": false
+      }
+    ]
   },
   {
     "original_text": "전체학년 경영학부,회계학과,금융학부,사회적기업혁신융합",
