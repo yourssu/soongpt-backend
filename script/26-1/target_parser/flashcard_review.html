@@ -890,11 +890,11 @@
                                 <div class="field">
                                     <div class="field-label">Options</div>
                                     <div class="field-value" style="display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px;">
-                                        <label><input type="checkbox" ${target.isExcluded ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isExcluded', this.checked)"> 제한</label>
-                                        <label><input type="checkbox" ${target.isForeignerOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isForeignerOnly', this.checked)"> 외국인</label>
-                                        <label><input type="checkbox" ${target.isMilitaryOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isMilitaryOnly', this.checked)"> 군위탁</label>
-                                        <label><input type="checkbox" ${target.isTeachingCertificateStudent ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isTeachingCertificateStudent', this.checked)"> 교직</label>
-                                        <label><input type="checkbox" ${target.isStrictRestriction ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isStrictRestriction', this.checked)"> 대상외</label>
+                                        <label><input type="checkbox" ${target.isExcluded ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isExcluded', this.checked)"> 🚫 제외</label>
+                                        <label><input type="checkbox" ${target.isStrictRestriction ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isStrictRestriction', this.checked)"> ⚠️ 대상외</label>
+                                        <label><input type="checkbox" ${target.isForeignerOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isForeignerOnly', this.checked)"> 🌏 외국인</label>
+                                        <label><input type="checkbox" ${target.isMilitaryOnly ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isMilitaryOnly', this.checked)"> 🎖️ 군위탁</label>
+                                        <label><input type="checkbox" ${target.isTeachingCertificateStudent ? 'checked' : ''} onchange="updateBooleanTarget(${tIndex}, 'isTeachingCertificateStudent', this.checked)"> 👨‍🏫 교직</label>
                                     </div>
                                 </div>
                             </div>
