@@ -1,5 +1,5 @@
 # Runtime stage only - JAR is built externally
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk
 
 # Set timezone to KST
 ENV TZ=Asia/Seoul
