@@ -33,5 +33,7 @@ springdoc:
     operations-sorter: alpha
 
 rusaint:
-  base-url: ${RUSAINT_BASE_URL}
-  pseudonym-secret: ${RUSAINT_PSEUDONYM_SECRET}
+  base-url: ${RUSAINT_BASE_URL:http://localhost:8000}
+  pseudonym-secret: ${RUSAINT_PSEUDONYM_SECRET:local-pseudonym-secret-min-32-chars}
+  internal-jwt-secret: ${RUSAINT_INTERNAL_JWT_SECRET:local-internal-jwt-secret-min-32-chars}
+  internal-jwt-validity-minutes: ${RUSAINT_INTERNAL_JWT_VALIDITY_MINUTES:15}
