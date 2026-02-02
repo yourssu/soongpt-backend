@@ -7,6 +7,8 @@ build/
 !**/src/test/**/build/
 
 .env
+# HTTP 클라이언트 민감 변수 (학번·sToken 등)
+http-client.private.env.json
 
 ### 과목 분류 데이터 ###
 /src/main/resources/*.json
