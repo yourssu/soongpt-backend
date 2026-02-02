@@ -548,9 +548,10 @@
         "minGrade": 1,
         "maxGrade": 5,
         "isExcluded": true,
-        "isForeignerOnly": false,
+        "isForeignerOnly": true,
         "isMilitaryOnly": false,
-        "isTeachingCertificateStudent": false
+        "isTeachingCertificateStudent": false,
+        "isStrictRestriction": true
       }
     ]
   },
@@ -1200,8 +1201,8 @@
         "departmentName": null,
         "minGrade": 1,
         "maxGrade": 5,
-        "isExcluded": true,
-        "isForeignerOnly": true,
+        "isExcluded": false,
+        "isForeignerOnly": false,
         "isMilitaryOnly": false,
         "isTeachingCertificateStudent": false
       }
