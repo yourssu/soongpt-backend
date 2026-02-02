@@ -7,8 +7,16 @@ build/
 !**/src/test/**/build/
 
 .env
-# HTTP 클라이언트 민감 변수 (학번·sToken 등)
-http-client.private.env.json
+.env.local
+.env.*.local
+
+# HTTP 클라이언트 민감 변수 (학번·sToken·internalJwt 등). 실제 값은 .example 복사 후 로컬에만 보관.
+**/http-client.private.env.json
+
+# docs/ 내부 md 등 전체 무시 (내부 문서·테스트 가이드 등)
+/docs
+/docs/
+/docs/*
 
 ### 과목 분류 데이터 ###
 /src/main/resources/*.json
