@@ -213,11 +213,15 @@ class TargetSQLGenerator:
             min_grade <= 5 <= max_grade,
         )
 
-    def generate_insert(self, course_code: int, parsed_target: dict) -> List[str]:
+    def generate_insert(self, course_code: int, parsed_target: dict, category: str = "", offering_dept: str = "") -> List[str]:
         """
         Generate INSERT statements for a single parsed_target.
-
-        One INSERT per StudentType (if multiple student types, create multiple rows).
+        
+        Args:
+            course_code: Course ID
+            parsed_target: Parsed target rule dict
+            category: Course category (e.g. "전선", "교필") for scope override logic
+            offering_dept: Offering department name for scope override logic
         """
         inserts = []
 
@@ -230,6 +234,22 @@ class TargetSQLGenerator:
             return []  # Skip if college/department not found
 
         scope_type, college_id, department_id = scope_result
+
+        # === Scope Override Logic ===
+        # If Target is "University" (All) AND Course is Major (전필/전선/전기)
+        # -> Change Scope to DEPARTMENT (Offering Dept)
+        if scope_type == SCOPE_TYPE_MAP["university"]:
+            is_major = any(major_type in category for major_type in ["전필", "전선", "전기"])
+            if is_major and offering_dept:
+                # Override to Department Scope
+                dept_id = self.mapper.get_department_id(offering_dept)
+                if dept_id:
+                    scope_type = SCOPE_TYPE_MAP["department"]
+                    department_id = dept_id
+                    college_id = None # Ensure college_id is NULL for dept scope
+                    # print(f"  [Override] Course {course_code} ({category}): University -> Dept '{offering_dept}'")
+                else:
+                    print(f"  [Warning] Course {course_code}: Could not find ID for offering dept '{offering_dept}'")
 
         condition = parsed_target.get('Condition', {})
         grade_condition = condition.get('Grade', {'min': 1, 'max': 5})
@@ -277,6 +297,8 @@ class TargetSQLGenerator:
             for row in reader:
                 course_code_str = row.get('과목번호', '').strip()
                 target_text = row.get('수강대상', '').strip()
+                category = row.get('이수구분(주전공)', '').strip()
+                offering_dept = row.get('개설학과', '').strip()
 
                 # Skip empty or invalid course codes
                 if not course_code_str or not course_code_str.isdigit():
@@ -299,7 +321,7 @@ class TargetSQLGenerator:
 
                 # Generate INSERT for each parsed_target
                 for parsed_target in parsed_entry['parsed_targets']:
-                    inserts = self.generate_insert(course_code, parsed_target)
+                    inserts = self.generate_insert(course_code, parsed_target, category, offering_dept)
                     all_inserts.extend(inserts)
 
         print(f"\n=== CSV Processing Summary ===")
