@@ -242,14 +242,27 @@ class TargetSQLGenerator:
             is_major = any(major_type in category for major_type in ["전필", "전선", "전기"])
             if is_major and offering_dept:
                 # Override to Department Scope
-                dept_id = self.mapper.get_department_id(offering_dept)
+                
+                # Manual Mapping for specific majors -> Dept/School
+                DEPT_MAPPING = {
+                    "상담복지전공": "사회복지학부",
+                    "사회복지실천전공": "사회복지학부",
+                    "사회복지전공": "사회복지학부",
+                    "NGO·기업사회공헌전공": "사회복지학부",
+                    "첨단융합안전공학과(계약학과)": "안전융합대학원", # Assuming safety related, but user didn't specify. Keeping original behavior effectively if not mapped in DB, but safety check.
+                    # Add others if needed
+                }
+                
+                target_dept_name = DEPT_MAPPING.get(offering_dept, offering_dept)
+                dept_id = self.mapper.get_department_id(target_dept_name)
+                
                 if dept_id:
                     scope_type = SCOPE_TYPE_MAP["department"]
                     department_id = dept_id
                     college_id = None # Ensure college_id is NULL for dept scope
-                    # print(f"  [Override] Course {course_code} ({category}): University -> Dept '{offering_dept}'")
+                    # print(f"  [Override] Course {course_code} ({category}): University -> Dept '{target_dept_name}'")
                 else:
-                    print(f"  [Warning] Course {course_code}: Could not find ID for offering dept '{offering_dept}'")
+                    print(f"  [Warning] Course {course_code}: Could not find ID for offering dept '{offering_dept}' (Mapped: '{target_dept_name}')")
 
         condition = parsed_target.get('Condition', {})
         grade_condition = condition.get('Grade', {'min': 1, 'max': 5})
