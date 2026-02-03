@@ -41,7 +41,6 @@ async def fetch_usaint_snapshot_academic(
     포함 데이터:
     - 수강 내역 (takenCourses)
     - 저성적 과목 (lowGradeSubjectCodes)
-    - 신청 가능 학점 (availableCredits)
     - 복수전공/교직 정보 (flags)
     - 기본 정보 (basicInfo)
 

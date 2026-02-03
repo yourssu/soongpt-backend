@@ -92,7 +92,7 @@ class RusaintService:
             data_start = time.time()
             (
                 basic_info,
-                (taken_courses, low_grade_codes, available_credits),
+                (taken_courses, low_grade_codes),
                 flags,
                 remaining_credits,
             ) = await asyncio.gather(
@@ -114,7 +114,6 @@ class RusaintService:
                 takenCourses=taken_courses,
                 lowGradeSubjectCodes=low_grade_codes,
                 flags=flags,
-                availableCredits=available_credits,
                 basicInfo=basic_info,
                 remainingCredits=remaining_credits,
             )

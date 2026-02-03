@@ -54,14 +54,6 @@ class Flags(BaseModel):
     teaching: bool = Field(False, description="교직 이수 여부")
 
 
-class AvailableCredits(BaseModel):
-    """직전 성적 및 최대 신청 가능 학점 정보"""
-
-    previousGpa: float = Field(..., description="직전 학기 평점")
-    carriedOverCredits: int = Field(..., description="이월 학점")
-    maxAvailableCredits: float = Field(..., description="이번 학기 최대 신청 가능 학점 (소수점 포함 가능)")
-
-
 class BasicInfo(BaseModel):
     """기본 학적 정보"""
 
@@ -113,6 +105,5 @@ class UsaintSnapshotResponse(BaseModel):
         description="C/D 및 F 성적 과목 코드 목록",
     )
     flags: Flags = Field(default_factory=Flags, description="복수전공/부전공 및 교직 이수 정보")
-    availableCredits: AvailableCredits = Field(..., description="직전 성적 및 최대 신청 가능 학점 정보")
     basicInfo: BasicInfo = Field(..., description="기본 학적 정보")
     remainingCredits: RemainingCredits = Field(..., description="졸업까지 남은 이수 학점 정보")

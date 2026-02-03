@@ -12,7 +12,6 @@ import rusaint
 
 from app.core.config import settings
 from app.schemas.usaint_schemas import (
-    AvailableCredits,
     BasicInfo,
     Flags,
     GraduationRequirementItem,
@@ -98,7 +97,7 @@ async def fetch_all_course_data_parallel(
     course_grades_app1,
     course_grades_app2,
     semester_type_map: Dict[Any, str],
-) -> tuple[list[TakenCourse], LowGradeSubjectCodes, AvailableCredits]:
+) -> tuple[list[TakenCourse], LowGradeSubjectCodes]:
     """
     2개의 CourseGradesApplication으로 학기를 나눠서 병렬 조회합니다.
 
@@ -108,7 +107,7 @@ async def fetch_all_course_data_parallel(
         semester_type_map: 학기 타입 매핑 (SEMESTER_TYPE_MAP)
 
     Returns:
-        tuple: (taken_courses, low_grade_codes, available_credits)
+        tuple: (taken_courses, low_grade_codes)
     """
     try:
         semesters = await course_grades_app1.semesters(rusaint.CourseType.BACHELOR)
@@ -192,36 +191,7 @@ async def fetch_all_course_data_parallel(
             fail=fail_codes,
         )
 
-        last_semester = semesters[-1]
-
-        previous_gpa = 0.0
-        for attr in ["gpa", "grade_point_average", "average"]:
-            if hasattr(last_semester, attr):
-                value = getattr(last_semester, attr)
-                if value is not None:
-                    previous_gpa = float(value)
-                    break
-
-        carried_over = 0
-        for attr in ["carried_over", "carry_over", "transferred_credits"]:
-            if hasattr(last_semester, attr):
-                value = getattr(last_semester, attr)
-                if value is not None:
-                    carried_over = int(value)
-                    break
-
-        max_credits = 19.5
-        if previous_gpa >= 4.0:
-            max_credits = 22.5
-        max_credits += carried_over
-
-        available_credits = AvailableCredits(
-            previousGpa=previous_gpa,
-            carriedOverCredits=carried_over,
-            maxAvailableCredits=max_credits,
-        )
-
-        return taken_courses, low_grade_codes, available_credits
+        return taken_courses, low_grade_codes
 
     except Exception as e:
         logger.error(f"성적 관련 데이터 조회 실패 (병렬): {type(e).__name__}")

@@ -4,7 +4,6 @@ from app.schemas.usaint_schemas import (
     TakenCourse,
     LowGradeSubjectCodes,
     Flags,
-    AvailableCredits,
     BasicInfo,
     RemainingCredits,
 )
@@ -15,7 +14,6 @@ __all__ = [
     "TakenCourse",
     "LowGradeSubjectCodes",
     "Flags",
-    "AvailableCredits",
     "BasicInfo",
     "RemainingCredits",
 ]
