@@ -1,12 +1,13 @@
 package com.yourssu.soongpt.domain.timetable.application.dto
 
+import com.yourssu.soongpt.common.validation.ValidSchoolId
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCreatedCommand
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.hibernate.validator.constraints.Range
 
 data class TimetableCreatedRequest(
-    @field:Range(min = 15, max = 25, message = "학번은 15부터 25까지 가능합니다.")
+    @field:ValidSchoolId
     val schoolId: Int,
 
     @field:NotBlank(message = "학과는 필수 입력값입니다.")
