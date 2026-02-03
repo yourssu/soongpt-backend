@@ -236,6 +236,31 @@ class IdManager:
 
         return []
 
+def create_target(
+    scope_type="UNIVERSITY",
+    college_name=None,
+    department_name=None,
+    min_grade=1,
+    max_grade=5,
+    effect="Allow",
+    is_foreigner_only=False,
+    is_military_only=False,
+    is_teaching_cert=False,
+    is_strict_restriction=False
+):
+    """Helper function to create a target dictionary with consistent structure."""
+    return {
+        "scopeType": scope_type,
+        "collegeName": college_name,
+        "departmentName": department_name,
+        "minGrade": min_grade,
+        "maxGrade": max_grade,
+        "Effect": effect,
+        "isForeignerOnly": is_foreigner_only,
+        "isMilitaryOnly": is_military_only,
+        "isTeachingCertificateStudent": is_teaching_cert,
+        "isStrictRestriction": is_strict_restriction
+    }
 def parse_target(text, id_manager):
     # Normalize
     original_text = text
@@ -257,47 +282,22 @@ def parse_target(text, id_manager):
         results = []
 
         # Add UNIVERSITY scope (everyone allowed)
-        results.append({
-            "scopeType": "UNIVERSITY",
-            "collegeName": None,
-            "departmentName": None,
-            "minGrade": 1,
-            "maxGrade": 5,
-            "Effect": "Allow",
-            "isForeignerOnly": False,
-            "isMilitaryOnly": False,
-            "isTeachingCertificateStudent": False,
-            "isStrictRestriction": False
-        })
+        results.append(create_target())  # UNIVERSITY Allow
 
         # Add excluded target(s)
         if dept_ids:
             for d_id in dept_ids:
-                results.append({
-                    "scopeType": "DEPARTMENT",
-                    "collegeName": None,
-                    "departmentName": id_manager.department_id_to_name[d_id],
-                    "minGrade": 1,
-                    "maxGrade": 5,
-                    "Effect": "Deny",
-                    "isForeignerOnly": False,
-                    "isMilitaryOnly": False,
-                    "isTeachingCertificateStudent": False,
-                    "isStrictRestriction": False
-                })
+                results.append(create_target(
+                    scope_type="DEPARTMENT",
+                    department_name=id_manager.department_id_to_name[d_id],
+                    effect="Deny"
+                ))
         elif col_id:
-            results.append({
-                "scopeType": "COLLEGE",
-                "collegeName": id_manager.college_id_to_name[col_id],
-                "departmentName": None,
-                "minGrade": 1,
-                "maxGrade": 5,
-                "Effect": "Deny",
-                "isForeignerOnly": False,
-                "isMilitaryOnly": False,
-                "isTeachingCertificateStudent": False,
-                "isStrictRestriction": False
-            })
+            results.append(create_target(
+                scope_type="COLLEGE",
+                college_name=id_manager.college_id_to_name[col_id],
+                effect="Deny"
+            ))
 
         return results, [] if (dept_ids or col_id) else [target_name]
 
@@ -305,18 +305,10 @@ def parse_target(text, id_manager):
     # "전체학년 외국국적학생(2~3학년),계약학과(정보보호학과 제외),선취업후진학학과,군위탁,장기해외봉사,현장실습,축구단,장애학생(승인자에 한함) 등 (대상외수강제한)"
     # This means: ONLY 2~3학년 외국인 students
     if "외국국적학생" in original_text and "2~3학년" in original_text and "대상외수강제한" in original_text:
-        return [{
-            "scopeType": "UNIVERSITY",
-            "collegeName": None,
-            "departmentName": None,
-            "minGrade": 2,
-            "maxGrade": 3,
-            "Effect": "Allow",
-            "isForeignerOnly": True,
-            "isMilitaryOnly": False,
-            "isTeachingCertificateStudent": False,
-            "isStrictRestriction": True
-        }], []
+        return [create_target(
+            min_grade=2, max_grade=3,
+            is_foreigner_only=True, is_strict_restriction=True
+        )], []
 
     # Hardcoded pattern 3: "{특수학생카테고리} 제한"
     # Pattern: Category restriction like "순수외국인입학생 제한", "교환학생 제한"
@@ -326,39 +318,14 @@ def parse_target(text, id_manager):
 
     if category_match:
         category = category_match.group(1)
-
-        # Determine category flags
         is_foreigner = category in ["순수외국인", "외국국적", "외국인", "교환학생"]
         is_military = category == "군위탁"
         is_teaching = category in ["교직이수자", "교직이수"]
 
         return [
-            # Base allowed target (everyone)
-            {
-                "scopeType": "UNIVERSITY",
-                "collegeName": None,
-                "departmentName": None,
-                "minGrade": 1,
-                "maxGrade": 5,
-                "Effect": "Allow",
-                "isForeignerOnly": False,
-                "isMilitaryOnly": False,
-                "isTeachingCertificateStudent": False,
-                "isStrictRestriction": False
-            },
-            # Excluded category
-            {
-                "scopeType": "UNIVERSITY",
-                "collegeName": None,
-                "departmentName": None,
-                "minGrade": 1,
-                "maxGrade": 5,
-                "Effect": "Deny",
-                "isForeignerOnly": is_foreigner,
-                "isMilitaryOnly": is_military,
-                "isTeachingCertificateStudent": is_teaching,
-                "isStrictRestriction": False
-            }
+            create_target(),  # Base allowed target (everyone)
+            create_target(effect="Deny", is_foreigner_only=is_foreigner, 
+                         is_military_only=is_military, is_teaching_cert=is_teaching)
         ], []
 
     # Flags
@@ -434,79 +401,40 @@ def parse_target(text, id_manager):
         targets = []
 
         # Case 1a: Strict restriction with specific category (e.g., "전체학년 ;순수외국인입학생 (대상외수강제한)")
-        # Meaning: ONLY the specified category can take this course
         if has_strict_flag and (is_foreigner_only or is_military_only or is_teaching_cert):
-            targets.append({
-                "scopeType": "UNIVERSITY",
-                "collegeName": None,
-                "departmentName": None,
-                "minGrade": 1,
-                "maxGrade": 5,
-                "Effect": "Allow",  # Not excluded - this IS the allowed group
-                "isForeignerOnly": is_foreigner_only,
-                "isMilitaryOnly": is_military_only,
-                "isTeachingCertificateStudent": is_teaching_cert,
-                "isStrictRestriction": True
-            })
+            targets.append(create_target(
+                is_foreigner_only=is_foreigner_only,
+                is_military_only=is_military_only,
+                is_teaching_cert=is_teaching_cert,
+                is_strict_restriction=True
+            ))
         # Case 1b: Category exclusion (e.g., "전체학년 (외국인 제외)")
-        # Meaning: Everyone EXCEPT the specified category
         elif (is_foreigner_only or is_military_only or is_teaching_cert) and has_exclude_keyword:
-            # Base allowed target (everyone can take)
-            targets.append({
-                "scopeType": "UNIVERSITY",
-                "collegeName": None,
-                "departmentName": None,
-                "minGrade": 1,
-                "maxGrade": 5,
-                "Effect": "Allow",
-                "isForeignerOnly": False,
-                "isMilitaryOnly": False,
-                "isTeachingCertificateStudent": False,
-                "isStrictRestriction": False
-            })
-            # Category excluded target
-            targets.append({
-                "scopeType": "UNIVERSITY",
-                "collegeName": None,
-                "departmentName": None,
-                "minGrade": 1,
-                "maxGrade": 5,
-                "Effect": "Deny",
-                "isForeignerOnly": is_foreigner_only,
-                "isMilitaryOnly": is_military_only,
-                "isTeachingCertificateStudent": is_teaching_cert,
-                "isStrictRestriction": False
-            })
+            targets.append(create_target())  # Base allowed target
+            targets.append(create_target(
+                effect="Deny",
+                is_foreigner_only=is_foreigner_only,
+                is_military_only=is_military_only,
+                is_teaching_cert=is_teaching_cert
+            ))
         # Case 1c: Simple target (no special category handling)
         else:
-            # If there are dept/college exclusions, add Allow target and continue to merge
             if dept_college_exclusions:
-                results.append({
-                    "scopeType": "UNIVERSITY",
-                    "collegeName": None,
-                    "departmentName": None,
-                    "minGrade": 1,
-                    "maxGrade": 5,
-                    "Effect": "Allow",
-                    "isForeignerOnly": is_foreigner_only,
-                    "isMilitaryOnly": is_military_only,
-                    "isTeachingCertificateStudent": is_teaching_cert,
-                    "isStrictRestriction": has_strict_flag
-                })
-                # Continue to merge dept_college_exclusions at the end (don't return here)
+                results.append(create_target(
+                    is_foreigner_only=is_foreigner_only,
+                    is_military_only=is_military_only,
+                    is_teaching_cert=is_teaching_cert,
+                    is_strict_restriction=has_strict_flag
+                ))
+                # Continue to merge dept_college_exclusions at the end
             else:
-                return [{
-                    "scopeType": "UNIVERSITY",
-                    "collegeName": None,
-                    "departmentName": None,
-                    "minGrade": 1,
-                    "maxGrade": 5,
-                    "Effect": "Deny" if is_excluded else "Allow",
-                    "isForeignerOnly": is_foreigner_only,
-                    "isMilitaryOnly": is_military_only,
-                    "isTeachingCertificateStudent": is_teaching_cert,
-                    "isStrictRestriction": has_strict_flag
-                }], []
+                return [create_target(
+                    effect="Deny" if is_excluded else "Allow",
+                    is_foreigner_only=is_foreigner_only,
+                    is_military_only=is_military_only,
+                    is_teaching_cert=is_teaching_cert,
+                    is_strict_restriction=has_strict_flag
+                )], []
     # Handle "전체학년 전체" same as "전체"
     is_university_scope = clean_text in ["전체", "전체학년 전체", ""]
     if is_university_scope:
