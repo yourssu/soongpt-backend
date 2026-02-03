@@ -38,7 +38,6 @@ erDiagram
         String target "수강대상 원본 문자열(읽기 전용, 감사용)"
 
         Double credit "학점(추가)"
-        String area "영역/교양구분(추가)"
     }
 
     course_time {
