@@ -52,6 +52,49 @@ SQL_FILES = [
 ]
 
 
+def split_sql_statements(sql_content):
+    """Split SQL content by semicolon, respecting quotes."""
+    statements = []
+    current_statement = []
+    in_quote = False
+    
+    i = 0
+    length = len(sql_content)
+    
+    while i < length:
+        char = sql_content[i]
+        
+        if char == "'":
+            # Check if it's an escaped quote (double single quote)
+            if in_quote and i + 1 < length and sql_content[i+1] == "'":
+                current_statement.append(char)
+                current_statement.append(char) # Append both
+                i += 2
+                continue
+            
+            # Toggle quote state
+            in_quote = not in_quote
+            current_statement.append(char)
+            i += 1
+            continue
+            
+        if char == ';' and not in_quote:
+            statement = "".join(current_statement).strip()
+            if statement:
+                statements.append(statement)
+            current_statement = []
+            i += 1
+        else:
+            current_statement.append(char)
+            i += 1
+            
+    if current_statement:
+        statement = "".join(current_statement).strip()
+        if statement:
+            statements.append(statement)
+            
+    return statements
+
 def execute_sql_file(cursor, file_path, table_name):
     """Execute SQL file and return number of rows inserted."""
     print(f"\n{'='*80}")
@@ -62,8 +105,12 @@ def execute_sql_file(cursor, file_path, table_name):
     with open(file_path, 'r', encoding='utf-8') as f:
         sql_content = f.read()
 
-    # Split by semicolon and filter out comments
-    statements = [s.strip() for s in sql_content.split(';') if s.strip() and not s.strip().startswith('--')]
+    # Remove specific comment lines first
+    lines = sql_content.split('\n')
+    filtered_lines = [line for line in lines if not line.strip().startswith('--')]
+    sql_content_clean = '\n'.join(filtered_lines)
+
+    statements = split_sql_statements(sql_content_clean)
 
     total = len(statements)
     print(f"Total statements: {total}")
