@@ -236,21 +236,37 @@ class TargetSQLGenerator:
         scope_type, college_id, department_id = scope_result
 
         # === Scope Override Logic ===
-        # If Target is "University" (All) AND Course is Major (전필/전선/전기)
+        # If Target is "University" (All) AND Course is Major (전필/전선/전기/전공)
         # -> Change Scope to DEPARTMENT (Offering Dept)
         if scope_type == SCOPE_TYPE_MAP["university"]:
-            is_major = any(major_type in category for major_type in ["전필", "전선", "전기"])
+            # Check for major keywords: 전필, 전선, 전기, 전공 (covers '전공_...')
+            is_major = any(major_type in category for major_type in ["전필", "전선", "전기", "전공"])
             if is_major and offering_dept:
                 # Override to Department Scope
                 
-                # Manual Mapping for specific majors -> Dept/School
+                # Manual Mapping for specific majors -> Dept/School if needed
                 DEPT_MAPPING = {
+                    # Common Aliases
+                    "컴퓨터학과": "컴퓨터학부",
+                    "전자공학과": "전자정보공학부 전자공학전공", 
+                    "문예창작학과": "예술창작학부 문예창작전공",
+                    "영화예술전공": "예술창작학부 영화예술전공",
+                    "행정학과": "행정학부",
+                    "사회복지학과": "사회복지학부",
+                    "건축학과": "건축학부 건축학전공",
+                    "건축학부": "건축학부 건축학부", 
+                    "실내건축전공": "건축학부 실내건축전공",
+                    "산업·정보시스템공학과": "산업정보시스템공학과", 
+                    "기계공학과": "기계공학부",
+                    "스포츠학부": "스포츠학부",
+                    "법학과": "법학과",
+                    # Specific Majors
                     "상담복지전공": "사회복지학부",
                     "사회복지실천전공": "사회복지학부",
                     "사회복지전공": "사회복지학부",
                     "NGO·기업사회공헌전공": "사회복지학부",
-                    "첨단융합안전공학과(계약학과)": "안전융합대학원", # Assuming safety related, but user didn't specify. Keeping original behavior effectively if not mapped in DB, but safety check.
-                    # Add others if needed
+                    "첨단융합안전공학과(계약학과)": "안전융합대학원", 
+                    "산업정보시스템공학과": "산업·정보시스템공학과"
                 }
                 
                 target_dept_name = DEPT_MAPPING.get(offering_dept, offering_dept)
@@ -260,9 +276,9 @@ class TargetSQLGenerator:
                     scope_type = SCOPE_TYPE_MAP["department"]
                     department_id = dept_id
                     college_id = None # Ensure college_id is NULL for dept scope
-                    # print(f"  [Override] Course {course_code} ({category}): University -> Dept '{target_dept_name}'")
                 else:
-                    print(f"  [Warning] Course {course_code}: Could not find ID for offering dept '{offering_dept}' (Mapped: '{target_dept_name}')")
+                    print(f"  [Warning] Course {course_code} ({category}): Scope Override Failed. Could not find ID for offering dept '{offering_dept}' (Mapped: '{target_dept_name}'). Skipping target generation.")
+                    return [] # SKIP generating this target
 
         condition = parsed_target.get('Condition', {})
         grade_condition = condition.get('Grade', {'min': 1, 'max': 5})
