@@ -11,6 +11,7 @@ from typing import Any, Dict
 import rusaint
 
 from app.core.config import settings
+from app.services.constants import CHAPEL_CODES
 from app.schemas.usaint_schemas import (
     BasicInfo,
     Flags,
@@ -156,10 +157,13 @@ async def fetch_all_course_data_parallel(
         all_semester_classes = list(classes_group1) + list(classes_group2)
 
         taken_courses = []
-        low_grade_codes = []
+        # 과목코드별 최신 성적 추적: {code: (year, semester_index, rank_str)}
+        # semester_index는 semesters 리스트 내 인덱스 (시간순 비교용)
+        latest_grades: Dict[str, tuple[int, int, str]] = {}
 
-        for semester_grade, classes in zip(semesters, all_semester_classes):
-            subject_codes = [cls.code for cls in classes]
+        for idx, (semester_grade, classes) in enumerate(zip(semesters, all_semester_classes)):
+            # 채플 과목 제외
+            subject_codes = [cls.code for cls in classes if cls.code not in CHAPEL_CODES]
             semester_str = semester_type_map.get(semester_grade.semester, "1")
 
             taken_courses.append(
@@ -171,16 +175,31 @@ async def fetch_all_course_data_parallel(
             )
 
             for cls in classes:
+                code = cls.code
+                # 채플 과목 제외
+                if code in CHAPEL_CODES:
+                    continue
+
                 rank = getattr(cls, "rank", None)
                 if not rank:
                     continue
 
                 rank_str = str(rank).upper().strip()
-                code = cls.code
 
-                # C 이하 성적 (C, D, F) 모두 재수강 대상
-                if rank_str == settings.FAIL_GRADE or rank_str in settings.LOW_GRADE_RANKS:
-                    low_grade_codes.append(code)
+                # 최신 성적으로 갱신 (semesters가 시간순이라고 가정)
+                if code not in latest_grades:
+                    latest_grades[code] = (semester_grade.year, idx, rank_str)
+                else:
+                    prev_year, prev_idx, _ = latest_grades[code]
+                    # 더 최근 학기면 갱신 (year 비교 후 semester index 비교)
+                    if (semester_grade.year, idx) > (prev_year, prev_idx):
+                        latest_grades[code] = (semester_grade.year, idx, rank_str)
+
+        # 최신 성적 기준으로 C 이하인 과목만 low_grade_codes에 추가 (중복 없음)
+        low_grade_codes = []
+        for code, (_, _, rank_str) in latest_grades.items():
+            if rank_str == settings.FAIL_GRADE or rank_str in settings.LOW_GRADE_RANKS:
+                low_grade_codes.append(code)
 
         return taken_courses, low_grade_codes
 
