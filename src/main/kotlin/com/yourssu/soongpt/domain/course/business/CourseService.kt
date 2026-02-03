@@ -21,14 +21,14 @@ class CourseService(
     fun findAll(query: MajorRequiredCourseQuery): List<MajorRequiredResponse> {
         val department = departmentReader.getByName(query.departmentName)
         val targets = targetReader.findAllByDepartmentGrade(department, query.grade)
-        val courses = courseReader.findAllInCategory(Category.MAJOR_REQUIRED, targets.map { it.courseId }, query.schoolId)
+        val courses = courseReader.findAllInCategory(Category.MAJOR_REQUIRED, targets.map { it.courseCode }, query.schoolId)
         return courses.map { MajorRequiredResponse.from(it) }
     }
 
     fun findAll(query: MajorElectiveCourseQuery): List<MajorElectiveResponse> {
         val department = departmentReader.getByName(query.departmentName)
         val targets = targetReader.findAllByDepartmentGrade(department, query.grade)
-        val courses = courseReader.findAllInCategory(Category.MAJOR_ELECTIVE, targets.map { it.courseId }, query.schoolId)
+        val courses = courseReader.findAllInCategory(Category.MAJOR_ELECTIVE, targets.map { it.courseCode }, query.schoolId)
         return courses.map { MajorElectiveResponse.from(it) }
     }
 
@@ -36,12 +36,12 @@ class CourseService(
         val department = departmentReader.getByName(query.departmentName)
         val targets = targetReader.findAllByDepartmentGrade(department, query.grade)
         if (query.field == null) {
-            val courses = courseReader.findAllInCategory(Category.GENERAL_REQUIRED, targets.map { it.courseId }, query.schoolId)
+            val courses = courseReader.findAllInCategory(Category.GENERAL_REQUIRED, targets.map { it.courseCode }, query.schoolId)
             return courses.map { GeneralRequiredResponse.from(it) }
         }
         val courses = courseReader.findAllInCategory(
             Category.GENERAL_REQUIRED,
-            targets.map { it.courseId },
+            targets.map { it.courseCode },
             query.field,
             query.schoolId
         )
