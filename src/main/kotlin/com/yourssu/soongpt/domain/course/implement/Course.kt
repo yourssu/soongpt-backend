@@ -15,6 +15,8 @@ class Course(
     val personeel: Int,
     val scheduleRoom: String,
     val target: String,
+    val credit: Double? = null,
+    val area: String? = null,
 ) {
     fun copy(
         id: Long? = this.id,
@@ -30,7 +32,9 @@ class Course(
         point: String = this.point,
         personeel: Int = this.personeel,
         scheduleRoom: String = this.scheduleRoom,
-        target: String = this.target
+        target: String = this.target,
+        credit: Double? = this.credit,
+        area: String? = this.area
     ): Course {
         return Course(
             id,
@@ -46,7 +50,9 @@ class Course(
             point,
             personeel,
             scheduleRoom,
-            target
+            target,
+            credit,
+            area
         )
     }
 }

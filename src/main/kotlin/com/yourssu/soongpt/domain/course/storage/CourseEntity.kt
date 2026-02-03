@@ -50,6 +50,12 @@ class CourseEntity(
 
     @Column(nullable = false, columnDefinition = "TEXT")
     val target: String,
+
+    @Column(nullable = true)
+    val credit: Double? = null,
+
+    @Column(nullable = true)
+    val area: String? = null,
 ) {
     companion object {
         fun from(course: Course): CourseEntity {
@@ -69,6 +75,8 @@ class CourseEntity(
                 personeel = 0,
                 scheduleRoom = course.scheduleRoom,
                 target = course.target,
+                credit = course.credit,
+                area = course.area,
             )
         }
     }
@@ -89,7 +97,9 @@ class CourseEntity(
             point = point,
             personeel = personeel,
             scheduleRoom = scheduleRoom,
-            target = target
+            target = target,
+            credit = credit,
+            area = area
         )
     }
 }
