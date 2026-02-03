@@ -53,7 +53,7 @@ erDiagram
     target {
         Long id PK "수강대상 ID"
         Long courseCode FK "과목 코드"
-        ScopeType scopeType "범위 타입 (UNIVERSITY/COLLEGE/DEPARTMENT)"
+        ScopeType scopeType "범위 타입 (UNIVERSITY, COLLEGE, DEPARTMENT)"
         Long collegeId FK "단과대학 ID(NULL 가능)"
         Long departmentId FK "학과 ID(NULL 가능)"
         Boolean grade1 "1학년 해당 여부"
@@ -62,7 +62,7 @@ erDiagram
         Boolean grade4 "4학년 해당 여부"
         Boolean grade5 "5학년 해당 여부"
         Boolean isDenied "제외 여부 (false=Allow, true=Deny)"
-        StudentType studentType "학생 유형"
+        StudentType studentType "학생 유형 (GENERAL, FOREIGNER, MILITARY, TEACHING_CERT)"
         Boolean isStrict "대상외수강제한 여부"
     }
 
