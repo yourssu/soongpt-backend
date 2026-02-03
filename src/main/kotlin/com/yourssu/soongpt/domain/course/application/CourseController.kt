@@ -54,7 +54,7 @@ class CourseController(
     }
 
     @GetMapping("/fields/schoolId/{schoolId}")
-    fun getFieldsBySchoolId(@Range(min = 15, max = 25, message = "학번은 15부터 25까지 가능합니다.") @PathVariable schoolId: Int): ResponseEntity<Response<List<String>>> {
+    fun getFieldsBySchoolId(@Range(min = 15, max = 27, message = "학번은 15부터 26까지 가능합니다.") @PathVariable schoolId: Int): ResponseEntity<Response<List<String>>> {
         val response = courseService.getFieldsBySchoolId(schoolId)
         return ResponseEntity.ok().body(Response(result = response))
     }
