@@ -59,4 +59,8 @@ class CourseReader(
     fun getFieldsBySchoolId(schoolId: Int): List<String> {
         return fieldListFinder.getFieldsBySchoolId(schoolId)
     }
+
+    fun getAllFieldsGrouped(): Map<Int, List<String>> {
+        return fieldListFinder.agetAllFieldsGrouped()
+    }
 }

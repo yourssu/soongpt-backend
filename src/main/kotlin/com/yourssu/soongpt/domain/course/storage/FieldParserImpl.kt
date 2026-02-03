@@ -2,6 +2,7 @@ package com.yourssu.soongpt.domain.course.storage
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.kotlinModule
+import com.yourssu.soongpt.common.util.SchoolIdRange
 import com.yourssu.soongpt.domain.course.implement.FieldListFinder
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
@@ -36,5 +37,12 @@ object FieldParserImpl: FieldListFinder {
 
     override fun getFieldsBySchoolId(schoolId: Int): List<String> {
         return getFieldsByKey(schoolId.toString())
+    }
+
+    override fun getAllFieldsGrouped(): Map<Int, List<String>> {
+        return fieldsData
+            .mapKeys { it.key.toIntOrNull() ?: 0 }
+            .filterKeys { it in SchoolIdRange.getRange() }
+            .toSortedMap()
     }
 }
