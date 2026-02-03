@@ -53,9 +53,16 @@ class CourseController(
         return ResponseEntity.ok().body(Response(result = response))
     }
 
+    @Deprecated("Use /api/courses/by-category with field parameter for filtering by field")
     @GetMapping("/fields/schoolId/{schoolId}")
     fun getFieldsBySchoolId(@ValidSchoolId @PathVariable schoolId: Int): ResponseEntity<Response<List<String>>> {
         val response = courseService.getFieldsBySchoolId(schoolId)
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @GetMapping("/fields")
+    fun getFields(@Valid @ModelAttribute request: GetFieldsRequest): ResponseEntity<Response<Any>> {
+        val response = courseService.getFields(request.schoolId)
         return ResponseEntity.ok().body(Response(result = response))
     }
 }
