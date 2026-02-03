@@ -12,7 +12,7 @@ class Course(
     val division: String? = null,
     val time: String,
     val point: String,
-    val personeel: Int,
+    val personeel: Int = 0,
     val scheduleRoom: String,
     val target: String,
     val credit: Double? = null,
