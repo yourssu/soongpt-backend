@@ -90,8 +90,8 @@ def print_courses(courses):
 
     print(f"\nFound {len(courses)} courses:")
     print("-" * 120)
-    print(f"{'Code':<12} | {'Category':<10} | {'Name':<35} | {'Professor':<10} | {'Dept':<15} | {'Credit':<5}")
-    print("-" * 120)
+    print(f"{'Code':<12} | {'Category':<10} | {'Name':<35} | {'Professor':<10} | {'Dept':<15} | {'Credit':<5} | {'Target (Original)'}")
+    print("-" * 150)
     
     for course in courses:
         code = course['code']
@@ -101,9 +101,10 @@ def print_courses(courses):
         professor = (course['professor'] or "")[:10]
         dept = course['department'][:15]
         credit = course['credit']
+        target_raw = course['target']
 
-        print(f"{code:<12} | {category_kor:<10} | {name:<35} | {professor:<10} | {dept:<15} | {credit:<5}")
-    print("-" * 120)
+        print(f"{code:<12} | {category_kor:<10} | {name:<35} | {professor:<10} | {dept:<15} | {credit:<5} | {target_raw}")
+    print("-" * 150)
 
 def query_by_code(code: str):
     conn = get_db_connection()
