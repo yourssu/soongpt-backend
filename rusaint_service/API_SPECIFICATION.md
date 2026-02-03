@@ -72,10 +72,7 @@ Content-Type: application/json
       "subjectCodes": ["21010", "21011"]
     }
   ],
-  "lowGradeSubjectCodes": {
-    "passLow": ["21001", "21002"],
-    "fail": ["21010"]
-  },
+  "lowGradeSubjectCodes": ["21001", "21002", "21010"],
   "flags": {
     "doubleMajorDepartment": "컴퓨터학부",
     "minorDepartment": null,
@@ -96,10 +93,7 @@ Content-Type: application/json
 {
   "pseudonym": "base64url_hmac_sha256_of_student_id",
   "takenCourses": [],
-  "lowGradeSubjectCodes": {
-    "passLow": [],
-    "fail": []
-  },
+  "lowGradeSubjectCodes": [],
   "flags": {
     "doubleMajorDepartment": null,
     "minorDepartment": null,
@@ -134,10 +128,9 @@ Content-Type: application/json
 
 ##### lowGradeSubjectCodes (저성적 과목)
 
-| 필드    | 타입     | 설명                      |
-| ------- | -------- | ------------------------- |
-| passLow | string[] | C/D 성적 과목 코드 리스트 |
-| fail    | string[] | F 성적 과목 코드 리스트   |
+| 타입     | 설명                                    |
+| -------- | --------------------------------------- |
+| string[] | C 이하 성적(C/D/F) 과목 코드 리스트 (재수강 대상) |
 
 ##### flags (복수전공/부전공 정보)
 

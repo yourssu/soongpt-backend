@@ -33,19 +33,6 @@ class TakenCourse(BaseModel):
     subjectCodes: list[str] = Field(default_factory=list, description="해당 학기 수강 과목 코드 리스트")
 
 
-class LowGradeSubjectCodes(BaseModel):
-    """저성적 과목 코드 목록 (C/D 및 F 성적)"""
-
-    passLow: list[str] = Field(
-        default_factory=list,
-        description="C/D 성적(통과 저성적) 과목 코드 리스트 (이수구분 없이 과목 코드만)",
-    )
-    fail: list[str] = Field(
-        default_factory=list,
-        description="F 성적(재수강 필요) 과목 코드 리스트 (이수구분 없이 과목 코드만)",
-    )
-
-
 class Flags(BaseModel):
     """복수전공/부전공 및 교직 이수 정보"""
 
@@ -87,9 +74,6 @@ class UsaintSnapshotResponse(BaseModel):
     """유세인트 데이터 스냅샷 응답"""
 
     takenCourses: list[TakenCourse] = Field(default_factory=list, description="학기별 수강 과목 코드 목록")
-    lowGradeSubjectCodes: LowGradeSubjectCodes = Field(
-        default_factory=LowGradeSubjectCodes,
-        description="C/D 및 F 성적 과목 코드 목록",
-    )
+    lowGradeSubjectCodes: list[str] = Field(default_factory=list, description="C 이하 성적 과목 코드 리스트 (재수강 대상)")
     flags: Flags = Field(default_factory=Flags, description="복수전공/부전공 및 교직 이수 정보")
     basicInfo: BasicInfo = Field(..., description="기본 학적 정보")

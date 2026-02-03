@@ -100,6 +100,7 @@ POST /api/usaint/snapshot
 **응답 예시:**
 ```json
 {
+  "pseudonym": "base64url_hmac_sha256_of_student_id",
   "takenCourses": [
     {
       "year": 2024,
@@ -107,41 +108,17 @@ POST /api/usaint/snapshot
       "subjectCodes": ["2150545501", "2150545502"]
     }
   ],
-  "lowGradeSubjectCodes": {
-    "passLow": {
-      "majorRequired": ["2150545501"],
-      "majorElective": [],
-      "generalRequired": [],
-      "generalElective": []
-    },
-    "fail": {
-      "majorRequired": [],
-      "majorElective": [],
-      "generalRequired": [],
-      "generalElective": []
-    }
-  },
+  "lowGradeSubjectCodes": ["2150545501"],
   "flags": {
     "doubleMajorDepartment": null,
     "minorDepartment": null,
     "teaching": false
-  },
-  "availableCredits": {
-    "previousGpa": 4.0,
-    "carriedOverCredits": 0,
-    "maxAvailableCredits": 22.5
   },
   "basicInfo": {
     "year": 2023,
     "grade": 2,
     "semester": 4,
     "department": "컴퓨터학부"
-  },
-  "remainingCredits": {
-    "majorRequired": 12,
-    "majorElective": 18,
-    "generalRequired": 6,
-    "generalElective": 10
   }
 }
 ```

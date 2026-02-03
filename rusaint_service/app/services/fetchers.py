@@ -16,7 +16,6 @@ from app.schemas.usaint_schemas import (
     Flags,
     GraduationRequirementItem,
     GraduationRequirements,
-    LowGradeSubjectCodes,
     TakenCourse,
 )
 
@@ -96,7 +95,7 @@ async def fetch_all_course_data_parallel(
     course_grades_app1,
     course_grades_app2,
     semester_type_map: Dict[Any, str],
-) -> tuple[list[TakenCourse], LowGradeSubjectCodes]:
+) -> tuple[list[TakenCourse], list[str]]:
     """
     2개의 CourseGradesApplication으로 학기를 나눠서 병렬 조회합니다.
 
@@ -106,7 +105,7 @@ async def fetch_all_course_data_parallel(
         semester_type_map: 학기 타입 매핑 (SEMESTER_TYPE_MAP)
 
     Returns:
-        tuple: (taken_courses, low_grade_codes)
+        tuple: (taken_courses, low_grade_subject_codes)
     """
     try:
         semesters = await course_grades_app1.semesters(rusaint.CourseType.BACHELOR)
@@ -157,8 +156,7 @@ async def fetch_all_course_data_parallel(
         all_semester_classes = list(classes_group1) + list(classes_group2)
 
         taken_courses = []
-        pass_low_codes = []
-        fail_codes = []
+        low_grade_codes = []
 
         for semester_grade, classes in zip(semesters, all_semester_classes):
             subject_codes = [cls.code for cls in classes]
@@ -180,15 +178,9 @@ async def fetch_all_course_data_parallel(
                 rank_str = str(rank).upper().strip()
                 code = cls.code
 
-                if rank_str == settings.FAIL_GRADE:
-                    fail_codes.append(code)
-                elif rank_str in settings.LOW_GRADE_RANKS:
-                    pass_low_codes.append(code)
-
-        low_grade_codes = LowGradeSubjectCodes(
-            passLow=pass_low_codes,
-            fail=fail_codes,
-        )
+                # C 이하 성적 (C, D, F) 모두 재수강 대상
+                if rank_str == settings.FAIL_GRADE or rank_str in settings.LOW_GRADE_RANKS:
+                    low_grade_codes.append(code)
 
         return taken_courses, low_grade_codes
 
