@@ -24,10 +24,7 @@ class RusaintDtoDeserializationTest : DescribeSpec({
                     "takenCourses": [
                         {"year": 2024, "semester": "1", "subjectCodes": ["21505455", "21501027"]}
                     ],
-                    "lowGradeSubjectCodes": {
-                        "passLow": ["21505395"],
-                        "fail": ["21501015"]
-                    },
+                    "lowGradeSubjectCodes": ["21505395", "21501015"],
                     "flags": {
                         "doubleMajorDepartment": null,
                         "minorDepartment": null,
@@ -48,8 +45,7 @@ class RusaintDtoDeserializationTest : DescribeSpec({
             dto.takenCourses.size shouldBe 1
             dto.takenCourses[0].year shouldBe 2024
             dto.takenCourses[0].semester shouldBe "1"
-            dto.lowGradeSubjectCodes.passLow shouldBe listOf("21505395")
-            dto.lowGradeSubjectCodes.fail shouldBe listOf("21501015")
+            dto.lowGradeSubjectCodes shouldBe listOf("21505395", "21501015")
             dto.flags.teaching shouldBe false
             dto.basicInfo.grade shouldBe 3
             dto.basicInfo.semester shouldBe 6

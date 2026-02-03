@@ -4,7 +4,7 @@ package com.yourssu.soongpt.domain.usaint.implement.dto
 data class RusaintAcademicResponseDto(
     val pseudonym: String,
     val takenCourses: List<RusaintTakenCourseDto>,
-    val lowGradeSubjectCodes: RusaintLowGradeSubjectCodesDto,
+    val lowGradeSubjectCodes: List<String>,
     val flags: RusaintStudentFlagsDto,
     val basicInfo: RusaintBasicInfoDto,
 )
@@ -13,11 +13,6 @@ data class RusaintTakenCourseDto(
     val year: Int,
     val semester: String,
     val subjectCodes: List<String>,
-)
-
-data class RusaintLowGradeSubjectCodesDto(
-    val passLow: List<String>,
-    val fail: List<String>,
 )
 
 data class RusaintStudentFlagsDto(

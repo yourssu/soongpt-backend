@@ -7,7 +7,6 @@ import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintChapelSummaryItemD
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationRequirementsDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryDto
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintLowGradeSubjectCodesDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
 import com.yourssu.soongpt.domain.usaint.implement.RusaintServiceClient
@@ -39,10 +38,7 @@ class UsaintServiceTest : BehaviorSpec({
         val sampleSnapshot = RusaintUsaintDataResponse(
             pseudonym = "pseudonym-from-rusaint",
             takenCourses = emptyList(),
-            lowGradeSubjectCodes = RusaintLowGradeSubjectCodesDto(
-                passLow = emptyList(),
-                fail = emptyList(),
-            ),
+            lowGradeSubjectCodes = emptyList(),
             flags = RusaintStudentFlagsDto(
                 doubleMajorDepartment = null,
                 minorDepartment = null,
