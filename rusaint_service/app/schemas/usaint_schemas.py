@@ -63,15 +63,6 @@ class BasicInfo(BaseModel):
     department: str = Field(..., description="주전공 학과명")
 
 
-class RemainingCredits(BaseModel):
-    """졸업까지 남은 이수 학점 정보"""
-
-    majorRequired: int = Field(..., description="남은 전공필수 학점")
-    majorElective: int = Field(..., description="남은 전공선택 학점")
-    generalRequired: int = Field(..., description="남은 교양필수 학점")
-    generalElective: int = Field(..., description="남은 교양선택 학점")
-
-
 class GraduationRequirementItem(BaseModel):
     """개별 졸업 요건 항목"""
 
@@ -84,15 +75,11 @@ class GraduationRequirementItem(BaseModel):
 
 
 class GraduationRequirements(BaseModel):
-    """졸업 요건 전체 목록 및 요약"""
+    """졸업 요건 전체 목록 (raw 데이터)"""
 
     requirements: list[GraduationRequirementItem] = Field(
         default_factory=list,
         description="개별 졸업 요건 항목 목록"
-    )
-    remainingCredits: RemainingCredits = Field(
-        ...,
-        description="졸업까지 남은 이수 학점 요약 (하위 호환성)"
     )
 
 
@@ -106,4 +93,3 @@ class UsaintSnapshotResponse(BaseModel):
     )
     flags: Flags = Field(default_factory=Flags, description="복수전공/부전공 및 교직 이수 정보")
     basicInfo: BasicInfo = Field(..., description="기본 학적 정보")
-    remainingCredits: RemainingCredits = Field(..., description="졸업까지 남은 이수 학점 정보")

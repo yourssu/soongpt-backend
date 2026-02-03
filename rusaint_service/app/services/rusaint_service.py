@@ -94,14 +94,12 @@ class RusaintService:
                 basic_info,
                 (taken_courses, low_grade_codes),
                 flags,
-                remaining_credits,
             ) = await asyncio.gather(
                 fetchers.fetch_basic_info(student_info_app),
                 fetchers.fetch_all_course_data_parallel(
                     course_grades_app1, course_grades_app2, SEMESTER_TYPE_MAP
                 ),
                 fetchers.fetch_flags(student_info_app),
-                fetchers.fetch_remaining_credits(grad_app),
             )
             logger.info(f"데이터 조회 완료: {time.time() - data_start:.2f}초")
 
@@ -115,7 +113,6 @@ class RusaintService:
                 lowGradeSubjectCodes=low_grade_codes,
                 flags=flags,
                 basicInfo=basic_info,
-                remainingCredits=remaining_credits,
             )
 
         except rusaint.RusaintError as e:

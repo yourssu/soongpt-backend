@@ -5,7 +5,13 @@ from app.schemas.usaint_schemas import (
     LowGradeSubjectCodes,
     Flags,
     BasicInfo,
-    RemainingCredits,
+    GraduationRequirementItem,
+    GraduationRequirements,
+)
+from app.schemas.graduation_summary import (
+    CreditSummaryItem,
+    ChapelSummaryItem,
+    GraduationSummary,
 )
 
 __all__ = [
@@ -15,5 +21,9 @@ __all__ = [
     "LowGradeSubjectCodes",
     "Flags",
     "BasicInfo",
-    "RemainingCredits",
+    "GraduationRequirementItem",
+    "GraduationRequirements",
+    "CreditSummaryItem",
+    "ChapelSummaryItem",
+    "GraduationSummary",
 ]

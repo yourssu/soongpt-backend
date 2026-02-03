@@ -81,21 +81,16 @@ Content-Type: application/json
     "minorDepartment": null,
     "teaching": false
   },
-  "availableCredits": {
-    "previousGpa": 3.85,
-    "carriedOverCredits": 0,
-    "maxAvailableCredits": 19.5
-  },
   "basicInfo": {
     "year": 2023,
-    "grade": 2,
-    "semester": 4,
+    "grade": 3,
+    "semester": 5,
     "department": "AI융합학부"
   }
 }
 ```
 
-**Body (빈 데이터 케이스)**
+**Body (수강 이력 없는 신입생 케이스)**
 
 ```json
 {
@@ -110,19 +105,16 @@ Content-Type: application/json
     "minorDepartment": null,
     "teaching": false
   },
-  "availableCredits": {
-    "previousGpa": 0.0,
-    "carriedOverCredits": 0,
-    "maxAvailableCredits": 19.0
-  },
   "basicInfo": {
     "year": 2024,
     "grade": 1,
     "semester": 1,
-    "department": "알 수 없음"
+    "department": "컴퓨터학부"
   }
 }
 ```
+
+> **Note**: `basicInfo`의 필수 필드(year, grade, semester, department)가 조회되지 않으면 에러가 발생합니다.
 
 #### 응답 스키마
 
@@ -155,22 +147,16 @@ Content-Type: application/json
 | minorDepartment       | string? | 부전공 학과명   |
 | teaching              | boolean | 교직 이수 여부  |
 
-##### availableCredits (신청 가능 학점)
-
-| 필드                | 타입  | 설명                          |
-| ------------------- | ----- | ----------------------------- |
-| previousGpa         | float | 직전 학기 평점                |
-| carriedOverCredits  | int   | 이월 학점                     |
-| maxAvailableCredits | float | 이번 학기 최대 신청 가능 학점 |
-
 ##### basicInfo (기본 학적 정보)
 
-| 필드       | 타입   | 설명                 |
-| ---------- | ------ | -------------------- |
-| year       | int    | 입학 연도            |
-| grade      | int    | 학년 (1-4)           |
-| semester   | int    | 재학 누적 학기 (1-8) |
-| department | string | 주전공 학과명        |
+| 필드       | 타입   | 설명                                                                 |
+| ---------- | ------ | -------------------------------------------------------------------- |
+| year       | int    | 입학 연도                                                            |
+| grade      | int    | 학년 (1-4) - **다음 학기 기준** (TODO: 2025년 3월 이후 삭제 예정)    |
+| semester   | int    | 재학 누적 학기 (1-8) - **다음 학기 기준** (TODO: 2025년 3월 이후 삭제 예정) |
+| department | string | 주전공 학과명                                                        |
+
+> **Note**: `grade`와 `semester`는 현재 +1학기 보정이 적용됩니다. 예: 유세인트 3학년 6학기 → 응답 4학년 7학기
 
 #### 에러 응답
 
@@ -253,48 +239,19 @@ Content-Type: application/json
         "difference": 3.0,
         "result": true,
         "category": "전공필수"
-      },
-      {
-        "name": "학부-전공선택 24",
-        "requirement": 24,
-        "calculation": 18.0,
-        "difference": -6.0,
-        "result": false,
-        "category": "전공"
       }
-    ],
-    "remainingCredits": {
-      "majorRequired": 0,
-      "majorElective": 6,
-      "generalRequired": 2,
-      "generalElective": 0
-    }
-  }
-}
-```
-
-**Body (null 값 포함 케이스)**
-
-```json
-{
-  "pseudonym": "base64url_hmac_sha256_of_student_id",
-  "graduationRequirements": {
-    "requirements": [
-      {
-        "name": "학부-졸업논문",
-        "requirement": null,
-        "calculation": null,
-        "difference": null,
-        "result": false,
-        "category": "기타"
-      }
-    ],
-    "remainingCredits": {
-      "majorRequired": 0,
-      "majorElective": 0,
-      "generalRequired": 0,
-      "generalElective": 0
-    }
+    ]
+  },
+  "graduationSummary": {
+    "generalRequired": {"required": 19, "completed": 17, "satisfied": false},
+    "generalElective": {"required": 12, "completed": 15, "satisfied": true},
+    "majorFoundation": {"required": 6, "completed": 6, "satisfied": true},
+    "majorRequired": {"required": 12, "completed": 15, "satisfied": true},
+    "majorElective": {"required": 54, "completed": 30, "satisfied": false},
+    "doubleMajorRequired": {"required": 0, "completed": 0, "satisfied": true},
+    "doubleMajorElective": {"required": 0, "completed": 0, "satisfied": true},
+    "christianCourses": {"required": 6, "completed": 6, "satisfied": true},
+    "chapel": {"satisfied": true}
   }
 }
 ```
@@ -305,13 +262,18 @@ Content-Type: application/json
 {
   "pseudonym": "base64url_hmac_sha256_of_student_id",
   "graduationRequirements": {
-    "requirements": [],
-    "remainingCredits": {
-      "majorRequired": 0,
-      "majorElective": 0,
-      "generalRequired": 0,
-      "generalElective": 0
-    }
+    "requirements": []
+  },
+  "graduationSummary": {
+    "generalRequired": {"required": 0, "completed": 0, "satisfied": true},
+    "generalElective": {"required": 0, "completed": 0, "satisfied": true},
+    "majorFoundation": {"required": 0, "completed": 0, "satisfied": true},
+    "majorRequired": {"required": 0, "completed": 0, "satisfied": true},
+    "majorElective": {"required": 0, "completed": 0, "satisfied": true},
+    "doubleMajorRequired": {"required": 0, "completed": 0, "satisfied": true},
+    "doubleMajorElective": {"required": 0, "completed": 0, "satisfied": true},
+    "christianCourses": {"required": 0, "completed": 0, "satisfied": true},
+    "chapel": {"satisfied": true}
   }
 }
 ```
@@ -322,14 +284,13 @@ Content-Type: application/json
 
 | 필드      | 타입   | 설명                                                                           |
 | --------- | ------ | ------------------------------------------------------------------------------ |
-| pseudonym | string | Academic API와 동일.**PSEUDONYM_SECRET 미설정 시 서버 기동 실패(에러).** |
+| pseudonym | string | Academic API와 동일. **PSEUDONYM_SECRET 미설정 시 서버 기동 실패(에러).** |
 
-##### graduationRequirements (졸업 요건 전체)
+##### graduationRequirements (졸업 요건 raw 데이터)
 
-| 필드             | 타입                        | 설명                     |
-| ---------------- | --------------------------- | ------------------------ |
-| requirements     | GraduationRequirementItem[] | 개별 졸업 요건 항목 배열 |
-| remainingCredits | RemainingCredits            | 남은 학점 요약           |
+| 필드         | 타입                        | 설명                     |
+| ------------ | --------------------------- | ------------------------ |
+| requirements | GraduationRequirementItem[] | 개별 졸업 요건 항목 배열 |
 
 ##### GraduationRequirementItem (개별 졸업 요건)
 
@@ -338,25 +299,44 @@ Content-Type: application/json
 | name        | string  | 졸업 요건 이름                                             | `"학부-교양필수 19"` |
 | requirement | int?    | 기준 학점 (**null 가능**: 학점 요구사항이 없는 경우) | `19` or `null`     |
 | calculation | float?  | 현재 이수 학점 (**null 가능**: 계산 불가능한 경우)   | `17.0` or `null`   |
-| difference  | float?  | 차이 (이수-기준, 음수면 부족,**null 가능**)          | `-2.0` or `null`   |
+| difference  | float?  | 차이 (이수-기준, 음수면 부족, **null 가능**)          | `-2.0` or `null`   |
 | result      | boolean | 충족 여부                                                  | `false`              |
 | category    | string  | 이수구분                                                   | `"교양필수"`         |
 
 > **Note**: `requirement`, `calculation`, `difference` 필드는 `null` 값을 가질 수 있습니다.
->
 > - **졸업논문**, **어학시험** 등 학점이 아닌 요건의 경우 `null`이 반환됩니다.
-> - 빈 배열(`[]`)이 반환될 수도 있으므로 클라이언트에서 처리 필요합니다.
 
-##### remainingCredits (남은 학점 요약)
+##### graduationSummary (졸업사정표 핵심 요약)
 
-| 필드            | 타입 | 설명               |
-| --------------- | ---- | ------------------ |
-| majorRequired   | int  | 남은 전공필수 학점 |
-| majorElective   | int  | 남은 전공선택 학점 |
-| generalRequired | int  | 남은 교양필수 학점 |
-| generalElective | int  | 남은 교양선택 학점 |
+name 필드 기반으로 분류한 핵심 요약 데이터입니다. 분류 규칙은 `docs/graduate_business.md` 참조.
 
-###### 에러 응답
+| 필드               | 타입              | 설명         |
+| ------------------ | ----------------- | ------------ |
+| generalRequired    | CreditSummaryItem | 교양필수     |
+| generalElective    | CreditSummaryItem | 교양선택     |
+| majorFoundation    | CreditSummaryItem | 전공기초     |
+| majorRequired      | CreditSummaryItem | 전공필수     |
+| majorElective      | CreditSummaryItem | 전공선택     |
+| doubleMajorRequired| CreditSummaryItem | 복수전공필수 |
+| doubleMajorElective| CreditSummaryItem | 복수전공선택 |
+| christianCourses   | CreditSummaryItem | 기독교과목   |
+| chapel             | ChapelSummaryItem | 채플         |
+
+##### CreditSummaryItem (학점 기반 요약 항목)
+
+| 필드      | 타입    | 설명       |
+| --------- | ------- | ---------- |
+| required  | int     | 필요 학점  |
+| completed | int     | 이수 학점  |
+| satisfied | boolean | 충족 여부  |
+
+##### ChapelSummaryItem (채플 요약)
+
+| 필드      | 타입    | 설명       |
+| --------- | ------- | ---------- |
+| satisfied | boolean | 충족 여부  |
+
+#### 에러 응답
 
 **401 Unauthorized** - SSO 토큰 오류
 

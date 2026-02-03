@@ -17,7 +17,6 @@ from app.schemas.usaint_schemas import (
     GraduationRequirementItem,
     GraduationRequirements,
     LowGradeSubjectCodes,
-    RemainingCredits,
     TakenCourse,
 )
 
@@ -248,45 +247,9 @@ async def fetch_flags(student_info_app) -> Flags:
         )
 
 
-def classify_remaining_credits(requirements_dict: Dict) -> tuple[int, int, int, int]:
-    """
-    졸업 요건 딕셔너리에서 카테고리별 남은 학점을 계산합니다.
-
-    Args:
-        requirements_dict: rusaint requirements.requirements 딕셔너리
-
-    Returns:
-        tuple: (major_required, major_elective, general_required, general_elective)
-    """
-    major_required = 0
-    major_elective = 0
-    general_required = 0
-    general_elective = 0
-
-    for key, req in requirements_dict.items():
-        key_lower = str(key).lower()
-
-        diff = getattr(req, "difference", None)
-        if diff is None:
-            continue
-
-        remaining = int(abs(diff)) if diff < 0 else 0
-
-        if "전필" in key_lower:
-            major_required += remaining
-        elif "전선" in key_lower or "전공선택" in key_lower:
-            major_elective += remaining
-        elif "교필" in key_lower or "교양필수" in key_lower:
-            general_required += remaining
-        elif "교선" in key_lower or "교양선택" in key_lower:
-            general_elective += remaining
-
-    return (major_required, major_elective, general_required, general_elective)
-
-
 async def fetch_graduation_requirements(grad_app) -> GraduationRequirements:
     """
-    졸업 요건 상세 정보를 조회합니다.
+    졸업 요건 상세 정보를 조회합니다 (raw 데이터).
 
     **개별 요건 정보 포함**: 각 요건의 이름, 기준학점, 이수학점, 충족여부 등
 
@@ -294,17 +257,13 @@ async def fetch_graduation_requirements(grad_app) -> GraduationRequirements:
         grad_app: 졸업요건 애플리케이션
 
     Returns:
-        GraduationRequirements: 개별 요건 목록 + 남은 학점 요약
+        GraduationRequirements: 개별 요건 목록 (raw 데이터)
     """
     try:
         requirements = await grad_app.requirements()
         requirement_list = []
 
         if isinstance(requirements.requirements, dict):
-            major_required, major_elective, general_required, general_elective = (
-                classify_remaining_credits(requirements.requirements)
-            )
-
             for key, req in requirements.requirements.items():
                 name = str(key)
                 requirement_value = getattr(req, "requirement", None)
@@ -326,57 +285,8 @@ async def fetch_graduation_requirements(grad_app) -> GraduationRequirements:
                     )
                 )
 
-            remaining_credits = RemainingCredits(
-                majorRequired=major_required,
-                majorElective=major_elective,
-                generalRequired=general_required,
-                generalElective=general_elective,
-            )
-        else:
-            remaining_credits = RemainingCredits(
-                majorRequired=0,
-                majorElective=0,
-                generalRequired=0,
-                generalElective=0,
-            )
+        return GraduationRequirements(requirements=requirement_list)
 
-        return GraduationRequirements(
-            requirements=requirement_list,
-            remainingCredits=remaining_credits,
-        )
-
-    except Exception as e:
-        logger.error(f"졸업 요건 조회 실패: {type(e).__name__}")
-        raise
-
-
-async def fetch_remaining_credits(grad_app) -> RemainingCredits:
-    """
-    졸업까지 남은 이수 학점 정보를 조회합니다.
-
-    **학점 정보만 조회**: 과목별 상세 정보는 제외
-    **Note**: 기존 /snapshot API의 하위 호환성 유지를 위해 존재합니다.
-              신규 코드에서는 fetch_graduation_requirements()를 사용하세요.
-
-    Args:
-        grad_app: 졸업요건 애플리케이션 (중복 API 호출 방지)
-    """
-    try:
-        requirements = await grad_app.requirements()
-
-        if isinstance(requirements.requirements, dict):
-            major_required, major_elective, general_required, general_elective = (
-                classify_remaining_credits(requirements.requirements)
-            )
-        else:
-            major_required = major_elective = general_required = general_elective = 0
-
-        return RemainingCredits(
-            majorRequired=major_required,
-            majorElective=major_elective,
-            generalRequired=general_required,
-            generalElective=general_elective,
-        )
     except Exception as e:
         logger.error(f"졸업 요건 조회 실패: {type(e).__name__}")
         raise
