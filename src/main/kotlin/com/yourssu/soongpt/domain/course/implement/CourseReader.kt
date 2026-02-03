@@ -19,7 +19,7 @@ class CourseReader(
         val course = courseRepository.get(code)
         if (course.category == Category.GENERAL_REQUIRED) {
             val targets = targetRepository.findAllByClass(department.id!!, code, grade)
-            return courseRepository.findAllById(targets.map { it.courseId })
+            return courseRepository.findAllById(targets.map { it.courseCode })
         }
         return courseRepository.findAllByClass(code)
     }
@@ -27,7 +27,7 @@ class CourseReader(
     fun findAllBy(category: Category, department: Department, grade: Int): List<Course> {
         val departmentId = department.id ?: return emptyList()
         val targets = targetRepository.findAllByDepartmentGrade(departmentId, grade)
-        return courseRepository.findAllInCategory(category, targets.map { it.courseId })
+        return courseRepository.findAllInCategory(category, targets.map { it.courseCode })
     }
 
     fun findAllInCategory(category: Category, courseIds: List<Long>, schoolId: Int): List<Course> {
