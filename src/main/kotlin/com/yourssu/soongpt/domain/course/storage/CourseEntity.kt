@@ -18,7 +18,7 @@ class CourseEntity(
     @Column(nullable = true)
     val subCategory: String? = null,
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     val field: String? = null,
 
     @Column(nullable = false, unique = true)
@@ -69,7 +69,7 @@ class CourseEntity(
                 division = course.division,
                 time = course.time,
                 point = course.point,
-                personeel = 0,
+                personeel = course.personeel,
                 scheduleRoom = course.scheduleRoom,
                 target = course.target,
                 credit = course.credit,
