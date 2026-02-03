@@ -1,11 +1,11 @@
 package com.yourssu.soongpt.domain.course.application
 
 import com.yourssu.soongpt.common.business.dto.Response
+import com.yourssu.soongpt.common.validation.ValidSchoolId
 import com.yourssu.soongpt.domain.course.application.dto.*
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.*
 import jakarta.validation.Valid
-import org.hibernate.validator.constraints.Range
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -54,7 +54,7 @@ class CourseController(
     }
 
     @GetMapping("/fields/schoolId/{schoolId}")
-    fun getFieldsBySchoolId(@Range(min = 15, max = 27, message = "학번은 15부터 26까지 가능합니다.") @PathVariable schoolId: Int): ResponseEntity<Response<List<String>>> {
+    fun getFieldsBySchoolId(@ValidSchoolId @PathVariable schoolId: Int): ResponseEntity<Response<List<String>>> {
         val response = courseService.getFieldsBySchoolId(schoolId)
         return ResponseEntity.ok().body(Response(result = response))
     }
