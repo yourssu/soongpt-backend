@@ -5,7 +5,15 @@ import com.yourssu.soongpt.domain.course.implement.Course
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "course")
+@Table(
+    name = "course",
+    indexes = [
+        Index(name = "idx_course_category", columnList = "category"),
+        Index(name = "idx_course_code_category", columnList = "code,category"),
+        Index(name = "idx_course_name", columnList = "name"),
+        Index(name = "idx_course_professor", columnList = "professor")
+    ]
+)
 class CourseEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

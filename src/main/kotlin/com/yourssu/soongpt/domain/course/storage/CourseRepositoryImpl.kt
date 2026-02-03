@@ -49,11 +49,11 @@ class CourseRepositoryImpl(
             .map { it.toDomain() }
     }
 
-    override fun findAllInCategory(category: Category, courseIds: List<Long>): List<Course> {
+    override fun findAllInCategory(category: Category, courseCodes: List<Long>): List<Course> {
         return jpaQueryFactory
             .selectFrom(courseEntity)
             .where(
-                courseEntity.id.`in`(courseIds),
+                courseEntity.code.`in`(courseCodes),
                 courseEntity.category.eq(category),
             )
             .fetch()
