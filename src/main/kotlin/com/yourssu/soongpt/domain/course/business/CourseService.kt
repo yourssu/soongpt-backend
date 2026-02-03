@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.business
 
 import com.yourssu.soongpt.domain.course.business.dto.*
+import com.yourssu.soongpt.domain.course.business.query.FilterCoursesQuery
 import com.yourssu.soongpt.domain.course.business.query.GeneralRequiredCourseQuery
 import com.yourssu.soongpt.domain.course.business.query.MajorElectiveCourseQuery
 import com.yourssu.soongpt.domain.course.business.query.MajorRequiredCourseQuery
@@ -20,32 +21,57 @@ class CourseService(
 ) {
     fun findAll(query: MajorRequiredCourseQuery): List<MajorRequiredResponse> {
         val department = departmentReader.getByName(query.departmentName)
-        val targets = targetReader.findAllByDepartmentGrade(department, query.grade)
-        val courses = courseReader.findAllInCategory(Category.MAJOR_REQUIRED, targets.map { it.courseCode }, query.schoolId)
+        val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
+        val courses = courseReader.findAllInCategory(Category.MAJOR_REQUIRED, courseCodes, query.schoolId)
         return courses.map { MajorRequiredResponse.from(it) }
     }
 
     fun findAll(query: MajorElectiveCourseQuery): List<MajorElectiveResponse> {
         val department = departmentReader.getByName(query.departmentName)
-        val targets = targetReader.findAllByDepartmentGrade(department, query.grade)
-        val courses = courseReader.findAllInCategory(Category.MAJOR_ELECTIVE, targets.map { it.courseCode }, query.schoolId)
+        val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
+        val courses = courseReader.findAllInCategory(Category.MAJOR_ELECTIVE, courseCodes, query.schoolId)
         return courses.map { MajorElectiveResponse.from(it) }
     }
 
     fun findAll(query: GeneralRequiredCourseQuery): List<GeneralRequiredResponse> {
         val department = departmentReader.getByName(query.departmentName)
-        val targets = targetReader.findAllByDepartmentGrade(department, query.grade)
+        val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
         if (query.field == null) {
-            val courses = courseReader.findAllInCategory(Category.GENERAL_REQUIRED, targets.map { it.courseCode }, query.schoolId)
+            val courses = courseReader.findAllInCategory(Category.GENERAL_REQUIRED, courseCodes, query.schoolId)
             return courses.map { GeneralRequiredResponse.from(it) }
         }
         val courses = courseReader.findAllInCategory(
             Category.GENERAL_REQUIRED,
-            targets.map { it.courseCode },
+            courseCodes,
             query.field,
             query.schoolId
         )
         return courses.map { GeneralRequiredResponse.from(it) }
+    }
+
+    fun findAll(query: FilterCoursesQuery): List<CourseResponse> {
+        val department = departmentReader.getByName(query.departmentName)
+        val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
+
+        val courses = if (query.field != null) {
+            courseReader.findAllInCategory(
+                query.category,
+                courseCodes,
+                query.field,
+                query.schoolId
+            )
+        } else {
+            courseReader.findAllInCategory(
+                query.category,
+                courseCodes,
+                query.schoolId
+            )
+        }
+
+        return courses.map { course ->
+            val courseTimes = CourseTimes.from(course.scheduleRoom)
+            CourseResponse.from(course, courseTimes.toList())
+        }
     }
 
     fun search(query: SearchCoursesQuery): SearchCoursesResponse {

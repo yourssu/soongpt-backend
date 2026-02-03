@@ -6,7 +6,16 @@ import com.yourssu.soongpt.domain.target.implement.Target
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "target")
+@Table(
+    name = "target",
+    indexes = [
+        Index(name = "idx_target_student_denied", columnList = "student_type,is_denied"),
+        Index(name = "idx_target_scope_college", columnList = "scope_type,college_id"),
+        Index(name = "idx_target_scope_dept", columnList = "scope_type,department_id"),
+        Index(name = "idx_target_course_code", columnList = "course_code"),
+        Index(name = "idx_target_grades", columnList = "grade1,grade2,grade3,grade4,grade5")
+    ]
+)
 class TargetEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
