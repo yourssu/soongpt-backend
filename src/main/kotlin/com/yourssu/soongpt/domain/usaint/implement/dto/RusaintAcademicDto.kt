@@ -6,7 +6,6 @@ data class RusaintAcademicResponseDto(
     val takenCourses: List<RusaintTakenCourseDto>,
     val lowGradeSubjectCodes: RusaintLowGradeSubjectCodesDto,
     val flags: RusaintStudentFlagsDto,
-    val availableCredits: RusaintAvailableCreditsDto,
     val basicInfo: RusaintBasicInfoDto,
 )
 
@@ -25,12 +24,6 @@ data class RusaintStudentFlagsDto(
     val doubleMajorDepartment: String?,
     val minorDepartment: String?,
     val teaching: Boolean,
-)
-
-data class RusaintAvailableCreditsDto(
-    val previousGpa: Double,
-    val carriedOverCredits: Int,
-    val maxAvailableCredits: Double,
 )
 
 data class RusaintBasicInfoDto(
