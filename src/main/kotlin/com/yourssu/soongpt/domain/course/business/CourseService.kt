@@ -91,7 +91,18 @@ class CourseService(
         return responses
     }
 
+    fun getFields(schoolId: Int?): Any {
+        if (schoolId != null) {
+            return courseReader.getFieldsBySchoolId(schoolId)
+        }
+        return courseReader.getAllFieldsGrouped()
+    }
+
     fun getFieldsBySchoolId(schoolId: Int): List<String> {
         return courseReader.getFieldsBySchoolId(schoolId)
+    }
+
+    fun getAllFieldsGrouped(): Map<Int, List<String>> {
+        return courseReader.getAllFieldsGrouped()
     }
 }
