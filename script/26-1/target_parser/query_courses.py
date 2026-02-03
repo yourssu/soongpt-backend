@@ -167,38 +167,55 @@ def query_by_criteria(dept_name: str, grade: int, category: str):
 
     # 3. Build Query
     # Logic:
-    # - Match Course Category
-    # - Join Target
-    # - Target Condition:
-    #   - Student Type = 0 (General) - Assuming general student for manual query
-    #   - Grade bit is set (e.g. grade1=1 if grade=1)
-    #   - Scope check:
-    #       - scope_type=0 (Uni) -> Always match
-    #       - scope_type=1 (College) -> target.college_id == valid_college_id
-    #       - scope_type=2 (Dept) -> target.department_id == valid_dept_id
-    #   - Exclusion: is_denied=0 (Allow list only? Or handle exclusions? Usually 'Allow' rows define who CAN take it)
-    #     Strictly speaking, finding "Available" courses is complex if there are DENY rules. 
-    #     For simplicity in this tool: Find rows that explicitly ALLOW matching this student.
+    # - Must match Course Category
+    # - Must have at least one matching ALLOW rule (is_denied=0)
+    # - Must NOT have any matching DENY rule (is_denied=1)
+    # 
+    # Matching Rule Definition:
+    # - student_type = 0 (General)
+    # - Grade bit matches (e.g. grade1=1 if input grade=1)
+    # - Scope matches:
+    #   - scope_type=0 (University) -> Always matches
+    #   - scope_type=1 (College) -> target.college_id == student.college_id
+    #   - scope_type=2 (Dept) -> target.department_id == student.dept_id
     
     grade_col = f"grade{grade}"
     
     query = f"""
     SELECT DISTINCT c.*
     FROM course c
-    JOIN target t ON c.code = t.course_code
     WHERE c.category = %s
-      AND t.student_type = 0
-      AND t.is_denied = 0
-      AND t.{grade_col} = 1
-      AND (
-          t.scope_type = 0
-          OR (t.scope_type = 1 AND t.college_id = %s)
-          OR (t.scope_type = 2 AND t.department_id = %s)
+      -- Condition 1: Must have at least one matching ALLOW rule
+      AND EXISTS (
+          SELECT 1 FROM target t_allow
+          WHERE t_allow.course_code = c.code
+            AND t_allow.student_type = 0
+            AND t_allow.is_denied = 0
+            AND t_allow.{grade_col} = 1
+            AND (
+                t_allow.scope_type = 0 -- University
+                OR (t_allow.scope_type = 1 AND t_allow.college_id = %s) -- College
+                OR (t_allow.scope_type = 2 AND t_allow.department_id = %s) -- Dept
+            )
+      )
+      -- Condition 2: Must NOT have any matching DENY rule
+      AND NOT EXISTS (
+          SELECT 1 FROM target t_deny
+          WHERE t_deny.course_code = c.code
+            AND t_deny.student_type = 0
+            AND t_deny.is_denied = 1
+            AND t_deny.{grade_col} = 1
+            AND (
+                t_deny.scope_type = 0 -- University
+                OR (t_deny.scope_type = 1 AND t_deny.college_id = %s) -- College
+                OR (t_deny.scope_type = 2 AND t_deny.department_id = %s) -- Dept
+            )
       )
     ORDER BY c.name
     """
     
-    cursor.execute(query, (category_enum, college_id, dept_id))
+    # Params: category, allow_college, allow_dept, deny_college, deny_dept
+    cursor.execute(query, (category_enum, college_id, dept_id, college_id, dept_id))
     courses = cursor.fetchall()
     
     print_courses(courses)
