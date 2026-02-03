@@ -45,31 +45,32 @@ def check_target_logic():
         conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
         
-        # Check validation rule: scope_type = 'DEPARTMENT' => college_name IS NULL
+        # Check validation rule: scope_type = 2 (DEPARTMENT) => college_id IS NULL
         query = """
         SELECT count(*) 
         FROM target 
-        WHERE scope_type = 'DEPARTMENT' 
-          AND college_name IS NOT NULL
+        WHERE scope_type = 2 
+          AND college_id IS NOT NULL
         """
         cursor.execute(query)
         violation_count = cursor.fetchone()[0]
         
-        print(f"Violations (DEPARTMENT but college_name not NULL): {violation_count}")
+        print(f"Violations (DEPARTMENT but college_id not NULL): {violation_count}")
 
         if violation_count > 0:
             print("\nSample violations:")
             cursor.execute("""
-            SELECT id, scope_type, college_name, department_name, major_name 
+            SELECT id, scope_type, college_id, department_id 
             FROM target 
-            WHERE scope_type = 'DEPARTMENT' 
-              AND college_name IS NOT NULL 
+            WHERE scope_type = 2 
+              AND college_id IS NOT NULL 
             LIMIT 5
             """)
+            print("(id, scope_type, college_id, department_id)")
             for row in cursor.fetchall():
                 print(row)
         else:
-            print("✓ Logic verified: All DEPARTMENT targets have NULL college_name")
+            print("✓ Logic verified: All DEPARTMENT targets have NULL college_id")
 
     except mysql.connector.Error as e:
         print(f"✗ Error: {e}")

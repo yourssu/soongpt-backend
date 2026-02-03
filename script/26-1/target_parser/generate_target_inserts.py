@@ -191,7 +191,7 @@ class TargetSQLGenerator:
                 self.missing_departments.add(dept_name)
                 return None
             college_id = self.mapper.get_college_id_by_department(dept_id)
-            return (SCOPE_TYPE_MAP["department"], college_id, dept_id)
+            return (SCOPE_TYPE_MAP["department"], None, dept_id)
 
         raise ValueError(f"Unknown resource format: {resource}")
 
