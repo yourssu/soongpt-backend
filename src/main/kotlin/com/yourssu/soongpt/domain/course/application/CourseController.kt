@@ -14,27 +14,6 @@ import org.springframework.web.bind.annotation.*
 class CourseController(
     private val courseService: CourseService,
 ) {
-    @Deprecated("Use /api/courses/by-category instead with category=MAJOR_REQUIRED")
-    @GetMapping("/major/required")
-    fun getMajorRequiredCourses(@Valid @ModelAttribute request: MajorRequiredRequest): ResponseEntity<Response<List<MajorRequiredResponse>>> {
-        val response = courseService.findAll(request.toQuery())
-        return ResponseEntity.ok().body(Response(result = response))
-    }
-
-    @Deprecated("Use /api/courses/by-category instead with category=MAJOR_ELECTIVE")
-    @GetMapping("/major/elective")
-    fun getMajorElectiveCourses(@Valid @ModelAttribute request: MajorElectiveRequest): ResponseEntity<Response<List<MajorElectiveResponse>>> {
-        val response = courseService.findAll(request.toQuery())
-        return ResponseEntity.ok().body(Response(result = response))
-    }
-
-    @Deprecated("Use /api/courses/by-category instead with category=GENERAL_REQUIRED")
-    @GetMapping("/general/required")
-    fun getGeneralRequiredCourses(@Valid @ModelAttribute request: GeneralRequiredRequest): ResponseEntity<Response<List<GeneralRequiredResponse>>> {
-        val response = courseService.findAll(request.toQuery())
-        return ResponseEntity.ok().body(Response(result = response))
-    }
-
     @GetMapping("/by-category")
     fun getCoursesByCategory(@Valid @ModelAttribute request: FilterCoursesRequest): ResponseEntity<Response<List<CourseResponse>>> {
         val response = courseService.findAll(request.toQuery())
@@ -53,6 +32,12 @@ class CourseController(
         return ResponseEntity.ok().body(Response(result = response))
     }
 
+    @GetMapping("/fields")
+    fun getFields(@Valid @ModelAttribute request: GetFieldsRequest): ResponseEntity<Response<Any>> {
+        val response = courseService.getFields(request.schoolId)
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
     @Deprecated("Use /api/courses/by-category with field parameter for filtering by field")
     @GetMapping("/fields/schoolId/{schoolId}")
     fun getFieldsBySchoolId(@ValidSchoolId @PathVariable schoolId: Int): ResponseEntity<Response<List<String>>> {
@@ -60,9 +45,24 @@ class CourseController(
         return ResponseEntity.ok().body(Response(result = response))
     }
 
-    @GetMapping("/fields")
-    fun getFields(@Valid @ModelAttribute request: GetFieldsRequest): ResponseEntity<Response<Any>> {
-        val response = courseService.getFields(request.schoolId)
+    @Deprecated("Use /api/courses/by-category instead with category=MAJOR_REQUIRED")
+    @GetMapping("/major/required")
+    fun getMajorRequiredCourses(@Valid @ModelAttribute request: MajorRequiredRequest): ResponseEntity<Response<List<MajorRequiredResponse>>> {
+        val response = courseService.findAll(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Deprecated("Use /api/courses/by-category instead with category=MAJOR_ELECTIVE")
+    @GetMapping("/major/elective")
+    fun getMajorElectiveCourses(@Valid @ModelAttribute request: MajorElectiveRequest): ResponseEntity<Response<List<MajorElectiveResponse>>> {
+        val response = courseService.findAll(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Deprecated("Use /api/courses/by-category instead with category=GENERAL_REQUIRED")
+    @GetMapping("/general/required")
+    fun getGeneralRequiredCourses(@Valid @ModelAttribute request: GeneralRequiredRequest): ResponseEntity<Response<List<GeneralRequiredResponse>>> {
+        val response = courseService.findAll(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 }
