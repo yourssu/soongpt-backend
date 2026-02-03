@@ -61,6 +61,6 @@ class CourseReader(
     }
 
     fun getAllFieldsGrouped(): Map<Int, List<String>> {
-        return fieldListFinder.agetAllFieldsGrouped()
+        return fieldListFinder.getAllFieldsGrouped()
     }
 }
