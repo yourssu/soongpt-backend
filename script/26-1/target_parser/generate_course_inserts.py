@@ -81,22 +81,26 @@ def parse_category(major_classification: str) -> str:
 
 def parse_time_point(time_point_str: str):
     """
-    Parse "시간/학점(설계)" field to extract credit and time.
+    Parse "시간/학점(설계)" field to extract point and credit.
 
     Examples:
-        "3.0/3.0" -> credit=3.0, time="3.0/3.0"
-        "4.0/3.0" -> credit=3.0, time="4.0/3.0"
+        "3.0/3.0" -> point="3.0", credit=3.0
+        "4.0/3.0" -> point="4.0", credit=3.0
+
+    Returns:
+        tuple: (point_str, credit_float)
     """
     if not time_point_str:
-        return None, time_point_str
+        return time_point_str, None
 
-    # Extract credit (second number after /)
+    # Extract point (first number) and credit (second number after /)
     match = re.search(r'(\d+\.?\d*)/(\d+\.?\d*)', time_point_str)
     if match:
-        credit = float(match.group(2))
-        return credit, time_point_str
+        point = match.group(1)  # First number (앞)
+        credit = float(match.group(2))  # Second number (뒤)
+        return point, credit
 
-    return None, time_point_str
+    return time_point_str, None
 
 
 def escape_sql_string(s: str) -> str:
@@ -176,8 +180,8 @@ class CourseInsertGenerator:
         # Parse category
         category = parse_category(major_classification)
 
-        # Parse credit
-        credit, time = parse_time_point(time_point)
+        # Parse point and credit
+        point, credit = parse_time_point(time_point)
 
         # Parse personeel
         personeel = parse_personeel(personeel_str)
@@ -198,8 +202,8 @@ class CourseInsertGenerator:
         sql += f"{escape_sql_string(professor) if professor else 'NULL'}, "  # professor
         sql += f"{escape_sql_string(department)}, "  # department
         sql += f"{escape_sql_string(division) if division else 'NULL'}, "  # division
-        sql += f"{escape_sql_string(time)}, "  # time
-        sql += f"{escape_sql_string(time)}, "  # point (same as time for now)
+        sql += f"{escape_sql_string(point)}, "  # time (앞부분)
+        sql += f"{escape_sql_string(point)}, "  # point (앞부분)
         sql += f"{personeel}, "  # personeel
         sql += f"{escape_sql_string(schedule_room)}, "  # schedule_room
         sql += f"{escape_sql_string(target)}, "  # target
