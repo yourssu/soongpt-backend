@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { courseApi } from '../api/courseApi';
 import type { Course } from '../types/course';
-import { departments, categories, grades } from '../data/departments';
+import { colleges, categories, grades } from '../data/departments';
 
 interface FilterTabProps {
   onCourseClick: (course: Course, index: number) => void;
@@ -57,10 +57,14 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
               className="filter-select"
             >
               <option value="">학과 선택</option>
-              {departments.map((dept) => (
-                <option key={dept} value={dept}>
-                  {dept}
-                </option>
+              {colleges.map((college) => (
+                <optgroup key={college.name} label={college.name}>
+                  {college.departments.map((dept) => (
+                    <option key={dept} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </div>
