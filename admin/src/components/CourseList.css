@@ -59,6 +59,8 @@ h1 {
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  background-color: white;
+  color: #333;
 }
 
 .search-spinner {
@@ -119,6 +121,7 @@ h1 {
   border-radius: 4px;
   background-color: white;
   cursor: pointer;
+  color: #333;
 }
 
 .filter-select:focus {
@@ -165,6 +168,7 @@ h1 {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -210,6 +214,7 @@ h1 {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  color: #333;
 }
 
 .course-table th {
@@ -571,6 +576,7 @@ h1 {
   margin-bottom: 20px;
   border-left: 4px solid #007bff;
   animation: slideDown 0.3s ease-out;
+  color: #333;
 }
 
 @keyframes slideDown {
@@ -578,6 +584,7 @@ h1 {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -698,6 +705,7 @@ h1 {
   flex-direction: column;
   gap: 8px;
   transition: all 0.2s;
+  color: #333;
 }
 
 .course-time-card:hover {
@@ -799,6 +807,7 @@ h1 {
   align-items: center;
   gap: 8px;
   font-size: 13px;
+  color: #333;
 }
 
 .legend-color {
@@ -831,6 +840,7 @@ h1 {
   text-align: center;
   border: 1px solid #ddd;
   font-size: 14px;
+  color: #333;
 }
 
 .target-table th {
