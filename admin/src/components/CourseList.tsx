@@ -283,6 +283,26 @@ export const CourseList = () => {
     return labels[type] || type;
   };
 
+  const getWeekColor = (week: string): string => {
+    const colors: Record<string, string> = {
+      '월': 'red',
+      '월요일': 'red',
+      '화': 'orange',
+      '화요일': 'orange',
+      '수': 'yellow',
+      '수요일': 'yellow',
+      '목': 'green',
+      '목요일': 'green',
+      '금': 'blue',
+      '금요일': 'blue',
+      '토': 'indigo',
+      '토요일': 'indigo',
+      '일': 'violet',
+      '일요일': 'violet',
+    };
+    return colors[week] || 'gray';
+  };
+
   return (
     <div className="course-list-container">
       <h1>과목 관리</h1>
@@ -515,7 +535,9 @@ export const CourseList = () => {
                         <div className="course-times-grid">
                           {selectedCourse.courseTimes.map((courseTime, index) => (
                             <div key={index} className="course-time-card">
-                              <div className="time-week">{courseTime.week}</div>
+                              <div className={`time-week-badge ${getWeekColor(courseTime.week)}`}>
+                                {courseTime.week}
+                              </div>
                               <div className="time-range">
                                 {courseTime.start} - {courseTime.end}
                               </div>
@@ -639,31 +661,8 @@ export const CourseList = () => {
                     </tbody>
                   </table>
                   )}
-
-                  {/* Course Times Section */}
-                  <div className="course-times-section">
-                    <h3>강의 시간</h3>
-                    {selectedCourse.courseTimes.length === 0 ? (
-                      <div className="no-times-message">
-                        <p>강의 시간 정보가 없습니다.</p>
-                      </div>
-                    ) : (
-                      <div className="course-times-grid">
-                        {selectedCourse.courseTimes.map((courseTime, index) => (
-                          <div key={index} className="course-time-card">
-                            <div className="time-week">{courseTime.week}</div>
-                            <div className="time-range">
-                              {courseTime.start} - {courseTime.end}
-                            </div>
-                            {courseTime.classroom && (
-                              <div className="time-classroom">{courseTime.classroom}</div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
-                </div>
+                </>
               )}
             </div>
           </div>

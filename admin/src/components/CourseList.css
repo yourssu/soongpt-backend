@@ -542,16 +542,44 @@ h1 {
 
 /* Course Times Section */
 .course-times-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #dee2e6;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #dee2e6;
 }
 
-.course-times-section h3 {
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 15px;
+}
+
+.section-header h3 {
+  margin: 0;
   font-size: 18px;
   color: #333;
   font-weight: 600;
+}
+
+.toggle-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.toggle-button:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
 }
 
 .no-times-message {
@@ -575,26 +603,68 @@ h1 {
 }
 
 .course-time-card {
-  background-color: #f8f9fa;
+  background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 8px;
   padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   transition: all 0.2s;
 }
 
 .course-time-card:hover {
-  background-color: #e9ecef;
   transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.time-week {
+.time-week-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
   font-size: 14px;
-  color: #007bff;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  align-self: center;
+}
+
+/* 요일별 색상 - 빨주노초파남보 */
+.time-week-badge.red {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+}
+
+.time-week-badge.orange {
+  background: linear-gradient(135deg, #ff9f43 0%, #ee8c3c 100%);
+}
+
+.time-week-badge.yellow {
+  background: linear-gradient(135deg, #ffd93d 0%, #f4c430 100%);
+  color: #333;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.time-week-badge.green {
+  background: linear-gradient(135deg, #6bcf7f 0%, #4cd964 100%);
+}
+
+.time-week-badge.blue {
+  background: linear-gradient(135deg, #4d96ff 0%, #4169e1 100%);
+}
+
+.time-week-badge.indigo {
+  background: linear-gradient(135deg, #6a5acd 0%, #5b4cbc 100%);
+}
+
+.time-week-badge.violet {
+  background: linear-gradient(135deg, #a06cd5 0%, #8b5cf6 100%);
+}
+
+.time-week-badge.gray {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
 }
 
 .time-range {
