@@ -101,6 +101,63 @@ class TargetRepositoryImpl (
             .fetch()
             .map { it.toDomain() }
     }
+
+    override fun findAllByDepartmentGradeRange(
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int
+    ): List<Long> {
+        val gradeCondition = buildGradeRangeCondition(maxGrade)
+
+        val scopeCondition = targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.UNIVERSITY)
+            .or(
+                targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.COLLEGE)
+                    .and(targetEntity.collegeId.eq(collegeId))
+            )
+            .or(
+                targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.DEPARTMENT)
+                    .and(targetEntity.departmentId.eq(departmentId))
+            )
+
+        val allowCourses = jpaQueryFactory
+            .select(targetEntity.courseCode)
+            .from(targetEntity)
+            .where(
+                targetEntity.studentType.eq(com.yourssu.soongpt.domain.target.implement.StudentType.GENERAL),
+                targetEntity.isDenied.isFalse,
+                gradeCondition,
+                scopeCondition
+            )
+            .fetch()
+            .toSet()
+
+        if (allowCourses.isEmpty()) {
+            return emptyList()
+        }
+
+        val denyCourses = jpaQueryFactory
+            .select(targetEntity.courseCode)
+            .from(targetEntity)
+            .where(
+                targetEntity.studentType.eq(com.yourssu.soongpt.domain.target.implement.StudentType.GENERAL),
+                targetEntity.isDenied.isTrue,
+                gradeCondition,
+                scopeCondition
+            )
+            .fetch()
+            .toSet()
+
+        return (allowCourses - denyCourses).toList()
+    }
+
+    private fun buildGradeRangeCondition(maxGrade: Int): com.querydsl.core.types.dsl.BooleanExpression {
+        var condition = targetEntity.grade1.isTrue
+        if (maxGrade >= 2) condition = condition.or(targetEntity.grade2.isTrue)
+        if (maxGrade >= 3) condition = condition.or(targetEntity.grade3.isTrue)
+        if (maxGrade >= 4) condition = condition.or(targetEntity.grade4.isTrue)
+        if (maxGrade >= 5) condition = condition.or(targetEntity.grade5.isTrue)
+        return condition
+    }
 }
 
 interface TargetJpaRepository : JpaRepository<TargetEntity, Long> {
