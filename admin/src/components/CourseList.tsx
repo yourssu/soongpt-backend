@@ -93,6 +93,7 @@ export const CourseList = () => {
                   <th>시간</th>
                   <th>정원</th>
                   <th>강의실</th>
+                  <th>수강대상</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,6 +108,7 @@ export const CourseList = () => {
                     <td>{course.time}</td>
                     <td>{course.personeel}</td>
                     <td>{course.scheduleRoom}</td>
+                    <td>{course.target}</td>
                   </tr>
                 ))}
               </tbody>
