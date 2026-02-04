@@ -120,9 +120,9 @@ export const colleges: College[] = [
 export const departments = colleges.flatMap(college => college.departments).sort();
 
 export const categories = [
-  { value: 'MAJOR_REQUIRED', label: '전필' },
-  { value: 'MAJOR_ELECTIVE', label: '전선' },
   { value: 'MAJOR_BASIC', label: '전기' },
+  { value: 'MAJOR_ELECTIVE', label: '전선' },
+  { value: 'MAJOR_REQUIRED', label: '전필' },
   { value: 'GENERAL_REQUIRED', label: '교필' },
   { value: 'GENERAL_ELECTIVE', label: '교선' },
   { value: 'CHAPEL', label: '채플' },
