@@ -23,7 +23,7 @@ class CourseController(
             특정 조건에 맞는 강의 목록을 조회합니다.
             
             **파라미터 설명:**
-            - **schoolId**: 학교 ID (필수)
+            - **schoolId**: 학번 (필수)
             - **department**: 학과명 (필수)
             - **grade**: 학년 (1~5, 필수)
             - **category**: 이수 구분 (필수). 가능한 값은 다음과 같습니다:
