@@ -10,6 +10,7 @@ export const CourseList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(20);
+  const [pageInput, setPageInput] = useState('');
 
   const fetchCourses = async (page: number, query: string) => {
     try {
@@ -41,6 +42,95 @@ export const CourseList = () => {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+    setPageInput('');
+  };
+
+  const handlePageInputSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!courses) return;
+
+    const page = parseInt(pageInput, 10);
+    if (!isNaN(page) && page >= 1 && page <= courses.totalPages) {
+      setCurrentPage(page - 1);
+    } else {
+      alert(`1부터 ${courses.totalPages}까지의 숫자를 입력해주세요.`);
+    }
+  };
+
+  const handlePageJump = (offset: number) => {
+    if (!courses) return;
+    const newPage = currentPage + offset;
+    if (newPage >= 0 && newPage < courses.totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const renderPageNumbers = () => {
+    if (!courses) return null;
+
+    const totalPages = courses.totalPages;
+    const current = currentPage;
+    const pageNumbers: (number | string)[] = [];
+    const minDisplay = 5; // 최소 5개 표시
+
+    if (totalPages <= 7) {
+      // 전체 페이지가 7개 이하면 모두 표시
+      for (let i = 0; i < totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      // 첫 페이지는 항상 표시
+      pageNumbers.push(0);
+
+      // 현재 페이지 기준으로 최소 5개 표시
+      let start = Math.max(1, current - 2);
+      let end = Math.min(totalPages - 2, current + 2);
+
+      // 최소 5개를 보장
+      if (end - start + 1 < minDisplay) {
+        if (start === 1) {
+          end = Math.min(totalPages - 2, start + minDisplay - 1);
+        } else if (end === totalPages - 2) {
+          start = Math.max(1, end - minDisplay + 1);
+        }
+      }
+
+      if (start > 1) {
+        pageNumbers.push('...');
+      }
+
+      for (let i = start; i <= end; i++) {
+        pageNumbers.push(i);
+      }
+
+      if (end < totalPages - 2) {
+        pageNumbers.push('...');
+      }
+
+      // 마지막 페이지는 항상 표시
+      pageNumbers.push(totalPages - 1);
+    }
+
+    return pageNumbers.map((pageNum, index) => {
+      if (pageNum === '...') {
+        return (
+          <span key={`ellipsis-${index}`} className="pagination-ellipsis">
+            ...
+          </span>
+        );
+      }
+
+      const page = pageNum as number;
+      return (
+        <button
+          key={page}
+          onClick={() => handlePageChange(page)}
+          className={`pagination-number ${current === page ? 'active' : ''}`}
+        >
+          {page + 1}
+        </button>
+      );
+    });
   };
 
   const getCategoryLabel = (category: string): string => {
@@ -115,24 +205,58 @@ export const CourseList = () => {
             </table>
           </div>
 
-          <div className="pagination">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 0}
-              className="pagination-button"
-            >
-              이전
-            </button>
-            <span className="pagination-info">
-              {currentPage + 1} / {courses.totalPages}
-            </span>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage >= courses.totalPages - 1}
-              className="pagination-button"
-            >
-              다음
-            </button>
+          <div className="pagination-wrapper">
+            <div className="pagination">
+              <button
+                onClick={() => handlePageJump(-10)}
+                disabled={currentPage < 10}
+                className="pagination-button"
+                title="10페이지 이전"
+              >
+                ≪
+              </button>
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 0}
+                className="pagination-button"
+              >
+                이전
+              </button>
+
+              <div className="pagination-numbers">
+                {renderPageNumbers()}
+              </div>
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage >= courses.totalPages - 1}
+                className="pagination-button"
+              >
+                다음
+              </button>
+              <button
+                onClick={() => handlePageJump(10)}
+                disabled={currentPage >= courses.totalPages - 10}
+                className="pagination-button"
+                title="10페이지 다음"
+              >
+                ≫
+              </button>
+            </div>
+
+            <form onSubmit={handlePageInputSubmit} className="page-jump">
+              <span className="page-jump-label">페이지 이동:</span>
+              <input
+                type="number"
+                min="1"
+                max={courses.totalPages}
+                placeholder={String(currentPage + 1)}
+                value={pageInput || currentPage + 1}
+                onChange={(e) => setPageInput(e.target.value)}
+                className="page-input"
+              />
+              <button type="submit" className="page-jump-button">이동</button>
+            </form>
           </div>
         </>
       )}
