@@ -139,9 +139,9 @@ class MajorCourseRecommendService(
             RecommendedCourseResponse.from(sections, targetGrade, userGrade)
         }.sortedWith(
             compareBy(
-                { it.status.ordinal }, // PAST_DUE 먼저
-                { it.targetGrade },     // 낮은 학년 먼저
-                { it.courseName }       // 이름순
+                { it.timing.ordinal }, // LATE 먼저
+                { it.targetGrade },    // 낮은 학년 먼저
+                { it.courseName }      // 이름순
             )
         )
     }

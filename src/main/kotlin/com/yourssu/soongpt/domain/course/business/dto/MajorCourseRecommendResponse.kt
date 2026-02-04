@@ -2,9 +2,24 @@ package com.yourssu.soongpt.domain.course.business.dto
 
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
-import com.yourssu.soongpt.domain.course.implement.GradeStatus
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
+
+/**
+ * 과목의 권장 학년 대비 수강 시점 상태
+ * - LATE: 권장 학년이 지났으나 미이수
+ * - ON_TIME: 현재 학년에 해당하는 과목
+ */
+enum class CourseTiming {
+    LATE,
+    ON_TIME;
+
+    companion object {
+        fun of(targetGrade: Int, userGrade: Int): CourseTiming {
+            return if (targetGrade < userGrade) LATE else ON_TIME
+        }
+    }
+}
 
 /**
  * 전공 과목 추천 응답
@@ -86,7 +101,7 @@ data class RecommendedCourseResponse(
     val courseName: String,
     val credits: Double?,
     val targetGrade: Int,
-    val status: GradeStatus,
+    val timing: CourseTiming,
     val sections: List<SectionResponse>,
 ) {
     companion object {
@@ -101,7 +116,7 @@ data class RecommendedCourseResponse(
                 courseName = representative.name,
                 credits = representative.credit,
                 targetGrade = targetGrade,
-                status = GradeStatus.of(targetGrade, userGrade),
+                timing = CourseTiming.of(targetGrade, userGrade),
                 sections = courses.map { SectionResponse.from(it) },
             )
         }
