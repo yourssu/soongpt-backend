@@ -164,6 +164,7 @@ export const CourseList = () => {
     try {
       setTargetLoading(true);
       const targetData = await courseApi.getCourseTarget(course.code);
+      console.log('수강 대상 데이터:', targetData);
       setSelectedCourse(targetData);
     } catch (err) {
       console.error('수강 대상 조회 실패:', err);
@@ -342,7 +343,9 @@ export const CourseList = () => {
                 <p><strong>과목코드:</strong> {selectedCourse.code}</p>
                 <p><strong>과목명:</strong> {selectedCourse.name}</p>
                 <p><strong>개설학과:</strong> {selectedCourse.department}</p>
-                <p><strong>원본 수강대상:</strong> {selectedCourse.targetText}</p>
+                {selectedCourse.targetText && (
+                  <p><strong>원본 수강대상:</strong> {selectedCourse.targetText}</p>
+                )}
               </div>
 
               {targetLoading ? (
