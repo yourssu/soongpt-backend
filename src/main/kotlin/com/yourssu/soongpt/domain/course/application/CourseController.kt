@@ -28,12 +28,12 @@ class CourseController(
         summary = "강의 필터링 조회 (카테고리별)",
         description = """
             특정 조건에 맞는 강의 목록을 조회합니다.
-            
+
             **파라미터 설명:**
             - **schoolId**: 학번 (필수)
             - **department**: 학과명 (필수)
             - **grade**: 학년 (1~5, 필수)
-            - **category**: 이수 구분 (필수). 가능한 값은 다음과 같습니다:
+            - **category**: 이수 구분 (선택). 지정하지 않으면 전체 카테고리 조회. 가능한 값은 다음과 같습니다:
                 - `MAJOR_REQUIRED` (전필)
                 - `MAJOR_ELECTIVE` (전선)
                 - `MAJOR_BASIC` (전기)

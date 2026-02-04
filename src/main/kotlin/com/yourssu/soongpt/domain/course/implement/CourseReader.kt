@@ -30,13 +30,30 @@ class CourseReader(
         return courseRepository.findAllInCategory(category, courseCodes)
     }
 
-    fun findAllInCategory(category: Category, courseCodes: List<Long>, schoolId: Int): List<Course> {
+    fun findAllInCategory(category: Category?, courseCodes: List<Long>, schoolId: Int): List<Course> {
+        if (category == null) {
+            return findAllByCodes(courseCodes, schoolId)
+        }
         val courses = courseRepository.findAllInCategory(category, courseCodes)
         return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(it.field?: throw FieldNullPointException(), schoolId)) }
     }
 
-    fun findAllInCategory(category: Category, courseCodes: List<Long>, field: String, schoolId: Int): List<Course> {
+    private fun findAllByCodes(courseCodes: List<Long>, schoolId: Int): List<Course> {
+        val courses = courseRepository.findAllByCode(courseCodes)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(it.field?: throw FieldNullPointException(), schoolId)) }
+    }
+
+    fun findAllInCategory(category: Category?, courseCodes: List<Long>, field: String, schoolId: Int): List<Course> {
+        if (category == null) {
+            return findAllByCodesAndField(courseCodes, field, schoolId)
+        }
         val courses = courseRepository.findAllInCategory(category, courseCodes)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(field, schoolId)) }
+            .filter { it.field?.contains(field) == true }
+    }
+
+    fun findAllByCodesAndField(courseCodes: List<Long>, field: String, schoolId: Int): List<Course> {
+        val courses = courseRepository.findAllByCode(courseCodes)
         return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(field, schoolId)) }
             .filter { it.field?.contains(field) == true }
     }
@@ -62,5 +79,9 @@ class CourseReader(
 
     fun getAllFieldsGrouped(): Map<Int, List<String>> {
         return fieldListFinder.getAllFieldsGrouped()
+    }
+
+    fun findByCode(code: Long): Course {
+        return courseRepository.get(code)
     }
 }

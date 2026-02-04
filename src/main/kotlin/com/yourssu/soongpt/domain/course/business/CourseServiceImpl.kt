@@ -6,7 +6,9 @@ import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
+import com.yourssu.soongpt.domain.target.implement.ScopeType
 import com.yourssu.soongpt.domain.target.implement.TargetReader
+import com.yourssu.soongpt.domain.college.implement.CollegeReader
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,6 +16,7 @@ class CourseServiceImpl(
     private val courseReader: CourseReader,
     private val departmentReader: DepartmentReader,
     private val targetReader: TargetReader,
+    private val collegeReader: CollegeReader,
 ) : CourseService {
     override fun findAll(query: FilterCoursesQuery): List<CourseResponse> {
         val department = departmentReader.getByName(query.departmentName)
@@ -66,6 +69,52 @@ class CourseServiceImpl(
 
     override fun getAllFieldsGrouped(): Map<Int, List<String>> {
         return courseReader.getAllFieldsGrouped()
+    }
+
+    override fun getTargetsByCode(code: Long): CourseTargetResponse {
+        val course = courseReader.findByCode(code)
+        val targets = targetReader.findAllByCode(code)
+        val courseTimes = CourseTimes.from(course.scheduleRoom)
+
+        val targetInfos = targets.map { target ->
+            val scopeName = when (target.scopeType) {
+                ScopeType.UNIVERSITY -> "전체"
+                ScopeType.COLLEGE -> target.collegeId?.let { collegeReader.get(it).name }
+                ScopeType.DEPARTMENT -> target.departmentId?.let { departmentReader.get(it).name }
+            }
+
+            TargetInfo(
+                scopeType = target.scopeType,
+                scopeId = target.departmentId ?: target.collegeId,
+                scopeName = scopeName,
+                grade1 = target.grade1,
+                grade2 = target.grade2,
+                grade3 = target.grade3,
+                grade4 = target.grade4,
+                grade5 = target.grade5,
+                studentType = target.studentType,
+                isStrict = target.isStrict,
+                isDenied = target.isDenied
+            )
+        }
+
+        val courseTimeResponses = courseTimes.toList()
+            .map { com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse.from(it) }
+
+        return CourseTargetResponse(
+            code = course.code,
+            name = course.name,
+            professor = course.professor,
+            category = course.category,
+            department = course.department,
+            point = course.point,
+            time = course.time,
+            personeel = course.personeel,
+            scheduleRoom = course.scheduleRoom,
+            targetText = course.target,
+            courseTimes = courseTimeResponses,
+            targets = targetInfos
+        )
     }
 
     @Deprecated("Use findAll with FilterCoursesQuery instead")
