@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { courseApi } from '../api/courseApi';
 import type { Course, CoursesResponse, CourseTargetResponse, TargetInfo } from '../types/course';
+import { FilterTab } from './FilterTab';
 import './CourseList.css';
 
 export const CourseList = () => {
+  const [activeTab, setActiveTab] = useState<'search' | 'filter'>('search');
   const [courses, setCourses] = useState<CoursesResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -307,7 +309,24 @@ export const CourseList = () => {
     <div className="course-list-container">
       <h1>과목 관리</h1>
 
-      <form onSubmit={handleSearch} className="search-form">
+      <div className="tabs">
+        <button
+          className={`tab ${activeTab === 'search' ? 'active' : ''}`}
+          onClick={() => setActiveTab('search')}
+        >
+          검색
+        </button>
+        <button
+          className={`tab ${activeTab === 'filter' ? 'active' : ''}`}
+          onClick={() => setActiveTab('filter')}
+        >
+          필터
+        </button>
+      </div>
+
+      {activeTab === 'search' ? (
+        <>
+          <form onSubmit={handleSearch} className="search-form">
         <div className="search-input-wrapper">
           <input
             type="text"
@@ -431,6 +450,13 @@ export const CourseList = () => {
             </form>
           </div>
         </>
+      )}
+        </>
+      ) : (
+        <FilterTab
+          onCourseClick={handleCourseClick}
+          getCategoryLabel={getCategoryLabel}
+        />
       )}
 
       {selectedCourse && (

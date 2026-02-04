@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ApiResponse, CoursesResponse, CourseTargetResponse } from '../types/course';
+import type { ApiResponse, CoursesResponse, CourseTargetResponse, Course } from '../types/course';
 
 const api = axios.create({
   baseURL: '/api',
@@ -13,6 +13,14 @@ export interface GetCoursesParams {
   page?: number;
   size?: number;
   sort?: 'ASC' | 'DESC';
+}
+
+export interface FilterCoursesParams {
+  schoolId: number;
+  department: string;
+  grade: number;
+  category: string;
+  field?: string;
 }
 
 export const courseApi = {
@@ -30,6 +38,13 @@ export const courseApi = {
 
   getCourseTarget: async (code: number): Promise<CourseTargetResponse> => {
     const response = await api.get<ApiResponse<CourseTargetResponse>>(`/admin/courses/${code}/target`);
+    return response.data.result;
+  },
+
+  getCoursesByCategory: async (params: FilterCoursesParams): Promise<Course[]> => {
+    const response = await api.get<ApiResponse<Course[]>>('/courses/by-category', {
+      params,
+    });
     return response.data.result;
   },
 };
