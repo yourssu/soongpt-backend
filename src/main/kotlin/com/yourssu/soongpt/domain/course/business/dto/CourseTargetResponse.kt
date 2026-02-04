@@ -16,6 +16,7 @@ data class CourseTargetResponse(
     val personeel: Int,
     val scheduleRoom: String,
     val targetText: String,
+    val field: String?,
     val courseTimes: List<CourseTimeResponse>,
     val targets: List<TargetInfo>
 )

@@ -75,6 +75,7 @@ export interface CourseTargetResponse {
   personeel: number;
   scheduleRoom: string;
   targetText: string;
+  field: string | null;
   courseTimes: CourseTime[];
   targets: TargetInfo[];
 }
