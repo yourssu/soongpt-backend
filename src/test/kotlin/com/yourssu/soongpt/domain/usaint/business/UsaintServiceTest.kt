@@ -1,24 +1,12 @@
 package com.yourssu.soongpt.domain.usaint.business
 
 import com.yourssu.soongpt.domain.usaint.application.dto.UsaintSyncRequest
-import com.yourssu.soongpt.domain.usaint.business.dto.UsaintSyncResponse
 import com.yourssu.soongpt.domain.usaint.implement.PseudonymGenerator
 import com.yourssu.soongpt.domain.usaint.implement.RusaintServiceClient
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAvailableCreditsDto
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationRequirementsDto
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintLowGradeSubjectCodesDto
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintRemainingCreditsDto
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintTakenCourseDto
-import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
+import com.yourssu.soongpt.domain.usaint.implement.dto.*
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
-import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 
 class UsaintServiceTest : BehaviorSpec({
 
