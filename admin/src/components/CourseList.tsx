@@ -8,9 +8,20 @@ export const CourseList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(20);
   const [pageInput, setPageInput] = useState('');
+
+  // 검색어 디바운싱
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+      setCurrentPage(0); // 검색어 변경 시 첫 페이지로
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const fetchCourses = async (page: number, query: string) => {
     try {
@@ -32,8 +43,8 @@ export const CourseList = () => {
   };
 
   useEffect(() => {
-    fetchCourses(currentPage, searchQuery);
-  }, [currentPage, searchQuery]);
+    fetchCourses(currentPage, debouncedQuery);
+  }, [currentPage, debouncedQuery]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -151,20 +162,31 @@ export const CourseList = () => {
       <h1>과목 관리</h1>
 
       <form onSubmit={handleSearch} className="search-form">
-        <input
-          type="text"
-          placeholder="과목명 또는 교수명으로 검색"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
-        />
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            placeholder="과목명 또는 교수명으로 검색"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          {searchQuery !== debouncedQuery && (
+            <div className="search-spinner"></div>
+          )}
+        </div>
         <button type="submit" className="search-button">검색</button>
       </form>
 
-      {loading && <div className="loading">로딩 중...</div>}
       {error && <div className="error">{error}</div>}
 
-      {courses && !loading && (
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+          <div className="loading-text">로딩 중...</div>
+        </div>
+      )}
+
+      {courses && (
         <>
           <div className="course-info">
             총 {courses.totalElements}개의 과목 (페이지 {courses.page + 1} / {courses.totalPages})
