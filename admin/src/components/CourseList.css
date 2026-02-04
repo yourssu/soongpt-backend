@@ -227,6 +227,22 @@ h1 {
   background-color: #f8f9fa;
 }
 
+/* Prevent line breaks for specific columns: 교수(3), 이수구분(4), 학과(5), 학점(6), 시간(7), 정원(8) */
+.course-table th:nth-child(3),
+.course-table td:nth-child(3),
+.course-table th:nth-child(4),
+.course-table td:nth-child(4),
+.course-table th:nth-child(5),
+.course-table td:nth-child(5),
+.course-table th:nth-child(6),
+.course-table td:nth-child(6),
+.course-table th:nth-child(7),
+.course-table td:nth-child(7),
+.course-table th:nth-child(8),
+.course-table td:nth-child(8) {
+  white-space: nowrap;
+}
+
 .pagination-wrapper {
   display: flex;
   justify-content: space-between;
