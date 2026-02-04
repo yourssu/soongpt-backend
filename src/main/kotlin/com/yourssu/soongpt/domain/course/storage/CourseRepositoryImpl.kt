@@ -69,19 +69,22 @@ class CourseRepositoryImpl(
         query: String,
         pageable: Pageable
     ): Page<Course> {
-        val content = jpaQueryFactory
-            .selectFrom(courseEntity)
-            .where(buildSearchCondition(query))
-            .orderBy(
-                courseEntity.name.lower().indexOf(query.lowercase()).asc(),
-                courseEntity.name.length().asc(),
-                courseEntity.name.asc()
-            )
-            .offset(pageable.offset)
-            .limit(pageable.pageSize.toLong())
-            .fetch()
+        val fetchLimit = pageable.pageSize + 1
+
+        val results = courseJpaRepository
+            .searchCoursesWithFulltext(query, fetchLimit, pageable.offset)
             .map { it.toDomain() }
-        return PageImpl(content, pageable, countCoursesByQuery(query))
+
+        val hasNext = results.size > pageable.pageSize
+        val content = if (hasNext) results.dropLast(1) else results
+
+        val total = if (hasNext || pageable.offset > 0) {
+            courseJpaRepository.countCoursesWithFulltext(query)
+        } else {
+            content.size.toLong()
+        }
+
+        return PageImpl(content, pageable, total)
     }
 
     override fun findAllByClass(code: Long): List<Course> {
@@ -93,17 +96,6 @@ class CourseRepositoryImpl(
             .map { it.toDomain() }
     }
 
-    private fun buildSearchCondition(query: String) =
-        courseEntity.name.containsIgnoreCase(query)
-            .or(courseEntity.professor.containsIgnoreCase(query))
-
-    private fun countCoursesByQuery(query: String): Long {
-        return jpaQueryFactory
-            .select(courseEntity.count())
-            .from(courseEntity)
-            .where(buildSearchCondition(query))
-            .fetchOne() ?: 0L
-    }
 }
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
@@ -112,4 +104,29 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
 
     @Query("select c from CourseEntity c where c.code in :codes")
     fun getAllByCode(codes: List<Long>): List<CourseEntity>
+
+    @Query(
+        value = """
+            SELECT * FROM course
+            WHERE MATCH(name, professor, department, target, schedule_room) AGAINST(:query IN BOOLEAN MODE)
+            ORDER BY
+                CASE WHEN LOWER(name) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
+                CASE WHEN professor IS NOT NULL AND LOWER(professor) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
+                CASE WHEN LOWER(department) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
+                CHAR_LENGTH(name),
+                LOWER(name)
+            LIMIT :limit OFFSET :offset
+        """,
+        nativeQuery = true
+    )
+    fun searchCoursesWithFulltext(query: String, limit: Int, offset: Long): List<CourseEntity>
+
+    @Query(
+        value = """
+            SELECT COUNT(*) FROM course
+            WHERE MATCH(name, professor, department, target, schedule_room) AGAINST(:query IN BOOLEAN MODE)
+        """,
+        nativeQuery = true
+    )
+    fun countCoursesWithFulltext(query: String): Long
 }
