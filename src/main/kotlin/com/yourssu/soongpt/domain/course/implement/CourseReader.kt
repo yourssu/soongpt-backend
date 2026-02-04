@@ -63,4 +63,8 @@ class CourseReader(
     fun getAllFieldsGrouped(): Map<Int, List<String>> {
         return fieldListFinder.getAllFieldsGrouped()
     }
+
+    fun findByCode(code: Long): Course {
+        return courseRepository.get(code)
+    }
 }

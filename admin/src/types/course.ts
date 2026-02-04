@@ -1,12 +1,22 @@
-export enum Category {
-  MAJOR_REQUIRED = 'MAJOR_REQUIRED',
-  MAJOR_ELECTIVE = 'MAJOR_ELECTIVE',
-  MAJOR_BASIC = 'MAJOR_BASIC',
-  GENERAL_REQUIRED = 'GENERAL_REQUIRED',
-  GENERAL_ELECTIVE = 'GENERAL_ELECTIVE',
-  CHAPEL = 'CHAPEL',
-  OTHER = 'OTHER',
-}
+export type Category =
+  | 'MAJOR_REQUIRED'
+  | 'MAJOR_ELECTIVE'
+  | 'MAJOR_BASIC'
+  | 'GENERAL_REQUIRED'
+  | 'GENERAL_ELECTIVE'
+  | 'CHAPEL'
+  | 'OTHER';
+
+export type ScopeType =
+  | 'UNIVERSITY'
+  | 'COLLEGE'
+  | 'DEPARTMENT';
+
+export type StudentType =
+  | 'GENERAL'
+  | 'FOREIGNER'
+  | 'MILITARY'
+  | 'TEACHING_CERT';
 
 export interface Course {
   id: number | null;
@@ -31,6 +41,27 @@ export interface CoursesResponse {
   totalPages: number;
   size: number;
   page: number;
+}
+
+export interface TargetInfo {
+  scopeType: ScopeType;
+  scopeId: number | null;
+  scopeName: string | null;
+  grade1: boolean;
+  grade2: boolean;
+  grade3: boolean;
+  grade4: boolean;
+  grade5: boolean;
+  studentType: StudentType;
+  isStrict: boolean;
+  isDenied: boolean;
+}
+
+export interface CourseTargetResponse {
+  code: number;
+  name: string;
+  department: string;
+  targets: TargetInfo[];
 }
 
 export interface ApiResponse<T> {

@@ -9,4 +9,8 @@ class DepartmentReader(
     fun getByName(name: String): Department {
         return departmentRepository.getByName(name)
     }
+
+    fun get(id: Long): Department {
+        return departmentRepository.get(id)
+    }
 }

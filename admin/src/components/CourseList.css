@@ -264,6 +264,124 @@ h1 {
   background-color: #0056b3;
 }
 
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.course-info-detail {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.course-info-detail p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.target-table-container {
+  margin-top: 20px;
+}
+
+.target-table-container h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #333;
+}
+
+.target-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.target-table th,
+.target-table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.target-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+}
+
+.target-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.target-table .denied-row {
+  background-color: #fff3cd;
+}
+
+.target-table .denied-row:hover {
+  background-color: #ffe69c;
+}
+
 @media (max-width: 768px) {
   .pagination-wrapper {
     flex-direction: column;
@@ -273,5 +391,19 @@ h1 {
 
   .page-jump-label {
     display: none;
+  }
+
+  .modal-content {
+    max-width: 100%;
+    margin: 10px;
+  }
+
+  .target-table {
+    font-size: 12px;
+  }
+
+  .target-table th,
+  .target-table td {
+    padding: 6px;
   }
 }

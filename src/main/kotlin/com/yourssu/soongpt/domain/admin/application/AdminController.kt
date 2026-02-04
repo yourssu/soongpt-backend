@@ -2,12 +2,14 @@ package com.yourssu.soongpt.domain.admin.application
 
 import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.course.business.CourseService
+import com.yourssu.soongpt.domain.course.business.dto.CourseTargetResponse
 import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import com.yourssu.soongpt.domain.course.business.query.SearchCoursesQuery
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -44,6 +46,23 @@ class AdminController(
             sort = sort.uppercase(),
         )
         val response = courseService.search(query)
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
+        summary = "과목 수강 대상 조회 (관리자용)",
+        description = """
+            특정 과목의 수강 대상 정보를 학과/학년별로 조회합니다.
+
+            **파라미터 설명:**
+            - **code**: 과목 코드
+        """
+    )
+    @GetMapping("/{code}/target")
+    fun getCourseTarget(
+        @PathVariable code: Long
+    ): ResponseEntity<Response<CourseTargetResponse>> {
+        val response = courseService.getTargetsByCode(code)
         return ResponseEntity.ok().body(Response(result = response))
     }
 }

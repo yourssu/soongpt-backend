@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ApiResponse, CoursesResponse } from '../types/course';
+import type { ApiResponse, CoursesResponse, CourseTargetResponse } from '../types/course';
 
 const api = axios.create({
   baseURL: '/api',
@@ -25,6 +25,11 @@ export const courseApi = {
         sort: params.sort || 'ASC',
       },
     });
+    return response.data.result;
+  },
+
+  getCourseTarget: async (code: number): Promise<CourseTargetResponse> => {
+    const response = await api.get<ApiResponse<CourseTargetResponse>>(`/admin/courses/${code}/target`);
     return response.data.result;
   },
 };

@@ -16,7 +16,11 @@ class TargetRepositoryImpl (
     val jpaQueryFactory: JPAQueryFactory,
 ): TargetRepository {
     override fun findAllByCode(code: Long): List<Target> {
-        return listOf()
+        return jpaQueryFactory
+            .selectFrom(targetEntity)
+            .where(targetEntity.courseCode.eq(code))
+            .fetch()
+            .map { it.toDomain() }
     }
 
     override fun findAllByDepartmentGrade(

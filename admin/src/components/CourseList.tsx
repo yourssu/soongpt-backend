@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { courseApi } from '../api/courseApi';
-import type { Course, CoursesResponse } from '../types/course';
+import type { Course, CoursesResponse, CourseTargetResponse, TargetInfo } from '../types/course';
 import './CourseList.css';
 
 export const CourseList = () => {
@@ -12,6 +12,8 @@ export const CourseList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(20);
   const [pageInput, setPageInput] = useState('');
+  const [selectedCourse, setSelectedCourse] = useState<CourseTargetResponse | null>(null);
+  const [targetLoading, setTargetLoading] = useState(false);
 
   // 검색어 디바운싱
   useEffect(() => {
@@ -157,6 +159,33 @@ export const CourseList = () => {
     return labels[category] || category;
   };
 
+  const handleCourseClick = async (course: Course) => {
+    try {
+      setTargetLoading(true);
+      const targetData = await courseApi.getCourseTarget(course.code);
+      setSelectedCourse(targetData);
+    } catch (err) {
+      console.error('수강 대상 조회 실패:', err);
+      alert('수강 대상 정보를 불러오는데 실패했습니다.');
+    } finally {
+      setTargetLoading(false);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedCourse(null);
+  };
+
+  const getStudentTypeLabel = (type: string): string => {
+    const labels: Record<string, string> = {
+      GENERAL: '일반',
+      FOREIGNER: '외국인',
+      MILITARY: '군위탁',
+      TEACHING_CERT: '교직이수자',
+    };
+    return labels[type] || type;
+  };
+
   return (
     <div className="course-list-container">
       <h1>과목 관리</h1>
@@ -210,7 +239,11 @@ export const CourseList = () => {
               </thead>
               <tbody>
                 {courses.content.map((course: Course) => (
-                  <tr key={course.id || course.code}>
+                  <tr
+                    key={course.id || course.code}
+                    onClick={() => handleCourseClick(course)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <td>{course.code}</td>
                     <td>{course.name}</td>
                     <td>{course.professor || '-'}</td>
@@ -281,6 +314,62 @@ export const CourseList = () => {
             </form>
           </div>
         </>
+      )}
+
+      {selectedCourse && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>수강 대상 정보</h2>
+              <button className="modal-close" onClick={closeModal}>×</button>
+            </div>
+            <div className="modal-body">
+              <div className="course-info-detail">
+                <p><strong>과목코드:</strong> {selectedCourse.code}</p>
+                <p><strong>과목명:</strong> {selectedCourse.name}</p>
+                <p><strong>개설학과:</strong> {selectedCourse.department}</p>
+              </div>
+
+              {targetLoading ? (
+                <div className="loading-text">로딩 중...</div>
+              ) : (
+                <div className="target-table-container">
+                  <h3>학과/학년별 수강 대상</h3>
+                  <table className="target-table">
+                    <thead>
+                      <tr>
+                        <th>범위</th>
+                        <th>대상</th>
+                        <th>1학년</th>
+                        <th>2학년</th>
+                        <th>3학년</th>
+                        <th>4학년</th>
+                        <th>5학년</th>
+                        <th>학생구분</th>
+                        <th>제한</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedCourse.targets.map((target: TargetInfo, index: number) => (
+                        <tr key={index} className={target.isDenied ? 'denied-row' : ''}>
+                          <td>{target.scopeType === 'UNIVERSITY' ? '전체' : target.scopeType === 'COLLEGE' ? '단과대' : '학과'}</td>
+                          <td>{target.scopeName || '-'}</td>
+                          <td>{target.grade1 ? '✓' : '-'}</td>
+                          <td>{target.grade2 ? '✓' : '-'}</td>
+                          <td>{target.grade3 ? '✓' : '-'}</td>
+                          <td>{target.grade4 ? '✓' : '-'}</td>
+                          <td>{target.grade5 ? '✓' : '-'}</td>
+                          <td>{getStudentTypeLabel(target.studentType)}</td>
+                          <td>{target.isStrict ? '엄격' : target.isDenied ? '거부' : '-'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
