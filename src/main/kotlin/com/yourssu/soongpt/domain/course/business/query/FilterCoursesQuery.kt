@@ -6,7 +6,7 @@ class FilterCoursesQuery(
     val departmentName: String,
     val grade: Int,
     val schoolId: Int,
-    val category: Category,
+    val category: Category? = null,
     val field: String? = null,
     val subDepartmentName: String? = null,
 )

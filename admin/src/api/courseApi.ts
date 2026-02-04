@@ -19,7 +19,7 @@ export interface FilterCoursesParams {
   schoolId: number;
   department: string;
   grade: number;
-  category: string;
+  category?: string;
   field?: string;
 }
 

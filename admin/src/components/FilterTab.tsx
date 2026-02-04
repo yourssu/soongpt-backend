@@ -20,8 +20,8 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
 
   const handleFilterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedDepartment || !selectedCategory) {
-      alert('학과와 이수구분을 모두 선택해주세요.');
+    if (!selectedDepartment) {
+      alert('학과를 선택해주세요.');
       return;
     }
 
@@ -32,7 +32,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         schoolId,
         department: selectedDepartment,
         grade: selectedGrade,
-        category: selectedCategory,
+        category: selectedCategory || undefined,  // 빈 문자열이면 undefined로 전달
       });
       setFilteredCourses(data);
       onFilterResults(data);
@@ -89,7 +89,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="filter-select"
             >
-              <option value="">이수구분 선택</option>
+              <option value="">전체</option>
               {categories.map((cat) => (
                 <option key={cat.value} value={cat.value}>
                   {cat.label}
