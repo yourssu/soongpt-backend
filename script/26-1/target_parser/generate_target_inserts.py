@@ -247,7 +247,6 @@ class TargetSQLGenerator:
                 # Manual Mapping for specific majors -> Dept/School if needed
                 DEPT_MAPPING = {
                     # Common Aliases
-                    "컴퓨터학과": "컴퓨터학부",
                     "전자공학과": "전자정보공학부 전자공학전공", 
                     "문예창작학과": "예술창작학부 문예창작전공",
                     "영화예술전공": "예술창작학부 영화예술전공",
