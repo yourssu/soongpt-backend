@@ -1,7 +1,7 @@
 """
 유세인트 학적/성적 이력 조회 서비스.
 
-졸업사정표 제외. 수강 내역, 저성적, 신청가능학점, 복수전공/교직, 기본 정보만 조회.
+졸업사정표 제외. 수강 내역, 저성적, 복수전공/교직, 기본 정보만 조회.
 """
 
 import asyncio
@@ -30,8 +30,7 @@ class RusaintAcademicService:
     ) -> dict:
         """
         학적/성적 이력 조회 (졸업사정표 제외).
-
-        포함: 수강 내역, 저성적 과목, 신청 가능 학점, 복수전공/교직, 기본 정보.
+        포함: 수강 내역, 저성적 과목, 복수전공/교직, 기본 정보.
         """
         start_time = time.time()
         logger.info(
@@ -76,7 +75,7 @@ class RusaintAcademicService:
             data_start = time.time()
             (
                 basic_info,
-                (taken_courses, low_grade_codes, available_credits),
+                (taken_courses, low_grade_codes),
                 flags,
             ) = await asyncio.gather(
                 fetchers.fetch_basic_info(student_info_app),
@@ -98,7 +97,6 @@ class RusaintAcademicService:
                 "takenCourses": taken_courses,
                 "lowGradeSubjectCodes": low_grade_codes,
                 "flags": flags,
-                "availableCredits": available_credits,
                 "basicInfo": basic_info,
             }
 

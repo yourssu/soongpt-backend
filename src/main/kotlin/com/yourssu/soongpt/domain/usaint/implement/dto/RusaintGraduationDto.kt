@@ -4,13 +4,7 @@ package com.yourssu.soongpt.domain.usaint.implement.dto
 data class RusaintGraduationResponseDto(
     val pseudonym: String,
     val graduationRequirements: RusaintGraduationRequirementsDto,
-)
-
-data class RusaintRemainingCreditsDto(
-    val majorRequired: Int,
-    val majorElective: Int,
-    val generalRequired: Int,
-    val generalElective: Int,
+    val graduationSummary: RusaintGraduationSummaryDto,
 )
 
 data class RusaintGraduationRequirementItemDto(
@@ -24,5 +18,29 @@ data class RusaintGraduationRequirementItemDto(
 
 data class RusaintGraduationRequirementsDto(
     val requirements: List<RusaintGraduationRequirementItemDto>,
-    val remainingCredits: RusaintRemainingCreditsDto,
+)
+
+/** 졸업사정표 핵심 요약 (name 기반 분류 결과) */
+data class RusaintGraduationSummaryDto(
+    val generalRequired: RusaintCreditSummaryItemDto,
+    val generalElective: RusaintCreditSummaryItemDto,
+    val majorFoundation: RusaintCreditSummaryItemDto,
+    val majorRequired: RusaintCreditSummaryItemDto,
+    val majorElective: RusaintCreditSummaryItemDto,
+    val doubleMajorRequired: RusaintCreditSummaryItemDto,
+    val doubleMajorElective: RusaintCreditSummaryItemDto,
+    val christianCourses: RusaintCreditSummaryItemDto,
+    val chapel: RusaintChapelSummaryItemDto,
+)
+
+/** 학점 기반 졸업 요건 요약 항목 */
+data class RusaintCreditSummaryItemDto(
+    val required: Int,
+    val completed: Int,
+    val satisfied: Boolean,
+)
+
+/** 채플 요건 요약 (학점 없이 충족 여부만) */
+data class RusaintChapelSummaryItemDto(
+    val satisfied: Boolean,
 )

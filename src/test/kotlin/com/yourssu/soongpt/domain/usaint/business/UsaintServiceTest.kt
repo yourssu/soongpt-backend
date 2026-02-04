@@ -2,8 +2,14 @@ package com.yourssu.soongpt.domain.usaint.business
 
 import com.yourssu.soongpt.domain.usaint.application.dto.UsaintSyncRequest
 import com.yourssu.soongpt.domain.usaint.implement.PseudonymGenerator
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintChapelSummaryItemDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationRequirementsDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
 import com.yourssu.soongpt.domain.usaint.implement.RusaintServiceClient
-import com.yourssu.soongpt.domain.usaint.implement.dto.*
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import org.mockito.kotlin.*
@@ -19,22 +25,20 @@ class UsaintServiceTest : BehaviorSpec({
             rusaintServiceClient = rusaintServiceClient,
         )
 
+        val defaultCreditSummary = RusaintCreditSummaryItemDto(
+            required = 0,
+            completed = 0,
+            satisfied = true,
+        )
+
         val sampleSnapshot = RusaintUsaintDataResponse(
             pseudonym = "pseudonym-from-rusaint",
             takenCourses = emptyList(),
-            lowGradeSubjectCodes = RusaintLowGradeSubjectCodesDto(
-                passLow = emptyList(),
-                fail = emptyList(),
-            ),
+            lowGradeSubjectCodes = emptyList(),
             flags = RusaintStudentFlagsDto(
                 doubleMajorDepartment = null,
                 minorDepartment = null,
                 teaching = false,
-            ),
-            availableCredits = RusaintAvailableCreditsDto(
-                previousGpa = 4.0,
-                carriedOverCredits = 0,
-                maxAvailableCredits = 21.0,
             ),
             basicInfo = RusaintBasicInfoDto(
                 year = 2025,
@@ -42,20 +46,19 @@ class UsaintServiceTest : BehaviorSpec({
                 grade = 2,
                 department = "컴퓨터학부",
             ),
-            remainingCredits = RusaintRemainingCreditsDto(
-                majorRequired = 12,
-                majorElective = 18,
-                generalRequired = 6,
-                generalElective = 10,
-            ),
             graduationRequirements = RusaintGraduationRequirementsDto(
                 requirements = emptyList(),
-                remainingCredits = RusaintRemainingCreditsDto(
-                    majorRequired = 12,
-                    majorElective = 18,
-                    generalRequired = 6,
-                    generalElective = 10,
-                ),
+            ),
+            graduationSummary = RusaintGraduationSummaryDto(
+                generalRequired = defaultCreditSummary,
+                generalElective = defaultCreditSummary,
+                majorFoundation = defaultCreditSummary,
+                majorRequired = defaultCreditSummary,
+                majorElective = defaultCreditSummary,
+                doubleMajorRequired = defaultCreditSummary,
+                doubleMajorElective = defaultCreditSummary,
+                christianCourses = defaultCreditSummary,
+                chapel = RusaintChapelSummaryItemDto(satisfied = true),
             ),
         )
 

@@ -4,10 +4,9 @@ package com.yourssu.soongpt.domain.usaint.implement.dto
 data class RusaintUsaintDataResponse(
     val pseudonym: String,
     val takenCourses: List<RusaintTakenCourseDto>,
-    val lowGradeSubjectCodes: RusaintLowGradeSubjectCodesDto,
+    val lowGradeSubjectCodes: List<String>,
     val flags: RusaintStudentFlagsDto,
-    val availableCredits: RusaintAvailableCreditsDto,
     val basicInfo: RusaintBasicInfoDto,
-    val remainingCredits: RusaintRemainingCreditsDto,
     val graduationRequirements: RusaintGraduationRequirementsDto? = null,
+    val graduationSummary: RusaintGraduationSummaryDto? = null,
 )
