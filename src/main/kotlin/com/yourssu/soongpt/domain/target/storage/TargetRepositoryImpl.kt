@@ -1,7 +1,10 @@
 package com.yourssu.soongpt.domain.target.storage
 
+import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
+import com.yourssu.soongpt.domain.target.implement.ScopeType
+import com.yourssu.soongpt.domain.target.implement.StudentType
 import com.yourssu.soongpt.domain.target.implement.Target
 import com.yourssu.soongpt.domain.target.implement.TargetRepository
 import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
@@ -37,13 +40,13 @@ class TargetRepositoryImpl (
             else -> throw IllegalArgumentException("Invalid grade: $grade")
         }
 
-        val scopeCondition = targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.UNIVERSITY)
+        val scopeCondition = targetEntity.scopeType.eq(ScopeType.UNIVERSITY)
             .or(
-                targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.COLLEGE)
+                targetEntity.scopeType.eq(ScopeType.COLLEGE)
                     .and(targetEntity.collegeId.eq(collegeId))
             )
             .or(
-                targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.DEPARTMENT)
+                targetEntity.scopeType.eq(ScopeType.DEPARTMENT)
                     .and(targetEntity.departmentId.eq(departmentId))
             )
 
@@ -51,7 +54,7 @@ class TargetRepositoryImpl (
             .select(targetEntity.courseCode)
             .from(targetEntity)
             .where(
-                targetEntity.studentType.eq(com.yourssu.soongpt.domain.target.implement.StudentType.GENERAL),
+                targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isFalse,
                 gradeCondition,
                 scopeCondition
@@ -67,7 +70,7 @@ class TargetRepositoryImpl (
             .select(targetEntity.courseCode)
             .from(targetEntity)
             .where(
-                targetEntity.studentType.eq(com.yourssu.soongpt.domain.target.implement.StudentType.GENERAL),
+                targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isTrue,
                 gradeCondition,
                 scopeCondition
@@ -109,13 +112,13 @@ class TargetRepositoryImpl (
     ): List<Long> {
         val gradeCondition = buildGradeRangeCondition(maxGrade)
 
-        val scopeCondition = targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.UNIVERSITY)
+        val scopeCondition = targetEntity.scopeType.eq(ScopeType.UNIVERSITY)
             .or(
-                targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.COLLEGE)
+                targetEntity.scopeType.eq(ScopeType.COLLEGE)
                     .and(targetEntity.collegeId.eq(collegeId))
             )
             .or(
-                targetEntity.scopeType.eq(com.yourssu.soongpt.domain.target.implement.ScopeType.DEPARTMENT)
+                targetEntity.scopeType.eq(ScopeType.DEPARTMENT)
                     .and(targetEntity.departmentId.eq(departmentId))
             )
 
@@ -123,7 +126,7 @@ class TargetRepositoryImpl (
             .select(targetEntity.courseCode)
             .from(targetEntity)
             .where(
-                targetEntity.studentType.eq(com.yourssu.soongpt.domain.target.implement.StudentType.GENERAL),
+                targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isFalse,
                 gradeCondition,
                 scopeCondition
@@ -139,7 +142,7 @@ class TargetRepositoryImpl (
             .select(targetEntity.courseCode)
             .from(targetEntity)
             .where(
-                targetEntity.studentType.eq(com.yourssu.soongpt.domain.target.implement.StudentType.GENERAL),
+                targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isTrue,
                 gradeCondition,
                 scopeCondition
@@ -150,7 +153,7 @@ class TargetRepositoryImpl (
         return (allowCourses - denyCourses).toList()
     }
 
-    private fun buildGradeRangeCondition(maxGrade: Int): com.querydsl.core.types.dsl.BooleanExpression {
+    private fun buildGradeRangeCondition(maxGrade: Int): BooleanExpression {
         var condition = targetEntity.grade1.isTrue
         if (maxGrade >= 2) condition = condition.or(targetEntity.grade2.isTrue)
         if (maxGrade >= 3) condition = condition.or(targetEntity.grade3.isTrue)
