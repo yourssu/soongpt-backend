@@ -1,7 +1,7 @@
 """
 유세인트 졸업사정표 조회 서비스.
 
-졸업 요건 상세, 남은 학점 요약만 조회 (약 5-6초).
+졸업 요건 상세(raw) + 핵심 요약(graduationSummary) 조회 (약 5-6초).
 """
 
 import asyncio
@@ -15,6 +15,7 @@ from app.core.config import settings
 from app.core.security import generate_pseudonym
 from app.services import session as session_module
 from app.services import fetchers
+from app.services.graduation_summary_builder import build_graduation_summary
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +31,7 @@ class RusaintGraduationService:
         """
         졸업사정표 정보 조회.
 
-        포함: 개별 졸업 요건 상세(requirements), 남은 졸업 학점 요약(remainingCredits).
+        포함: 개별 졸업 요건 상세(requirements, raw), 핵심 요약(graduationSummary).
         """
         start_time = time.time()
         logger.info(
@@ -67,10 +68,14 @@ class RusaintGraduationService:
                 f"유세인트 Graduation 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)"
             )
 
+            # 핵심 요약 생성 (name 기반 분류)
+            graduation_summary = build_graduation_summary(graduation_reqs.requirements)
+
             pseudonym = generate_pseudonym(student_id, settings.pseudonym_secret)
             return {
                 "pseudonym": pseudonym,
                 "graduationRequirements": graduation_reqs,
+                "graduationSummary": graduation_summary,
             }
 
         except rusaint.RusaintError as e:

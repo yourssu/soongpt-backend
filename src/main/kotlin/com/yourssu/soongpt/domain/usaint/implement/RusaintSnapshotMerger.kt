@@ -22,10 +22,9 @@ class RusaintSnapshotMerger {
             takenCourses = academic.takenCourses,
             lowGradeSubjectCodes = academic.lowGradeSubjectCodes,
             flags = academic.flags,
-            availableCredits = academic.availableCredits,
             basicInfo = academic.basicInfo,
-            remainingCredits = graduation.graduationRequirements.remainingCredits,
             graduationRequirements = graduation.graduationRequirements,
+            graduationSummary = graduation.graduationSummary,
         )
     }
 }
