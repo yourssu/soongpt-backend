@@ -17,17 +17,18 @@ data class FilterCoursesRequest(
     @field:Range(min = 1, max = 5, message = "학년은 1부터 5까지 가능합니다.")
     val grade: Int,
 
-    @field:NotBlank(message = "카테고리는 필수입니다.")
-    val category: String,  // MAJOR_REQUIRED, MAJOR_ELECTIVE, GENERAL_REQUIRED, etc.
+    val category: String? = null,  // MAJOR_REQUIRED, MAJOR_ELECTIVE, GENERAL_REQUIRED, etc. null이면 전체 조회
 
     val field: String? = null,
     val subDepartment: String? = null
 ) {
     fun toQuery(): FilterCoursesQuery {
-        val categoryEnum = try {
-            Category.valueOf(category)
-        } catch (e: IllegalArgumentException) {
-            throw InvalidCategoryException()
+        val categoryEnum = category?.let {
+            try {
+                Category.valueOf(it)
+            } catch (e: IllegalArgumentException) {
+                throw InvalidCategoryException()
+            }
         }
 
         return FilterCoursesQuery(

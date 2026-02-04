@@ -10,4 +10,8 @@ class TargetReader(
     fun findAllByDepartmentGrade(department: Department, grade: Int): List<Long> {
         return targetRepository.findAllByDepartmentGrade(department.id!!, department.collegeId, grade)
     }
+
+    fun findAllByCode(code: Long): List<Target> {
+        return targetRepository.findAllByCode(code)
+    }
 }
