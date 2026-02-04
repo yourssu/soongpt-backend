@@ -101,6 +101,7 @@ class CourseServiceImpl(
             code = course.code,
             name = course.name,
             department = course.department,
+            targetText = course.target,
             targets = targetInfos
         )
     }

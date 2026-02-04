@@ -61,6 +61,7 @@ export interface CourseTargetResponse {
   code: number;
   name: string;
   department: string;
+  targetText: string;
   targets: TargetInfo[];
 }
 

@@ -7,6 +7,7 @@ data class CourseTargetResponse(
     val code: Long,
     val name: String,
     val department: String,
+    val targetText: String,
     val targets: List<TargetInfo>
 )
 

@@ -14,6 +14,7 @@ export const CourseList = () => {
   const [pageInput, setPageInput] = useState('');
   const [selectedCourse, setSelectedCourse] = useState<CourseTargetResponse | null>(null);
   const [targetLoading, setTargetLoading] = useState(false);
+  const [showPolicyInfo, setShowPolicyInfo] = useState(false);
 
   // 검색어 디바운싱
   useEffect(() => {
@@ -176,6 +177,19 @@ export const CourseList = () => {
     setSelectedCourse(null);
   };
 
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && selectedCourse) {
+        closeModal();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [selectedCourse]);
+
   const getStudentTypeLabel = (type: string): string => {
     const labels: Record<string, string> = {
       GENERAL: '일반',
@@ -328,41 +342,113 @@ export const CourseList = () => {
                 <p><strong>과목코드:</strong> {selectedCourse.code}</p>
                 <p><strong>과목명:</strong> {selectedCourse.name}</p>
                 <p><strong>개설학과:</strong> {selectedCourse.department}</p>
+                <p><strong>원본 수강대상:</strong> {selectedCourse.targetText}</p>
               </div>
 
               {targetLoading ? (
                 <div className="loading-text">로딩 중...</div>
               ) : (
                 <div className="target-table-container">
-                  <h3>학과/학년별 수강 대상</h3>
+                  <div className="header-with-help">
+                    <h3>수강 대상 정책 (Course Target Policy)</h3>
+                    <button
+                      className="help-button"
+                      onClick={() => setShowPolicyInfo(!showPolicyInfo)}
+                      title="정책 평가 로직 설명"
+                    >
+                      ?
+                    </button>
+                  </div>
+
+                  {showPolicyInfo && (
+                    <div className="policy-info">
+                      <h4>정책 평가 로직</h4>
+                      <ol>
+                        <li>모든 <strong className="deny-text">Deny</strong> 정책을 먼저 평가</li>
+                        <li>하나라도 Deny에 매칭되면 → <strong>수강 불가</strong></li>
+                        <li><strong className="allow-text">Allow</strong> 정책 중 하나라도 매칭되면 → <strong>수강 가능</strong></li>
+                        <li>아무것도 매칭되지 않으면 → <strong>수강 불가</strong> (기본 거부)</li>
+                      </ol>
+                      <p className="policy-note-inline">
+                        <strong>참고:</strong> Strict가 체크된 정책은 명시된 조건 외에는 수강이 불가능합니다 (대상외수강제한).
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="legend">
+                    <div className="legend-item">
+                      <span className="legend-color allowed"></span>
+                      <span><strong>Allow</strong>: 수강 허용 정책</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-color denied"></span>
+                      <span><strong>Deny</strong>: 수강 제한 정책 (우선순위 높음)</span>
+                    </div>
+                  </div>
+
                   <table className="target-table">
                     <thead>
                       <tr>
-                        <th>범위</th>
+                        <th>정책 유형</th>
+                        <th>적용 범위</th>
                         <th>대상</th>
                         <th>1학년</th>
                         <th>2학년</th>
                         <th>3학년</th>
                         <th>4학년</th>
                         <th>5학년</th>
-                        <th>학생구분</th>
-                        <th>제한</th>
+                        <th>학생 구분</th>
+                        <th>대상외 제한</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {selectedCourse.targets.map((target: TargetInfo, index: number) => (
-                        <tr key={index} className={target.isDenied ? 'denied-row' : ''}>
-                          <td>{target.scopeType === 'UNIVERSITY' ? '전체' : target.scopeType === 'COLLEGE' ? '단과대' : '학과'}</td>
-                          <td>{target.scopeName || '-'}</td>
-                          <td>{target.grade1 ? '✓' : '-'}</td>
-                          <td>{target.grade2 ? '✓' : '-'}</td>
-                          <td>{target.grade3 ? '✓' : '-'}</td>
-                          <td>{target.grade4 ? '✓' : '-'}</td>
-                          <td>{target.grade5 ? '✓' : '-'}</td>
-                          <td>{getStudentTypeLabel(target.studentType)}</td>
-                          <td>{target.isStrict ? '엄격' : target.isDenied ? '거부' : '-'}</td>
-                        </tr>
-                      ))}
+                      {/* Deny 정책을 먼저 표시 */}
+                      {selectedCourse.targets
+                        .filter((target: TargetInfo) => target.isDenied)
+                        .map((target: TargetInfo, index: number) => (
+                          <tr key={`deny-${index}`} className="denied-row">
+                            <td>
+                              <span className="effect-badge deny-badge">Deny</span>
+                            </td>
+                            <td>
+                              {target.scopeType === 'UNIVERSITY' ? '전체' :
+                               target.scopeType === 'COLLEGE' ? '단과대' :
+                               '학과'}
+                            </td>
+                            <td>{target.scopeName || '-'}</td>
+                            <td>{target.grade1 ? '✓' : '-'}</td>
+                            <td>{target.grade2 ? '✓' : '-'}</td>
+                            <td>{target.grade3 ? '✓' : '-'}</td>
+                            <td>{target.grade4 ? '✓' : '-'}</td>
+                            <td>{target.grade5 ? '✓' : '-'}</td>
+                            <td>{getStudentTypeLabel(target.studentType)}</td>
+                            <td>{target.isStrict ? '✓' : '-'}</td>
+                          </tr>
+                        ))}
+
+                      {/* Allow 정책을 나중에 표시 */}
+                      {selectedCourse.targets
+                        .filter((target: TargetInfo) => !target.isDenied)
+                        .map((target: TargetInfo, index: number) => (
+                          <tr key={`allow-${index}`} className="allowed-row">
+                            <td>
+                              <span className="effect-badge allow-badge">Allow</span>
+                            </td>
+                            <td>
+                              {target.scopeType === 'UNIVERSITY' ? '전체' :
+                               target.scopeType === 'COLLEGE' ? '단과대' :
+                               '학과'}
+                            </td>
+                            <td>{target.scopeName || '-'}</td>
+                            <td>{target.grade1 ? '✓' : '-'}</td>
+                            <td>{target.grade2 ? '✓' : '-'}</td>
+                            <td>{target.grade3 ? '✓' : '-'}</td>
+                            <td>{target.grade4 ? '✓' : '-'}</td>
+                            <td>{target.grade5 ? '✓' : '-'}</td>
+                            <td>{getStudentTypeLabel(target.studentType)}</td>
+                            <td>{target.isStrict ? '✓' : '-'}</td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
