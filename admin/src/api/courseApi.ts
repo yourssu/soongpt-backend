@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { ApiResponse, CoursesResponse, CourseTargetResponse, Course } from '../types/course';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
