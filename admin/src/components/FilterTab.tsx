@@ -6,9 +6,10 @@ import { departments, categories, grades } from '../data/departments';
 interface FilterTabProps {
   onCourseClick: (course: Course, index: number) => void;
   getCategoryLabel: (category: string) => string;
+  onFilterResults: (results: Course[]) => void;
 }
 
-export const FilterTab = ({ onCourseClick, getCategoryLabel }: FilterTabProps) => {
+export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: FilterTabProps) => {
   const [filteredCourses, setFilteredCourses] = useState<Course[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +35,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel }: FilterTabProps) =
         category: selectedCategory,
       });
       setFilteredCourses(data);
+      onFilterResults(data);
     } catch (err) {
       setError('과목을 불러오는데 실패했습니다.');
       console.error(err);

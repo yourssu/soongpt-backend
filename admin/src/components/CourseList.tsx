@@ -7,6 +7,7 @@ import './CourseList.css';
 export const CourseList = () => {
   const [activeTab, setActiveTab] = useState<'search' | 'filter'>('search');
   const [courses, setCourses] = useState<CoursesResponse | null>(null);
+  const [filteredCourses, setFilteredCourses] = useState<Course[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -181,10 +182,27 @@ export const CourseList = () => {
     }
   };
 
+  const handleFilterResults = (results: Course[]) => {
+    setFilteredCourses(results);
+  };
+
   const navigateToCourse = async (direction: 'prev' | 'next') => {
-    if (!courses) return;
+    // 필터 탭에서는 filteredCourses 사용, 검색 탭에서는 courses 사용
+    const currentList = activeTab === 'filter' ? filteredCourses : courses?.content;
+    if (!currentList) return;
 
     const newIndex = direction === 'prev' ? currentCourseIndex - 1 : currentCourseIndex + 1;
+
+    // 필터 탭인 경우 - 페이지네이션 없이 간단하게 처리
+    if (activeTab === 'filter') {
+      if (newIndex < 0 || newIndex >= currentList.length) return;
+      const newCourse = currentList[newIndex];
+      await handleCourseClick(newCourse, newIndex);
+      return;
+    }
+
+    // 검색 탭인 경우 - 기존 페이지네이션 로직
+    if (!courses) return;
 
     // 현재 페이지 범위를 벗어나면 페이지 이동
     if (newIndex < 0) {
@@ -192,7 +210,6 @@ export const CourseList = () => {
       if (currentPage > 0) {
         const newPage = currentPage - 1;
         setCurrentPage(newPage);
-        // 페이지 로드 후 마지막 과목 선택을 위해 플래그 설정
         setTargetLoading(true);
         try {
           const data = await courseApi.getAllCourses({
@@ -456,6 +473,7 @@ export const CourseList = () => {
         <FilterTab
           onCourseClick={handleCourseClick}
           getCategoryLabel={getCategoryLabel}
+          onFilterResults={handleFilterResults}
         />
       )}
 
@@ -466,14 +484,19 @@ export const CourseList = () => {
               <button
                 className="nav-button nav-prev"
                 onClick={() => navigateToCourse('prev')}
-                disabled={currentCourseIndex <= 0 && currentPage === 0}
+                disabled={activeTab === 'filter' ? currentCourseIndex <= 0 : (currentCourseIndex <= 0 && currentPage === 0)}
                 title="이전 과목 (←)"
               >
                 ←
               </button>
               <div className="modal-title-container">
                 <h2>수강 대상 정보</h2>
-                {courses && currentCourseIndex >= 0 && (
+                {activeTab === 'filter' && filteredCourses && currentCourseIndex >= 0 && (
+                  <span className="course-counter">
+                    {currentCourseIndex + 1} / {filteredCourses.length}
+                  </span>
+                )}
+                {activeTab === 'search' && courses && currentCourseIndex >= 0 && (
                   <span className="course-counter">
                     {courses.page * courses.size + currentCourseIndex + 1} / {courses.totalElements}
                     <span className="page-info"> (페이지 {courses.page + 1}/{courses.totalPages})</span>
@@ -483,7 +506,11 @@ export const CourseList = () => {
               <button
                 className="nav-button nav-next"
                 onClick={() => navigateToCourse('next')}
-                disabled={!courses || (currentCourseIndex >= courses.content.length - 1 && currentPage >= courses.totalPages - 1)}
+                disabled={
+                  activeTab === 'filter'
+                    ? !filteredCourses || currentCourseIndex >= filteredCourses.length - 1
+                    : !courses || (currentCourseIndex >= courses.content.length - 1 && currentPage >= courses.totalPages - 1)
+                }
                 title="다음 과목 (→)"
               >
                 →
