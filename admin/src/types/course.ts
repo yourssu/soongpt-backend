@@ -60,7 +60,13 @@ export interface TargetInfo {
 export interface CourseTargetResponse {
   code: number;
   name: string;
+  professor: string | null;
+  category: Category;
   department: string;
+  point: string;
+  time: string;
+  personeel: number;
+  scheduleRoom: string;
   targetText: string;
   targets: TargetInfo[];
 }

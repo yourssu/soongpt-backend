@@ -15,6 +15,7 @@ export const CourseList = () => {
   const [selectedCourse, setSelectedCourse] = useState<CourseTargetResponse | null>(null);
   const [targetLoading, setTargetLoading] = useState(false);
   const [showPolicyInfo, setShowPolicyInfo] = useState(false);
+  const [currentCourseIndex, setCurrentCourseIndex] = useState<number>(-1);
 
   // 검색어 디바운싱
   useEffect(() => {
@@ -160,12 +161,15 @@ export const CourseList = () => {
     return labels[category] || category;
   };
 
-  const handleCourseClick = async (course: Course) => {
+  const handleCourseClick = async (course: Course, index?: number) => {
     try {
       setTargetLoading(true);
       const targetData = await courseApi.getCourseTarget(course.code);
       console.log('수강 대상 데이터:', targetData);
       setSelectedCourse(targetData);
+      if (index !== undefined) {
+        setCurrentCourseIndex(index);
+      }
     } catch (err) {
       console.error('수강 대상 조회 실패:', err);
       alert('수강 대상 정보를 불러오는데 실패했습니다.');
@@ -174,22 +178,99 @@ export const CourseList = () => {
     }
   };
 
+  const navigateToCourse = async (direction: 'prev' | 'next') => {
+    if (!courses) return;
+
+    const newIndex = direction === 'prev' ? currentCourseIndex - 1 : currentCourseIndex + 1;
+
+    // 현재 페이지 범위를 벗어나면 페이지 이동
+    if (newIndex < 0) {
+      // 이전 페이지로 이동
+      if (currentPage > 0) {
+        const newPage = currentPage - 1;
+        setCurrentPage(newPage);
+        // 페이지 로드 후 마지막 과목 선택을 위해 플래그 설정
+        setTargetLoading(true);
+        try {
+          const data = await courseApi.getAllCourses({
+            q: debouncedQuery,
+            page: newPage,
+            size: pageSize,
+            sort: 'ASC',
+          });
+          setCourses(data);
+          // 새 페이지의 마지막 과목 선택
+          const lastIndex = data.content.length - 1;
+          const lastCourse = data.content[lastIndex];
+          const targetData = await courseApi.getCourseTarget(lastCourse.code);
+          setSelectedCourse(targetData);
+          setCurrentCourseIndex(lastIndex);
+        } catch (err) {
+          console.error('페이지 이동 실패:', err);
+        } finally {
+          setTargetLoading(false);
+        }
+      }
+      return;
+    }
+
+    if (newIndex >= courses.content.length) {
+      // 다음 페이지로 이동
+      if (currentPage < courses.totalPages - 1) {
+        const newPage = currentPage + 1;
+        setCurrentPage(newPage);
+        setTargetLoading(true);
+        try {
+          const data = await courseApi.getAllCourses({
+            q: debouncedQuery,
+            page: newPage,
+            size: pageSize,
+            sort: 'ASC',
+          });
+          setCourses(data);
+          // 새 페이지의 첫 번째 과목 선택
+          const firstCourse = data.content[0];
+          const targetData = await courseApi.getCourseTarget(firstCourse.code);
+          setSelectedCourse(targetData);
+          setCurrentCourseIndex(0);
+        } catch (err) {
+          console.error('페이지 이동 실패:', err);
+        } finally {
+          setTargetLoading(false);
+        }
+      }
+      return;
+    }
+
+    // 현재 페이지 내에서 이동
+    const newCourse = courses.content[newIndex];
+    await handleCourseClick(newCourse, newIndex);
+  };
+
   const closeModal = () => {
     setSelectedCourse(null);
   };
 
   useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && selectedCourse) {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!selectedCourse) return;
+
+      if (event.key === 'Escape') {
         closeModal();
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        navigateToCourse('prev');
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        navigateToCourse('next');
       }
     };
 
-    document.addEventListener('keydown', handleEscKey);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
-      document.removeEventListener('keydown', handleEscKey);
+      document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedCourse]);
+  }, [selectedCourse, currentCourseIndex, courses]);
 
   const getStudentTypeLabel = (type: string): string => {
     const labels: Record<string, string> = {
@@ -253,10 +334,10 @@ export const CourseList = () => {
                 </tr>
               </thead>
               <tbody>
-                {courses.content.map((course: Course) => (
+                {courses.content.map((course: Course, index: number) => (
                   <tr
                     key={course.id || course.code}
-                    onClick={() => handleCourseClick(course)}
+                    onClick={() => handleCourseClick(course, index)}
                     style={{ cursor: 'pointer' }}
                   >
                     <td>{course.code}</td>
@@ -335,17 +416,77 @@ export const CourseList = () => {
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>수강 대상 정보</h2>
+              <button
+                className="nav-button nav-prev"
+                onClick={() => navigateToCourse('prev')}
+                disabled={currentCourseIndex <= 0 && currentPage === 0}
+                title="이전 과목 (←)"
+              >
+                ←
+              </button>
+              <div className="modal-title-container">
+                <h2>수강 대상 정보</h2>
+                {courses && currentCourseIndex >= 0 && (
+                  <span className="course-counter">
+                    {courses.page * courses.size + currentCourseIndex + 1} / {courses.totalElements}
+                    <span className="page-info"> (페이지 {courses.page + 1}/{courses.totalPages})</span>
+                  </span>
+                )}
+              </div>
+              <button
+                className="nav-button nav-next"
+                onClick={() => navigateToCourse('next')}
+                disabled={!courses || (currentCourseIndex >= courses.content.length - 1 && currentPage >= courses.totalPages - 1)}
+                title="다음 과목 (→)"
+              >
+                →
+              </button>
               <button className="modal-close" onClick={closeModal}>×</button>
             </div>
             <div className="modal-body">
               <div className="course-info-detail">
-                <p><strong>과목코드:</strong> {selectedCourse.code}</p>
-                <p><strong>과목명:</strong> {selectedCourse.name}</p>
-                <p><strong>개설학과:</strong> {selectedCourse.department}</p>
-                {selectedCourse.targetText && (
-                  <p><strong>원본 수강대상:</strong> {selectedCourse.targetText}</p>
-                )}
+                <div className="info-grid">
+                  <div className="info-item">
+                    <strong>코드:</strong>
+                    <span>{selectedCourse.code}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>과목명:</strong>
+                    <span>{selectedCourse.name}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>교수:</strong>
+                    <span>{selectedCourse.professor || '-'}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>이수구분:</strong>
+                    <span>{getCategoryLabel(selectedCourse.category)}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>학과:</strong>
+                    <span>{selectedCourse.department}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>학점:</strong>
+                    <span>{selectedCourse.point}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>시간:</strong>
+                    <span>{selectedCourse.time}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>정원:</strong>
+                    <span>{selectedCourse.personeel}</span>
+                  </div>
+                  <div className="info-item full-width">
+                    <strong>강의실:</strong>
+                    <span>{selectedCourse.scheduleRoom}</span>
+                  </div>
+                  <div className="info-item full-width">
+                    <strong>원본 수강대상:</strong>
+                    <span>{selectedCourse.targetText || '-'}</span>
+                  </div>
+                </div>
               </div>
 
               {targetLoading ? (

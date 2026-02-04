@@ -100,7 +100,13 @@ class CourseServiceImpl(
         return CourseTargetResponse(
             code = course.code,
             name = course.name,
+            professor = course.professor,
+            category = course.category,
             department = course.department,
+            point = course.point,
+            time = course.time,
+            personeel = course.personeel,
+            scheduleRoom = course.scheduleRoom,
             targetText = course.target,
             targets = targetInfos
         )
