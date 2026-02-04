@@ -524,6 +524,22 @@ h1 {
   color: #856404;
 }
 
+/* No targets message */
+.no-targets-message {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
+
+.no-targets-message p {
+  margin: 0;
+  font-size: 16px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
 .deny-text {
   color: #dc3545;
 }

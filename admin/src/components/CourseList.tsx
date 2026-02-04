@@ -530,7 +530,12 @@ export const CourseList = () => {
                     </div>
                   </div>
 
-                  <table className="target-table">
+                  {!selectedCourse.targets || selectedCourse.targets.length === 0 ? (
+                    <div className="no-targets-message">
+                      <p>수강 대상이 없습니다.</p>
+                    </div>
+                  ) : (
+                    <table className="target-table">
                     <thead>
                       <tr>
                         <th>정책 유형</th>
@@ -595,6 +600,7 @@ export const CourseList = () => {
                         ))}
                     </tbody>
                   </table>
+                  )}
                 </div>
               )}
             </div>
