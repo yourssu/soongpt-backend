@@ -57,6 +57,13 @@ export interface TargetInfo {
   isDenied: boolean;
 }
 
+export interface CourseTime {
+  week: string;
+  start: string;
+  end: string;
+  classroom: string | null;
+}
+
 export interface CourseTargetResponse {
   code: number;
   name: string;
@@ -68,6 +75,7 @@ export interface CourseTargetResponse {
   personeel: number;
   scheduleRoom: string;
   targetText: string;
+  courseTimes: CourseTime[];
   targets: TargetInfo[];
 }
 

@@ -15,6 +15,7 @@ export const CourseList = () => {
   const [selectedCourse, setSelectedCourse] = useState<CourseTargetResponse | null>(null);
   const [targetLoading, setTargetLoading] = useState(false);
   const [showPolicyInfo, setShowPolicyInfo] = useState(false);
+  const [showCourseTimes, setShowCourseTimes] = useState(true);
   const [currentCourseIndex, setCurrentCourseIndex] = useState<number>(-1);
 
   // 검색어 디바운싱
@@ -492,17 +493,54 @@ export const CourseList = () => {
               {targetLoading ? (
                 <div className="loading-text">로딩 중...</div>
               ) : (
-                <div className="target-table-container">
-                  <div className="header-with-help">
-                    <h3>수강 대상 정책 (Course Target Policy)</h3>
-                    <button
-                      className="help-button"
-                      onClick={() => setShowPolicyInfo(!showPolicyInfo)}
-                      title="정책 평가 로직 설명"
-                    >
-                      ?
-                    </button>
+                <>
+                  {/* Course Times Section - 위로 이동 */}
+                  <div className="course-times-section">
+                    <div className="section-header">
+                      <h3>강의 시간</h3>
+                      <button
+                        className="toggle-button"
+                        onClick={() => setShowCourseTimes(!showCourseTimes)}
+                        title={showCourseTimes ? "접기" : "펼치기"}
+                      >
+                        {showCourseTimes ? '▼' : '▶'}
+                      </button>
+                    </div>
+                    {showCourseTimes && (
+                      selectedCourse.courseTimes.length === 0 ? (
+                        <div className="no-times-message">
+                          <p>강의 시간 정보가 없습니다.</p>
+                        </div>
+                      ) : (
+                        <div className="course-times-grid">
+                          {selectedCourse.courseTimes.map((courseTime, index) => (
+                            <div key={index} className="course-time-card">
+                              <div className="time-week">{courseTime.week}</div>
+                              <div className="time-range">
+                                {courseTime.start} - {courseTime.end}
+                              </div>
+                              {courseTime.classroom && (
+                                <div className="time-classroom">{courseTime.classroom}</div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    )}
                   </div>
+
+                  {/* Target Policy Section */}
+                  <div className="target-table-container">
+                    <div className="header-with-help">
+                      <h3>수강 대상 정책 (Course Target Policy)</h3>
+                      <button
+                        className="help-button"
+                        onClick={() => setShowPolicyInfo(!showPolicyInfo)}
+                        title="정책 평가 로직 설명"
+                      >
+                        ?
+                      </button>
+                    </div>
 
                   {showPolicyInfo && (
                     <div className="policy-info">
@@ -601,6 +639,30 @@ export const CourseList = () => {
                     </tbody>
                   </table>
                   )}
+
+                  {/* Course Times Section */}
+                  <div className="course-times-section">
+                    <h3>강의 시간</h3>
+                    {selectedCourse.courseTimes.length === 0 ? (
+                      <div className="no-times-message">
+                        <p>강의 시간 정보가 없습니다.</p>
+                      </div>
+                    ) : (
+                      <div className="course-times-grid">
+                        {selectedCourse.courseTimes.map((courseTime, index) => (
+                          <div key={index} className="course-time-card">
+                            <div className="time-week">{courseTime.week}</div>
+                            <div className="time-range">
+                              {courseTime.start} - {courseTime.end}
+                            </div>
+                            {courseTime.classroom && (
+                              <div className="time-classroom">{courseTime.classroom}</div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

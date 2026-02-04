@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.business.dto
 
 import com.yourssu.soongpt.domain.course.implement.Category
+import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.target.implement.ScopeType
 import com.yourssu.soongpt.domain.target.implement.StudentType
 
@@ -15,6 +16,7 @@ data class CourseTargetResponse(
     val personeel: Int,
     val scheduleRoom: String,
     val targetText: String,
+    val courseTimes: List<CourseTimeResponse>,
     val targets: List<TargetInfo>
 )
 

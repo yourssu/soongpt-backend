@@ -74,6 +74,7 @@ class CourseServiceImpl(
     override fun getTargetsByCode(code: Long): CourseTargetResponse {
         val course = courseReader.findByCode(code)
         val targets = targetReader.findAllByCode(code)
+        val courseTimes = CourseTimes.from(course.scheduleRoom)
 
         val targetInfos = targets.map { target ->
             val scopeName = when (target.scopeType) {
@@ -97,6 +98,9 @@ class CourseServiceImpl(
             )
         }
 
+        val courseTimeResponses = courseTimes.toList()
+            .map { com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse.from(it) }
+
         return CourseTargetResponse(
             code = course.code,
             name = course.name,
@@ -108,6 +112,7 @@ class CourseServiceImpl(
             personeel = course.personeel,
             scheduleRoom = course.scheduleRoom,
             targetText = course.target,
+            courseTimes = courseTimeResponses,
             targets = targetInfos
         )
     }
