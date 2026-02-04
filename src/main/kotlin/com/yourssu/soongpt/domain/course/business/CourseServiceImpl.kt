@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.business
 
+import com.yourssu.soongpt.domain.college.implement.CollegeReader
 import com.yourssu.soongpt.domain.course.business.dto.*
 import com.yourssu.soongpt.domain.course.business.query.*
 import com.yourssu.soongpt.domain.course.implement.Category
@@ -8,7 +9,6 @@ import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.ScopeType
 import com.yourssu.soongpt.domain.target.implement.TargetReader
-import com.yourssu.soongpt.domain.college.implement.CollegeReader
 import org.springframework.stereotype.Service
 
 @Service
@@ -112,6 +112,7 @@ class CourseServiceImpl(
             personeel = course.personeel,
             scheduleRoom = course.scheduleRoom,
             targetText = course.target,
+            field = course.field,
             courseTimes = courseTimeResponses,
             targets = targetInfos
         )

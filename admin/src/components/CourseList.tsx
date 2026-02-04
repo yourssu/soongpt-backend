@@ -344,130 +344,130 @@ export const CourseList = () => {
       {activeTab === 'search' ? (
         <>
           <form onSubmit={handleSearch} className="search-form">
-        <div className="search-input-wrapper">
-          <input
-            type="text"
-            placeholder="과목명 또는 교수명으로 검색"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          {searchQuery !== debouncedQuery && (
-            <div className="search-spinner"></div>
+            <div className="search-input-wrapper">
+              <input
+                type="text"
+                placeholder="과목명 또는 교수명으로 검색"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+              />
+              {searchQuery !== debouncedQuery && (
+                <div className="search-spinner"></div>
+              )}
+            </div>
+            <button type="submit" className="search-button">검색</button>
+          </form>
+
+          {error && <div className="error">{error}</div>}
+
+          {loading && (
+            <div className="loading-overlay">
+              <div className="spinner"></div>
+              <div className="loading-text">로딩 중...</div>
+            </div>
           )}
-        </div>
-        <button type="submit" className="search-button">검색</button>
-      </form>
 
-      {error && <div className="error">{error}</div>}
-
-      {loading && (
-        <div className="loading-overlay">
-          <div className="spinner"></div>
-          <div className="loading-text">로딩 중...</div>
-        </div>
-      )}
-
-      {courses && (
-        <>
-          <div className="course-info">
-            총 {courses.totalElements}개의 과목 (페이지 {courses.page + 1} / {courses.totalPages})
-          </div>
-
-          <div className="table-container">
-            <table className="course-table">
-              <thead>
-                <tr>
-                  <th>코드</th>
-                  <th>과목명</th>
-                  <th>교수</th>
-                  <th>이수구분</th>
-                  <th>학과</th>
-                  <th>학점</th>
-                  <th>시간</th>
-                  <th>정원</th>
-                  <th>강의실</th>
-                  <th>수강대상</th>
-                </tr>
-              </thead>
-              <tbody>
-                {courses.content.map((course: Course, index: number) => (
-                  <tr
-                    key={course.id || course.code}
-                    onClick={() => handleCourseClick(course, index)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <td>{course.code}</td>
-                    <td>{course.name}</td>
-                    <td>{course.professor || '-'}</td>
-                    <td>{getCategoryLabel(course.category)}</td>
-                    <td>{course.department}</td>
-                    <td>{course.point}</td>
-                    <td>{course.time}</td>
-                    <td>{course.personeel}</td>
-                    <td>{course.scheduleRoom}</td>
-                    <td>{course.target}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="pagination-wrapper">
-            <div className="pagination">
-              <button
-                onClick={() => handlePageJump(-10)}
-                disabled={currentPage < 10}
-                className="pagination-button"
-                title="10페이지 이전"
-              >
-                ≪
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 0}
-                className="pagination-button"
-              >
-                이전
-              </button>
-
-              <div className="pagination-numbers">
-                {renderPageNumbers()}
+          {courses && (
+            <>
+              <div className="course-info">
+                총 {courses.totalElements}개의 과목 (페이지 {courses.page + 1} / {courses.totalPages})
               </div>
 
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage >= courses.totalPages - 1}
-                className="pagination-button"
-              >
-                다음
-              </button>
-              <button
-                onClick={() => handlePageJump(10)}
-                disabled={currentPage >= courses.totalPages - 10}
-                className="pagination-button"
-                title="10페이지 다음"
-              >
-                ≫
-              </button>
-            </div>
+              <div className="table-container">
+                <table className="course-table">
+                  <thead>
+                    <tr>
+                      <th>코드</th>
+                      <th>과목명</th>
+                      <th>교수</th>
+                      <th>이수구분</th>
+                      <th>학과</th>
+                      <th>학점</th>
+                      <th>시간</th>
+                      <th>정원</th>
+                      <th>강의실</th>
+                      <th>수강대상</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {courses.content.map((course: Course, index: number) => (
+                      <tr
+                        key={course.id || course.code}
+                        onClick={() => handleCourseClick(course, index)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <td>{course.code}</td>
+                        <td>{course.name}</td>
+                        <td>{course.professor || '-'}</td>
+                        <td>{getCategoryLabel(course.category)}</td>
+                        <td>{course.department}</td>
+                        <td>{course.point}</td>
+                        <td>{course.time}</td>
+                        <td>{course.personeel}</td>
+                        <td>{course.scheduleRoom}</td>
+                        <td>{course.target}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-            <form onSubmit={handlePageInputSubmit} className="page-jump">
-              <span className="page-jump-label">페이지 이동:</span>
-              <input
-                type="number"
-                min="1"
-                max={courses.totalPages}
-                placeholder={String(currentPage + 1)}
-                value={pageInput || currentPage + 1}
-                onChange={(e) => setPageInput(e.target.value)}
-                className="page-input"
-              />
-              <button type="submit" className="page-jump-button">이동</button>
-            </form>
-          </div>
-        </>
-      )}
+              <div className="pagination-wrapper">
+                <div className="pagination">
+                  <button
+                    onClick={() => handlePageJump(-10)}
+                    disabled={currentPage < 10}
+                    className="pagination-button"
+                    title="10페이지 이전"
+                  >
+                    ≪
+                  </button>
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 0}
+                    className="pagination-button"
+                  >
+                    이전
+                  </button>
+
+                  <div className="pagination-numbers">
+                    {renderPageNumbers()}
+                  </div>
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage >= courses.totalPages - 1}
+                    className="pagination-button"
+                  >
+                    다음
+                  </button>
+                  <button
+                    onClick={() => handlePageJump(10)}
+                    disabled={currentPage >= courses.totalPages - 10}
+                    className="pagination-button"
+                    title="10페이지 다음"
+                  >
+                    ≫
+                  </button>
+                </div>
+
+                <form onSubmit={handlePageInputSubmit} className="page-jump">
+                  <span className="page-jump-label">페이지 이동:</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max={courses.totalPages}
+                    placeholder={String(currentPage + 1)}
+                    value={pageInput || currentPage + 1}
+                    onChange={(e) => setPageInput(e.target.value)}
+                    className="page-input"
+                  />
+                  <button type="submit" className="page-jump-button">이동</button>
+                </form>
+              </div>
+            </>
+          )}
         </>
       ) : (
         <FilterTab
@@ -535,6 +535,10 @@ export const CourseList = () => {
                   <div className="info-item">
                     <strong>이수구분:</strong>
                     <span>{getCategoryLabel(selectedCourse.category)}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>교과영역:</strong>
+                    <span>{selectedCourse.field || '-'}</span>
                   </div>
                   <div className="info-item">
                     <strong>학과:</strong>
@@ -617,103 +621,103 @@ export const CourseList = () => {
                       </button>
                     </div>
 
-                  {showPolicyInfo && (
-                    <div className="policy-info">
-                      <h4>정책 평가 로직</h4>
-                      <ol>
-                        <li>모든 <strong className="deny-text">Deny</strong> 정책을 먼저 평가</li>
-                        <li>하나라도 Deny에 매칭되면 → <strong>수강 불가</strong></li>
-                        <li><strong className="allow-text">Allow</strong> 정책 중 하나라도 매칭되면 → <strong>수강 가능</strong></li>
-                        <li>아무것도 매칭되지 않으면 → <strong>수강 불가</strong> (기본 거부)</li>
-                      </ol>
-                      <p className="policy-note-inline">
-                        <strong>참고:</strong> Strict가 체크된 정책은 명시된 조건 외에는 수강이 불가능합니다 (대상외수강제한).
-                      </p>
-                    </div>
-                  )}
+                    {showPolicyInfo && (
+                      <div className="policy-info">
+                        <h4>정책 평가 로직</h4>
+                        <ol>
+                          <li>모든 <strong className="deny-text">Deny</strong> 정책을 먼저 평가</li>
+                          <li>하나라도 Deny에 매칭되면 → <strong>수강 불가</strong></li>
+                          <li><strong className="allow-text">Allow</strong> 정책 중 하나라도 매칭되면 → <strong>수강 가능</strong></li>
+                          <li>아무것도 매칭되지 않으면 → <strong>수강 불가</strong> (기본 거부)</li>
+                        </ol>
+                        <p className="policy-note-inline">
+                          <strong>참고:</strong> Strict가 체크된 정책은 명시된 조건 외에는 수강이 불가능합니다 (대상외수강제한).
+                        </p>
+                      </div>
+                    )}
 
-                  <div className="legend">
-                    <div className="legend-item">
-                      <span className="legend-color allowed"></span>
-                      <span><strong>Allow</strong>: 수강 허용 정책</span>
+                    <div className="legend">
+                      <div className="legend-item">
+                        <span className="legend-color allowed"></span>
+                        <span><strong>Allow</strong>: 수강 허용 정책</span>
+                      </div>
+                      <div className="legend-item">
+                        <span className="legend-color denied"></span>
+                        <span><strong>Deny</strong>: 수강 제한 정책 (우선순위 높음)</span>
+                      </div>
                     </div>
-                    <div className="legend-item">
-                      <span className="legend-color denied"></span>
-                      <span><strong>Deny</strong>: 수강 제한 정책 (우선순위 높음)</span>
-                    </div>
-                  </div>
 
-                  {!selectedCourse.targets || selectedCourse.targets.length === 0 ? (
-                    <div className="no-targets-message">
-                      <p>수강 대상이 없습니다.</p>
-                    </div>
-                  ) : (
-                    <table className="target-table">
-                    <thead>
-                      <tr>
-                        <th>정책 유형</th>
-                        <th>적용 범위</th>
-                        <th>대상</th>
-                        <th>1학년</th>
-                        <th>2학년</th>
-                        <th>3학년</th>
-                        <th>4학년</th>
-                        <th>5학년</th>
-                        <th>학생 구분</th>
-                        <th>대상외 제한</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* Deny 정책을 먼저 표시 */}
-                      {selectedCourse.targets
-                        .filter((target: TargetInfo) => target.isDenied)
-                        .map((target: TargetInfo, index: number) => (
-                          <tr key={`deny-${index}`} className="denied-row">
-                            <td>
-                              <span className="effect-badge deny-badge">Deny</span>
-                            </td>
-                            <td>
-                              {target.scopeType === 'UNIVERSITY' ? '전체' :
-                               target.scopeType === 'COLLEGE' ? '단과대' :
-                               '학과'}
-                            </td>
-                            <td>{target.scopeName || '-'}</td>
-                            <td>{target.grade1 ? '✓' : '-'}</td>
-                            <td>{target.grade2 ? '✓' : '-'}</td>
-                            <td>{target.grade3 ? '✓' : '-'}</td>
-                            <td>{target.grade4 ? '✓' : '-'}</td>
-                            <td>{target.grade5 ? '✓' : '-'}</td>
-                            <td>{getStudentTypeLabel(target.studentType)}</td>
-                            <td>{target.isStrict ? '✓' : '-'}</td>
+                    {!selectedCourse.targets || selectedCourse.targets.length === 0 ? (
+                      <div className="no-targets-message">
+                        <p>수강 대상이 없습니다.</p>
+                      </div>
+                    ) : (
+                      <table className="target-table">
+                        <thead>
+                          <tr>
+                            <th>정책 유형</th>
+                            <th>적용 범위</th>
+                            <th>대상</th>
+                            <th>1학년</th>
+                            <th>2학년</th>
+                            <th>3학년</th>
+                            <th>4학년</th>
+                            <th>5학년</th>
+                            <th>학생 구분</th>
+                            <th>대상외 제한</th>
                           </tr>
-                        ))}
+                        </thead>
+                        <tbody>
+                          {/* Deny 정책을 먼저 표시 */}
+                          {selectedCourse.targets
+                            .filter((target: TargetInfo) => target.isDenied)
+                            .map((target: TargetInfo, index: number) => (
+                              <tr key={`deny-${index}`} className="denied-row">
+                                <td>
+                                  <span className="effect-badge deny-badge">Deny</span>
+                                </td>
+                                <td>
+                                  {target.scopeType === 'UNIVERSITY' ? '전체' :
+                                    target.scopeType === 'COLLEGE' ? '단과대' :
+                                      '학과'}
+                                </td>
+                                <td>{target.scopeName || '-'}</td>
+                                <td>{target.grade1 ? '✓' : '-'}</td>
+                                <td>{target.grade2 ? '✓' : '-'}</td>
+                                <td>{target.grade3 ? '✓' : '-'}</td>
+                                <td>{target.grade4 ? '✓' : '-'}</td>
+                                <td>{target.grade5 ? '✓' : '-'}</td>
+                                <td>{getStudentTypeLabel(target.studentType)}</td>
+                                <td>{target.isStrict ? '✓' : '-'}</td>
+                              </tr>
+                            ))}
 
-                      {/* Allow 정책을 나중에 표시 */}
-                      {selectedCourse.targets
-                        .filter((target: TargetInfo) => !target.isDenied)
-                        .map((target: TargetInfo, index: number) => (
-                          <tr key={`allow-${index}`} className="allowed-row">
-                            <td>
-                              <span className="effect-badge allow-badge">Allow</span>
-                            </td>
-                            <td>
-                              {target.scopeType === 'UNIVERSITY' ? '전체' :
-                               target.scopeType === 'COLLEGE' ? '단과대' :
-                               '학과'}
-                            </td>
-                            <td>{target.scopeName || '-'}</td>
-                            <td>{target.grade1 ? '✓' : '-'}</td>
-                            <td>{target.grade2 ? '✓' : '-'}</td>
-                            <td>{target.grade3 ? '✓' : '-'}</td>
-                            <td>{target.grade4 ? '✓' : '-'}</td>
-                            <td>{target.grade5 ? '✓' : '-'}</td>
-                            <td>{getStudentTypeLabel(target.studentType)}</td>
-                            <td>{target.isStrict ? '✓' : '-'}</td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                  )}
+                          {/* Allow 정책을 나중에 표시 */}
+                          {selectedCourse.targets
+                            .filter((target: TargetInfo) => !target.isDenied)
+                            .map((target: TargetInfo, index: number) => (
+                              <tr key={`allow-${index}`} className="allowed-row">
+                                <td>
+                                  <span className="effect-badge allow-badge">Allow</span>
+                                </td>
+                                <td>
+                                  {target.scopeType === 'UNIVERSITY' ? '전체' :
+                                    target.scopeType === 'COLLEGE' ? '단과대' :
+                                      '학과'}
+                                </td>
+                                <td>{target.scopeName || '-'}</td>
+                                <td>{target.grade1 ? '✓' : '-'}</td>
+                                <td>{target.grade2 ? '✓' : '-'}</td>
+                                <td>{target.grade3 ? '✓' : '-'}</td>
+                                <td>{target.grade4 ? '✓' : '-'}</td>
+                                <td>{target.grade5 ? '✓' : '-'}</td>
+                                <td>{getStudentTypeLabel(target.studentType)}</td>
+                                <td>{target.isStrict ? '✓' : '-'}</td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    )}
                   </div>
                 </>
               )}
