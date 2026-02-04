@@ -19,24 +19,41 @@ class CourseReader(
         val course = courseRepository.get(code)
         if (course.category == Category.GENERAL_REQUIRED) {
             val targets = targetRepository.findAllByClass(department.id!!, code, grade)
-            return courseRepository.findAllById(targets.map { it.courseId })
+            return courseRepository.findAllById(targets.map { it.courseCode })
         }
         return courseRepository.findAllByClass(code)
     }
 
     fun findAllBy(category: Category, department: Department, grade: Int): List<Course> {
         val departmentId = department.id ?: return emptyList()
-        val targets = targetRepository.findAllByDepartmentGrade(departmentId, grade)
-        return courseRepository.findAllInCategory(category, targets.map { it.courseId })
+        val courseCodes = targetRepository.findAllByDepartmentGrade(departmentId, department.collegeId, grade)
+        return courseRepository.findAllInCategory(category, courseCodes)
     }
 
-    fun findAllInCategory(category: Category, courseIds: List<Long>, schoolId: Int): List<Course> {
-        val courses = courseRepository.findAllInCategory(category, courseIds)
+    fun findAllInCategory(category: Category?, courseCodes: List<Long>, schoolId: Int): List<Course> {
+        if (category == null) {
+            return findAllByCodes(courseCodes, schoolId)
+        }
+        val courses = courseRepository.findAllInCategory(category, courseCodes)
         return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(it.field?: throw FieldNullPointException(), schoolId)) }
     }
 
-    fun findAllInCategory(category: Category, courseIds: List<Long>, field: String, schoolId: Int): List<Course> {
-        val courses = courseRepository.findAllInCategory(category, courseIds)
+    private fun findAllByCodes(courseCodes: List<Long>, schoolId: Int): List<Course> {
+        val courses = courseRepository.findAllByCode(courseCodes)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(it.field?: throw FieldNullPointException(), schoolId)) }
+    }
+
+    fun findAllInCategory(category: Category?, courseCodes: List<Long>, field: String, schoolId: Int): List<Course> {
+        if (category == null) {
+            return findAllByCodesAndField(courseCodes, field, schoolId)
+        }
+        val courses = courseRepository.findAllInCategory(category, courseCodes)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(field, schoolId)) }
+            .filter { it.field?.contains(field) == true }
+    }
+
+    fun findAllByCodesAndField(courseCodes: List<Long>, field: String, schoolId: Int): List<Course> {
+        val courses = courseRepository.findAllByCode(courseCodes)
         return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(field, schoolId)) }
             .filter { it.field?.contains(field) == true }
     }
@@ -58,5 +75,13 @@ class CourseReader(
 
     fun getFieldsBySchoolId(schoolId: Int): List<String> {
         return fieldListFinder.getFieldsBySchoolId(schoolId)
+    }
+
+    fun getAllFieldsGrouped(): Map<Int, List<String>> {
+        return fieldListFinder.getAllFieldsGrouped()
+    }
+
+    fun findByCode(code: Long): Course {
+        return courseRepository.get(code)
     }
 }

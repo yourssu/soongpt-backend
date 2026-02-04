@@ -26,6 +26,12 @@ class DepartmentRepositoryImpl(
             ?.toDomain()
             ?: throw DepartmentNotFoundException()
     }
+
+    override fun get(id: Long): Department {
+        return departmentJpaRepository.findById(id)
+            .orElseThrow { DepartmentNotFoundException() }
+            .toDomain()
+    }
 }
 
 interface DepartmentJpaRepository : JpaRepository<DepartmentEntity, Long> {

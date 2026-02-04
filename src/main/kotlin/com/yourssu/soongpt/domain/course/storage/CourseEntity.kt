@@ -5,7 +5,16 @@ import com.yourssu.soongpt.domain.course.implement.Course
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "course")
+@Table(
+    name = "course",
+    indexes = [
+        Index(name = "idx_course_category", columnList = "category"),
+        Index(name = "idx_course_code_category", columnList = "code,category"),
+        Index(name = "idx_course_name", columnList = "name"),
+        Index(name = "idx_course_code", columnList = "code")
+    ]
+)
+
 class CourseEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +27,7 @@ class CourseEntity(
     @Column(nullable = true)
     val subCategory: String? = null,
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     val field: String? = null,
 
     @Column(nullable = false, unique = true)
@@ -50,6 +59,9 @@ class CourseEntity(
 
     @Column(nullable = false, columnDefinition = "TEXT")
     val target: String,
+
+    @Column(nullable = true)
+    val credit: Double? = null,
 ) {
     companion object {
         fun from(course: Course): CourseEntity {
@@ -66,9 +78,10 @@ class CourseEntity(
                 division = course.division,
                 time = course.time,
                 point = course.point,
-                personeel = 0,
+                personeel = course.personeel,
                 scheduleRoom = course.scheduleRoom,
                 target = course.target,
+                credit = course.credit,
             )
         }
     }
@@ -89,7 +102,8 @@ class CourseEntity(
             point = point,
             personeel = personeel,
             scheduleRoom = scheduleRoom,
-            target = target
+            target = target,
+            credit = credit,
         )
     }
 }

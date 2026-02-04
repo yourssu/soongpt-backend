@@ -33,3 +33,13 @@ rusaint:
   pseudonym-secret: ${RUSAINT_PSEUDONYM_SECRET}
   internal-jwt-secret: ${RUSAINT_INTERNAL_JWT_SECRET}
   internal-jwt-validity-minutes: ${RUSAINT_INTERNAL_JWT_VALIDITY_MINUTES:15}
+
+springdoc:
+  packages-to-scan: com.yourssu.soongpt
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger-ui
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
