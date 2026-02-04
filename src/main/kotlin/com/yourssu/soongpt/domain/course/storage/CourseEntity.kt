@@ -11,9 +11,10 @@ import jakarta.persistence.*
         Index(name = "idx_course_category", columnList = "category"),
         Index(name = "idx_course_code_category", columnList = "code,category"),
         Index(name = "idx_course_name", columnList = "name"),
-        Index(name = "idx_course_professor", columnList = "professor")
+        Index(name = "idx_course_code", columnList = "code")
     ]
 )
+
 class CourseEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

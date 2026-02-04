@@ -10,4 +10,5 @@ interface CourseService {
     fun findAllByCode(codes: List<Long>): List<CourseDetailResponse>
     fun getFields(schoolId: Int?): Any
     fun getAllFieldsGrouped(): Map<Int, List<String>>
+    fun getTargetsByCode(code: Long): CourseTargetResponse
 }
