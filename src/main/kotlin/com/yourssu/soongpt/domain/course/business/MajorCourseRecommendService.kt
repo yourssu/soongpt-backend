@@ -4,14 +4,10 @@ import com.yourssu.soongpt.domain.course.business.dto.GradeGroupResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorCourseRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.Category
-import com.yourssu.soongpt.domain.course.implement.Course
-import com.yourssu.soongpt.domain.course.implement.CourseGrouper
-import com.yourssu.soongpt.domain.course.implement.CourseReader
-import com.yourssu.soongpt.domain.course.implement.TakenCoursesFilter
+import com.yourssu.soongpt.domain.course.implement.CourseRepository
+import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import com.yourssu.soongpt.domain.course.implement.baseCode
-import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
-import com.yourssu.soongpt.domain.target.implement.TargetReader
 import org.springframework.stereotype.Service
 
 /**
@@ -20,9 +16,8 @@ import org.springframework.stereotype.Service
  */
 @Service
 class MajorCourseRecommendService(
-    private val courseReader: CourseReader,
+    private val courseRepository: CourseRepository,
     private val departmentReader: DepartmentReader,
-    private val targetReader: TargetReader,
 ) {
 
     /**
@@ -46,14 +41,19 @@ class MajorCourseRecommendService(
         }
 
         val department = departmentReader.getByName(departmentName)
-        val untakenCourses = getUntakenCourses(department, userGrade, category, takenSubjectCodes)
+        val untakenCourses = getUntakenCoursesWithTarget(
+            category = category,
+            departmentId = department.id!!,
+            collegeId = department.collegeId,
+            maxGrade = userGrade,
+            takenSubjectCodes = takenSubjectCodes,
+        )
 
         if (untakenCourses.isEmpty()) {
             return MajorCourseRecommendResponse.empty(category, progress)
         }
 
-        val groupedCourses = CourseGrouper.groupByBaseCode(untakenCourses)
-        val recommendedCourses = buildRecommendedCourses(groupedCourses, userGrade)
+        val recommendedCourses = buildRecommendedCourses(untakenCourses, userGrade)
 
         return MajorCourseRecommendResponse.of(
             category = category,
@@ -82,16 +82,19 @@ class MajorCourseRecommendService(
         }
 
         val department = departmentReader.getByName(departmentName)
-        val untakenCourses = getUntakenCourses(department, userGrade, category, takenSubjectCodes)
+        val untakenCourses = getUntakenCoursesWithTarget(
+            category = category,
+            departmentId = department.id!!,
+            collegeId = department.collegeId,
+            maxGrade = MAX_GRADE,
+            takenSubjectCodes = takenSubjectCodes,
+        )
 
         if (untakenCourses.isEmpty()) {
             return MajorCourseRecommendResponse.empty(category, progress)
         }
 
-        val groupedCourses = CourseGrouper.groupByBaseCode(untakenCourses)
-        val recommendedCourses = buildRecommendedCourses(groupedCourses, userGrade)
-
-        // 전선은 학년별 그룹핑 추가
+        val recommendedCourses = buildRecommendedCourses(untakenCourses, userGrade)
         val gradeGroups = buildGradeGroups(recommendedCourses)
 
         return MajorCourseRecommendResponse.of(
@@ -104,72 +107,72 @@ class MajorCourseRecommendService(
     }
 
     /**
-     * 개설 과목 중 미수강 과목 조회
+     * Target + Course join으로 미수강 과목 조회
      */
-    private fun getUntakenCourses(
-        department: Department,
-        userGrade: Int,
+    private fun getUntakenCoursesWithTarget(
         category: Category,
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int,
         takenSubjectCodes: List<String>,
-    ): List<Course> {
-        // 1. 카테고리별 학년 범위로 과목 코드 조회
-        val courseCodes = targetReader.findCourseCodesByCategory(department, userGrade, category)
+    ): List<CourseWithTarget> {
+        val coursesWithTarget = courseRepository.findCoursesWithTargetByCategory(
+            category = category,
+            departmentId = departmentId,
+            collegeId = collegeId,
+            maxGrade = maxGrade,
+        )
 
-        if (courseCodes.isEmpty()) {
+        if (coursesWithTarget.isEmpty()) {
             return emptyList()
         }
 
-        // 2. 과목 코드로 과목 정보 조회
-        val courses = courseReader.findAllInCategory(category, courseCodes, DEFAULT_SCHOOL_ID)
-
-        // 3. 이미 수강한 과목 제외
-        val takenBaseCodes = TakenCoursesFilter.extractBaseCodes(takenSubjectCodes)
-        return TakenCoursesFilter.excludeTakenCourses(courses, takenBaseCodes)
+        val takenBaseCodes = takenSubjectCodes.map { it.toLong() }.toSet()
+        return coursesWithTarget.filter { it.course.baseCode() !in takenBaseCodes }
     }
 
     /**
      * 분반 그룹을 추천 과목 응답으로 변환
+     * - 같은 baseCode를 가진 과목들을 그룹핑
+     * - Target의 grade 정보로 CourseTiming 판단
      */
     private fun buildRecommendedCourses(
-        groupedCourses: Map<Long, List<Course>>,
+        coursesWithTarget: List<CourseWithTarget>,
         userGrade: Int,
     ): List<RecommendedCourseResponse> {
-        return groupedCourses.map { (_, sections) ->
-            val targetGrade = extractTargetGrade(sections.first())
-            RecommendedCourseResponse.from(sections, targetGrade, userGrade)
-        }.sortedWith(
-            compareBy(
-                { it.timing.ordinal }, // LATE 먼저
-                { it.targetGrade },    // 낮은 학년 먼저
-                { it.courseName }      // 이름순
+        return coursesWithTarget
+            .groupBy { it.course.baseCode() }
+            .map { (_, sections) ->
+                val representative = sections.first()
+                RecommendedCourseResponse.from(
+                    courses = sections.map { it.course },
+                    targetGrades = representative.targetGrades,
+                    isLate = representative.isLateFor(userGrade),
+                )
+            }
+            .sortedWith(
+                compareBy(
+                    { it.timing.ordinal },
+                    { it.targetGrades.maxOrNull() ?: 1 },
+                    { it.courseName },
+                )
             )
-        )
     }
 
     /**
      * 학년별 그룹핑 (전선용)
+     * - targetGrades의 최대값 기준으로 그룹핑
      */
     private fun buildGradeGroups(courses: List<RecommendedCourseResponse>): List<GradeGroupResponse> {
         return courses
-            .groupBy { it.targetGrade }
+            .groupBy { it.targetGrades.maxOrNull() ?: 1 }
             .map { (grade, groupCourses) ->
                 GradeGroupResponse(grade = grade, courses = groupCourses)
             }
             .sortedBy { it.grade }
     }
 
-    /**
-     * 과목의 권장 이수 학년 추출
-     * target 문자열에서 학년 정보 파싱
-     */
-    private fun extractTargetGrade(course: Course): Int {
-        val targetText = course.target
-        // "1학년", "2학년" 등의 패턴에서 숫자 추출
-        val gradeMatch = Regex("(\\d)학년").find(targetText)
-        return gradeMatch?.groupValues?.get(1)?.toIntOrNull() ?: 1
-    }
-
     companion object {
-        private const val DEFAULT_SCHOOL_ID = 1
+        private const val MAX_GRADE = 5
     }
 }

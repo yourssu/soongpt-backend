@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.implement
 
-private const val DIVISION_DIVISOR = 100
+/** 분반 코드 자릿수 (10자리 중 뒤 2자리) */
+const val DIVISION_DIVISOR = 100
 
 fun Course.isWeekend(): Boolean =
     scheduleRoom.contains("토") || scheduleRoom.contains("일")

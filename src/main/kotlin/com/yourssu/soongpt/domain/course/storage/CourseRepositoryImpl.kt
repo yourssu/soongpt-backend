@@ -1,11 +1,18 @@
 package com.yourssu.soongpt.domain.course.storage
 
+import com.querydsl.core.types.Projections
+import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
+import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
+import com.yourssu.soongpt.domain.course.implement.DIVISION_DIVISOR
 import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
+import com.yourssu.soongpt.domain.target.implement.ScopeType
+import com.yourssu.soongpt.domain.target.implement.StudentType
+import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -13,8 +20,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Component
-
-private const val DIVISION_DIVISOR = 100
 
 @Component
 class CourseRepositoryImpl(
@@ -96,6 +101,92 @@ class CourseRepositoryImpl(
             .map { it.toDomain() }
     }
 
+    override fun findCoursesWithTargetByCategory(
+        category: Category,
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int,
+    ): List<CourseWithTarget> {
+        val scopeCondition = buildScopeCondition(departmentId, collegeId)
+        val gradeCondition = buildGradeRangeCondition(maxGrade)
+
+        // Allow 과목 조회 (Target 정보 포함)
+        val allowResults = jpaQueryFactory
+            .select(
+                Projections.tuple(
+                    courseEntity,
+                    targetEntity.grade1,
+                    targetEntity.grade2,
+                    targetEntity.grade3,
+                    targetEntity.grade4,
+                    targetEntity.grade5,
+                )
+            )
+            .from(courseEntity)
+            .innerJoin(targetEntity).on(courseEntity.code.eq(targetEntity.courseCode))
+            .where(
+                courseEntity.category.eq(category),
+                targetEntity.studentType.eq(StudentType.GENERAL),
+                targetEntity.isDenied.isFalse,
+                gradeCondition,
+                scopeCondition,
+            )
+            .fetch()
+
+        if (allowResults.isEmpty()) {
+            return emptyList()
+        }
+
+        // Deny 과목 코드 조회
+        val denyCodes = jpaQueryFactory
+            .select(targetEntity.courseCode)
+            .from(targetEntity)
+            .where(
+                targetEntity.studentType.eq(StudentType.GENERAL),
+                targetEntity.isDenied.isTrue,
+                gradeCondition,
+                scopeCondition,
+            )
+            .fetch()
+            .toSet()
+
+        // Allow - Deny 적용 및 CourseWithTarget 변환
+        return allowResults
+            .filter { it.get(courseEntity)!!.code !in denyCodes }
+            .map { tuple ->
+                CourseWithTarget(
+                    course = tuple.get(courseEntity)!!.toDomain(),
+                    targetGrades = CourseWithTarget.extractTargetGrades(
+                        grade1 = tuple.get(targetEntity.grade1) ?: false,
+                        grade2 = tuple.get(targetEntity.grade2) ?: false,
+                        grade3 = tuple.get(targetEntity.grade3) ?: false,
+                        grade4 = tuple.get(targetEntity.grade4) ?: false,
+                        grade5 = tuple.get(targetEntity.grade5) ?: false,
+                    ),
+                )
+            }
+    }
+
+    private fun buildScopeCondition(departmentId: Long, collegeId: Long): BooleanExpression {
+        return targetEntity.scopeType.eq(ScopeType.UNIVERSITY)
+            .or(
+                targetEntity.scopeType.eq(ScopeType.COLLEGE)
+                    .and(targetEntity.collegeId.eq(collegeId))
+            )
+            .or(
+                targetEntity.scopeType.eq(ScopeType.DEPARTMENT)
+                    .and(targetEntity.departmentId.eq(departmentId))
+            )
+    }
+
+    private fun buildGradeRangeCondition(maxGrade: Int): BooleanExpression {
+        var condition = targetEntity.grade1.isTrue
+        if (maxGrade >= 2) condition = condition.or(targetEntity.grade2.isTrue)
+        if (maxGrade >= 3) condition = condition.or(targetEntity.grade3.isTrue)
+        if (maxGrade >= 4) condition = condition.or(targetEntity.grade4.isTrue)
+        if (maxGrade >= 5) condition = condition.or(targetEntity.grade5.isTrue)
+        return condition
+    }
 }
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {

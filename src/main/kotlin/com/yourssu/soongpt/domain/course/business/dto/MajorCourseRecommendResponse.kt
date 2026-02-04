@@ -7,18 +7,12 @@ import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 
 /**
  * 과목의 권장 학년 대비 수강 시점 상태
- * - LATE: 권장 학년이 지났으나 미이수
- * - ON_TIME: 현재 학년에 해당하는 과목
+ * - LATE: 대상 학년이 지났으나 미이수
+ * - ON_TIME: 현재 학년이 대상 학년에 포함됨
  */
 enum class CourseTiming {
     LATE,
     ON_TIME;
-
-    companion object {
-        fun of(targetGrade: Int, userGrade: Int): CourseTiming {
-            return if (targetGrade < userGrade) LATE else ON_TIME
-        }
-    }
 }
 
 /**
@@ -100,23 +94,23 @@ data class RecommendedCourseResponse(
     val baseCourseCode: Long,
     val courseName: String,
     val credits: Double?,
-    val targetGrade: Int,
+    val targetGrades: List<Int>,
     val timing: CourseTiming,
     val sections: List<SectionResponse>,
 ) {
     companion object {
         fun from(
             courses: List<Course>,
-            targetGrade: Int,
-            userGrade: Int,
+            targetGrades: List<Int>,
+            isLate: Boolean,
         ): RecommendedCourseResponse {
             val representative = courses.first()
             return RecommendedCourseResponse(
                 baseCourseCode = representative.baseCode(),
                 courseName = representative.name,
                 credits = representative.credit,
-                targetGrade = targetGrade,
-                timing = CourseTiming.of(targetGrade, userGrade),
+                targetGrades = targetGrades,
+                timing = if (isLate) CourseTiming.LATE else CourseTiming.ON_TIME,
                 sections = courses.map { SectionResponse.from(it) },
             )
         }
