@@ -145,6 +145,18 @@ class TargetRepositoryImpl(
         if (maxGrade >= 5) condition = condition.or(targetEntity.grade5.isTrue)
         return condition
     }
+
+
+    override fun saveAll(targets: List<Target>): List<Target> {
+        val entities = targets.map { TargetEntity.from(it) }
+        return targetJpaRepository.saveAll(entities).map { it.toDomain() }
+    }
+
+    override fun deleteAllByCourseCode(courseCode: Long) {
+        targetJpaRepository.deleteAllByCourseCode(courseCode)
+    }
 }
 
-interface TargetJpaRepository : JpaRepository<TargetEntity, Long>
+interface TargetJpaRepository : JpaRepository<TargetEntity, Long> {
+    fun deleteAllByCourseCode(courseCode: Long)
+}

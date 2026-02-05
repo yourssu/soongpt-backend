@@ -27,6 +27,9 @@ rusaint:
   pseudonym-secret: test-secret
   internal-jwt-secret: test-jwt-secret
 
+admin:
+  password: test-admin-password
+
 logging:
   level:
     org.springframework: DEBUG

@@ -25,4 +25,6 @@ interface CourseRepository {
         collegeId: Long,
         maxGrade: Int,
     ): List<CourseWithTarget>
+    fun save(course: Course): Course
+    fun delete(code: Long)
 }

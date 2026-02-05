@@ -37,5 +37,11 @@ class TargetReader(
                 )
             else -> emptyList()
         }
+    fun saveAll(targets: List<Target>): List<Target> {
+        return targetRepository.saveAll(targets)
+    }
+
+    fun deleteAllByCourseCode(courseCode: Long) {
+        targetRepository.deleteAllByCourseCode(courseCode)
     }
 }

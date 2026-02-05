@@ -9,6 +9,51 @@ h1 {
   margin-bottom: 20px;
 }
 
+.header-with-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.create-new-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-new-button:hover {
+  background-color: #218838;
+}
+
+.password-action-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.password-action-button:hover {
+  background-color: #5a6268;
+}
+
 /* Tabs */
 .tabs {
   display: flex;
@@ -394,6 +439,7 @@ h1 {
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -404,6 +450,13 @@ h1 {
   padding: 20px;
   border-bottom: 1px solid #ddd;
   gap: 12px;
+  position: relative;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .modal-title-container {
@@ -470,27 +523,13 @@ h1 {
   opacity: 0.5;
 }
 
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 32px;
-  cursor: pointer;
-  color: #666;
-  line-height: 1;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.modal-close:hover {
-  color: #333;
-}
+
+
 
 .modal-body {
   padding: 20px;
+  overflow-x: hidden;
 }
 
 .course-info-detail {
@@ -529,6 +568,28 @@ h1 {
   grid-column: 1 / -1;
 }
 
+.info-item input,
+.info-item select,
+.info-item textarea {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+.info-item textarea {
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.multiline-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 @media (max-width: 768px) {
   .info-grid {
     grid-template-columns: 1fr;
@@ -541,6 +602,7 @@ h1 {
 
 .target-table-container {
   margin-top: 20px;
+  overflow-x: hidden;
 }
 
 .header-with-help {
@@ -798,6 +860,162 @@ h1 {
   }
 }
 
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.edit-button.save {
+  background-color: #28a745;
+}
+
+.edit-button.save:hover {
+  background-color: #218838;
+}
+
+.edit-button.cancel {
+  background-color: #6c757d;
+}
+
+.edit-button.cancel:hover {
+  background-color: #5a6268;
+}
+
+.edit-button.delete {
+  background-color: #dc3545;
+}
+
+.edit-button.delete:hover {
+  background-color: #c82333;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Toggle Group for Allow/Deny */
+.toggle-group {
+  display: flex;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.toggle-btn {
+  border: none;
+  background: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #6c757d;
+  transition: all 0.2s;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.toggle-btn.active {
+  background-color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.toggle-btn.allow.active {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.toggle-btn.deny.active {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.toggle-btn.strict {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 6px 12px;
+}
+
+.toggle-btn.strict.active {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.badge-allow {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-deny {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Checkbox Container override for delete/strict if needed */
+.add-target-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-target-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-target-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
 .deny-text {
   color: #dc3545;
 }
@@ -857,6 +1075,7 @@ h1 {
   border: 1px solid #ddd;
   font-size: 14px;
   color: #333;
+  white-space: nowrap;
 }
 
 .target-table th {
@@ -933,4 +1152,70 @@ h1 {
   .target-table td {
     padding: 6px;
   }
+}
+
+/* Course Time Edit Styles */
+.course-times-edit-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.course-time-edit-card {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  position: relative;
+}
+
+.course-time-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.course-time-edit-row label {
+  font-weight: 500;
+  min-width: 60px;
+  font-size: 14px;
+}
+
+.course-time-edit-row input,
+.course-time-edit-row select {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.course-time-edit-card .delete-button {
+  grid-column: span 2;
+  justify-self: center;
+  margin-top: 8px;
+}
+
+.add-course-time-container {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.add-course-time-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-course-time-button:hover {
+  background-color: #138496;
 }

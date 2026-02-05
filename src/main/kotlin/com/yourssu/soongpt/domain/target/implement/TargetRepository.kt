@@ -7,4 +7,6 @@ interface TargetRepository {
 
     /** 1학년부터 maxGrade까지 해당하는 과목 코드 조회 (전기/전필용) */
     fun findAllByDepartmentGradeRange(departmentId: Long, collegeId: Long, maxGrade: Int): List<Long>
+    fun saveAll(targets: List<Target>): List<Target>
+    fun deleteAllByCourseCode(courseCode: Long)
 }
