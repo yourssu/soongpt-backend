@@ -222,6 +222,17 @@ export const CourseList = () => {
   };
 
   const navigateToCourse = async (direction: 'prev' | 'next') => {
+    // 수정 모드에서는 확인 후 진행
+    if (editMode) {
+      const confirmed = window.confirm('수정 중인 내용이 저장되지 않습니다. 다른 과목으로 이동하시겠습니까?');
+      if (!confirmed) return;
+
+      // 수정 모드 종료
+      setEditMode(false);
+      setEditedCourse(null);
+      setIsCreatingNew(false);
+    }
+
     // 필터 탭에서는 filteredCourses 사용, 검색 탭에서는 courses 사용
     const currentList = activeTab === 'filter' ? filteredCourses : courses?.content;
     if (!currentList) return;
@@ -303,6 +314,14 @@ export const CourseList = () => {
   };
 
   const closeModal = () => {
+    if (editMode) {
+      const confirmed = window.confirm('수정 중인 내용이 저장되지 않습니다. 나가시겠습니까?');
+      if (!confirmed) return;
+
+      setEditMode(false);
+      setEditedCourse(null);
+      setIsCreatingNew(false);
+    }
     setSelectedCourse(null);
   };
 
@@ -325,7 +344,7 @@ export const CourseList = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedCourse, currentCourseIndex, courses]);
+  }, [selectedCourse, currentCourseIndex, courses, editMode, isCreatingNew]);
 
   const getStudentTypeLabel = (type: string): string => {
     const labels: Record<string, string> = {
@@ -347,6 +366,9 @@ export const CourseList = () => {
   };
 
   const cancelEdit = () => {
+    const confirmed = window.confirm('수정 중인 내용이 저장되지 않습니다. 취소하시겠습니까?');
+    if (!confirmed) return;
+
     if (isCreatingNew) {
       cancelCreateNew();
     } else {
