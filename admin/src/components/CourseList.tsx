@@ -631,7 +631,6 @@ export const CourseList = () => {
                 )}
               </div>
               <div className="header-right">
-
                 <button
                   className="nav-button nav-next"
                   onClick={() => navigateToCourse('next')}
@@ -644,7 +643,6 @@ export const CourseList = () => {
                 >
                   →
                 </button>
-                <button className="modal-close" onClick={closeModal}>×</button>
               </div>
             </div>
             <div className="modal-body">
@@ -800,19 +798,18 @@ export const CourseList = () => {
                   {/* Course Times Section - 위로 이동 */}
                   <div className="course-times-section">
                     <div className="section-header">
-                      <div className="header-left-group">
-                        {editMode ? (
-                          <div className="edit-actions">
-                            <button className="edit-button save" onClick={saveEdit}>저장</button>
-                            <button className="edit-button cancel" onClick={cancelEdit}>취소</button>
-                          </div>
-                        ) : (
-                          <div className="edit-actions">
-                            <button className="edit-button" onClick={startEdit}>수정</button>
-                          </div>
-                        )}
-                        <h3>강의 시간</h3>
-                      </div>
+                      <h3>강의 시간</h3>
+                      <div className="spacer" style={{ flex: 1 }}></div>
+                      {editMode ? (
+                        <div className="edit-actions">
+                          <button className="edit-button save" onClick={saveEdit}>저장</button>
+                          <button className="edit-button cancel" onClick={cancelEdit}>취소</button>
+                        </div>
+                      ) : (
+                        <div className="edit-actions">
+                          <button className="edit-button" onClick={startEdit}>수정</button>
+                        </div>
+                      )}
                       <button
                         className="toggle-button"
                         onClick={() => setShowCourseTimes(!showCourseTimes)}
