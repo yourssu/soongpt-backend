@@ -13,29 +13,26 @@ import org.springframework.stereotype.Service
 
 @Service
 class CourseServiceImpl(
-    private val courseReader: CourseReader,
-    private val departmentReader: DepartmentReader,
-    private val targetReader: TargetReader,
-    private val collegeReader: CollegeReader,
+        private val courseReader: CourseReader,
+        private val departmentReader: DepartmentReader,
+        private val targetReader: TargetReader,
+        private val collegeReader: CollegeReader,
 ) : CourseService {
     override fun findAll(query: FilterCoursesQuery): List<CourseResponse> {
         val department = departmentReader.getByName(query.departmentName)
         val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
 
-        val courses = if (query.field != null) {
-            courseReader.findAllInCategory(
-                query.category,
-                courseCodes,
-                query.field,
-                query.schoolId
-            )
-        } else {
-            courseReader.findAllInCategory(
-                query.category,
-                courseCodes,
-                query.schoolId
-            )
-        }
+        val courses =
+                if (query.field != null) {
+                    courseReader.findAllInCategory(
+                            query.category,
+                            courseCodes,
+                            query.field,
+                            query.schoolId
+                    )
+                } else {
+                    courseReader.findAllInCategory(query.category, courseCodes, query.schoolId)
+                }
 
         return courses.map { course ->
             val courseTimes = CourseTimes.from(course.scheduleRoom)
@@ -76,47 +73,54 @@ class CourseServiceImpl(
         val targets = targetReader.findAllByCode(code)
         val courseTimes = CourseTimes.from(course.scheduleRoom)
 
-        val targetInfos = targets.map { target ->
-            val scopeName = when (target.scopeType) {
-                ScopeType.UNIVERSITY -> "전체"
-                ScopeType.COLLEGE -> target.collegeId?.let { collegeReader.get(it).name }
-                ScopeType.DEPARTMENT -> target.departmentId?.let { departmentReader.get(it).name }
-            }
+        val targetInfos =
+                targets.map { target ->
+                    val scopeName =
+                            when (target.scopeType) {
+                                ScopeType.UNIVERSITY -> "전체"
+                                ScopeType.COLLEGE ->
+                                        target.collegeId?.let { collegeReader.get(it).name }
+                                ScopeType.DEPARTMENT ->
+                                        target.departmentId?.let { departmentReader.get(it).name }
+                            }
 
-            TargetInfo(
-                scopeType = target.scopeType,
-                scopeId = target.departmentId ?: target.collegeId,
-                scopeName = scopeName,
-                grade1 = target.grade1,
-                grade2 = target.grade2,
-                grade3 = target.grade3,
-                grade4 = target.grade4,
-                grade5 = target.grade5,
-                studentType = target.studentType,
-                isStrict = target.isStrict,
-                isDenied = target.isDenied
-            )
-        }
+                    TargetInfo(
+                            id = target.id,
+                            scopeType = target.scopeType,
+                            scopeId = target.departmentId ?: target.collegeId,
+                            scopeName = scopeName,
+                            grade1 = target.grade1,
+                            grade2 = target.grade2,
+                            grade3 = target.grade3,
+                            grade4 = target.grade4,
+                            grade5 = target.grade5,
+                            studentType = target.studentType,
+                            isStrict = target.isStrict,
+                            isDenied = target.isDenied
+                    )
+                }
 
-        val courseTimeResponses = courseTimes.toList()
-            .map { com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse.from(it) }
+        val courseTimeResponses =
+                courseTimes.toList().map {
+                    com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse.from(it)
+                }
 
         return CourseTargetResponse(
-            code = course.code,
-            name = course.name,
-            professor = course.professor,
-            category = course.category,
-            subCategory = course.subCategory,
-            department = course.department,
-            division = course.division,
-            point = course.point,
-            time = course.time,
-            personeel = course.personeel,
-            scheduleRoom = course.scheduleRoom,
-            targetText = course.target,
-            field = course.field,
-            courseTimes = courseTimeResponses,
-            targets = targetInfos
+                code = course.code,
+                name = course.name,
+                professor = course.professor,
+                category = course.category,
+                subCategory = course.subCategory,
+                department = course.department,
+                division = course.division,
+                point = course.point,
+                time = course.time,
+                personeel = course.personeel,
+                scheduleRoom = course.scheduleRoom,
+                targetText = course.target,
+                field = course.field,
+                courseTimes = courseTimeResponses,
+                targets = targetInfos
         )
     }
 
@@ -125,15 +129,21 @@ class CourseServiceImpl(
         val department = departmentReader.getByName(query.departmentName)
         val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
         if (query.field == null) {
-            val courses = courseReader.findAllInCategory(Category.GENERAL_REQUIRED, courseCodes, query.schoolId)
+            val courses =
+                    courseReader.findAllInCategory(
+                            Category.GENERAL_REQUIRED,
+                            courseCodes,
+                            query.schoolId
+                    )
             return courses.map { GeneralRequiredResponse.from(it) }
         }
-        val courses = courseReader.findAllInCategory(
-            Category.GENERAL_REQUIRED,
-            courseCodes,
-            query.field,
-            query.schoolId
-        )
+        val courses =
+                courseReader.findAllInCategory(
+                        Category.GENERAL_REQUIRED,
+                        courseCodes,
+                        query.field,
+                        query.schoolId
+                )
         return courses.map { GeneralRequiredResponse.from(it) }
     }
 
@@ -141,7 +151,8 @@ class CourseServiceImpl(
     fun findAll(query: MajorRequiredCourseQuery): List<MajorRequiredResponse> {
         val department = departmentReader.getByName(query.departmentName)
         val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
-        val courses = courseReader.findAllInCategory(Category.MAJOR_REQUIRED, courseCodes, query.schoolId)
+        val courses =
+                courseReader.findAllInCategory(Category.MAJOR_REQUIRED, courseCodes, query.schoolId)
         return courses.map { MajorRequiredResponse.from(it) }
     }
 
@@ -149,27 +160,29 @@ class CourseServiceImpl(
     fun findAll(query: MajorElectiveCourseQuery): List<MajorElectiveResponse> {
         val department = departmentReader.getByName(query.departmentName)
         val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
-        val courses = courseReader.findAllInCategory(Category.MAJOR_ELECTIVE, courseCodes, query.schoolId)
+        val courses =
+                courseReader.findAllInCategory(Category.MAJOR_ELECTIVE, courseCodes, query.schoolId)
         return courses.map { MajorElectiveResponse.from(it) }
     }
 
     override fun updateCourse(code: Long, command: UpdateCourseCommand): CourseDetailResponse {
         val existingCourse = courseReader.findByCode(code)
-        
-        val updatedCourse = existingCourse.copy(
-            category = command.category,
-            subCategory = command.subCategory,
-            field = command.field,
-            name = command.name,
-            professor = command.professor,
-            department = command.department,
-            division = command.division,
-            time = command.time,
-            point = command.point,
-            personeel = command.personeel,
-            scheduleRoom = command.scheduleRoom,
-            target = command.target
-        )
+
+        val updatedCourse =
+                existingCourse.copy(
+                        category = command.category,
+                        subCategory = command.subCategory,
+                        field = command.field,
+                        name = command.name,
+                        professor = command.professor,
+                        department = command.department,
+                        division = command.division,
+                        time = command.time,
+                        point = command.point,
+                        personeel = command.personeel,
+                        scheduleRoom = command.scheduleRoom,
+                        target = command.target
+                )
 
         val savedCourse = courseReader.save(updatedCourse)
         val courseTimes = CourseTimes.from(savedCourse.scheduleRoom)
@@ -184,35 +197,39 @@ class CourseServiceImpl(
         targetReader.deleteAllByCourseCode(code)
 
         // Create new targets from command
-        val newTargets = command.targets.map {
-            val scopeId = if (it.scopeId != null) {
-                it.scopeId
-            } else if (it.scopeName != null) {
-                when (it.scopeType) {
-                    ScopeType.COLLEGE -> collegeReader.getByName(it.scopeName).id
-                    ScopeType.DEPARTMENT -> departmentReader.getByName(it.scopeName).id
-                    else -> null
-                }
-            } else {
-                null
-            }
+        val newTargets =
+                command.targets.map {
+                    val scopeId =
+                            if (it.scopeId != null) {
+                                it.scopeId
+                            } else if (it.scopeName != null) {
+                                when (it.scopeType) {
+                                    ScopeType.COLLEGE -> collegeReader.getByName(it.scopeName).id
+                                    ScopeType.DEPARTMENT ->
+                                            departmentReader.getByName(it.scopeName).id
+                                    else -> null
+                                }
+                            } else {
+                                null
+                            }
 
-            com.yourssu.soongpt.domain.target.implement.Target(
-                courseCode = code,
-                id = it.id,
-                scopeType = it.scopeType,
-                collegeId = if (it.scopeType == ScopeType.COLLEGE) scopeId else null,
-                departmentId = if (it.scopeType == ScopeType.DEPARTMENT) scopeId else null,
-                grade1 = it.grade1,
-                grade2 = it.grade2,
-                grade3 = it.grade3,
-                grade4 = it.grade4,
-                grade5 = it.grade5,
-                studentType = it.studentType,
-                isStrict = it.isStrict,
-                isDenied = it.isDenied
-            )
-        }
+                    com.yourssu.soongpt.domain.target.implement.Target(
+                            courseCode = code,
+                            id = it.id,
+                            scopeType = it.scopeType,
+                            collegeId = if (it.scopeType == ScopeType.COLLEGE) scopeId else null,
+                            departmentId =
+                                    if (it.scopeType == ScopeType.DEPARTMENT) scopeId else null,
+                            grade1 = it.grade1,
+                            grade2 = it.grade2,
+                            grade3 = it.grade3,
+                            grade4 = it.grade4,
+                            grade5 = it.grade5,
+                            studentType = it.studentType,
+                            isStrict = it.isStrict,
+                            isDenied = it.isDenied
+                    )
+                }
 
         // Save new targets
         targetReader.saveAll(newTargets)
