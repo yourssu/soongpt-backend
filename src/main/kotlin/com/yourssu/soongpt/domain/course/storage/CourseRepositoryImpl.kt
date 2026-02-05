@@ -96,6 +96,17 @@ class CourseRepositoryImpl(
             .map { it.toDomain() }
     }
 
+
+
+    override fun save(course: Course): Course {
+        return courseJpaRepository.save(CourseEntity.from(course)).toDomain()
+    }
+
+    override fun delete(code: Long) {
+        val entity = courseJpaRepository.getByCode(code)
+        courseJpaRepository.delete(entity)
+    }
+
 }
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {

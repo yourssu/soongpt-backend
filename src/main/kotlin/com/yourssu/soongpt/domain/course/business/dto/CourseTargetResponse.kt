@@ -10,7 +10,9 @@ data class CourseTargetResponse(
     val name: String,
     val professor: String?,
     val category: Category,
+    val subCategory: String?,
     val department: String,
+    val division: String?,
     val point: String,
     val time: String,
     val personeel: Int,
@@ -22,6 +24,7 @@ data class CourseTargetResponse(
 )
 
 data class TargetInfo(
+    val id: Long?,
     val scopeType: ScopeType,
     val scopeId: Long?,
     val scopeName: String?,
