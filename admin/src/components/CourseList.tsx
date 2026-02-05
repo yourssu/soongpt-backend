@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { courseApi } from '../api/courseApi';
-import type { Course, CoursesResponse, CourseTargetResponse, TargetInfo } from '../types/course';
+import type { Course, CoursesResponse, CourseTargetResponse, TargetInfo, CourseTime } from '../types/course';
 import { FilterTab } from './FilterTab';
 import { PasswordModal } from './PasswordModal';
 import { colleges, departments, categories } from '../data/departments';
@@ -26,7 +26,7 @@ export const CourseList = () => {
   const [editedCourse, setEditedCourse] = useState<CourseTargetResponse | null>(null);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [_isAuthenticated, setIsAuthenticated] = useState(false);
   const [canSkipPassword, setCanSkipPassword] = useState(false);
   const [showResetButton, setShowResetButton] = useState(false);
 
