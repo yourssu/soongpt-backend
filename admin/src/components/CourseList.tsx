@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { courseApi } from '../api/courseApi';
 import type { Course, CoursesResponse, CourseTargetResponse, TargetInfo } from '../types/course';
 import { FilterTab } from './FilterTab';
+import { PasswordModal } from './PasswordModal';
 import { colleges, departments, categories } from '../data/departments';
 import './CourseList.css';
 
@@ -24,6 +25,33 @@ export const CourseList = () => {
   const [editMode, setEditMode] = useState(false);
   const [editedCourse, setEditedCourse] = useState<CourseTargetResponse | null>(null);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [canSkipPassword, setCanSkipPassword] = useState(false);
+
+  // Check if password is set on mount
+  useEffect(() => {
+    const savedPassword = localStorage.getItem('adminPassword');
+    if (!savedPassword) {
+      setShowPasswordModal(true);
+      setCanSkipPassword(true); // Allow skipping on initial load
+    } else {
+      setIsAuthenticated(true);
+    }
+
+    // Listen for auth failures
+    const handleAuthFailed = () => {
+      setIsAuthenticated(false);
+      setShowPasswordModal(true);
+      setCanSkipPassword(true); // Allow skipping on auth failure
+      alert('비밀번호가 올바르지 않습니다. 다시 입력해주세요.');
+    };
+
+    window.addEventListener('admin-auth-failed', handleAuthFailed);
+    return () => {
+      window.removeEventListener('admin-auth-failed', handleAuthFailed);
+    };
+  }, []);
 
   // 검색어 디바운싱
   useEffect(() => {
@@ -383,9 +411,11 @@ export const CourseList = () => {
 
       // Refresh list
       fetchCourses(currentPage, debouncedQuery);
-    } catch (err) {
+    } catch (err: any) {
       console.error('저장 실패:', err);
-      alert('저장에 실패했습니다.');
+      if (err.response?.status !== 401) {
+        alert('저장에 실패했습니다.');
+      }
     } finally {
       setTargetLoading(false);
     }
@@ -407,9 +437,11 @@ export const CourseList = () => {
       setEditedCourse(null);
       // Refresh list
       fetchCourses(currentPage, debouncedQuery);
-    } catch (err) {
+    } catch (err: any) {
       console.error('삭제 실패:', err);
-      alert('삭제에 실패했습니다.');
+      if (err.response?.status !== 401) {
+        alert('삭제에 실패했습니다.');
+      }
     } finally {
       setTargetLoading(false);
     }
@@ -503,9 +535,11 @@ export const CourseList = () => {
       setIsCreatingNew(false);
       // Refresh list
       fetchCourses(currentPage, debouncedQuery);
-    } catch (err) {
+    } catch (err: any) {
       console.error('생성 실패:', err);
-      alert('과목 생성에 실패했습니다.');
+      if (err.response?.status !== 401) {
+        alert('과목 생성에 실패했습니다.');
+      }
     } finally {
       setTargetLoading(false);
     }
@@ -516,6 +550,25 @@ export const CourseList = () => {
     setEditMode(false);
     setEditedCourse(null);
     setIsCreatingNew(false);
+  };
+
+  const handlePasswordSubmit = (password: string) => {
+    localStorage.setItem('adminPassword', password);
+    setIsAuthenticated(true);
+    setShowPasswordModal(false);
+    setCanSkipPassword(false);
+  };
+
+  const handleSkipPassword = () => {
+    setShowPasswordModal(false);
+    setCanSkipPassword(false);
+  };
+
+  const handleResetPassword = () => {
+    localStorage.removeItem('adminPassword');
+    setIsAuthenticated(false);
+    setShowPasswordModal(true);
+    setCanSkipPassword(true);
   };
 
   const handleInputChange = (field: keyof CourseTargetResponse, value: any) => {
@@ -633,9 +686,22 @@ export const CourseList = () => {
 
   return (
     <div className="course-list-container">
+      <PasswordModal
+        isOpen={showPasswordModal}
+        onSubmit={handlePasswordSubmit}
+        onSkip={canSkipPassword ? handleSkipPassword : undefined}
+      />
+
       <div className="header-with-button">
         <h1>과목 관리</h1>
-        <button className="create-new-button" onClick={startCreateNew}>+ 새 과목 추가</button>
+        <div className="header-actions">
+          <button className="create-new-button" onClick={startCreateNew}>+ 새 과목 추가</button>
+          {isAuthenticated && (
+            <button className="password-action-button reset" onClick={handleResetPassword}>
+              🔄 비밀번호 재설정
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="tabs">

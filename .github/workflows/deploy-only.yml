@@ -50,6 +50,8 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+
           PROJECT_NAME: ${{ vars.PROJECT_NAME }}
           ENVIRONMENT: ${{ vars.ENVIRONMENT }}
 
@@ -71,6 +73,8 @@ jobs:
           echo "DB_URL=$DB_URL" >> .env
           echo "DB_USERNAME=$DB_USERNAME" >> .env
           echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+
+          echo "ADMIN_PASSWORD=$ADMIN_PASSWORD" >> .env
 
           echo "PROJECT_NAME=$PROJECT_NAME" >> .env
           echo "ENVIRONMENT=$ENVIRONMENT" >> .env

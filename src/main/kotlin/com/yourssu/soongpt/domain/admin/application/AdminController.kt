@@ -1,6 +1,8 @@
 package com.yourssu.soongpt.domain.admin.application
 
+import com.yourssu.soongpt.common.auth.AdminPasswordValidator
 import com.yourssu.soongpt.common.business.dto.Response
+import com.yourssu.soongpt.domain.admin.application.exception.UnauthorizedAdminException
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.CourseTargetResponse
 import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
@@ -15,7 +17,14 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/admin/courses")
 class AdminController(
     private val courseService: CourseService,
+    private val adminPasswordValidator: AdminPasswordValidator,
 ) {
+
+    private fun requireAdminAuth(password: String?) {
+        if (!adminPasswordValidator.validate(password)) {
+            throw UnauthorizedAdminException()
+        }
+    }
     @Operation(
         summary = "전체 과목 조회 (관리자용)",
         description = """
@@ -66,13 +75,16 @@ class AdminController(
         summary = "과목 정보 수정 (관리자용)",
         description = """
             과목 정보를 수정합니다. 과목 코드는 수정할 수 없습니다.
+            X-Admin-Password 헤더에 관리자 비밀번호가 필요합니다.
         """
     )
     @PutMapping("/{code}")
     fun updateCourse(
         @PathVariable code: Long,
-        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateCourseCommand
+        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateCourseCommand,
+        @RequestHeader("X-Admin-Password", required = false) password: String?
     ): ResponseEntity<Response<com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse>> {
+        requireAdminAuth(password)
         val response = courseService.updateCourse(code, command)
         return ResponseEntity.ok().body(Response(result = response))
     }
@@ -81,13 +93,16 @@ class AdminController(
         summary = "과목 수강 대상 수정 (관리자용)",
         description = """
             과목의 수강 대상 정책을 전체 수정합니다. 기존 정책은 삭제되고 새로운 정책으로 대체됩니다.
+            X-Admin-Password 헤더에 관리자 비밀번호가 필요합니다.
         """
     )
     @PutMapping("/{code}/target")
     fun updateCourseTarget(
         @PathVariable code: Long,
-        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateTargetsCommand
+        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateTargetsCommand,
+        @RequestHeader("X-Admin-Password", required = false) password: String?
     ): ResponseEntity<Response<CourseTargetResponse>> {
+        requireAdminAuth(password)
         val response = courseService.updateTargets(code, command)
         return ResponseEntity.ok().body(Response(result = response))
     }
@@ -96,12 +111,15 @@ class AdminController(
         summary = "과목 추가 (관리자용)",
         description = """
             새로운 과목을 추가합니다.
+            X-Admin-Password 헤더에 관리자 비밀번호가 필요합니다.
         """
     )
     @PostMapping
     fun createCourse(
-        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.CreateCourseCommand
+        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.CreateCourseCommand,
+        @RequestHeader("X-Admin-Password", required = false) password: String?
     ): ResponseEntity<Response<com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse>> {
+        requireAdminAuth(password)
         val response = courseService.createCourse(command)
         return ResponseEntity.ok().body(Response(result = response))
     }
@@ -110,12 +128,15 @@ class AdminController(
         summary = "과목 삭제 (관리자용)",
         description = """
             과목을 삭제합니다. 관련된 수강 대상 정보도 함께 삭제됩니다.
+            X-Admin-Password 헤더에 관리자 비밀번호가 필요합니다.
         """
     )
     @DeleteMapping("/{code}")
     fun deleteCourse(
-        @PathVariable code: Long
+        @PathVariable code: Long,
+        @RequestHeader("X-Admin-Password", required = false) password: String?
     ): ResponseEntity<Response<Unit>> {
+        requireAdminAuth(password)
         courseService.deleteCourse(code)
         return ResponseEntity.ok().body(Response(result = Unit))
     }
