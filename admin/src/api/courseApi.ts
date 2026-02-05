@@ -47,4 +47,14 @@ export const courseApi = {
     });
     return response.data.result;
   },
+
+  updateCourse: async (code: number, data: any): Promise<CourseTargetResponse> => {
+    const response = await api.put<ApiResponse<CourseTargetResponse>>(`/admin/courses/${code}`, data);
+    return response.data.result;
+  },
+
+  updateTargets: async (code: number, data: any): Promise<CourseTargetResponse> => {
+    const response = await api.put<ApiResponse<CourseTargetResponse>>(`/admin/courses/${code}/target`, data);
+    return response.data.result;
+  },
 };

@@ -96,6 +96,12 @@ class CourseRepositoryImpl(
             .map { it.toDomain() }
     }
 
+
+
+    override fun save(course: Course): Course {
+        return courseJpaRepository.save(CourseEntity.from(course)).toDomain()
+    }
+
 }
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {

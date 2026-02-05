@@ -65,4 +65,34 @@ class AdminController(
         val response = courseService.getTargetsByCode(code)
         return ResponseEntity.ok().body(Response(result = response))
     }
+
+    @Operation(
+        summary = "과목 정보 수정 (관리자용)",
+        description = """
+            과목 정보를 수정합니다. 과목 코드는 수정할 수 없습니다.
+        """
+    )
+    @org.springframework.web.bind.annotation.PutMapping("/{code}")
+    fun updateCourse(
+        @PathVariable code: Long,
+        @org.springframework.web.bind.annotation.RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateCourseCommand
+    ): ResponseEntity<Response<com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse>> {
+        val response = courseService.updateCourse(code, command)
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
+        summary = "과목 수강 대상 수정 (관리자용)",
+        description = """
+            과목의 수강 대상 정책을 전체 수정합니다. 기존 정책은 삭제되고 새로운 정책으로 대체됩니다.
+        """
+    )
+    @org.springframework.web.bind.annotation.PutMapping("/{code}/target")
+    fun updateCourseTarget(
+        @PathVariable code: Long,
+        @org.springframework.web.bind.annotation.RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateTargetsCommand
+    ): ResponseEntity<Response<CourseTargetResponse>> {
+        val response = courseService.updateTargets(code, command)
+        return ResponseEntity.ok().body(Response(result = response))
+    }
 }
