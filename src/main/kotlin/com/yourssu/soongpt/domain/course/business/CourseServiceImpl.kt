@@ -5,6 +5,8 @@ import com.yourssu.soongpt.domain.course.business.dto.*
 import com.yourssu.soongpt.domain.course.business.query.*
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
+import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.ScopeType
@@ -18,6 +20,7 @@ class CourseServiceImpl(
         private val departmentReader: DepartmentReader,
         private val targetReader: TargetReader,
         private val collegeReader: CollegeReader,
+        private val courseFieldReader: CourseFieldReader,
 ) : CourseService {
     override fun findAll(query: FilterCoursesQuery): List<CourseResponse> {
         val department = departmentReader.getByName(query.departmentName)
@@ -67,6 +70,11 @@ class CourseServiceImpl(
 
     override fun getAllFieldsGrouped(): Map<Int, List<String>> {
         return courseReader.getAllFieldsGrouped()
+    }
+
+    override fun getFieldByCourseCode(courseCode: Long, schoolId: Int): String? {
+        val courseField = courseFieldReader.findByCourseCode(courseCode) ?: return null
+        return FieldFinder.findFieldBySchoolId(courseField.field, schoolId)
     }
 
     override fun getTargetsByCode(code: Long): CourseTargetResponse {
