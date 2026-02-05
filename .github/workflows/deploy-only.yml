@@ -1,0 +1,96 @@
+name: Deploy Only
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - prod
+      image_tag:
+        description: 'Image tag to deploy'
+        required: false
+        default: 'latest'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR Public
+        id: login-ecr-public
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
+          registries: ${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+
+      - name: Deploy to EC2
+        env:
+          YOURSSU_PEM: ${{ secrets.YOURSSU_PEM }}
+          HOST_URL: ${{ vars.HOST_URL }}
+
+          SERVER_PORT: ${{ vars.SERVER_PORT }}
+          CORS_ALLOWED_ORIGIN: ${{ vars.CORS_ALLOWED_ORIGIN }}
+
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+          PROJECT_NAME: ${{ vars.PROJECT_NAME }}
+          ENVIRONMENT: ${{ vars.ENVIRONMENT }}
+
+          SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
+          SLACK_LOG_CHANNEL: ${{ vars.SLACK_LOG_CHANNEL }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+
+          ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
+          echo "$YOURSSU_PEM" > yourssu.pem
+          chmod 600 yourssu.pem
+          
+          # Create environment file
+          echo "SERVER_PORT=$SERVER_PORT" >> .env
+          echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> .env
+
+          echo "DB_URL=$DB_URL" >> .env
+          echo "DB_USERNAME=$DB_USERNAME" >> .env
+          echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+
+          echo "PROJECT_NAME=$PROJECT_NAME" >> .env
+          echo "ENVIRONMENT=$ENVIRONMENT" >> .env
+
+          echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> .env
+          echo "SLACK_LOG_CHANNEL=$SLACK_LOG_CHANNEL" >> .env
+          echo "SLACK_TOKEN=$SLACK_TOKEN" >> .env
+
+          echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
+          
+          # Create deployment directory structure
+          ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
+          
+          # Deploy environment file and docker script to host machine
+          scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+
+          # Make the script executable
+          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/docker-deploy.sh"
+
+          # Execute the deployment script
+          ssh -i yourssu.pem ubuntu@$HOST_URL "cd /home/ubuntu/$PROJECT_NAME-api && \
+            PROJECT_NAME=$PROJECT_NAME IMAGE_TAG=${{ github.event.inputs.image_tag || 'latest' }} ./docker-deploy.sh"
