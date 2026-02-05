@@ -13,4 +13,8 @@ class RatingReader (
     fun findAll(): List<Rating> {
         return ratingRepository.findAll()
     }
+
+    fun findAllByCourseCodes(courseCodes: List<Long>): List<Rating> {
+        return ratingRepository.findAllByCourseCodes(courseCodes)
+    }
 }

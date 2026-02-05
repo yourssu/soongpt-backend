@@ -4,4 +4,5 @@ interface RatingRepository {
     fun save(rating: Rating): Rating
     fun findByCode(code: Long): Rating?
     fun findAll(): List<Rating>
+    fun findAllByCourseCodes(courseCodes: List<Long>): List<Rating>
 }
