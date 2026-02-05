@@ -87,7 +87,7 @@ jobs:
             const statusEmoji = success ? '✅' : '❌';
             const statusText = success ? 'PASSED' : 'FAILED';
 
-            let comment = `## ${statusEmoji} 테스트 코드 실행 보고서 ${statusText}\n\n`;
+            let comment = `## ${statusEmoji} 테스트 코드 실행 보고서 \n\n`;
             comment += `### 📊 Test Summary\n`;
             comment += `- **Total Tests**: ${total}\n`;
             comment += `- **✅ Passed**: ${passed}\n`;
