@@ -44,6 +44,7 @@ export interface CoursesResponse {
 }
 
 export interface TargetInfo {
+  id: number | null;
   scopeType: ScopeType;
   scopeId: number | null;
   scopeName: string | null;
@@ -69,7 +70,9 @@ export interface CourseTargetResponse {
   name: string;
   professor: string | null;
   category: Category;
+  subCategory: string | null;
   department: string;
+  division: string | null;
   point: string;
   time: string;
   personeel: number;
@@ -82,4 +85,37 @@ export interface CourseTargetResponse {
 
 export interface ApiResponse<T> {
   result: T;
+}
+
+export interface UpdateCourseRequest {
+  category: Category;
+  subCategory: string | null;
+  field: string | null;
+  name: string;
+  professor: string | null;
+  department: string;
+  division: string | null;
+  time: string;
+  point: string;
+  personeel: number;
+  scheduleRoom: string;
+  target: string;
+}
+
+export interface UpdateTargetItem {
+  scopeType: ScopeType;
+  scopeId: number | null;
+  scopeName: string | null;
+  grade1: boolean;
+  grade2: boolean;
+  grade3: boolean;
+  grade4: boolean;
+  grade5: boolean;
+  studentType: StudentType;
+  isStrict: boolean;
+  isDenied: boolean;
+}
+
+export interface UpdateTargetsRequest {
+  targets: UpdateTargetItem[];
 }

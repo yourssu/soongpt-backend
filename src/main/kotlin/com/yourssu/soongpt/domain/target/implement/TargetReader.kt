@@ -14,4 +14,12 @@ class TargetReader(
     fun findAllByCode(code: Long): List<Target> {
         return targetRepository.findAllByCode(code)
     }
+
+    fun saveAll(targets: List<Target>): List<Target> {
+        return targetRepository.saveAll(targets)
+    }
+
+    fun deleteAllByCourseCode(courseCode: Long) {
+        targetRepository.deleteAllByCourseCode(courseCode)
+    }
 }

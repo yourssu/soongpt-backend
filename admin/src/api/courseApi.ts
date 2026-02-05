@@ -8,6 +8,29 @@ const api = axios.create({
   },
 });
 
+// Add admin password to headers
+api.interceptors.request.use((config) => {
+  const adminPassword = localStorage.getItem('adminPassword');
+  if (adminPassword && config.url?.includes('/admin/')) {
+    config.headers['X-Admin-Password'] = adminPassword;
+  }
+  return config;
+});
+
+// Handle 401 errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear invalid password
+      localStorage.removeItem('adminPassword');
+      // Dispatch custom event to notify components
+      window.dispatchEvent(new CustomEvent('admin-auth-failed'));
+    }
+    return Promise.reject(error);
+  }
+);
+
 export interface GetCoursesParams {
   q?: string;
   page?: number;
@@ -46,5 +69,24 @@ export const courseApi = {
       params,
     });
     return response.data.result;
+  },
+
+  updateCourse: async (code: number, data: any): Promise<CourseTargetResponse> => {
+    const response = await api.put<ApiResponse<CourseTargetResponse>>(`/admin/courses/${code}`, data);
+    return response.data.result;
+  },
+
+  updateTargets: async (code: number, data: any): Promise<CourseTargetResponse> => {
+    const response = await api.put<ApiResponse<CourseTargetResponse>>(`/admin/courses/${code}/target`, data);
+    return response.data.result;
+  },
+
+  createCourse: async (data: any): Promise<CourseTargetResponse> => {
+    const response = await api.post<ApiResponse<CourseTargetResponse>>('/admin/courses', data);
+    return response.data.result;
+  },
+
+  deleteCourse: async (code: number): Promise<void> => {
+    await api.delete(`/admin/courses/${code}`);
   },
 };

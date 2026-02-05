@@ -21,7 +21,13 @@ class CollegeRepositoryImpl(
             ?: throw CollegeNotFoundException()
         return college.toDomain()
     }
+
+    override fun getByName(name: String): College {
+        return collegeJpaRepository.findByName(name)?.toDomain()
+            ?: throw CollegeNotFoundException()
+    }
 }
 
 interface CollegeJpaRepository : JpaRepository<CollegeEntity, Long> {
+    fun findByName(name: String): CollegeEntity?
 }
