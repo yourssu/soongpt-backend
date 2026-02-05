@@ -9,6 +9,29 @@ h1 {
   margin-bottom: 20px;
 }
 
+.header-with-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.create-new-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-new-button:hover {
+  background-color: #218838;
+}
+
 /* Tabs */
 .tabs {
   display: flex;
@@ -521,6 +544,28 @@ h1 {
   grid-column: 1 / -1;
 }
 
+.info-item input,
+.info-item select,
+.info-item textarea {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+.info-item textarea {
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.multiline-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 @media (max-width: 768px) {
   .info-grid {
     grid-template-columns: 1fr;
@@ -820,10 +865,18 @@ h1 {
 }
 
 .edit-button.cancel {
-  background-color: #dc3545;
+  background-color: #6c757d;
 }
 
 .edit-button.cancel:hover {
+  background-color: #5a6268;
+}
+
+.edit-button.delete {
+  background-color: #dc3545;
+}
+
+.edit-button.delete:hover {
   background-color: #c82333;
 }
 
@@ -1051,4 +1104,70 @@ h1 {
   .target-table td {
     padding: 6px;
   }
+}
+
+/* Course Time Edit Styles */
+.course-times-edit-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.course-time-edit-card {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  position: relative;
+}
+
+.course-time-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.course-time-edit-row label {
+  font-weight: 500;
+  min-width: 60px;
+  font-size: 14px;
+}
+
+.course-time-edit-row input,
+.course-time-edit-row select {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.course-time-edit-card .delete-button {
+  grid-column: span 2;
+  justify-self: center;
+  margin-top: 8px;
+}
+
+.add-course-time-container {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.add-course-time-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-course-time-button:hover {
+  background-color: #138496;
 }

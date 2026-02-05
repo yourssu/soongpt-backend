@@ -8,11 +8,7 @@ import com.yourssu.soongpt.domain.course.business.query.SearchCoursesQuery
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Admin", description = "관리자 API")
 @RestController
@@ -72,10 +68,10 @@ class AdminController(
             과목 정보를 수정합니다. 과목 코드는 수정할 수 없습니다.
         """
     )
-    @org.springframework.web.bind.annotation.PutMapping("/{code}")
+    @PutMapping("/{code}")
     fun updateCourse(
         @PathVariable code: Long,
-        @org.springframework.web.bind.annotation.RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateCourseCommand
+        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateCourseCommand
     ): ResponseEntity<Response<com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse>> {
         val response = courseService.updateCourse(code, command)
         return ResponseEntity.ok().body(Response(result = response))
@@ -87,12 +83,40 @@ class AdminController(
             과목의 수강 대상 정책을 전체 수정합니다. 기존 정책은 삭제되고 새로운 정책으로 대체됩니다.
         """
     )
-    @org.springframework.web.bind.annotation.PutMapping("/{code}/target")
+    @PutMapping("/{code}/target")
     fun updateCourseTarget(
         @PathVariable code: Long,
-        @org.springframework.web.bind.annotation.RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateTargetsCommand
+        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.UpdateTargetsCommand
     ): ResponseEntity<Response<CourseTargetResponse>> {
         val response = courseService.updateTargets(code, command)
         return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
+        summary = "과목 추가 (관리자용)",
+        description = """
+            새로운 과목을 추가합니다.
+        """
+    )
+    @PostMapping
+    fun createCourse(
+        @RequestBody command: com.yourssu.soongpt.domain.course.business.dto.CreateCourseCommand
+    ): ResponseEntity<Response<com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse>> {
+        val response = courseService.createCourse(command)
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
+        summary = "과목 삭제 (관리자용)",
+        description = """
+            과목을 삭제합니다. 관련된 수강 대상 정보도 함께 삭제됩니다.
+        """
+    )
+    @DeleteMapping("/{code}")
+    fun deleteCourse(
+        @PathVariable code: Long
+    ): ResponseEntity<Response<Unit>> {
+        courseService.deleteCourse(code)
+        return ResponseEntity.ok().body(Response(result = Unit))
     }
 }
