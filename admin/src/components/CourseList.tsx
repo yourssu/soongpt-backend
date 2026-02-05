@@ -28,6 +28,7 @@ export const CourseList = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [canSkipPassword, setCanSkipPassword] = useState(false);
+  const [showResetButton, setShowResetButton] = useState(false);
 
   // Check if password is set on mount
   useEffect(() => {
@@ -35,8 +36,10 @@ export const CourseList = () => {
     if (!savedPassword) {
       setShowPasswordModal(true);
       setCanSkipPassword(true); // Allow skipping on initial load
+      setShowResetButton(false);
     } else {
       setIsAuthenticated(true);
+      setShowResetButton(true);
     }
 
     // Listen for auth failures
@@ -557,11 +560,13 @@ export const CourseList = () => {
     setIsAuthenticated(true);
     setShowPasswordModal(false);
     setCanSkipPassword(false);
+    setShowResetButton(true);
   };
 
   const handleSkipPassword = () => {
     setShowPasswordModal(false);
     setCanSkipPassword(false);
+    setShowResetButton(true); // Show reset button after skipping
   };
 
   const handleResetPassword = () => {
@@ -696,7 +701,7 @@ export const CourseList = () => {
         <h1>과목 관리</h1>
         <div className="header-actions">
           <button className="create-new-button" onClick={startCreateNew}>+ 새 과목 추가</button>
-          {isAuthenticated && (
+          {showResetButton && (
             <button className="password-action-button reset" onClick={handleResetPassword}>
               🔄 비밀번호 재설정
             </button>
