@@ -57,4 +57,13 @@ export const courseApi = {
     const response = await api.put<ApiResponse<CourseTargetResponse>>(`/admin/courses/${code}/target`, data);
     return response.data.result;
   },
+
+  createCourse: async (data: any): Promise<CourseTargetResponse> => {
+    const response = await api.post<ApiResponse<CourseTargetResponse>>('/admin/courses', data);
+    return response.data.result;
+  },
+
+  deleteCourse: async (code: number): Promise<void> => {
+    await api.delete(`/admin/courses/${code}`);
+  },
 };

@@ -14,4 +14,5 @@ interface CourseRepository {
     fun searchCourses(query: String, pageable: Pageable): Page<Course>
     fun findAllByClass(code: Long): List<Course>
     fun save(course: Course): Course
+    fun delete(code: Long)
 }

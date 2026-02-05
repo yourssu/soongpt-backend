@@ -23,6 +23,7 @@ export const CourseList = () => {
   const [currentCourseIndex, setCurrentCourseIndex] = useState<number>(-1);
   const [editMode, setEditMode] = useState(false);
   const [editedCourse, setEditedCourse] = useState<CourseTargetResponse | null>(null);
+  const [isCreatingNew, setIsCreatingNew] = useState(false);
 
   // 검색어 디바운싱
   useEffect(() => {
@@ -315,15 +316,28 @@ export const CourseList = () => {
   };
 
   const cancelEdit = () => {
-    setEditMode(false);
-    setEditedCourse(null);
+    if (isCreatingNew) {
+      cancelCreateNew();
+    } else {
+      setEditMode(false);
+      setEditedCourse(null);
+    }
   };
 
   const saveEdit = async () => {
     if (!editedCourse || !selectedCourse) return;
 
+    // If creating new, use saveNewCourse instead
+    if (isCreatingNew) {
+      await saveNewCourse();
+      return;
+    }
+
     try {
       setTargetLoading(true);
+
+      // Convert courseTimes to scheduleRoom format
+      const scheduleRoom = courseTimesToScheduleRoom(editedCourse.courseTimes);
 
       // 1. Update Course Info
       const courseUpdateData = {
@@ -337,7 +351,7 @@ export const CourseList = () => {
         time: editedCourse.time,
         point: editedCourse.point,
         personeel: editedCourse.personeel,
-        scheduleRoom: editedCourse.scheduleRoom,
+        scheduleRoom: scheduleRoom,
         target: editedCourse.targetText,
       };
       await courseApi.updateCourse(editedCourse.code, courseUpdateData);
@@ -367,14 +381,141 @@ export const CourseList = () => {
       setEditedCourse(null);
       alert('저장되었습니다.');
 
-      // Refresh list logic if needed (e.g., if name changed)
-      // fetchCourses(currentPage, debouncedQuery); 
+      // Refresh list
+      fetchCourses(currentPage, debouncedQuery);
     } catch (err) {
       console.error('저장 실패:', err);
       alert('저장에 실패했습니다.');
     } finally {
       setTargetLoading(false);
     }
+  };
+
+  const deleteCourse = async () => {
+    if (!selectedCourse) return;
+
+    if (!confirm(`정말로 "${selectedCourse.name}" 과목을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) {
+      return;
+    }
+
+    try {
+      setTargetLoading(true);
+      await courseApi.deleteCourse(selectedCourse.code);
+      alert('삭제되었습니다.');
+      setSelectedCourse(null);
+      setEditMode(false);
+      setEditedCourse(null);
+      // Refresh list
+      fetchCourses(currentPage, debouncedQuery);
+    } catch (err) {
+      console.error('삭제 실패:', err);
+      alert('삭제에 실패했습니다.');
+    } finally {
+      setTargetLoading(false);
+    }
+  };
+
+  const startCreateNew = () => {
+    const newCourse: CourseTargetResponse = {
+      code: 0, // Will be set by user
+      name: '',
+      professor: null,
+      category: 'MAJOR_REQUIRED',
+      subCategory: null,
+      field: null,
+      department: departments[0],
+      division: null,
+      point: '3-3-0',
+      time: '3',
+      personeel: 0,
+      scheduleRoom: '',
+      targetText: '',
+      courseTimes: [],
+      targets: []
+    };
+    setEditedCourse(newCourse);
+    setSelectedCourse(newCourse);
+    setEditMode(true);
+    setIsCreatingNew(true);
+  };
+
+  const saveNewCourse = async () => {
+    if (!editedCourse || !isCreatingNew) return;
+
+    if (!editedCourse.code || editedCourse.code === 0) {
+      alert('과목 코드를 입력해주세요.');
+      return;
+    }
+
+    if (!editedCourse.name) {
+      alert('과목명을 입력해주세요.');
+      return;
+    }
+
+    try {
+      setTargetLoading(true);
+
+      // Convert courseTimes to scheduleRoom format
+      const scheduleRoom = courseTimesToScheduleRoom(editedCourse.courseTimes);
+
+      // 1. Create Course
+      const courseCreateData = {
+        code: editedCourse.code,
+        category: editedCourse.category,
+        subCategory: editedCourse.subCategory || null,
+        field: editedCourse.field || null,
+        name: editedCourse.name,
+        professor: editedCourse.professor || null,
+        department: editedCourse.department,
+        division: editedCourse.division || null,
+        time: editedCourse.time,
+        point: editedCourse.point,
+        personeel: editedCourse.personeel,
+        scheduleRoom: scheduleRoom,
+        target: editedCourse.targetText,
+      };
+      await courseApi.createCourse(courseCreateData);
+
+      // 2. Create Targets if any
+      if (editedCourse.targets.length > 0) {
+        const targetCreateData = {
+          targets: editedCourse.targets.map(t => ({
+            scopeType: t.scopeType,
+            scopeId: t.scopeId,
+            scopeName: t.scopeName,
+            grade1: t.grade1,
+            grade2: t.grade2,
+            grade3: t.grade3,
+            grade4: t.grade4,
+            grade5: t.grade5,
+            studentType: t.studentType,
+            isStrict: t.isStrict,
+            isDenied: t.isDenied,
+          }))
+        };
+        await courseApi.updateTargets(editedCourse.code, targetCreateData);
+      }
+
+      alert('과목이 생성되었습니다.');
+      setSelectedCourse(null);
+      setEditMode(false);
+      setEditedCourse(null);
+      setIsCreatingNew(false);
+      // Refresh list
+      fetchCourses(currentPage, debouncedQuery);
+    } catch (err) {
+      console.error('생성 실패:', err);
+      alert('과목 생성에 실패했습니다.');
+    } finally {
+      setTargetLoading(false);
+    }
+  };
+
+  const cancelCreateNew = () => {
+    setSelectedCourse(null);
+    setEditMode(false);
+    setEditedCourse(null);
+    setIsCreatingNew(false);
   };
 
   const handleInputChange = (field: keyof CourseTargetResponse, value: any) => {
@@ -429,6 +570,47 @@ export const CourseList = () => {
     });
   };
 
+  const handleCourseTimeChange = (index: number, field: keyof CourseTime, value: any) => {
+    if (!editedCourse) return;
+    const newCourseTimes = [...editedCourse.courseTimes];
+    newCourseTimes[index] = {
+      ...newCourseTimes[index],
+      [field]: value
+    };
+    setEditedCourse({
+      ...editedCourse,
+      courseTimes: newCourseTimes
+    });
+  };
+
+  const handleAddCourseTime = () => {
+    if (!editedCourse) return;
+    const newCourseTime: CourseTime = {
+      week: '월',
+      start: '09:00',
+      end: '10:00',
+      classroom: null
+    };
+    setEditedCourse({
+      ...editedCourse,
+      courseTimes: [...editedCourse.courseTimes, newCourseTime]
+    });
+  };
+
+  const handleDeleteCourseTime = (index: number) => {
+    if (!editedCourse) return;
+    const newCourseTimes = editedCourse.courseTimes.filter((_, i) => i !== index);
+    setEditedCourse({
+      ...editedCourse,
+      courseTimes: newCourseTimes
+    });
+  };
+
+  const courseTimesToScheduleRoom = (courseTimes: CourseTime[]): string => {
+    if (courseTimes.length === 0) return '';
+    return courseTimes.map(ct => `${ct.week} ${ct.start}-${ct.end} (${ct.classroom || ''})`).join('\n');
+  };
+
   const getWeekColor = (week: string): string => {
     const colors: Record<string, string> = {
       '월': 'red',
@@ -451,7 +633,10 @@ export const CourseList = () => {
 
   return (
     <div className="course-list-container">
-      <h1>과목 관리</h1>
+      <div className="header-with-button">
+        <h1>과목 관리</h1>
+        <button className="create-new-button" onClick={startCreateNew}>+ 새 과목 추가</button>
+      </div>
 
       <div className="tabs">
         <button
@@ -650,7 +835,16 @@ export const CourseList = () => {
                 <div className="info-grid">
                   <div className="info-item">
                     <strong>코드:</strong>
-                    <span>{selectedCourse.code}</span>
+                    {editMode && isCreatingNew ? (
+                      <input
+                        type="number"
+                        value={editedCourse?.code || ''}
+                        onChange={(e) => handleInputChange('code', parseInt(e.target.value) || 0)}
+                        placeholder="과목 코드"
+                      />
+                    ) : (
+                      <span>{selectedCourse.code}</span>
+                    )}
                   </div>
 
                   <div className="info-item">
@@ -753,39 +947,42 @@ export const CourseList = () => {
                   <div className="info-item full-width">
                     <strong>강의실:</strong>
                     {editMode ? (
-                      <input
-                        type="text"
+                      <textarea
                         value={editedCourse?.scheduleRoom || ''}
                         onChange={(e) => handleInputChange('scheduleRoom', e.target.value)}
+                        rows={3}
+                        placeholder="강의실 정보"
                       />
                     ) : (
-                      <span>{selectedCourse.scheduleRoom}</span>
+                      <span className="multiline-text">{selectedCourse.scheduleRoom}</span>
                     )}
                   </div>
 
                   <div className="info-item full-width">
                     <strong>원본 수강대상:</strong>
                     {editMode ? (
-                      <input
-                        type="text"
+                      <textarea
                         value={editedCourse?.targetText || ''}
                         onChange={(e) => handleInputChange('targetText', e.target.value)}
+                        rows={3}
+                        placeholder="원본 수강대상"
                       />
                     ) : (
-                      <span>{selectedCourse.targetText || '-'}</span>
+                      <span className="multiline-text">{selectedCourse.targetText || '-'}</span>
                     )}
                   </div>
 
                   <div className="info-item full-width">
                     <strong>교과영역:</strong>
                     {editMode ? (
-                      <input
-                        type="text"
+                      <textarea
                         value={editedCourse?.field || ''}
                         onChange={(e) => handleInputChange('field', e.target.value)}
+                        rows={2}
+                        placeholder="교과영역"
                       />
                     ) : (
-                      <span>{selectedCourse.field || '-'}</span>
+                      <span className="multiline-text">{selectedCourse.field || '-'}</span>
                     )}
                   </div>
                 </div>
@@ -808,6 +1005,7 @@ export const CourseList = () => {
                       ) : (
                         <div className="edit-actions">
                           <button className="edit-button" onClick={startEdit}>수정</button>
+                          <button className="edit-button delete" onClick={deleteCourse}>삭제</button>
                         </div>
                       )}
                       <button
@@ -819,26 +1017,89 @@ export const CourseList = () => {
                       </button>
                     </div>
                     {showCourseTimes && (
-                      selectedCourse.courseTimes.length === 0 ? (
-                        <div className="no-times-message">
-                          <p>강의 시간 정보가 없습니다.</p>
-                        </div>
-                      ) : (
-                        <div className="course-times-grid">
-                          {selectedCourse.courseTimes.map((courseTime, index) => (
-                            <div key={index} className="course-time-card">
-                              <div className={`time-week-badge ${getWeekColor(courseTime.week)}`}>
-                                {courseTime.week}
-                              </div>
-                              <div className="time-range">
-                                {courseTime.start} - {courseTime.end}
-                              </div>
-                              {courseTime.classroom && (
-                                <div className="time-classroom">{courseTime.classroom}</div>
-                              )}
+                      editMode ? (
+                        // Edit Mode: Editable course times
+                        <>
+                          {editedCourse && editedCourse.courseTimes.length === 0 ? (
+                            <div className="no-times-message">
+                              <p>강의 시간 정보가 없습니다. 추가해주세요.</p>
                             </div>
-                          ))}
-                        </div>
+                          ) : (
+                            <div className="course-times-edit-grid">
+                              {editedCourse?.courseTimes.map((courseTime, index) => (
+                                <div key={index} className="course-time-edit-card">
+                                  <div className="course-time-edit-row">
+                                    <label>요일:</label>
+                                    <select
+                                      value={courseTime.week}
+                                      onChange={(e) => handleCourseTimeChange(index, 'week', e.target.value)}
+                                    >
+                                      <option value="월">월</option>
+                                      <option value="화">화</option>
+                                      <option value="수">수</option>
+                                      <option value="목">목</option>
+                                      <option value="금">금</option>
+                                      <option value="토">토</option>
+                                      <option value="일">일</option>
+                                    </select>
+                                  </div>
+                                  <div className="course-time-edit-row">
+                                    <label>시작:</label>
+                                    <input
+                                      type="time"
+                                      value={courseTime.start}
+                                      onChange={(e) => handleCourseTimeChange(index, 'start', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="course-time-edit-row">
+                                    <label>종료:</label>
+                                    <input
+                                      type="time"
+                                      value={courseTime.end}
+                                      onChange={(e) => handleCourseTimeChange(index, 'end', e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="course-time-edit-row">
+                                    <label>강의실:</label>
+                                    <input
+                                      type="text"
+                                      value={courseTime.classroom || ''}
+                                      onChange={(e) => handleCourseTimeChange(index, 'classroom', e.target.value)}
+                                      placeholder="강의실"
+                                    />
+                                  </div>
+                                  <button className="delete-button" onClick={() => handleDeleteCourseTime(index)}>삭제</button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          <div className="add-course-time-container">
+                            <button className="add-course-time-button" onClick={handleAddCourseTime}>+ 강의 시간 추가</button>
+                          </div>
+                        </>
+                      ) : (
+                        // View Mode: Display only
+                        selectedCourse.courseTimes.length === 0 ? (
+                          <div className="no-times-message">
+                            <p>강의 시간 정보가 없습니다.</p>
+                          </div>
+                        ) : (
+                          <div className="course-times-grid">
+                            {selectedCourse.courseTimes.map((courseTime, index) => (
+                              <div key={index} className="course-time-card">
+                                <div className={`time-week-badge ${getWeekColor(courseTime.week)}`}>
+                                  {courseTime.week}
+                                </div>
+                                <div className="time-range">
+                                  {courseTime.start} - {courseTime.end}
+                                </div>
+                                {courseTime.classroom && (
+                                  <div className="time-classroom">{courseTime.classroom}</div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )
                       )
                     )}
                   </div>

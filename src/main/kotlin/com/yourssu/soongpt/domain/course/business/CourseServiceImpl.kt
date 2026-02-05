@@ -10,6 +10,7 @@ import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.ScopeType
 import com.yourssu.soongpt.domain.target.implement.TargetReader
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CourseServiceImpl(
@@ -165,6 +166,7 @@ class CourseServiceImpl(
         return courses.map { MajorElectiveResponse.from(it) }
     }
 
+    @Transactional
     override fun updateCourse(code: Long, command: UpdateCourseCommand): CourseDetailResponse {
         val existingCourse = courseReader.findByCode(code)
 
@@ -172,7 +174,7 @@ class CourseServiceImpl(
                 existingCourse.copy(
                         category = command.category,
                         subCategory = command.subCategory,
-                        field = command.field,
+                        field = command.field ?: "",
                         name = command.name,
                         professor = command.professor,
                         department = command.department,
@@ -189,6 +191,7 @@ class CourseServiceImpl(
         return CourseDetailResponse.from(savedCourse, courseTimes)
     }
 
+    @Transactional
     override fun updateTargets(code: Long, command: UpdateTargetsCommand): CourseTargetResponse {
         // Ensure course exists
         courseReader.findByCode(code)
@@ -236,5 +239,37 @@ class CourseServiceImpl(
 
         // Return updated target response
         return getTargetsByCode(code)
+    }
+
+    @Transactional
+    override fun createCourse(command: CreateCourseCommand): CourseDetailResponse {
+        val newCourse = com.yourssu.soongpt.domain.course.implement.Course(
+            id = null,
+            category = command.category,
+            subCategory = command.subCategory,
+            field = command.field ?: "",
+            code = command.code,
+            name = command.name,
+            professor = command.professor,
+            department = command.department,
+            division = command.division,
+            time = command.time,
+            point = command.point,
+            personeel = command.personeel,
+            scheduleRoom = command.scheduleRoom,
+            target = command.target
+        )
+
+        val savedCourse = courseReader.save(newCourse)
+        val courseTimes = CourseTimes.from(savedCourse.scheduleRoom)
+        return CourseDetailResponse.from(savedCourse, courseTimes)
+    }
+
+    @Transactional
+    override fun deleteCourse(code: Long) {
+        // Delete related targets first
+        targetReader.deleteAllByCourseCode(code)
+        // Delete the course
+        courseReader.delete(code)
     }
 }

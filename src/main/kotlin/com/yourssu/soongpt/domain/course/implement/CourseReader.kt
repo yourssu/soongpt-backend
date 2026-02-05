@@ -88,4 +88,8 @@ class CourseReader(
     fun save(course: Course): Course {
         return courseRepository.save(course)
     }
+
+    fun delete(code: Long) {
+        courseRepository.delete(code)
+    }
 }
