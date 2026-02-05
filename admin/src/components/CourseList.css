@@ -16,6 +16,12 @@ h1 {
   margin-bottom: 20px;
 }
 
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 .create-new-button {
   padding: 10px 20px;
   border-radius: 4px;
@@ -30,6 +36,22 @@ h1 {
 
 .create-new-button:hover {
   background-color: #218838;
+}
+
+.password-action-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.password-action-button:hover {
+  background-color: #5a6268;
 }
 
 /* Tabs */

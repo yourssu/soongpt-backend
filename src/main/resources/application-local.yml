@@ -38,3 +38,6 @@ rusaint:
   pseudonym-secret: ${RUSAINT_PSEUDONYM_SECRET:local-pseudonym-secret-min-32-chars}
   internal-jwt-secret: ${RUSAINT_INTERNAL_JWT_SECRET:local-internal-jwt-secret-min-32-chars}
   internal-jwt-validity-minutes: ${RUSAINT_INTERNAL_JWT_VALIDITY_MINUTES:15}
+
+admin:
+  password: ${ADMIN_PASSWORD:admin}
