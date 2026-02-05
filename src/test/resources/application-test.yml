@@ -30,6 +30,12 @@ rusaint:
 admin:
   password: test-admin-password
 
+sso:
+  frontend-url: http://localhost:3000
+  client-jwt-secret: test-client-jwt-secret-min-32-chars
+  session-ttl-minutes: 60
+  jwt-validity-minutes: 60
+
 logging:
   level:
     org.springframework: DEBUG

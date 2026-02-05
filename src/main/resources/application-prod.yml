@@ -30,3 +30,14 @@ rusaint:
 
 admin:
   password: ${ADMIN_PASSWORD}
+
+sso:
+  frontend-url: ${SSO_FRONTEND_URL}
+  client-jwt-secret: ${SSO_CLIENT_JWT_SECRET}
+  session-ttl-minutes: ${SSO_SESSION_TTL_MINUTES:60}
+  jwt-validity-minutes: ${SSO_JWT_VALIDITY_MINUTES:60}
+
+logging:
+  level:
+    com.yourssu.soongpt.domain.sso: INFO
+    root: INFO
