@@ -1218,41 +1218,51 @@ h1 {
 
 .add-course-time-button:hover {
   background-color: #138496;
-}/* Dark Mode Fix for Checkboxes */
+}
+
+/* Dark Mode Fix for Checkboxes */
 .target-table input[type="checkbox"] {
-    /* Force light mode rendering because the table has a white background */
-    color-scheme: light;
-    accent-color: #007bff;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
+  /* Force light mode rendering because the table has a white background */
+  color-scheme: light;
+  accent-color: #007bff;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 
 @media (prefers-color-scheme: dark) {
 
-    /* Ensure inputs and selects in the modal generally look okay if system is dark but our modal is white */
-    .info-item input,
-    .info-item select,
-    .info-item textarea,
-    .page-input,
-    .search-input,
-    .filter-select,
-    .scope-select,
-    .scope-detail-select,
-    .student-type-select {
-        color-scheme: light;
-        background-color: white;
-        color: #333;
-        border: 1px solid #ced4da;
-    }
-}/* Fix for Course Time Inputs in Dark Mode */
+  /* Ensure inputs and selects in the modal generally look okay if system is dark but our modal is white */
+  .info-item input,
+  .info-item select,
+  .info-item textarea,
+  .page-input,
+  .search-input,
+  .filter-select,
+  .scope-select,
+  .scope-detail-select,
+  .student-type-select {
+    color-scheme: light;
+    background-color: white;
+    color: #333;
+    border: 1px solid #ced4da;
+  }
+}
+
+/* Fix for Course Time Inputs in Dark Mode */
 @media (prefers-color-scheme: dark) {
 
-    .course-time-edit-row input,
-    .course-time-edit-row select {
-        color-scheme: light;
-        background-color: white;
-        color: #333;
-        border: 1px solid #ced4da;
-    }
+  .course-time-edit-row input,
+  .course-time-edit-row select {
+    color-scheme: light;
+    background-color: white;
+    color: #333;
+    border: 1px solid #ced4da;
+  }
+}
+
+/* Wider modal in edit mode */
+.modal-content.editing {
+  max-width: 1200px;
+  width: 95%;
 }

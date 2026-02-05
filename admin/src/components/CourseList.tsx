@@ -884,7 +884,7 @@ export const CourseList = () => {
 
       {selectedCourse && (
         <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className={`modal-content ${editMode ? 'editing' : ''}`} onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <button
                 className="nav-button nav-prev"
