@@ -29,6 +29,13 @@ class RatingRepositoryImpl (
             .fetch()
             .map { it.toDomain() }
     }
+
+    override fun findAllByCourseCodes(courseCodes: List<Long>): List<Rating> {
+        return jpaQueryFactory.selectFrom(ratingEntity)
+            .where(ratingEntity.code.`in`(courseCodes))
+            .fetch()
+            .map { it.toDomain() }
+    }
 }
 
 interface RatingJpaRepository : JpaRepository<RatingEntity, Long> {
