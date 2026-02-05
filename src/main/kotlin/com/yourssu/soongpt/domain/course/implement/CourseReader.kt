@@ -84,4 +84,8 @@ class CourseReader(
     fun findByCode(code: Long): Course {
         return courseRepository.get(code)
     }
+
+    fun save(course: Course): Course {
+        return courseRepository.save(course)
+    }
 }

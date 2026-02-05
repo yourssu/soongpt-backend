@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { courseApi } from '../api/courseApi';
 import type { Course, CoursesResponse, CourseTargetResponse, TargetInfo } from '../types/course';
 import { FilterTab } from './FilterTab';
+import { colleges, departments, categories } from '../data/departments';
 import './CourseList.css';
 
 export const CourseList = () => {
@@ -20,6 +21,8 @@ export const CourseList = () => {
   const [showPolicyInfo, setShowPolicyInfo] = useState(false);
   const [showCourseTimes, setShowCourseTimes] = useState(true);
   const [currentCourseIndex, setCurrentCourseIndex] = useState<number>(-1);
+  const [editMode, setEditMode] = useState(false);
+  const [editedCourse, setEditedCourse] = useState<CourseTargetResponse | null>(null);
 
   // 검색어 디바운싱
   useEffect(() => {
@@ -302,6 +305,130 @@ export const CourseList = () => {
     return labels[type] || type;
   };
 
+
+
+  const startEdit = () => {
+    if (selectedCourse) {
+      setEditedCourse(JSON.parse(JSON.stringify(selectedCourse)));
+      setEditMode(true);
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditMode(false);
+    setEditedCourse(null);
+  };
+
+  const saveEdit = async () => {
+    if (!editedCourse || !selectedCourse) return;
+
+    try {
+      setTargetLoading(true);
+
+      // 1. Update Course Info
+      const courseUpdateData = {
+        category: editedCourse.category,
+        subCategory: editedCourse.subCategory || null,
+        field: editedCourse.field || null,
+        name: editedCourse.name,
+        professor: editedCourse.professor || null,
+        department: editedCourse.department,
+        division: editedCourse.division || null,
+        time: editedCourse.time,
+        point: editedCourse.point,
+        personeel: editedCourse.personeel,
+        scheduleRoom: editedCourse.scheduleRoom,
+        target: editedCourse.targetText,
+      };
+      await courseApi.updateCourse(editedCourse.code, courseUpdateData);
+
+      // 2. Update Targets
+      const targetUpdateData = {
+        targets: editedCourse.targets.map(t => ({
+          scopeType: t.scopeType,
+          scopeId: t.scopeId,
+          scopeName: t.scopeName,
+          grade1: t.grade1,
+          grade2: t.grade2,
+          grade3: t.grade3,
+          grade4: t.grade4,
+          grade5: t.grade5,
+          studentType: t.studentType,
+          isStrict: t.isStrict,
+          isDenied: t.isDenied,
+        }))
+      };
+      await courseApi.updateTargets(editedCourse.code, targetUpdateData);
+
+      // 3. Refresh data
+      const updatedData = await courseApi.getCourseTarget(editedCourse.code);
+      setSelectedCourse(updatedData);
+      setEditMode(false);
+      setEditedCourse(null);
+      alert('저장되었습니다.');
+
+      // Refresh list logic if needed (e.g., if name changed)
+      // fetchCourses(currentPage, debouncedQuery); 
+    } catch (err) {
+      console.error('저장 실패:', err);
+      alert('저장에 실패했습니다.');
+    } finally {
+      setTargetLoading(false);
+    }
+  };
+
+  const handleInputChange = (field: keyof CourseTargetResponse, value: any) => {
+    if (!editedCourse) return;
+    setEditedCourse({
+      ...editedCourse,
+      [field]: value
+    });
+  };
+
+  const handleTargetChange = (index: number, field: keyof TargetInfo, value: any) => {
+    if (!editedCourse) return;
+    const newTargets = [...editedCourse.targets];
+    newTargets[index] = {
+      ...newTargets[index],
+      [field]: value
+    };
+    setEditedCourse({
+      ...editedCourse,
+      targets: newTargets
+    });
+  };
+
+  const handleAddTarget = () => {
+    if (!editedCourse) return;
+    const newTarget: TargetInfo = {
+      id: null,
+      scopeType: 'DEPARTMENT', // Default
+      scopeId: null,
+      scopeName: '',
+      grade1: false,
+      grade2: false,
+      grade3: false,
+      grade4: false,
+      grade5: false,
+      studentType: 'GENERAL',
+      isStrict: false,
+      isDenied: false
+    };
+    setEditedCourse({
+      ...editedCourse,
+      targets: [...editedCourse.targets, newTarget]
+    });
+  };
+
+  const handleDeleteTarget = (index: number) => {
+    if (!editedCourse) return;
+    const newTargets = editedCourse.targets.filter((_, i) => i !== index);
+    setEditedCourse({
+      ...editedCourse,
+      targets: newTargets
+    });
+  };
+
   const getWeekColor = (week: string): string => {
     const colors: Record<string, string> = {
       '월': 'red',
@@ -490,7 +617,7 @@ export const CourseList = () => {
                 ←
               </button>
               <div className="modal-title-container">
-                <h2>수강 대상 정보</h2>
+                <h2>{editMode ? '과목 정보 수정' : '수강 대상 정보'}</h2>
                 {activeTab === 'filter' && filteredCourses && currentCourseIndex >= 0 && (
                   <span className="course-counter">
                     {currentCourseIndex + 1} / {filteredCourses.length}
@@ -503,19 +630,22 @@ export const CourseList = () => {
                   </span>
                 )}
               </div>
-              <button
-                className="nav-button nav-next"
-                onClick={() => navigateToCourse('next')}
-                disabled={
-                  activeTab === 'filter'
-                    ? !filteredCourses || currentCourseIndex >= filteredCourses.length - 1
-                    : !courses || (currentCourseIndex >= courses.content.length - 1 && currentPage >= courses.totalPages - 1)
-                }
-                title="다음 과목 (→)"
-              >
-                →
-              </button>
-              <button className="modal-close" onClick={closeModal}>×</button>
+              <div className="header-right">
+
+                <button
+                  className="nav-button nav-next"
+                  onClick={() => navigateToCourse('next')}
+                  disabled={
+                    activeTab === 'filter'
+                      ? !filteredCourses || currentCourseIndex >= filteredCourses.length - 1
+                      : !courses || (currentCourseIndex >= courses.content.length - 1 && currentPage >= courses.totalPages - 1)
+                  }
+                  title="다음 과목 (→)"
+                >
+                  →
+                </button>
+                <button className="modal-close" onClick={closeModal}>×</button>
+              </div>
             </div>
             <div className="modal-body">
               <div className="course-info-detail">
@@ -524,45 +654,141 @@ export const CourseList = () => {
                     <strong>코드:</strong>
                     <span>{selectedCourse.code}</span>
                   </div>
+
                   <div className="info-item">
                     <strong>과목명:</strong>
-                    <span>{selectedCourse.name}</span>
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={editedCourse?.name || ''}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                      />
+                    ) : (
+                      <span>{selectedCourse.name}</span>
+                    )}
                   </div>
+
                   <div className="info-item">
                     <strong>교수:</strong>
-                    <span>{selectedCourse.professor || '-'}</span>
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={editedCourse?.professor || ''}
+                        onChange={(e) => handleInputChange('professor', e.target.value)}
+                      />
+                    ) : (
+                      <span>{selectedCourse.professor || '-'}</span>
+                    )}
                   </div>
+
                   <div className="info-item">
                     <strong>이수구분:</strong>
-                    <span>{getCategoryLabel(selectedCourse.category)}</span>
+                    {editMode ? (
+                      <select
+                        value={editedCourse?.category || ''}
+                        onChange={(e) => handleInputChange('category', e.target.value)}
+                      >
+                        {categories.map(cat => (
+                          <option key={cat.value} value={cat.value}>{cat.label}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <span>{getCategoryLabel(selectedCourse.category)}</span>
+                    )}
                   </div>
-                  <div className="info-item">
-                    <strong>교과영역:</strong>
-                    <span>{selectedCourse.field || '-'}</span>
-                  </div>
+
                   <div className="info-item">
                     <strong>학과:</strong>
-                    <span>{selectedCourse.department}</span>
+                    {editMode ? (
+                      <select
+                        value={editedCourse?.department || ''}
+                        onChange={(e) => handleInputChange('department', e.target.value)}
+                      >
+                        {departments.map(dept => (
+                          <option key={dept} value={dept}>{dept}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <span>{selectedCourse.department}</span>
+                    )}
                   </div>
+
                   <div className="info-item">
                     <strong>학점:</strong>
-                    <span>{selectedCourse.point}</span>
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={editedCourse?.point || ''}
+                        onChange={(e) => handleInputChange('point', e.target.value)}
+                      />
+                    ) : (
+                      <span>{selectedCourse.point}</span>
+                    )}
                   </div>
+
                   <div className="info-item">
                     <strong>시간:</strong>
-                    <span>{selectedCourse.time}</span>
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={editedCourse?.time || ''}
+                        onChange={(e) => handleInputChange('time', e.target.value)}
+                      />
+                    ) : (
+                      <span>{selectedCourse.time}</span>
+                    )}
                   </div>
+
                   <div className="info-item">
                     <strong>정원:</strong>
-                    <span>{selectedCourse.personeel}</span>
+                    {editMode ? (
+                      <input
+                        type="number"
+                        value={editedCourse?.personeel || 0}
+                        onChange={(e) => handleInputChange('personeel', parseInt(e.target.value))}
+                      />
+                    ) : (
+                      <span>{selectedCourse.personeel}</span>
+                    )}
                   </div>
+
                   <div className="info-item full-width">
                     <strong>강의실:</strong>
-                    <span>{selectedCourse.scheduleRoom}</span>
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={editedCourse?.scheduleRoom || ''}
+                        onChange={(e) => handleInputChange('scheduleRoom', e.target.value)}
+                      />
+                    ) : (
+                      <span>{selectedCourse.scheduleRoom}</span>
+                    )}
                   </div>
+
                   <div className="info-item full-width">
                     <strong>원본 수강대상:</strong>
-                    <span>{selectedCourse.targetText || '-'}</span>
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={editedCourse?.targetText || ''}
+                        onChange={(e) => handleInputChange('targetText', e.target.value)}
+                      />
+                    ) : (
+                      <span>{selectedCourse.targetText || '-'}</span>
+                    )}
+                  </div>
+
+                  <div className="info-item full-width">
+                    <strong>교과영역:</strong>
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={editedCourse?.field || ''}
+                        onChange={(e) => handleInputChange('field', e.target.value)}
+                      />
+                    ) : (
+                      <span>{selectedCourse.field || '-'}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -574,7 +800,19 @@ export const CourseList = () => {
                   {/* Course Times Section - 위로 이동 */}
                   <div className="course-times-section">
                     <div className="section-header">
-                      <h3>강의 시간</h3>
+                      <div className="header-left-group">
+                        {editMode ? (
+                          <div className="edit-actions">
+                            <button className="edit-button save" onClick={saveEdit}>저장</button>
+                            <button className="edit-button cancel" onClick={cancelEdit}>취소</button>
+                          </div>
+                        ) : (
+                          <div className="edit-actions">
+                            <button className="edit-button" onClick={startEdit}>수정</button>
+                          </div>
+                        )}
+                        <h3>강의 시간</h3>
+                      </div>
                       <button
                         className="toggle-button"
                         onClick={() => setShowCourseTimes(!showCourseTimes)}
@@ -648,13 +886,20 @@ export const CourseList = () => {
                     </div>
 
                     {!selectedCourse.targets || selectedCourse.targets.length === 0 ? (
-                      <div className="no-targets-message">
-                        <p>수강 대상이 없습니다.</p>
-                      </div>
+                      editMode ? (
+                        <div className="no-targets-message">
+                          <p>수강 대상 정책을 추가해주세요.</p>
+                        </div>
+                      ) : (
+                        <div className="no-targets-message">
+                          <p>수강 대상이 없습니다.</p>
+                        </div>
+                      )
                     ) : (
                       <table className="target-table">
                         <thead>
                           <tr>
+                            {editMode && <th>ID</th>}
                             <th>정책 유형</th>
                             <th>적용 범위</th>
                             <th>대상</th>
@@ -665,58 +910,146 @@ export const CourseList = () => {
                             <th>5학년</th>
                             <th>학생 구분</th>
                             <th>대상외 제한</th>
+                            {editMode && <th>삭제</th>}
                           </tr>
                         </thead>
                         <tbody>
-                          {/* Deny 정책을 먼저 표시 */}
-                          {selectedCourse.targets
-                            .filter((target: TargetInfo) => target.isDenied)
-                            .map((target: TargetInfo, index: number) => (
-                              <tr key={`deny-${index}`} className="denied-row">
+                          {editMode ? (
+                            // Edit Mode: Show all targets with inputs
+                            editedCourse?.targets.map((target, index) => (
+                              <tr key={index} className={target.isDenied ? 'denied-row' : 'allowed-row'}>
+                                {editMode && <td>{target.id || '-'}</td>}
                                 <td>
-                                  <span className="effect-badge deny-badge">Deny</span>
+                                  <div className="toggle-group">
+                                    <button
+                                      className={`toggle-btn allow ${!target.isDenied ? 'active' : ''}`}
+                                      onClick={() => handleTargetChange(index, 'isDenied', false)}
+                                    >
+                                      허용
+                                    </button>
+                                    <button
+                                      className={`toggle-btn deny ${target.isDenied ? 'active' : ''}`}
+                                      onClick={() => handleTargetChange(index, 'isDenied', true)}
+                                    >
+                                      거부
+                                    </button>
+                                  </div>
                                 </td>
                                 <td>
-                                  {target.scopeType === 'UNIVERSITY' ? '전체' :
-                                    target.scopeType === 'COLLEGE' ? '단과대' :
-                                      '학과'}
+                                  <select
+                                    value={target.scopeType}
+                                    onChange={(e) => handleTargetChange(index, 'scopeType', e.target.value)}
+                                    className="scope-select"
+                                  >
+                                    <option value="UNIVERSITY">전체</option>
+                                    <option value="COLLEGE">단과대</option>
+                                    <option value="DEPARTMENT">학과</option>
+                                  </select>
                                 </td>
-                                <td>{target.scopeName || '-'}</td>
-                                <td>{target.grade1 ? '✓' : '-'}</td>
-                                <td>{target.grade2 ? '✓' : '-'}</td>
-                                <td>{target.grade3 ? '✓' : '-'}</td>
-                                <td>{target.grade4 ? '✓' : '-'}</td>
-                                <td>{target.grade5 ? '✓' : '-'}</td>
-                                <td>{getStudentTypeLabel(target.studentType)}</td>
-                                <td>{target.isStrict ? '✓' : '-'}</td>
+                                <td>
+                                  {target.scopeType === 'UNIVERSITY' ? (
+                                    <span>전체</span>
+                                  ) : target.scopeType === 'COLLEGE' ? (
+                                    <select
+                                      value={target.scopeName || ''}
+                                      onChange={(e) => handleTargetChange(index, 'scopeName', e.target.value)}
+                                      className="scope-detail-select"
+                                    >
+                                      <option value="">선택</option>
+                                      {colleges.map(c => (
+                                        <option key={c.name} value={c.name}>{c.name}</option>
+                                      ))}
+                                    </select>
+                                  ) : (
+                                    <select
+                                      value={target.scopeName || ''}
+                                      onChange={(e) => handleTargetChange(index, 'scopeName', e.target.value)}
+                                      className="scope-detail-select"
+                                    >
+                                      <option value="">선택</option>
+                                      {colleges.map(college => (
+                                        <optgroup key={college.name} label={college.name}>
+                                          {college.departments.map(dept => (
+                                            <option key={dept} value={dept}>{dept}</option>
+                                          ))}
+                                        </optgroup>
+                                      ))}
+                                    </select>
+                                  )}
+                                </td>
+                                <td>
+                                  <input type="checkbox" checked={target.grade1} onChange={(e) => handleTargetChange(index, 'grade1', e.target.checked)} />
+                                </td>
+                                <td>
+                                  <input type="checkbox" checked={target.grade2} onChange={(e) => handleTargetChange(index, 'grade2', e.target.checked)} />
+                                </td>
+                                <td>
+                                  <input type="checkbox" checked={target.grade3} onChange={(e) => handleTargetChange(index, 'grade3', e.target.checked)} />
+                                </td>
+                                <td>
+                                  <input type="checkbox" checked={target.grade4} onChange={(e) => handleTargetChange(index, 'grade4', e.target.checked)} />
+                                </td>
+                                <td>
+                                  <input type="checkbox" checked={target.grade5} onChange={(e) => handleTargetChange(index, 'grade5', e.target.checked)} />
+                                </td>
+                                <td>
+                                  <select
+                                    value={target.studentType}
+                                    onChange={(e) => handleTargetChange(index, 'studentType', e.target.value)}
+                                    className="student-type-select"
+                                  >
+                                    <option value="GENERAL">일반</option>
+                                    <option value="FOREIGNER">외국인</option>
+                                    <option value="MILITARY">군위탁</option>
+                                    <option value="TEACHING_CERT">교직</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button
+                                    className={`toggle-btn strict ${target.isStrict ? 'active' : ''}`}
+                                    onClick={() => handleTargetChange(index, 'isStrict', !target.isStrict)}
+                                  >
+                                    {target.isStrict ? '제한' : '해제'}
+                                  </button>
+                                </td>
+                                <td>
+                                  <button className="delete-button" onClick={() => handleDeleteTarget(index)}>삭제</button>
+                                </td>
                               </tr>
-                            ))}
-
-                          {/* Allow 정책을 나중에 표시 */}
-                          {selectedCourse.targets
-                            .filter((target: TargetInfo) => !target.isDenied)
-                            .map((target: TargetInfo, index: number) => (
-                              <tr key={`allow-${index}`} className="allowed-row">
-                                <td>
-                                  <span className="effect-badge allow-badge">Allow</span>
-                                </td>
-                                <td>
-                                  {target.scopeType === 'UNIVERSITY' ? '전체' :
-                                    target.scopeType === 'COLLEGE' ? '단과대' :
-                                      '학과'}
-                                </td>
-                                <td>{target.scopeName || '-'}</td>
-                                <td>{target.grade1 ? '✓' : '-'}</td>
-                                <td>{target.grade2 ? '✓' : '-'}</td>
-                                <td>{target.grade3 ? '✓' : '-'}</td>
-                                <td>{target.grade4 ? '✓' : '-'}</td>
-                                <td>{target.grade5 ? '✓' : '-'}</td>
-                                <td>{getStudentTypeLabel(target.studentType)}</td>
-                                <td>{target.isStrict ? '✓' : '-'}</td>
-                              </tr>
-                            ))}
+                            ))
+                          ) : (
+                            // View Mode: Existing logic (Sorted by Deny)
+                            selectedCourse.targets
+                              .sort((a, b) => (Number(b.isDenied) - Number(a.isDenied)))
+                              .map((target: TargetInfo, index: number) => (
+                                <tr key={index} className={target.isDenied ? 'denied-row' : 'allowed-row'}>
+                                  {editMode && <td>{target.id || '-'}</td>}
+                                  <td>
+                                    <span className={`badge ${target.isDenied ? 'badge-deny' : 'badge-allow'}`}>
+                                      {target.isDenied ? 'Deny' : 'Allow'}
+                                    </span>
+                                  </td>
+                                  <td>{target.scopeType === 'UNIVERSITY' ? '전체' :
+                                    target.scopeType === 'COLLEGE' ? '단과대' : '학과'}</td>
+                                  <td>{target.scopeName || '-'}</td>
+                                  <td>{target.grade1 ? 'O' : '-'}</td>
+                                  <td>{target.grade2 ? 'O' : '-'}</td>
+                                  <td>{target.grade3 ? 'O' : '-'}</td>
+                                  <td>{target.grade4 ? 'O' : '-'}</td>
+                                  <td>{target.grade5 ? 'O' : '-'}</td>
+                                  <td>{getStudentTypeLabel(target.studentType)}</td>
+                                  <td>{target.isStrict ? '제한' : '-'}</td>
+                                </tr>
+                              ))
+                          )}
                         </tbody>
                       </table>
+                    )}
+
+                    {editMode && (
+                      <div className="add-target-container">
+                        <button className="add-target-button" onClick={handleAddTarget}>+ 정책 추가</button>
+                      </div>
                     )}
                   </div>
                 </>

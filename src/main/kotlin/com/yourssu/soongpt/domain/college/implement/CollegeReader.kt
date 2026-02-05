@@ -9,4 +9,8 @@ class CollegeReader(
     fun get(id: Long): College {
         return collegeRepository.get(id)
     }
+
+    fun getByName(name: String): College {
+        return collegeRepository.getByName(name)
+    }
 }

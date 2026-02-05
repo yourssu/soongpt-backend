@@ -1,0 +1,18 @@
+package com.yourssu.soongpt.domain.course.business.dto
+
+import com.yourssu.soongpt.domain.course.implement.Category
+
+data class UpdateCourseCommand(
+    val category: Category,
+    val subCategory: String?,
+    val field: String?,
+    val name: String,
+    val professor: String?,
+    val department: String,
+    val division: String?,
+    val time: String,
+    val point: String,
+    val personeel: Int,
+    val scheduleRoom: String,
+    val target: String
+)
