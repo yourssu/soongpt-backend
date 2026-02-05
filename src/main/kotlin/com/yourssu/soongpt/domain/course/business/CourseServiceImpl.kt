@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.business.dto.*
 import com.yourssu.soongpt.domain.course.business.query.*
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.ScopeType
@@ -101,10 +102,8 @@ class CourseServiceImpl(
                     )
                 }
 
-        val courseTimeResponses =
-                courseTimes.toList().map {
-                    com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse.from(it)
-                }
+        val courseTimeResponses = courseTimes.toList()
+            .map { CourseTimeResponse.from(it) }
 
         return CourseTargetResponse(
                 code = course.code,
