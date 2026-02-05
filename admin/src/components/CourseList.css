@@ -439,6 +439,7 @@ h1 {
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -528,6 +529,7 @@ h1 {
 
 .modal-body {
   padding: 20px;
+  overflow-x: hidden;
 }
 
 .course-info-detail {
@@ -600,6 +602,7 @@ h1 {
 
 .target-table-container {
   margin-top: 20px;
+  overflow-x: hidden;
 }
 
 .header-with-help {
@@ -926,6 +929,7 @@ h1 {
   color: #6c757d;
   transition: all 0.2s;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .toggle-btn.active {
@@ -954,6 +958,27 @@ h1 {
   background-color: #fff3cd;
   border-color: #ffeeba;
   color: #856404;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.badge-allow {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-deny {
+  background-color: #dc3545;
+  color: white;
 }
 
 /* Checkbox Container override for delete/strict if needed */
@@ -1050,6 +1075,7 @@ h1 {
   border: 1px solid #ddd;
   font-size: 14px;
   color: #333;
+  white-space: nowrap;
 }
 
 .target-table th {
