@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # File paths
-input_file = "ssu26-1.csv"
+input_file = "../course/ssu26-1.csv"
 
 # Current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
