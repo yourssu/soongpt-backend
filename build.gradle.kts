@@ -44,6 +44,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-logging:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-cache:$springBootVersion")
 
 
 	implementation("io.github.oshai:kotlin-logging-jvm:$loggingVersion")
@@ -65,6 +66,7 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j:$mysqlVersion")
 
 	implementation("com.google.guava:guava:$guavaVersion")
+	implementation("com.github.ben-manes.caffeine:caffeine")
 
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swaggerVersion")
 
