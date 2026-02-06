@@ -85,6 +85,25 @@ class RusaintServiceClient(
         )
     }
 
+    /**
+     * SSO 토큰 유효성 검증 (세션 생성만 시도).
+     * 콜백 시점에 sToken 만료 여부를 빠르게 확인하는 용도 (약 1-2초).
+     *
+     * @throws RusaintServiceException 토큰이 유효하지 않거나 만료된 경우
+     */
+    fun validateToken(
+        studentId: String,
+        sToken: String,
+    ) {
+        val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
+        executeRusaintCall("validate-token") {
+            restTemplate.postForEntity<Map<String, Any>>(
+                "/api/usaint/validate-token",
+                requestEntity,
+            )
+        }
+    }
+
     private fun <T> executeRusaintCall(callName: String, block: () -> T): T {
         return try {
             block()

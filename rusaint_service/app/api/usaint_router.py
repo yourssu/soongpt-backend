@@ -25,6 +25,55 @@ def get_rusaint_service() -> RusaintService:
 
 
 @router.post(
+    "/validate-token",
+    status_code=status.HTTP_200_OK,
+    summary="SSO 토큰 유효성 검증",
+    description="SSO 토큰으로 세션 생성만 시도하여 유효성을 검증합니다 (약 1-2초).",
+)
+async def validate_token(
+    request: UsaintSnapshotRequest,
+    _: dict = Depends(verify_internal_jwt),
+    rusaint_service: RusaintService = Depends(get_rusaint_service),
+) -> dict:
+    """
+    SSO 토큰 유효성을 검증합니다.
+
+    세션 생성만 시도하고 즉시 종료합니다 (데이터 조회 없음).
+    콜백 시점에 sToken 만료 여부를 빠르게 확인하는 용도입니다.
+
+    Returns:
+        {"valid": true} - 토큰이 유효한 경우
+
+    Raises:
+        401 - 토큰이 유효하지 않거나 만료된 경우
+    """
+    try:
+        await rusaint_service.validate_token(
+            student_id=request.studentId,
+            s_token=request.sToken,
+        )
+        return {"valid": True}
+
+    except ValueError as e:
+        logger.error(f"SSO 토큰 검증 실패: student_id={request.studentId[:4]}****, error_type={type(e).__name__}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="SSO token is invalid or expired",
+        )
+    except Exception as e:
+        logger.error(
+            f"SSO 토큰 검증 중 오류 발생: student_id={request.studentId[:4]}****, error_type={type(e).__name__}",
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to validate SSO token",
+        )
+
+
+
+
+@router.post(
     "/snapshot/academic",
     status_code=status.HTTP_200_OK,
     summary="유세인트 학적/성적 이력 조회 (졸업사정표 제외)",

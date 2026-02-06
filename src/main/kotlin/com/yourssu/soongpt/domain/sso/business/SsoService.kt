@@ -33,11 +33,14 @@ class SsoService(
 
     /**
      * SSO 콜백 처리.
-     * 1. sToken 형식/재사용 검증
-     * 2. pseudonym 생성
-     * 3. JWT 쿠키 생성
-     * 4. 비동기로 rusaint fetch 시작
-     * 5. 리다이렉트 URL 반환
+     * 1. sToken 형식 검증
+     * 2. sToken 유효성 검증 (동기 - rusaint-service 호출)
+     * 3. pseudonym 생성
+     * 4. JWT 쿠키 생성
+     * 5. 비동기로 rusaint 데이터 fetch 시작
+     * 6. 리다이렉트 URL 반환
+     *
+     * sToken 만료 시 즉시 에러 페이지로 리다이렉트 (폴링 대기 없이).
      */
     fun handleCallback(
         sToken: String,
@@ -56,6 +59,18 @@ class SsoService(
             )
         }
 
+        // sToken 유효성 검증 (동기 호출 - 약 1-2초)
+        // 만료된 토큰이면 즉시 에러 페이지로 리다이렉트
+        try {
+            rusaintServiceClient.validateToken(studentId, sToken)
+        } catch (e: RusaintServiceException) {
+            logger.warn { "sToken 검증 실패 (만료/무효): ${e.message}" }
+            return CallbackResult(
+                redirectUrl = "${ssoProperties.frontendUrl}/error?reason=token_expired",
+                authCookie = null,
+            )
+        }
+
         // pseudonym 생성
         val pseudonym = pseudonymGenerator.generate(studentId)
 
@@ -66,7 +81,7 @@ class SsoService(
         val token = clientJwtProvider.issueToken(pseudonym)
         val authCookie = clientJwtProvider.createAuthCookie(token)
 
-        // 비동기로 rusaint fetch 시작
+        // 비동기로 rusaint 데이터 fetch 시작
         startAsyncRusaintFetch(pseudonym, studentId, sToken)
 
         return CallbackResult(
