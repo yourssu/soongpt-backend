@@ -100,6 +100,11 @@ def parse_time_point(time_point_str: str):
         credit = float(match.group(2))  # Second number (뒤)
         return point, credit
 
+    # If it's a single number like "4.0", treat it as point, and credit is None (or same?)
+    # Generally, time/point means Lecture Time (point) / Credit.
+    # If only one is present, it's ambiguous.
+    # However, safe default is point only.
+    
     return time_point_str, None
 
 
@@ -130,6 +135,14 @@ def parse_personeel(personeel_str: str) -> int:
     except ValueError:
         return 0
 
+def truncate_string(s: str, max_length: int) -> str:
+    """Truncate string to max_length."""
+    if not s:
+        return s
+    
+    if len(s) > max_length:
+        return s[:max_length]
+    return s
 
 class CourseInsertGenerator:
     """Generates SQL INSERT statements for course table."""
@@ -182,9 +195,28 @@ class CourseInsertGenerator:
 
         # Parse point and credit
         point, credit = parse_time_point(time_point)
+        
+        # Validate point is a number (if present)
+        if point:
+             try:
+                 float(point)
+             except ValueError:
+                 self.skipped.append(f"Invalid point value: {point} for code {code}")
+                 return None
 
         # Parse personeel
         personeel = parse_personeel(personeel_str)
+
+        # Truncate fields to safe lengths (based on assumed DB schema limits)
+        name = truncate_string(name, 100)
+        professor = truncate_string(professor, 50)
+        department = truncate_string(department, 50)
+        division = truncate_string(division, 20)
+        major_classification = truncate_string(major_classification, 255) # SubCategory can be long
+        field = truncate_string(field, 50)
+        target = truncate_string(target, 2048) # Target can be long
+        schedule_room = truncate_string(schedule_room, 255)
+
 
         # Build SQL
         sql = "INSERT INTO course ("
@@ -227,10 +259,15 @@ class CourseInsertGenerator:
         print(f"Skipped: {len(self.skipped)}")
         print(f"Duplicate codes: {len(self.duplicate_codes)}")
 
-        if self.skipped and len(self.skipped) <= 10:
+        if self.skipped and len(self.skipped) <= 20:
             print(f"\nSkipped reasons:")
-            for reason in self.skipped[:10]:
+            for reason in self.skipped[:20]:
                 print(f"  - {reason}")
+        elif len(self.skipped) > 20:    
+            print(f"\nSkipped reasons (first 20):")
+            for reason in self.skipped[:20]:
+                print(f"  - {reason}")
+
 
         if self.duplicate_codes:
             print(f"\nDuplicate course codes ({len(self.duplicate_codes)}):")
