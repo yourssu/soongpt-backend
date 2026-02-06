@@ -905,6 +905,14 @@ h1 {
   background-color: #c82333;
 }
 
+.edit-button.json-copy {
+  background-color: #17a2b8;
+}
+
+.edit-button.json-copy:hover {
+  background-color: #138496;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
