@@ -31,12 +31,15 @@ class TargetReader(
                 targetRepository.findAllByDepartmentGradeRange(
                     department.id!!, department.collegeId, userGrade
                 )
+
             Category.MAJOR_ELECTIVE ->
                 targetRepository.findAllByDepartmentGradeRange(
                     department.id!!, department.collegeId, 5
                 )
+
             else -> emptyList()
         }
+    }
     fun saveAll(targets: List<Target>): List<Target> {
         return targetRepository.saveAll(targets)
     }
