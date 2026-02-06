@@ -446,6 +446,17 @@ export const CourseList = () => {
     }
   };
 
+  const handleCopyJson = async () => {
+    if (!selectedCourse) return;
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(selectedCourse, null, 2));
+      alert('과목 정보가 JSON으로 복사되었습니다.');
+    } catch (err) {
+      console.error('복사 실패:', err);
+      alert('복사에 실패했습니다.');
+    }
+  };
+
   const deleteCourse = async () => {
     if (!selectedCourse) return;
 
@@ -1097,6 +1108,7 @@ export const CourseList = () => {
                         </div>
                       ) : (
                         <div className="edit-actions">
+                          <button className="edit-button json-copy" onClick={handleCopyJson}>JSON 복사</button>
                           <button className="edit-button" onClick={startEdit}>수정</button>
                           <button className="edit-button delete" onClick={deleteCourse}>삭제</button>
                         </div>
