@@ -3,17 +3,12 @@ package com.yourssu.soongpt.domain.course.storage
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
-import com.yourssu.soongpt.domain.course.implement.Category
-import com.yourssu.soongpt.domain.course.implement.Course
-import com.yourssu.soongpt.domain.course.implement.CourseRepository
-import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
-import com.yourssu.soongpt.domain.course.implement.DIVISION_DIVISOR
+import com.yourssu.soongpt.domain.course.implement.*
 import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
 import com.yourssu.soongpt.domain.target.implement.ScopeType
 import com.yourssu.soongpt.domain.target.implement.StudentType
 import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
-import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -32,7 +27,7 @@ class CourseRepositoryImpl(
         return courseJpaRepository.getByCode(code).toDomain()
     }
 
-    @Cacheable(value = ["courseCache"], key = "#pageable.pageNumber + '_' + #pageable.pageSize")
+//    @Cacheable(value = ["courseCache"], key = "#pageable.pageNumber + '_' + #pageable.pageSize")
     override fun findAll(pageable: Pageable): Page<Course> {
         val content = jpaQueryFactory
             .selectFrom(courseEntity)
