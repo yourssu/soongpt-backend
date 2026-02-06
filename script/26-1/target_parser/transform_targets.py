@@ -328,21 +328,31 @@ def parse_target(text, id_manager):
                          is_military_only=is_military, is_teaching_cert=is_teaching)
         ], []
 
-    # Flags
-    has_strict_flag = "대상외수강제한" in text or "타학과수강제한" in text
-    # Exclude keywords EXCLUDING strict flags (strict flags are whitelist, not blacklist)
-    has_exclude_keyword = (
-        ("제외" in text and "대상외수강제한" not in text) or
-        ("수강제한" in text and "대상외수강제한" not in text and "타학과수강제한" not in text) or
-        ("수강불가" in text)
-    )
-
     # Detect flags ONLY from text outside parentheses (to avoid false positives from exclusions)
     text_without_parens = text
     for paren_match in re.findall(r'\([^)]*\)', text):
         text_without_parens = text_without_parens.replace(paren_match, "")
 
-    is_excluded = has_exclude_keyword
+    # Flags
+    has_strict_flag = "대상외수강제한" in text or "타학과수강제한" in text or "타학과 학생 수강 제한" in text
+    
+    # 1. Global exclusion check (anywhere in text) - triggers "University Allow" rule
+    has_exclude_keyword_anywhere = (
+        ("제외" in text and "대상외수강제한" not in text) or
+        ("수강제한" in text and "대상외수강제한" not in text and "타학과수강제한" not in text and "타학과 학생 수강 제한" not in text) or
+        ("수강불가" in text) or
+        ("제한" in text and "대상외수강제한" not in text and "타학과수강제한" not in text and "타학과 학생 수강 제한" not in text)
+    )
+
+    # 2. Main text exclusion check (outside parentheses) - sets "Deny" effect for main tokens
+    has_exclude_keyword_in_main = (
+        ("제외" in text_without_parens and "대상외수강제한" not in text_without_parens) or
+        ("수강제한" in text_without_parens and "대상외수강제한" not in text_without_parens and "타학과수강제한" not in text_without_parens and "타학과 학생 수강 제한" not in text_without_parens) or
+        ("수강불가" in text_without_parens) or
+        ("제한" in text_without_parens and "대상외수강제한" not in text_without_parens and "타학과수강제한" not in text_without_parens and "타학과 학생 수강 제한" not in text_without_parens)
+    )
+
+    is_excluded = has_exclude_keyword_in_main
     is_foreigner_only = "순수외국인" in text_without_parens or "외국국적" in text_without_parens or "외국인" in text_without_parens or "교환학생" in text_without_parens
     is_military_only = "군위탁" in text_without_parens
     is_teaching_cert = "교직이수자" in text_without_parens or "교직이수" in text_without_parens
@@ -388,9 +398,14 @@ def parse_target(text, id_manager):
 
     # Now remove flags for cleaner parsing
     clean_text = re.sub(r"\(\s*(대상외수강제한|타학과수강제한|수강제한)\s*\)", "", text)
+    clean_text = clean_text.replace("타학과 학생 수강 제한", "").replace("타학과수강제한", "")
     clean_text = re.sub(r'순수외국인[^\s]*', '', clean_text)
     clean_text = re.sub(r'외국국적[^\s]*', '', clean_text)
     clean_text = clean_text.replace("교환학생", "").replace("군위탁", "").replace("입학생", "").replace("교직이수자", "").replace("교직이수", "")
+    # Remove user-reported specific noise
+    clean_text = clean_text.replace("내국인 전용강좌", "").replace("내국인", "").replace("전용강좌", "")
+    clean_text = clean_text.replace("조직미지정", "")
+    
     # Remove parentheses with exclusion keywords
     for match in exclusion_matches:
         clean_text = clean_text.replace(f"({match})", " ")
@@ -409,7 +424,7 @@ def parse_target(text, id_manager):
                 is_strict_restriction=True
             ))
         # Case 1b: Category exclusion (e.g., "전체학년 (외국인 제외)")
-        elif (is_foreigner_only or is_military_only or is_teaching_cert) and has_exclude_keyword:
+        elif (is_foreigner_only or is_military_only or is_teaching_cert) and has_exclude_keyword_anywhere:
             targets.append(create_target())  # Base allowed target
             targets.append(create_target(
                 effect="Deny",
@@ -635,7 +650,8 @@ def parse_target(text, id_manager):
         t["maxGrade"] = max_grade
         # Main text targets (outside parenthetical exclusions) are ALWAYS allowed
         # Only targets from exclusion blocks (results list) will be marked as excluded
-        t["Effect"] = "Allow"
+        # UPDATED: If main text has exclusion keyword (e.g. "DeptA, DeptB 제한"), mark as Deny
+        t["Effect"] = "Deny" if is_excluded else "Allow"
             
         t["isForeignerOnly"] = is_foreigner_only
         t["isMilitaryOnly"] = is_military_only
@@ -707,7 +723,7 @@ def parse_target(text, id_manager):
 
     if not current_targets:
         # Special case: "국내대학 학점교류생 제외" -> UNIVERSITY allowed
-        if "국내대학" in original_text and "학점교류생" in original_text and has_exclude_keyword:
+        if "국내대학" in original_text and "학점교류생" in original_text and has_exclude_keyword_anywhere:
              add_target(create_target(min_grade=min_grade, max_grade=max_grade))
         # If no dept/college found, but has grade spec (e.g. "1학년" -> University wide 1 grade)
         elif has_grade_spec and not unmapped_tokens:
@@ -729,7 +745,7 @@ def parse_target(text, id_manager):
                  is_strict_restriction=True
              ))
         # Special Case: Category exclusion (e.g., "순수외국인 제외", "교환학생 제외")
-        elif (is_foreigner_only or is_military_only or is_teaching_cert) and has_exclude_keyword:
+        elif (is_foreigner_only or is_military_only or is_teaching_cert) and has_exclude_keyword_anywhere:
              add_target(create_target(min_grade=min_grade, max_grade=max_grade))  # Base allowed
              add_target(create_target(
                  min_grade=min_grade, max_grade=max_grade,
@@ -775,13 +791,15 @@ def parse_target(text, id_manager):
     # But ONLY if:
     # 1. We have exclusion targets (final_targets)
     # 2. NOT in strict mode (strict implies whitelist)
-    # 3. Main text had NO explicit targets (e.g., "전체(중문 제외)" vs "전자공학(IT융합 제한)")
-    # Check: if current_targets was empty before extending with results, then we need UNIVERSITY base
-    has_main_text_targets = len(current_targets) > len(results)  # current_targets = main + results
+    # 3. No explicit ALLOW targets were found. (If we allow specific depts, we shouldn't add University base)
     
-    if has_exclude_keyword and final_targets and not has_strict_flag and not has_main_text_targets:
+    if has_exclude_keyword_anywhere and final_targets and not has_strict_flag:
          # Check if UNIVERSITY scope is already present (avoid duplication)
-         if not any(t["scopeType"] == "UNIVERSITY" for t in final_targets):
+         has_university_scope = any(t["scopeType"] == "UNIVERSITY" for t in final_targets)
+         # Check if we have any explicit POSITIVE targets
+         has_explicit_allow = any(t.get("Effect") == "Allow" for t in final_targets)
+         
+         if not has_university_scope and not has_explicit_allow:
              final_targets.insert(0, create_target(min_grade=min_grade, max_grade=max_grade))
 
     return final_targets, unmapped_tokens

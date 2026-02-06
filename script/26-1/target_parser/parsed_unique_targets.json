@@ -8721,6 +8721,19 @@
     "parsed_targets": [
       {
         "Effect": "Allow",
+        "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 1,
+            "max": 5
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
         "Resource": "department/전자정보공학부 IT융합전공",
         "Condition": {
           "Grade": {
@@ -8733,7 +8746,7 @@
         }
       },
       {
-        "Effect": "Allow",
+        "Effect": "Deny",
         "Resource": "department/컴퓨터학부",
         "Condition": {
           "Grade": {
@@ -8746,7 +8759,7 @@
         }
       },
       {
-        "Effect": "Allow",
+        "Effect": "Deny",
         "Resource": "department/소프트웨어학부",
         "Condition": {
           "Grade": {
@@ -8759,7 +8772,7 @@
         }
       },
       {
-        "Effect": "Allow",
+        "Effect": "Deny",
         "Resource": "department/AI융합학부",
         "Condition": {
           "Grade": {
@@ -8772,7 +8785,7 @@
         }
       },
       {
-        "Effect": "Allow",
+        "Effect": "Deny",
         "Resource": "department/글로벌미디어학부",
         "Condition": {
           "Grade": {
@@ -8785,7 +8798,7 @@
         }
       },
       {
-        "Effect": "Allow",
+        "Effect": "Deny",
         "Resource": "department/정보보호학과",
         "Condition": {
           "Grade": {
@@ -13727,7 +13740,8 @@
           "StudentType": [
             "general"
           ]
-        }
+        },
+        "Strict": true
       }
     ]
   },
@@ -13746,7 +13760,8 @@
           "StudentType": [
             "foreigner"
           ]
-        }
+        },
+        "Strict": true
       }
     ]
   },
@@ -14379,6 +14394,19 @@
     "parsed_targets": [
       {
         "Effect": "Allow",
+        "Resource": "university",
+        "Condition": {
+          "Grade": {
+            "min": 2,
+            "max": 2
+          },
+          "StudentType": [
+            "general"
+          ]
+        }
+      },
+      {
+        "Effect": "Deny",
         "Resource": "department/언론홍보학과",
         "Condition": {
           "Grade": {
