@@ -235,7 +235,8 @@ class CourseInsertGenerator:
         sql += f"{escape_sql_string(department)}, "  # department
         sql += f"{escape_sql_string(division) if division else 'NULL'}, "  # division
         sql += f"{escape_sql_string(point)}, "  # time (앞부분)
-        sql += f"{escape_sql_string(point)}, "  # point (앞부분)
+        credit_str = str(credit) if credit is not None else point
+        sql += f"'{credit_str}', "  # point (학점)
         sql += f"{personeel}, "  # personeel
         sql += f"{escape_sql_string(schedule_room)}, "  # schedule_room
         sql += f"{escape_sql_string(target)}, "  # target
