@@ -47,8 +47,19 @@ class RuleValidatorTest(unittest.TestCase):
             parsed_targets=[TargetRef(department="컴퓨터학부", grade=2)],
             unparsed_tokens=["우선"],
         )
-        codes = {issue.code for issue in issues}
-        self.assertIn("UNPARSED_TOKENS", codes)
+        code_by_severity = {(issue.code, issue.severity) for issue in issues}
+        self.assertIn(("UNPARSED_QUALIFIERS", "WARN"), code_by_severity)
+
+    def test_unparsed_qualifier_warn_when_targets_exist(self) -> None:
+        issues = self.validator.validate(
+            row_no=5,
+            course_code="C104",
+            raw_target_text="컴퓨터학부 2학년 (대상외수강제한)",
+            parsed_targets=[TargetRef(department="컴퓨터학부", grade=2)],
+            unparsed_tokens=["대상외수강제한"],
+        )
+        code_by_severity = {(issue.code, issue.severity) for issue in issues}
+        self.assertIn(("UNPARSED_QUALIFIERS", "WARN"), code_by_severity)
 
 
 if __name__ == "__main__":

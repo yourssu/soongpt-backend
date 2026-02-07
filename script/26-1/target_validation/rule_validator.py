@@ -86,16 +86,39 @@ class RuleValidator:
             )
 
         if unparsed_tokens:
-            issues.append(
-                self._issue(
-                    "UNPARSED_TOKENS",
-                    "ERROR",
-                    "파싱하지 못한 토큰이 존재합니다.",
-                    row_no,
-                    course_code,
-                    {"tokens": unparsed_tokens},
+            if parsed_targets:
+                issues.append(
+                    self._issue(
+                        "UNPARSED_QUALIFIERS",
+                        "WARN",
+                        "비차단 성격의 추가 토큰이 존재합니다.",
+                        row_no,
+                        course_code,
+                        {"tokens": unparsed_tokens},
+                    )
                 )
-            )
+            elif self._is_non_blocking_unparsed_tokens(unparsed_tokens):
+                issues.append(
+                    self._issue(
+                        "UNPARSED_QUALIFIERS",
+                        "WARN",
+                        "비차단 성격의 추가 토큰이 존재합니다.",
+                        row_no,
+                        course_code,
+                        {"tokens": unparsed_tokens},
+                    )
+                )
+            else:
+                issues.append(
+                    self._issue(
+                        "UNPARSED_TOKENS",
+                        "ERROR",
+                        "파싱하지 못한 토큰이 존재합니다.",
+                        row_no,
+                        course_code,
+                        {"tokens": unparsed_tokens},
+                    )
+                )
 
         duplicates = self._find_duplicates(parsed_targets)
         if duplicates:
@@ -134,6 +157,22 @@ class RuleValidator:
             else:
                 seen.add(key)
         return duplicates
+
+    @staticmethod
+    def _is_non_blocking_unparsed_tokens(tokens: list[str]) -> bool:
+        if not tokens:
+            return False
+        qualifier_pattern = re.compile(
+            r"(대상외수강제한|수강제한|타학과수강제한|순수외국인입학생|교환학생|군위탁|교직이수자|계약학과|"
+            r"제외|제한|수강불가|수강신청|가능|융합|연계|전용강좌|"
+            r"인문대|자연대|경영대|사회대|공대|공과대|IT대|법과대|경통대|자유전공|"
+            r"내국인|시간제|A그룹|B그룹|구|포함|목|부|대)"
+        )
+        for token in tokens:
+            if qualifier_pattern.search(token):
+                continue
+            return False
+        return True
 
     @staticmethod
     def _issue(
