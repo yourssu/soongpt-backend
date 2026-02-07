@@ -58,7 +58,11 @@ def run_validation(
     row_results: list[RowValidationResult] = []
 
     for row in rows:
-        parsed_targets, unparsed_tokens = parse_target_text(row.raw_target_text, alias_lookup)
+        parsed_targets, unparsed_tokens = parse_target_text(
+            row.raw_target_text,
+            alias_lookup,
+            allowed_departments=allowed_departments,
+        )
         issues = rule_validator.validate(
             row_no=row.row_no,
             course_code=row.course_code,

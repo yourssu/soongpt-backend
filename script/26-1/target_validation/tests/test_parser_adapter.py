@@ -35,6 +35,13 @@ class ParserAdapterTest(unittest.TestCase):
         self.assertEqual(parsed, [])
         self.assertTrue(unparsed)
 
+    def test_parse_whole_target_with_allowed_departments(self) -> None:
+        allowed = ["소프트웨어학부", "컴퓨터학부", "AI융합학부"]
+        parsed, unparsed = parse_target_text("전체", self.alias_lookup, allowed_departments=allowed)
+        self.assertEqual(len(parsed), 15)
+        self.assertEqual({target.department for target in parsed}, set(allowed))
+        self.assertEqual(unparsed, [])
+
 
 if __name__ == "__main__":
     unittest.main()
