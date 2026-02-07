@@ -1,6 +1,6 @@
 -- Generated SQL INSERT statements for target table
 -- Generated from: ssu26-1.csv + parsed_unique_targets.json
--- Total inserts: 4591
+-- Total inserts: 4489
 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762801, 2, NULL, 28, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762801, 2, NULL, 32, 1, 1, 1, 1, 1, 0, 0, 0);
@@ -16,7 +16,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762801, 2, NULL, 58, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762801, 2, NULL, 56, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762801, 2, NULL, 5, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762801, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762802, 2, NULL, 28, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762802, 2, NULL, 32, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762802, 2, NULL, 31, 1, 1, 1, 1, 1, 0, 0, 0);
@@ -31,7 +30,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762802, 2, NULL, 58, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762802, 2, NULL, 56, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762802, 2, NULL, 5, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762802, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762803, 2, NULL, 28, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762803, 2, NULL, 32, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762803, 2, NULL, 31, 1, 1, 1, 1, 1, 0, 0, 0);
@@ -46,7 +44,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762803, 2, NULL, 58, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762803, 2, NULL, 56, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762803, 2, NULL, 5, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762803, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006763001, 2, NULL, 54, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006763001, 2, NULL, 29, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006763001, 2, NULL, 30, 1, 1, 1, 1, 1, 0, 0, 0);
@@ -76,7 +73,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150143501, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150066301, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057301, 2, NULL, 6, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057301, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057301, 2, NULL, 5, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057301, 2, NULL, 2, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057301, 2, NULL, 3, 1, 1, 1, 1, 1, 0, 0, 0);
@@ -91,7 +87,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150637702, 2, NULL, 48, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150017601, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150533504, 2, NULL, 3, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150175404, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150179301, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5048921401, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150161001, 2, NULL, 13, 1, 1, 1, 1, 1, 0, 1, 0);
@@ -141,7 +136,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102415, 2, NULL, 22, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102416, 2, NULL, 22, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059301, 2, NULL, 6, 1, 1, 1, 1, 1, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059301, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059301, 2, NULL, 5, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059301, 2, NULL, 2, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059301, 2, NULL, 3, 1, 1, 1, 1, 1, 0, 1, 0);
@@ -151,7 +145,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100611, 2, NULL, 4, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100612, 2, NULL, 4, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059701, 2, NULL, 6, 1, 1, 1, 1, 1, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059701, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059701, 2, NULL, 5, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059701, 2, NULL, 2, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150059701, 2, NULL, 3, 1, 1, 1, 1, 1, 0, 1, 0);
@@ -183,8 +176,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2160238302, 2, NULL, 39, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2160657101, 2, NULL, 36, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5055471401, 2, NULL, 37, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534105, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534105, 2, NULL, 8, 0, 1, 0, 0, 0, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150404004, 2, NULL, 11, 1, 1, 1, 1, 1, 0, 1, 1);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150525001, 2, NULL, 47, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150525002, 2, NULL, 47, 1, 1, 1, 1, 1, 0, 1, 0);
@@ -615,7 +606,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150520401, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150631701, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150158401, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150663305, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150663306, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150533701, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150533702, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
@@ -803,7 +793,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163206, 2, NULL, 9, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163206, 2, NULL, 5, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163206, 2, NULL, 2, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150189906, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150382801, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150626201, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 1, 1);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150626202, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
@@ -893,11 +882,8 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150625601, 2, NULL, 22, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150625602, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150625603, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150386603, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150386604, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150016203, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150527301, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150527301, 2, NULL, 8, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150527301, 2, NULL, 5, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150178301, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150178301, 2, NULL, 47, 1, 1, 1, 1, 1, 1, 0, 0);
@@ -933,7 +919,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150676701, 2, NULL, 16, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2160108901, 2, NULL, 45, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150385201, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010231603, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010231604, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010232504, 2, NULL, 3, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150071101, 1, 10, NULL, 1, 1, 1, 1, 1, 0, 1, 0);
@@ -944,14 +929,12 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150071102, 2, NULL, 35, 1, 1, 1, 1, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057401, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057401, 2, NULL, 6, 1, 1, 1, 1, 1, 1, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057401, 2, NULL, 8, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057401, 2, NULL, 5, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057401, 2, NULL, 2, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057401, 2, NULL, 3, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057401, 2, NULL, 10, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057402, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057402, 2, NULL, 6, 1, 1, 1, 1, 1, 1, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057402, 2, NULL, 8, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057402, 2, NULL, 5, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057402, 2, NULL, 2, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150057402, 2, NULL, 3, 1, 1, 1, 1, 1, 1, 0, 0);
@@ -959,7 +942,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150161407, 2, NULL, 9, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150161407, 2, NULL, 5, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150161407, 2, NULL, 2, 1, 1, 1, 1, 1, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150213304, 2, NULL, 8, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150433404, 2, NULL, 11, 1, 1, 1, 1, 1, 0, 1, 1);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150520501, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150623401, 0, NULL, NULL, 1, 1, 1, 1, 1, 0, 0, 0);
@@ -1072,13 +1054,10 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100808, 2, NULL, 9, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100809, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100809, 2, NULL, 9, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100810, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100810, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100810, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100811, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100811, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100811, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100812, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100812, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100812, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100813, 2, NULL, 30, 1, 0, 0, 0, 0, 0, 0, 0);
@@ -1116,10 +1095,8 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100603, 2, NULL, 9, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100604, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100604, 2, NULL, 9, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100605, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100605, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100605, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100606, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100606, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100606, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100607, 2, NULL, 30, 1, 0, 0, 0, 0, 0, 0, 0);
@@ -1155,13 +1132,10 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100407, 2, NULL, 9, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100408, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100408, 2, NULL, 9, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100409, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100409, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100409, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100410, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100410, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100410, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100411, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100411, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100411, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150100412, 2, NULL, 30, 1, 0, 0, 0, 0, 0, 0, 0);
@@ -1435,7 +1409,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150099907, 2, NULL, 19, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150099907, 2, NULL, 21, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150099908, 2, NULL, 11, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150103101, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150103101, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150103101, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150103102, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
@@ -1597,16 +1570,12 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102826, 2, NULL, 37, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102826, 2, NULL, 40, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102826, 2, NULL, 18, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102827, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102827, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102827, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102828, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102828, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102828, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102829, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102829, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102829, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102830, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102830, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102830, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102831, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
@@ -1716,7 +1685,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102865, 2, NULL, 35, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102866, 2, NULL, 35, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102867, 0, NULL, NULL, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150103201, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150103201, 2, NULL, 7, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150103201, 2, NULL, 6, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150103202, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
@@ -2076,13 +2044,7 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150518002, 2, NULL, 37, 1, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150518003, 2, NULL, 37, 1, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150130101, 2, NULL, 10, 1, 0, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150024401, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150024402, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150386601, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150386602, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150012501, 2, NULL, 4, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150016201, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150016202, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150385801, 2, NULL, 57, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010234001, 2, NULL, 21, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010234002, 2, NULL, 21, 1, 0, 0, 0, 0, 0, 0, 0);
@@ -2100,8 +2062,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010192801, 2, NULL, 29, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010192802, 2, NULL, 29, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010192803, 2, NULL, 29, 1, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010231601, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010231602, 2, NULL, 8, 1, 0, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010232501, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010232502, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010232503, 2, NULL, 3, 1, 0, 0, 0, 0, 0, 0, 0);
@@ -2198,9 +2158,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150313806, 2, NULL, 6, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150313806, 2, NULL, 7, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150660101, 2, NULL, 49, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150175401, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150175402, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150175403, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5023312001, 2, NULL, 33, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5023312301, 2, NULL, 33, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150687101, 2, NULL, 50, 0, 1, 0, 0, 0, 0, 1, 0);
@@ -2333,12 +2290,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102733, 2, NULL, 6, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102734, 2, NULL, 7, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102734, 2, NULL, 6, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102735, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102736, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102737, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102738, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102739, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102740, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102741, 2, NULL, 5, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102741, 2, NULL, 2, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102741, 2, NULL, 9, 0, 1, 0, 0, 0, 0, 0, 0);
@@ -2370,7 +2321,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102505, 2, NULL, 30, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102506, 2, NULL, 7, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102506, 2, NULL, 6, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102507, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102508, 2, NULL, 5, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102508, 2, NULL, 2, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102508, 2, NULL, 9, 0, 1, 0, 0, 0, 0, 0, 0);
@@ -2390,7 +2340,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102605, 2, NULL, 30, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102606, 2, NULL, 7, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102606, 2, NULL, 6, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102607, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102608, 2, NULL, 5, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102608, 2, NULL, 2, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102608, 2, NULL, 9, 0, 1, 0, 0, 0, 0, 0, 0);
@@ -2585,10 +2534,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102875, 0, NULL, NULL, 0, 0, 0, 1, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150102875, 0, NULL, NULL, 0, 0, 0, 0, 1, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150131301, 2, NULL, 10, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534101, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534102, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534103, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534104, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150497401, 2, NULL, 26, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150497401, 2, NULL, 27, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150497401, 2, NULL, 24, 0, 1, 0, 0, 0, 0, 0, 0);
@@ -2751,7 +2696,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 2, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 6, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 7, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 30, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 31, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 28, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -2763,7 +2707,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 2, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 6, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 7, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 30, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 31, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762501, 2, NULL, 28, 0, 0, 0, 1, 0, 0, 0, 0);
@@ -2784,7 +2727,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 2, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 6, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 7, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 30, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 31, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 28, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -2796,7 +2738,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 2, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 6, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 7, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 30, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 31, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5006762502, 2, NULL, 28, 0, 0, 0, 1, 0, 0, 0, 0);
@@ -2815,10 +2756,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150355506, 2, NULL, 31, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150594401, 2, NULL, 55, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150358801, 2, NULL, 53, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150322701, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150322702, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150322703, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150322704, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150560301, 2, NULL, 37, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150560302, 2, NULL, 37, 0, 1, 0, 0, 0, 0, 0, 1);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150560302, 2, NULL, 37, 0, 0, 1, 0, 0, 0, 0, 1);
@@ -3055,10 +2992,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150361703, 2, NULL, 29, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150162501, 2, NULL, 46, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150162601, 2, NULL, 53, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150663301, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150663302, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150663303, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150663304, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010224001, 2, NULL, 29, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010224002, 2, NULL, 29, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010224003, 2, NULL, 29, 0, 1, 0, 0, 0, 0, 0, 0);
@@ -3169,11 +3102,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163205, 2, NULL, 9, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163205, 2, NULL, 5, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163205, 2, NULL, 2, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150189901, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150189902, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150189903, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150189904, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150189905, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150687401, 2, NULL, 50, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150314301, 2, NULL, 26, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150314301, 2, NULL, 27, 0, 1, 0, 0, 0, 0, 0, 0);
@@ -3381,9 +3309,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150226202, 2, NULL, 32, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150226203, 2, NULL, 32, 0, 1, 0, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150150701, 2, NULL, 4, 0, 1, 0, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150020801, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150020802, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150020803, 2, NULL, 8, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163101, 2, NULL, 9, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163101, 2, NULL, 5, 0, 1, 0, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150163101, 2, NULL, 2, 0, 1, 0, 0, 0, 0, 1, 0);
@@ -3693,8 +3618,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150167901, 2, NULL, 5, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150167901, 2, NULL, 2, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150133201, 2, NULL, 10, 0, 0, 1, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534301, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534302, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150129401, 2, NULL, 19, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150129402, 2, NULL, 19, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150129601, 2, NULL, 34, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -3782,8 +3705,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150166201, 2, NULL, 9, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150166201, 2, NULL, 5, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150166201, 2, NULL, 2, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150652501, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150652502, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150128501, 2, NULL, 1, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150128501, 2, NULL, 1, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150321601, 2, NULL, 6, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -3796,7 +3717,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534602, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150151401, 2, NULL, 4, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150140401, 2, NULL, 58, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150508501, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150043801, 2, NULL, 53, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150235101, 2, NULL, 58, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150170901, 2, NULL, 53, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -3887,22 +3807,18 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150353301, 2, NULL, 19, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150353302, 2, NULL, 19, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150337401, 2, NULL, 36, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012317401, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012317401, 2, NULL, 11, 0, 0, 1, 0, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012317401, 2, NULL, 18, 0, 0, 1, 0, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012317401, 2, NULL, 21, 0, 0, 1, 0, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012317401, 2, NULL, 11, 0, 0, 0, 1, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012317401, 2, NULL, 18, 0, 0, 0, 1, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012317401, 2, NULL, 21, 0, 0, 0, 1, 0, 0, 0, 3);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012317401, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010162001, 2, NULL, 11, 0, 0, 1, 0, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010162001, 2, NULL, 18, 0, 0, 1, 0, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010162001, 2, NULL, 21, 0, 0, 1, 0, 0, 0, 0, 3);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010162001, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010162001, 2, NULL, 11, 0, 0, 0, 1, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010162001, 2, NULL, 18, 0, 0, 0, 1, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010162001, 2, NULL, 21, 0, 0, 0, 1, 0, 0, 0, 3);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5010162001, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150040701, 2, NULL, 32, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150472801, 2, NULL, 56, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150472801, 2, NULL, 57, 1, 1, 1, 1, 1, 1, 0, 0);
@@ -3925,7 +3841,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150672702, 2, NULL, 11, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150672703, 2, NULL, 11, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150393901, 2, NULL, 49, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150558501, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150013701, 2, NULL, 5, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150013702, 2, NULL, 5, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150013703, 2, NULL, 5, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -3945,8 +3860,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150039601, 2, NULL, 14, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150172201, 2, NULL, 44, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150132901, 2, NULL, 10, 0, 0, 1, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150172801, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150172802, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150393601, 2, NULL, 49, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150561501, 2, NULL, 30, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150561502, 2, NULL, 30, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -4129,8 +4042,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150015106, 2, NULL, 7, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150015106, 2, NULL, 6, 1, 1, 1, 1, 1, 1, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150374801, 2, NULL, 28, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150553701, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150553701, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150491601, 2, NULL, 38, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150619801, 2, NULL, 41, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150480901, 2, NULL, 41, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -4185,9 +4096,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (5012325201, 0, NULL, NULL, 0, 0, 0, 1, 0, 0, 0, 3);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150675601, 2, NULL, 22, 0, 0, 1, 0, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150675601, 2, NULL, 19, 0, 0, 1, 0, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150226701, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150226702, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150226703, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150465501, 2, NULL, 40, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150068601, 2, NULL, 40, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150068601, 2, NULL, 40, 0, 0, 0, 1, 0, 0, 0, 0);
@@ -4209,9 +4117,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150165303, 2, NULL, 9, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150165303, 2, NULL, 5, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150165303, 2, NULL, 2, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150213301, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150213302, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150213303, 2, NULL, 8, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150467001, 2, NULL, 36, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150673201, 2, NULL, 28, 0, 0, 1, 0, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150679101, 2, NULL, 3, 0, 0, 1, 0, 0, 0, 0, 0);
@@ -4365,8 +4270,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150027301, 2, NULL, 4, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150615001, 2, NULL, 58, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150365101, 2, NULL, 32, 0, 0, 0, 1, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150565701, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150565702, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150438301, 2, NULL, 29, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150438302, 2, NULL, 29, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150096901, 2, NULL, 26, 0, 0, 0, 1, 0, 0, 0, 0);
@@ -4483,8 +4386,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150534701, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150174301, 2, NULL, 17, 0, 0, 0, 1, 0, 0, 1, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150174302, 2, NULL, 17, 0, 0, 0, 1, 0, 0, 1, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150554601, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150554602, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150539101, 2, NULL, 29, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150539102, 2, NULL, 29, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150539103, 2, NULL, 29, 0, 0, 0, 1, 0, 0, 1, 0);
@@ -4540,9 +4441,6 @@ INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, 
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150167502, 2, NULL, 5, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150167502, 2, NULL, 2, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150483901, 2, NULL, 27, 0, 0, 0, 1, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150604601, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150175701, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
-INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150175702, 2, NULL, 8, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150129501, 2, NULL, 1, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150035701, 2, NULL, 11, 0, 0, 0, 1, 0, 0, 0, 0);
 INSERT INTO target (course_code, scope_type, college_id, department_id, grade1, grade2, grade3, grade4, grade5, is_denied, is_strict, student_type) VALUES (2150685201, 2, NULL, 6, 0, 0, 0, 1, 0, 0, 0, 0);

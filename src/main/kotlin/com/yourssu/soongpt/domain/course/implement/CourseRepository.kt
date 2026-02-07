@@ -25,6 +25,20 @@ interface CourseRepository {
         collegeId: Long,
         maxGrade: Int,
     ): List<CourseWithTarget>
+
+    /**
+     * 복수전공/부전공/타전공인정 이수구분 기반 과목 조회
+     * - course_secondary_major_classification + target + course join
+     * - Allow - Deny 적용
+     */
+    fun findCoursesWithTargetBySecondaryMajor(
+        trackType: SecondaryMajorTrackType,
+        completionType: SecondaryMajorCompletionType,
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int,
+    ): List<CourseWithTarget>
+
     fun save(course: Course): Course
     fun delete(code: Long)
 }

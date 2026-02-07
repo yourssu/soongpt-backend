@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { courseApi } from '../api/courseApi';
-import type { Course } from '../types/course';
+import type {
+  Course,
+  SecondaryMajorCompletionType,
+  SecondaryMajorCourseRecommendResponse,
+  SecondaryMajorTrackType,
+} from '../types/course';
 import { colleges, categories, grades } from '../data/departments';
 
 interface FilterTabProps {
@@ -9,14 +14,101 @@ interface FilterTabProps {
   onFilterResults: (results: Course[]) => void;
 }
 
+type FilterMode = 'category' | 'secondaryMajor';
+
+interface SecondaryMajorSummary {
+  trackType: string;
+  completionType: string;
+  classification: string;
+  progress: string | null;
+  satisfied: boolean;
+  message: string | null;
+}
+
+const secondaryMajorTrackOptions: Array<{ value: SecondaryMajorTrackType; label: string }> = [
+  { value: 'DOUBLE_MAJOR', label: '복수전공' },
+  { value: 'MINOR', label: '부전공' },
+  { value: 'CROSS_MAJOR', label: '타전공인정' },
+];
+
+const secondaryMajorCompletionOptions: Record<
+  SecondaryMajorTrackType,
+  Array<{ value: SecondaryMajorCompletionType; label: string }>
+> = {
+  DOUBLE_MAJOR: [
+    { value: 'REQUIRED', label: '복필' },
+    { value: 'ELECTIVE', label: '복선' },
+  ],
+  MINOR: [
+    { value: 'REQUIRED', label: '부필' },
+    { value: 'ELECTIVE', label: '부선' },
+  ],
+  CROSS_MAJOR: [{ value: 'RECOGNIZED', label: '타전공인정과목' }],
+};
+
+const formatCredits = (credits: number | null): string => {
+  if (credits === null) {
+    return '-';
+  }
+  return Number.isInteger(credits) ? `${credits}` : credits.toString();
+};
+
+const mapSecondaryMajorCoursesToTableRows = (
+  response: SecondaryMajorCourseRecommendResponse,
+  department: string,
+): Course[] => {
+  return response.courses.flatMap((recommendedCourse) => {
+    const targetGradeText = recommendedCourse.targetGrades.length > 0
+      ? recommendedCourse.targetGrades.map((grade) => `${grade}학년`).join(', ')
+      : '-';
+    const timingText = recommendedCourse.timing === 'LATE' ? '권장학년 경과' : '권장학년';
+    const targetText = targetGradeText === '-' ? timingText : `${targetGradeText} (${timingText})`;
+
+    return recommendedCourse.sections.map((section) => ({
+      id: null,
+      category: 'OTHER',
+      subCategory: response.classification,
+      field: null,
+      code: section.courseCode,
+      name: recommendedCourse.courseName,
+      professor: section.professor,
+      department,
+      division: null,
+      time: section.schedule,
+      point: formatCredits(recommendedCourse.credits),
+      personeel: 0,
+      scheduleRoom: '-',
+      target: targetText,
+    }));
+  });
+};
+
 export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: FilterTabProps) => {
   const [filteredCourses, setFilteredCourses] = useState<Course[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [filterMode, setFilterMode] = useState<FilterMode>('category');
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [selectedGrade, setSelectedGrade] = useState<number>(1);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedTrackType, setSelectedTrackType] = useState<SecondaryMajorTrackType>('DOUBLE_MAJOR');
+  const [selectedCompletionType, setSelectedCompletionType] = useState<SecondaryMajorCompletionType>('REQUIRED');
+  const [secondaryMajorSummary, setSecondaryMajorSummary] = useState<SecondaryMajorSummary | null>(null);
   const [schoolId] = useState(20);
+
+  const handleFilterModeChange = (mode: FilterMode) => {
+    setFilterMode(mode);
+    setFilteredCourses(null);
+    setError(null);
+    setSecondaryMajorSummary(null);
+    onFilterResults([]);
+  };
+
+  const handleTrackTypeChange = (value: SecondaryMajorTrackType) => {
+    const completionOptions = secondaryMajorCompletionOptions[value];
+    setSelectedTrackType(value);
+    setSelectedCompletionType(completionOptions[0].value);
+  };
 
   const handleFilterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,14 +120,35 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
     try {
       setLoading(true);
       setError(null);
-      const data = await courseApi.getCoursesByCategory({
-        schoolId,
-        department: selectedDepartment,
-        grade: selectedGrade,
-        category: selectedCategory || undefined,  // 빈 문자열이면 undefined로 전달
-      });
-      setFilteredCourses(data);
-      onFilterResults(data);
+      if (filterMode === 'category') {
+        const data = await courseApi.getCoursesByCategory({
+          schoolId,
+          department: selectedDepartment,
+          grade: selectedGrade,
+          category: selectedCategory || undefined,
+        });
+        setSecondaryMajorSummary(null);
+        setFilteredCourses(data);
+        onFilterResults(data);
+      } else {
+        const data = await courseApi.getSecondaryMajorRecommendedCourses({
+          department: selectedDepartment,
+          grade: selectedGrade,
+          trackType: selectedTrackType,
+          completionType: selectedCompletionType,
+        });
+        const mappedCourses = mapSecondaryMajorCoursesToTableRows(data, selectedDepartment);
+        setSecondaryMajorSummary({
+          trackType: data.trackType,
+          completionType: data.completionType,
+          classification: data.classification,
+          progress: data.progress,
+          satisfied: data.satisfied,
+          message: data.message,
+        });
+        setFilteredCourses(mappedCourses);
+        onFilterResults(mappedCourses);
+      }
     } catch (err) {
       setError('과목을 불러오는데 실패했습니다.');
       console.error(err);
@@ -48,6 +161,19 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
     <>
       <form onSubmit={handleFilterSubmit} className="filter-form">
         <div className="filter-row">
+          <div className="filter-field">
+            <label htmlFor="filter-mode">조회 유형</label>
+            <select
+              id="filter-mode"
+              value={filterMode}
+              onChange={(e) => handleFilterModeChange(e.target.value as FilterMode)}
+              className="filter-select"
+            >
+              <option value="category">일반 이수구분</option>
+              <option value="secondaryMajor">다전공/부전공</option>
+            </select>
+          </div>
+
           <div className="filter-field">
             <label htmlFor="department">학과</label>
             <select
@@ -85,22 +211,60 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
             </select>
           </div>
 
-          <div className="filter-field">
-            <label htmlFor="category">이수구분</label>
-            <select
-              id="category"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="filter-select"
-            >
-              <option value="">전체</option>
-              {categories.map((cat) => (
-                <option key={cat.value} value={cat.value}>
-                  {cat.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          {filterMode === 'category' && (
+            <div className="filter-field">
+              <label htmlFor="category">이수구분</label>
+              <select
+                id="category"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="filter-select"
+              >
+                <option value="">전체</option>
+                {categories.map((cat) => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {filterMode === 'secondaryMajor' && (
+            <>
+              <div className="filter-field">
+                <label htmlFor="track-type">다전공 유형</label>
+                <select
+                  id="track-type"
+                  value={selectedTrackType}
+                  onChange={(e) => handleTrackTypeChange(e.target.value as SecondaryMajorTrackType)}
+                  className="filter-select"
+                >
+                  {secondaryMajorTrackOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="filter-field">
+                <label htmlFor="completion-type">이수구분</label>
+                <select
+                  id="completion-type"
+                  value={selectedCompletionType}
+                  onChange={(e) => setSelectedCompletionType(e.target.value as SecondaryMajorCompletionType)}
+                  className="filter-select"
+                >
+                  {secondaryMajorCompletionOptions[selectedTrackType].map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
 
           <button type="submit" className="filter-button">조회</button>
         </div>
@@ -119,7 +283,21 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         <>
           <div className="course-info">
             총 {filteredCourses.length}개의 과목
+            {secondaryMajorSummary && ` · 분류: ${secondaryMajorSummary.classification}`}
+            {secondaryMajorSummary?.progress && ` · 이수현황: ${secondaryMajorSummary.progress}`}
           </div>
+
+          {secondaryMajorSummary?.message && (
+            <div className="course-info">
+              {secondaryMajorSummary.message}
+            </div>
+          )}
+
+          {secondaryMajorSummary?.satisfied && (
+            <div className="course-info">
+              현재 이수 요건을 이미 충족했습니다.
+            </div>
+          )}
 
           <div className="table-container">
             <table className="course-table">
@@ -147,12 +325,12 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                     <td>{course.code}</td>
                     <td>{course.name}</td>
                     <td>{course.professor || '-'}</td>
-                    <td>{getCategoryLabel(course.category)}</td>
+                    <td>{filterMode === 'secondaryMajor' ? (course.subCategory || '-') : getCategoryLabel(course.category)}</td>
                     <td>{course.department}</td>
                     <td>{course.point}</td>
                     <td>{course.time}</td>
-                    <td>{course.personeel}</td>
-                    <td>{course.scheduleRoom}</td>
+                    <td>{filterMode === 'secondaryMajor' ? '-' : course.personeel}</td>
+                    <td>{filterMode === 'secondaryMajor' ? '-' : course.scheduleRoom}</td>
                     <td>{course.target}</td>
                   </tr>
                 ))}

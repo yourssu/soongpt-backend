@@ -1,5 +1,13 @@
 import axios from 'axios';
-import type { ApiResponse, CoursesResponse, CourseTargetResponse, Course } from '../types/course';
+import type {
+  ApiResponse,
+  CoursesResponse,
+  CourseTargetResponse,
+  Course,
+  SecondaryMajorCourseRecommendResponse,
+  SecondaryMajorTrackType,
+  SecondaryMajorCompletionType,
+} from '../types/course';
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
@@ -46,6 +54,16 @@ export interface FilterCoursesParams {
   field?: string;
 }
 
+export interface SecondaryMajorRecommendParams {
+  department: string;
+  grade: number;
+  trackType: SecondaryMajorTrackType;
+  completionType: SecondaryMajorCompletionType;
+  takenSubjectCodes?: string[];
+  progress?: string;
+  satisfied?: boolean;
+}
+
 export const courseApi = {
   getAllCourses: async (params: GetCoursesParams = {}): Promise<CoursesResponse> => {
     const response = await api.get<ApiResponse<CoursesResponse>>('/admin/courses', {
@@ -66,6 +84,15 @@ export const courseApi = {
 
   getCoursesByCategory: async (params: FilterCoursesParams): Promise<Course[]> => {
     const response = await api.get<ApiResponse<Course[]>>('/courses/by-category', {
+      params,
+    });
+    return response.data.result;
+  },
+
+  getSecondaryMajorRecommendedCourses: async (
+    params: SecondaryMajorRecommendParams,
+  ): Promise<SecondaryMajorCourseRecommendResponse> => {
+    const response = await api.get<ApiResponse<SecondaryMajorCourseRecommendResponse>>('/courses/secondary-major/recommend', {
       params,
     });
     return response.data.result;

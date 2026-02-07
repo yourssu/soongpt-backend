@@ -5,10 +5,13 @@ import com.yourssu.soongpt.domain.course.application.dto.FilterCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByCodeRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldByCodeRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldsRequest
+import com.yourssu.soongpt.domain.course.application.dto.RecommendSecondaryMajorCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
+import com.yourssu.soongpt.domain.course.business.SecondaryMajorCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseResponse
+import com.yourssu.soongpt.domain.course.business.dto.SecondaryMajorCourseRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/courses")
 class CourseController(
     private val courseService: CourseService,
+    private val secondaryMajorCourseRecommendService: SecondaryMajorCourseRecommendService,
 ) {
     @Operation(
         summary = "강의 필터링 조회 (카테고리별)",
@@ -74,6 +78,43 @@ class CourseController(
     @GetMapping("/search")
     fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
         val response = courseService.search(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
+        summary = "복수/부전공 이수구분별 과목 추천",
+        description = """
+            다전공 이수구분(복필/복선/부필/부선/타전공인정)에 따라 과목을 조회합니다.
+
+            **파라미터 설명:**
+            - **department**: 복수전공/부전공 대상 학과명 (필수)
+            - **grade**: 사용자 학년 (1~5, 필수)
+            - **trackType**: 다전공 유형 (필수)
+                - `DOUBLE_MAJOR` 또는 `복수전공`
+                - `MINOR` 또는 `부전공`
+                - `CROSS_MAJOR` 또는 `타전공인정`
+            - **completionType**: 이수구분 (필수)
+                - `REQUIRED`, `ELECTIVE`, `RECOGNIZED`
+                - 또는 `복필`, `복선`, `부필`, `부선`, `타전공인정과목`
+            - **takenSubjectCodes**: 기이수 과목코드 리스트 (선택)
+            - **progress**: 이수 현황 문자열 (선택)
+            - **satisfied**: 이수 완료 여부 (선택, 기본 false)
+        """
+    )
+    @GetMapping("/secondary-major/recommend")
+    fun recommendSecondaryMajorCourses(
+        @Valid @ModelAttribute request: RecommendSecondaryMajorCoursesRequest,
+    ): ResponseEntity<Response<SecondaryMajorCourseRecommendResponse>> {
+        val command = request.toCommand()
+        val response = secondaryMajorCourseRecommendService.recommend(
+            departmentName = command.departmentName,
+            userGrade = command.grade,
+            trackType = command.trackType,
+            completionType = command.completionType,
+            takenSubjectCodes = command.takenSubjectCodes,
+            progress = command.progress,
+            satisfied = command.satisfied,
+        )
         return ResponseEntity.ok().body(Response(result = response))
     }
 

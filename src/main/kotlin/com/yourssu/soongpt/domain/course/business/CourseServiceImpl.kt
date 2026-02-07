@@ -119,6 +119,7 @@ class CourseServiceImpl(
                 professor = course.professor,
                 category = course.category,
                 subCategory = course.subCategory,
+                multiMajorCategory = course.multiMajorCategory,
                 department = course.department,
                 division = course.division,
                 point = course.point,
@@ -181,6 +182,7 @@ class CourseServiceImpl(
                 existingCourse.copy(
                         category = command.category,
                         subCategory = command.subCategory,
+                        multiMajorCategory = command.multiMajorCategory ?: existingCourse.multiMajorCategory,
                         field = command.field ?: "",
                         name = command.name,
                         professor = command.professor,
@@ -254,6 +256,7 @@ class CourseServiceImpl(
             id = null,
             category = command.category,
             subCategory = command.subCategory,
+            multiMajorCategory = command.multiMajorCategory,
             field = command.field ?: "",
             code = command.code,
             name = command.name,

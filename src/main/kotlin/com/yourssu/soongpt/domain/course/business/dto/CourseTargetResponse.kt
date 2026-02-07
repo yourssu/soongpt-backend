@@ -11,6 +11,7 @@ data class CourseTargetResponse(
     val professor: String?,
     val category: Category,
     val subCategory: String?,
+    val multiMajorCategory: String?,
     val department: String,
     val division: String?,
     val point: String,

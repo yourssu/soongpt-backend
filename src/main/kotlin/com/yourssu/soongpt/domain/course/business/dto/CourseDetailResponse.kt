@@ -7,6 +7,7 @@ import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 data class CourseDetailResponse(
     val category: String,
     val subCategory: String?,
+    val multiMajorCategory: String?,
     val field: String?,
     val code: Long,
     val name: String,
@@ -27,6 +28,7 @@ data class CourseDetailResponse(
             return CourseDetailResponse(
                 category = course.category.name,
                 subCategory = course.subCategory,
+                multiMajorCategory = course.multiMajorCategory,
                 field = course.field,
                 code = course.code,
                 name = course.name,

@@ -166,6 +166,7 @@ class CourseInsertGenerator:
         schedule_room = row.get('강의시간(강의실)', '').strip()
         target = row.get('수강대상', '').strip()
         major_classification = row.get('이수구분(주전공)', '').strip()
+        multi_major_classification = row.get('이수구분(다전공)', '').strip() or None
         field = clean_string(row.get('교과영역', '')) or None
         division = clean_string(row.get('분반', '')) or None
 
@@ -213,6 +214,7 @@ class CourseInsertGenerator:
         department = truncate_string(department, 50)
         division = truncate_string(division, 20)
         major_classification = truncate_string(major_classification, 255) # SubCategory can be long
+        multi_major_classification = truncate_string(multi_major_classification, 2048)
         field = truncate_string(field, 50)
         target = truncate_string(target, 2048) # Target can be long
         schedule_room = truncate_string(schedule_room, 255)
@@ -220,13 +222,14 @@ class CourseInsertGenerator:
 
         # Build SQL
         sql = "INSERT INTO course ("
-        sql += "category, sub_category, field, code, name, professor, department, division, "
+        sql += "category, sub_category, multi_major_category, field, code, name, professor, department, division, "
         sql += "time, point, personeel, schedule_room, target, credit"
         sql += ") VALUES ("
 
         # Values
         sql += f"'{category}', "  # category (ENUM as STRING)
         sql += f"{escape_sql_string(major_classification)}, "  # sub_category
+        sql += f"{escape_sql_string(multi_major_classification) if multi_major_classification else 'NULL'}, "  # multi_major_category
         field_value = escape_sql_string(field) if field else "''"
         sql += f"{field_value}, "  # field (empty string if null)
         sql += f"{code}, "  # code
