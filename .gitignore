@@ -8,6 +8,9 @@ build/
 
 /src/main/resources/application-prod.yml
 .env
+*.pyc
+*.pyo
+__pycache__/
 
 ### 과목 분류 데이터 ###
 /src/main/resources/*.json
@@ -40,3 +43,7 @@ logs/
 /dist/
 /nbdist/
 /.nb-gradle/s
+
+# target validation generated artifacts
+/script/26-1/target_validation/reports/*
+!/script/26-1/target_validation/reports/.gitkeep

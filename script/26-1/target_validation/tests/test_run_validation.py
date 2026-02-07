@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import csv
+import io
 import json
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr
 from pathlib import Path
 
 MODULE_DIR = Path(__file__).resolve().parents[1]
@@ -227,6 +229,45 @@ class RunValidationTest(unittest.TestCase):
 
             self.assertEqual(exit_code, 6)
             self.assertIn("coverage_rate<90", report.summary.gate_failures)
+
+    def test_warn_when_api_key_is_missing_and_ai_enabled(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            csv_path = temp_path / "input.csv"
+            data_yml_path = temp_path / "data.yml"
+            alias_yml_path = temp_path / "alias.yml"
+            report_path = temp_path / "report.json"
+            manual_path = temp_path / "manual.csv"
+            env_path = temp_path / ".env"
+
+            self._write_csv(csv_path, [{"code": "C401", "target": "컴퓨터학부 2학년"}])
+            data_yml_path.write_text(
+                "ssu-data:\n"
+                "  colleges:\n"
+                "    - name: IT대학\n"
+                "      departments:\n"
+                "        - 컴퓨터학부\n",
+                encoding="utf-8",
+            )
+            alias_yml_path.write_text("aliases: {}\n", encoding="utf-8")
+            env_path.write_text("gemini_api_key=\n", encoding="utf-8")
+
+            stderr = io.StringIO()
+            with redirect_stderr(stderr):
+                _, _ = run_validation(
+                    csv_path=str(csv_path),
+                    data_yml_path=str(data_yml_path),
+                    alias_yml_path=str(alias_yml_path),
+                    report_path=str(report_path),
+                    manual_review_path=str(manual_path),
+                    env_path=str(env_path),
+                    gemini_model="gemini-flash-3.0",
+                    disable_ai=False,
+                )
+
+            warning = stderr.getvalue()
+            self.assertIn("gemini_api_key", warning)
+            self.assertIn("SKIPPED", warning)
 
     @staticmethod
     def _write_csv(path: Path, rows: list[dict[str, str]]) -> None:

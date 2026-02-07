@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 
+from grade_policy import MAX_GRADE, MIN_GRADE, is_valid_grade
 from schemas import TargetRef, ValidationIssue
 
 
@@ -59,13 +60,13 @@ class RuleValidator:
                 )
             )
 
-        invalid_parsed_grades = sorted({target.grade for target in parsed_targets if target.grade < 1 or target.grade > 5})
+        invalid_parsed_grades = sorted({target.grade for target in parsed_targets if not is_valid_grade(target.grade)})
         if invalid_parsed_grades:
             issues.append(
                 self._issue(
                     "GRADE_OUT_OF_RANGE",
                     "ERROR",
-                    "파싱된 학년이 1~5 범위를 벗어났습니다.",
+                    f"파싱된 학년이 {MIN_GRADE}~{MAX_GRADE} 범위를 벗어났습니다.",
                     row_no,
                     course_code,
                     {"grades": invalid_parsed_grades},
@@ -78,7 +79,7 @@ class RuleValidator:
                 self._issue(
                     "RAW_GRADE_OUT_OF_RANGE",
                     "ERROR",
-                    "원본 수강대상 텍스트에 1~5 범위를 벗어난 학년 표기가 있습니다.",
+                    f"원본 수강대상 텍스트에 {MIN_GRADE}~{MAX_GRADE} 범위를 벗어난 학년 표기가 있습니다.",
                     row_no,
                     course_code,
                     {"grades": raw_invalid_grades},
@@ -138,12 +139,32 @@ class RuleValidator:
     @staticmethod
     def _find_invalid_grades_from_raw(raw_target_text: str) -> list[int]:
         invalid: set[int] = set()
-        for match in re.findall(r"([0-9]{1,2})\s*학년", raw_target_text):
-            if not match.isdigit():
+
+        for start, end in re.findall(r"([0-9]{1,2})\s*[-~]\s*([0-9]{1,2})\s*학년", raw_target_text):
+            if start.isdigit():
+                grade = int(start)
+                if not is_valid_grade(grade):
+                    invalid.add(grade)
+            if end.isdigit():
+                grade = int(end)
+                if not is_valid_grade(grade):
+                    invalid.add(grade)
+
+        for match in re.findall(r"([0-9](?:\s*,\s*[0-9])+)\s*학년", raw_target_text):
+            for item in re.split(r"\s*,\s*", match):
+                if not item.isdigit():
+                    continue
+                grade = int(item)
+                if not is_valid_grade(grade):
+                    invalid.add(grade)
+
+        for single in re.findall(r"([0-9]{1,2})\s*학년", raw_target_text):
+            if not single.isdigit():
                 continue
-            grade = int(match)
-            if grade < 1 or grade > 5:
+            grade = int(single)
+            if not is_valid_grade(grade):
                 invalid.add(grade)
+
         return sorted(invalid)
 
     @staticmethod

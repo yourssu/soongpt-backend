@@ -8,6 +8,7 @@ import urllib.request
 from pathlib import Path
 from typing import Callable
 
+from grade_policy import is_valid_grade
 from schemas import AiValidationResult, TargetRef
 
 GeminiRequestFn = Callable[[str, dict, int], dict]
@@ -161,7 +162,7 @@ class GeminiFlashValidator:
                 grade = int(grade_raw)
             except Exception:
                 continue
-            if grade < 1 or grade > 5:
+            if not is_valid_grade(grade):
                 continue
             key = (department, grade)
             if key in seen:

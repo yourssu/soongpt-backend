@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from pathlib import Path
 
 from ai_validator_gemini import GeminiFlashValidator
@@ -47,6 +48,12 @@ def run_validation(
     gemini_api_key = "" if disable_ai else load_api_key(env_path, key_name="gemini_api_key")
     ai_validator = None
     if not disable_ai:
+        if not gemini_api_key:
+            print(
+                "[WARN] Gemini API key(gemini_api_key)가 비어 있어 AI 검증이 모두 SKIPPED 처리됩니다. "
+                f"env_path={env_path}",
+                file=sys.stderr,
+            )
         ai_validator = GeminiFlashValidator(
             api_key=gemini_api_key,
             model=gemini_model,

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="${1:-/Users/leo/Documents/development/soongpt-backend}"
+VALIDATOR_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="${1:-$(cd "$VALIDATOR_DIR/../../.." && pwd)}"
 CSV_PATH="${2:-$ROOT_DIR/script/26-1/course/ssu26-1.csv}"
 ENV_PATH="${3:-$ROOT_DIR/.env}"
 DATA_YML_PATH="${4:-$ROOT_DIR/src/main/resources/data.yml}"
-VALIDATOR_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "[1/5] Unit tests"
 python3 -m unittest discover -s "$VALIDATOR_DIR/tests" -p 'test_*.py' -v

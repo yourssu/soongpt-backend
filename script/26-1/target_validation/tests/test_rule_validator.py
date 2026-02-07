@@ -39,10 +39,22 @@ class RuleValidatorTest(unittest.TestCase):
         self.assertIn("RAW_GRADE_OUT_OF_RANGE", codes)
         self.assertIn("GRADE_OUT_OF_RANGE", codes)
 
-    def test_unparsed_tokens_error(self) -> None:
+    def test_raw_grade_out_of_range_detects_range_boundary(self) -> None:
         issues = self.validator.validate(
             row_no=4,
             course_code="C103",
+            raw_target_text="컴퓨터학부 0~2학년",
+            parsed_targets=[TargetRef(department="컴퓨터학부", grade=1), TargetRef(department="컴퓨터학부", grade=2)],
+            unparsed_tokens=[],
+        )
+        raw_issue = next((issue for issue in issues if issue.code == "RAW_GRADE_OUT_OF_RANGE"), None)
+        self.assertIsNotNone(raw_issue)
+        self.assertEqual(raw_issue.details.get("grades"), [0])
+
+    def test_unparsed_tokens_error(self) -> None:
+        issues = self.validator.validate(
+            row_no=5,
+            course_code="C104",
             raw_target_text="컴퓨터학부 2학년 우선",
             parsed_targets=[TargetRef(department="컴퓨터학부", grade=2)],
             unparsed_tokens=["우선"],
@@ -52,8 +64,8 @@ class RuleValidatorTest(unittest.TestCase):
 
     def test_unparsed_qualifier_warn_when_targets_exist(self) -> None:
         issues = self.validator.validate(
-            row_no=5,
-            course_code="C104",
+            row_no=6,
+            course_code="C105",
             raw_target_text="컴퓨터학부 2학년 (대상외수강제한)",
             parsed_targets=[TargetRef(department="컴퓨터학부", grade=2)],
             unparsed_tokens=["대상외수강제한"],

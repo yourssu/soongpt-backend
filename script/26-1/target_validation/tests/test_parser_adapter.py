@@ -30,6 +30,17 @@ class ParserAdapterTest(unittest.TestCase):
         self.assertEqual({target.grade for target in parsed}, {1, 2, 3})
         self.assertEqual(unparsed, [])
 
+    def test_parse_without_grade_defaults_to_all_grades(self) -> None:
+        parsed, unparsed = parse_target_text("컴퓨터학부", self.alias_lookup)
+        self.assertEqual({target.department for target in parsed}, {"컴퓨터학부"})
+        self.assertEqual({target.grade for target in parsed}, {1, 2, 3, 4, 5})
+        self.assertEqual(unparsed, [])
+
+    def test_invalid_grade_expression_does_not_expand_to_all_grades(self) -> None:
+        parsed, unparsed = parse_target_text("컴퓨터학부 6학년", self.alias_lookup)
+        self.assertEqual(parsed, [])
+        self.assertEqual(unparsed, [])
+
     def test_unparsed_when_department_unknown(self) -> None:
         parsed, unparsed = parse_target_text("없는학과 2학년", self.alias_lookup)
         self.assertEqual(parsed, [])

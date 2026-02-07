@@ -4,12 +4,13 @@ import csv
 import re
 from dataclasses import dataclass
 
+from grade_policy import ALL_GRADES, MAX_GRADE, MIN_GRADE, is_valid_grade
 from schemas import TargetRef
 
 TARGET_COLUMN_CANDIDATES = ("수강대상", "수강 대상", "target", "Target")
 COURSE_CODE_COLUMN_CANDIDATES = ("과목코드", "과목번호", "course_code", "code", "Code")
 
-_DEFAULT_ALL_GRADES = {1, 2, 3, 4, 5}
+_DEFAULT_ALL_GRADES = set(ALL_GRADES)
 _WHOLE_MARKER_PATTERN = re.compile(r"(전체학년|전학년|전체)")
 _GENERIC_NOISE = {
     "수강대상",
@@ -309,8 +310,10 @@ def _extract_grade_set(text: str) -> set[int] | None:
         return set(_DEFAULT_ALL_GRADES)
 
     grades: set[int] = set()
+    has_explicit_grade_expression = False
 
     for start, end in re.findall(r"([0-9]{1,2})\s*[-~]\s*([0-9]{1,2})\s*학년", text):
+        has_explicit_grade_expression = True
         try:
             low = int(start)
             high = int(end)
@@ -319,30 +322,45 @@ def _extract_grade_set(text: str) -> set[int] | None:
         if low > high:
             low, high = high, low
         for grade in range(low, high + 1):
-            grades.add(grade)
+            if is_valid_grade(grade):
+                grades.add(grade)
 
     for match in re.findall(r"([0-9](?:\s*,\s*[0-9])+)\s*학년", text):
+        has_explicit_grade_expression = True
         for item in re.split(r"\s*,\s*", match):
             if item.isdigit():
-                grades.add(int(item))
+                grade = int(item)
+                if is_valid_grade(grade):
+                    grades.add(grade)
 
     for start in re.findall(r"([0-9]{1,2})\s*학년\s*이상", text):
+        has_explicit_grade_expression = True
         if start.isdigit():
             low = int(start)
-            for grade in range(low, 6):
-                grades.add(grade)
+            for grade in range(low, MAX_GRADE + 1):
+                if is_valid_grade(grade):
+                    grades.add(grade)
 
     for end in re.findall(r"([0-9]{1,2})\s*학년\s*이하", text):
+        has_explicit_grade_expression = True
         if end.isdigit():
             high = int(end)
-            for grade in range(1, high + 1):
-                grades.add(grade)
+            for grade in range(MIN_GRADE, high + 1):
+                if is_valid_grade(grade):
+                    grades.add(grade)
 
     for single in re.findall(r"([0-9]{1,2})\s*학년", text):
+        has_explicit_grade_expression = True
         if single.isdigit():
-            grades.add(int(single))
+            grade = int(single)
+            if is_valid_grade(grade):
+                grades.add(grade)
 
-    return grades or None
+    if grades:
+        return grades
+    if has_explicit_grade_expression:
+        return set()
+    return None
 
 
 def _extract_unparsed_tokens(text: str) -> list[str]:
