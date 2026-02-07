@@ -13,6 +13,18 @@ interface CourseRepository {
     fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto
     fun searchCourses(query: String, pageable: Pageable): Page<Course>
     fun findAllByClass(code: Long): List<Course>
+
+    /**
+     * 학과/단과대/전체 범위에서 특정 카테고리의 과목을 Target 정보와 함께 조회
+     * - Target join으로 대상 학년 정보 포함
+     * - Allow - Deny 로직 적용
+     */
+    fun findCoursesWithTargetByCategory(
+        category: Category,
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int,
+    ): List<CourseWithTarget>
     fun save(course: Course): Course
     fun delete(code: Long)
 }

@@ -3,6 +3,7 @@ package com.yourssu.soongpt.domain.course.application
 import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.course.application.dto.FilterCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByCodeRequest
+import com.yourssu.soongpt.domain.course.application.dto.GetFieldByCodeRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldsRequest
 import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
@@ -81,5 +82,21 @@ class CourseController(
     fun getFields(@Valid @ModelAttribute request: GetFieldsRequest): ResponseEntity<Response<Any>> {
         val response = courseService.getFields(request.schoolId)
         return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
+        summary = "과목 코드로 필드 조회",
+        description = """
+            과목 코드와 학번을 받아 해당 과목의 교과영역(필드)을 조회합니다.
+
+            **파라미터 설명:**
+            - **code**: 과목 코드 리스트 (필수)
+            - **schoolId**: 학번 (필수, 예: 24)
+        """
+    )
+    @GetMapping("/field-by-code")
+    fun getFieldByCode(@Valid @ModelAttribute request: GetFieldByCodeRequest): ResponseEntity<Response<Map<Long, String?>>> {
+        val result = request.code.associateWith { courseService.getFieldByCourseCode(it, request.schoolId) }
+        return ResponseEntity.ok().body(Response(result = result))
     }
 }

@@ -5,6 +5,9 @@ import com.yourssu.soongpt.domain.course.business.dto.*
 import com.yourssu.soongpt.domain.course.business.query.*
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
+import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
+import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.ScopeType
@@ -18,6 +21,7 @@ class CourseServiceImpl(
         private val departmentReader: DepartmentReader,
         private val targetReader: TargetReader,
         private val collegeReader: CollegeReader,
+        private val courseFieldReader: CourseFieldReader,
 ) : CourseService {
     override fun findAll(query: FilterCoursesQuery): List<CourseResponse> {
         val department = departmentReader.getByName(query.departmentName)
@@ -69,6 +73,11 @@ class CourseServiceImpl(
         return courseReader.getAllFieldsGrouped()
     }
 
+    override fun getFieldByCourseCode(courseCode: Long, schoolId: Int): String? {
+        val courseField = courseFieldReader.findByCourseCode(courseCode) ?: return null
+        return FieldFinder.findFieldBySchoolId(courseField.field, schoolId)
+    }
+
     override fun getTargetsByCode(code: Long): CourseTargetResponse {
         val course = courseReader.findByCode(code)
         val targets = targetReader.findAllByCode(code)
@@ -101,10 +110,8 @@ class CourseServiceImpl(
                     )
                 }
 
-        val courseTimeResponses =
-                courseTimes.toList().map {
-                    com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse.from(it)
-                }
+        val courseTimeResponses = courseTimes.toList()
+            .map { CourseTimeResponse.from(it) }
 
         return CourseTargetResponse(
                 code = course.code,
