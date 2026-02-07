@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.college.storage
 
+import com.yourssu.soongpt.common.entity.BaseEntity
 import com.yourssu.soongpt.domain.college.implement.College
 import jakarta.persistence.*
 
@@ -12,7 +13,7 @@ class CollegeEntity(
 
     @Column(unique = true, nullable = false)
     val name: String,
-) {
+) : BaseEntity() {
         companion object {
             fun from(college: College) = CollegeEntity(
                 id = college.id,

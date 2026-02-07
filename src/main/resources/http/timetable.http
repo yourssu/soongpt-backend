@@ -1,34 +1,35 @@
-@host = localhost:9001
-
 ###
 POST {{host}}/api/timetables
 Content-Type: application/json
 
 {
-  "schoolId": 21,
-  "department": "소프트웨어학부",
+  "schoolId": 22,
+  "department": "법학과",
   "grade": 2,
-  "majorRequiredCourses": [
-    "자료구조"
+  "isChapel": true,
+  "majorRequiredCodes": [
+    "2150545501"
   ],
-  "majorElectiveCourses": [
-    "컴퓨터구조",
-    "객체지향프로그래밍및실습",
-    "선형대수"
+  "majorElectiveCodes": [
+    "2150143401",
+    "2150225101"
   ],
-  "generalRequiredCourses": [
-    "[글로벌소통과언어]CTE for IT, Engineering&Natura"
+  "generalRequiredCodes": [
+    "2150102701"
   ],
-  "majorElectiveCredit": 9,
-  "generalElectiveCredit": 6,
-  "isChapel": true
+  "codes": [
+    "2150145301"
+  ],
+  "generalElectivePoint": 6,
+  "preferredGeneralElectives": [
+    "문화·예술"
+  ]
 }
+
 ###
 
 
-
-
-@timeTableId = 10000
+@timeTableId = 10
 ###
 GET {{host}}/api/timetables/{{timeTableId}}
 Content-Type: application/json

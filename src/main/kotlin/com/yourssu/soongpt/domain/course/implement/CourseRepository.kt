@@ -1,14 +1,30 @@
 package com.yourssu.soongpt.domain.course.implement
 
-import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
+import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface CourseRepository {
-    fun findAllByDepartmentId(departmentId: Long, classification: Classification): List<Pair<Course, List<DepartmentGrade>>>
-    fun findAllByDepartmentGradeId(departmentGradeId: Long, classification: Classification): List<Course>
-    fun getAll(ids: List<Long>): List<Course>
-    fun findByDepartmentIdAndCourseName(departmentId: Long, courseName: String, classification: Classification): Courses
-    fun findByDepartmentGradeIdAndCourseName(departmentGradeId: Long, courseName: String, classification: Classification): Courses
-    fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course>
-    fun get(courseId: Long): Course
-    fun findAll(): Courses
+    fun get(code: Long): Course
+    fun findAll(pageable: Pageable): Page<Course>
+    fun findAllById(courseIds: List<Long>): List<Course>
+    fun findAllByCode(codes: List<Long>): List<Course>
+    fun findAllInCategory(category: Category, courseCodes: List<Long>): List<Course>
+    fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto
+    fun searchCourses(query: String, pageable: Pageable): Page<Course>
+    fun findAllByClass(code: Long): List<Course>
+
+    /**
+     * 학과/단과대/전체 범위에서 특정 카테고리의 과목을 Target 정보와 함께 조회
+     * - Target join으로 대상 학년 정보 포함
+     * - Allow - Deny 로직 적용
+     */
+    fun findCoursesWithTargetByCategory(
+        category: Category,
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int,
+    ): List<CourseWithTarget>
+    fun save(course: Course): Course
+    fun delete(code: Long)
 }

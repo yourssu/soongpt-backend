@@ -1,14 +1,16 @@
 package com.yourssu.soongpt.domain.rating.implement
 
-import com.yourssu.soongpt.domain.course.implement.Courses
 import org.springframework.stereotype.Component
 
 @Component
-class RatingReader(
-    private val ratingRepository: RatingRepository,
-) {
-    fun findAllPointPairs(courses: Courses): Map<Long, Double> {
-        val candidates = courses.values.map { Triple(it.id!!, it.courseName, it.professorName?:"") }
-        return ratingRepository.findAllByCourseNameAndProfessorName(candidates)
+class RatingReader (
+    private val ratingRepository: RatingRepository
+){
+    fun findByCode(code: Long): Rating? {
+        return ratingRepository.findByCode(code)
+    }
+
+    fun findAll(): List<Rating> {
+        return ratingRepository.findAll()
     }
 }

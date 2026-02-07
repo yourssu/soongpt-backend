@@ -1,72 +1,95 @@
 package com.yourssu.soongpt.domain.course.implement
 
-import com.yourssu.soongpt.domain.course.implement.exception.CourseNotFoundException
-import com.yourssu.soongpt.domain.departmentGrade.implement.DepartmentGrade
+import com.yourssu.soongpt.domain.course.implement.dto.FieldNullPointException
+import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
+import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
+import com.yourssu.soongpt.domain.department.implement.Department
+import com.yourssu.soongpt.domain.target.implement.TargetRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 @Component
 class CourseReader(
     private val courseRepository: CourseRepository,
+    private val targetRepository: TargetRepository,
+    private val fieldListFinder: FieldListFinder,
 ) {
-    fun findAllByDepartmentGradeIdInMajorRequired(departmentGradeId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.MAJOR_REQUIRED)
-    }
-
-    fun findAllByDepartmentIdInMajorElective(departmentId: Long): List<Pair<Course, List<DepartmentGrade>>> {
-        return courseRepository.findAllByDepartmentId(departmentId, Classification.MAJOR_ELECTIVE)
-    }
-
-    fun findAllByDepartmentGradeIdInMajorElective(departmentGradeId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.MAJOR_ELECTIVE)
-    }
-
-    fun findAllByDepartmentGradeIdInGeneralRequired(departmentGradeId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.GENERAL_REQUIRED)
-    }
-
-    fun findAllByDepartmentGradeIdInGeneralElective(departmentGradeId: Long): List<Course> {
-        return courseRepository.findAllByDepartmentGradeId(departmentGradeId, Classification.GENERAL_ELECTIVE)
-    }
-
-    fun findAllByCourseNameInMajorRequired(departmentGradeId: Long, courseName: String): Courses {
-        return findAllByCourseNameGrade(departmentGradeId, courseName, Classification.MAJOR_REQUIRED)
-    }
-
-    fun findAllByCourseNameInMajorElective(departmentId: Long, courseName: String): Courses {
-        return findAllByCourseName(departmentId, courseName, Classification.MAJOR_ELECTIVE)
-    }
-
-    fun findAllByCourseNameInGeneralRequired(departmentGradeId: Long, courseName: String): Courses {
-        return findAllByCourseNameGrade(departmentGradeId, courseName, Classification.GENERAL_REQUIRED)
-    }
-
-    fun findChapelsByDepartmentGradeId(departmentGradeId: Long): List<Course> {
-        return courseRepository.findChapelsByDepartmentGradeId(departmentGradeId)
-    }
-
-    private fun findAllByCourseName(departmentId: Long, courseName: String, classification: Classification): Courses {
-        val courses = courseRepository.findByDepartmentIdAndCourseName(departmentId, courseName, classification)
-        if (courses.isEmpty()) {
-            throw CourseNotFoundException(courseName = courseName)
+    fun findAllByClass(department: Department, code: Long, grade: Int): List<Course> {
+        val course = courseRepository.get(code)
+        if (course.category == Category.GENERAL_REQUIRED) {
+            val targets = targetRepository.findAllByClass(department.id!!, code, grade)
+            return courseRepository.findAllById(targets.map { it.courseCode })
         }
-        return courses
+        return courseRepository.findAllByClass(code)
     }
 
-    fun findAll(): Courses {
-        return courseRepository.findAll()
+    fun findAllBy(category: Category, department: Department, grade: Int): List<Course> {
+        val departmentId = department.id ?: return emptyList()
+        val courseCodes = targetRepository.findAllByDepartmentGrade(departmentId, department.collegeId, grade)
+        return courseRepository.findAllInCategory(category, courseCodes)
     }
 
-    private fun findAllByCourseNameGrade(departmentGradeId: Long, courseName: String, classification: Classification): Courses {
-        val courses = courseRepository.findByDepartmentGradeIdAndCourseName(departmentGradeId, courseName, classification)
-        if (courses.isEmpty()) {
-            throw CourseNotFoundException(courseName = courseName)
+    fun findAllInCategory(category: Category?, courseCodes: List<Long>, schoolId: Int): List<Course> {
+        if (category == null) {
+            return findAllByCodes(courseCodes, schoolId)
         }
-        return courses
+        val courses = courseRepository.findAllInCategory(category, courseCodes)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(it.field?: throw FieldNullPointException(), schoolId)) }
     }
 
-    fun getById(courseId: Long): Course {
-        return courseRepository.get(courseId)
+    private fun findAllByCodes(courseCodes: List<Long>, schoolId: Int): List<Course> {
+        val courses = courseRepository.findAllByCode(courseCodes)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(it.field?: throw FieldNullPointException(), schoolId)) }
+    }
+
+    fun findAllInCategory(category: Category?, courseCodes: List<Long>, field: String, schoolId: Int): List<Course> {
+        if (category == null) {
+            return findAllByCodesAndField(courseCodes, field, schoolId)
+        }
+        val courses = courseRepository.findAllInCategory(category, courseCodes)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(field, schoolId)) }
+            .filter { it.field?.contains(field) == true }
+    }
+
+    fun findAllByCodesAndField(courseCodes: List<Long>, field: String, schoolId: Int): List<Course> {
+        val courses = courseRepository.findAllByCode(courseCodes)
+        return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(field, schoolId)) }
+            .filter { it.field?.contains(field) == true }
+    }
+
+    fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto {
+        return courseRepository.groupByCategory(codes)
+    }
+
+    fun searchCourses(query: String, pageable: Pageable): Page<Course> {
+        if (query.isBlank()) {
+            return courseRepository.findAll(pageable)
+        }
+        return courseRepository.searchCourses(query, pageable)
+    }
+
+    fun findAllByCode(codes: List<Long>): List<Course> {
+        return courseRepository.findAllByCode(codes)
+    }
+
+    fun getFieldsBySchoolId(schoolId: Int): List<String> {
+        return fieldListFinder.getFieldsBySchoolId(schoolId)
+    }
+
+    fun getAllFieldsGrouped(): Map<Int, List<String>> {
+        return fieldListFinder.getAllFieldsGrouped()
+    }
+
+    fun findByCode(code: Long): Course {
+        return courseRepository.get(code)
+    }
+
+    fun save(course: Course): Course {
+        return courseRepository.save(course)
+    }
+
+    fun delete(code: Long) {
+        courseRepository.delete(code)
     }
 }
-
-

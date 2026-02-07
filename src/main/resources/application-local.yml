@@ -6,6 +6,7 @@ spring:
     activate:
       on-profile: local
     import:
+      - optional:file:.env[.properties]
       - data.yml
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -21,16 +22,6 @@ spring:
       path: /h2-console
   cors:
     allowed-origins: "*"
-  cloud:
-    openfeign:
-      client:
-        config:
-          default:
-            connectTimeout: 5000
-            loggerLevel: full
-            defaultRequestHeaders:
-              Authorization: Bearer accessToken
-            dismiss404: false
 
 springdoc:
   packages-to-scan: com.yourssu.soongpt
@@ -42,5 +33,11 @@ springdoc:
     display-request-duration: true
     operations-sorter: alpha
 
-slack:
-  channel-id: "ssongpt-channel-id"
+rusaint:
+  base-url: ${RUSAINT_BASE_URL:http://localhost:8000}
+  pseudonym-secret: ${RUSAINT_PSEUDONYM_SECRET:local-pseudonym-secret-min-32-chars}
+  internal-jwt-secret: ${RUSAINT_INTERNAL_JWT_SECRET:local-internal-jwt-secret-min-32-chars}
+  internal-jwt-validity-minutes: ${RUSAINT_INTERNAL_JWT_VALIDITY_MINUTES:15}
+
+admin:
+  password: ${ADMIN_PASSWORD:admin}

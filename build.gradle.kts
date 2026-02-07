@@ -21,10 +21,11 @@ val junitPlatformVersion = "1.11.4"
 val guavaVersion = "33.3.0-jre"
 val swaggerVersion = "2.8.3"
 val querydslVersion = "5.0.0"
-val feignVersion = "4.2.0"
 val springCloudVersion = "2024.0.0"
 val mockitoKotlinVersion = "3.2.0"
 val loggingVersion = "7.0.3"
+val jjwtVersion = "0.12.6"
+val coroutinesVersion = "1.8.0"
 
 java {
 	toolchain {
@@ -43,12 +44,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-logging:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-cache:$springBootVersion")
 
-	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$feignVersion")
-	implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer:$feignVersion")
 
 	implementation("io.github.oshai:kotlin-logging-jvm:$loggingVersion")
 
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion")
 
 	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
 	implementation("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
@@ -64,6 +66,7 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j:$mysqlVersion")
 
 	implementation("com.google.guava:guava:$guavaVersion")
+	implementation("com.github.ben-manes.caffeine:caffeine")
 
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swaggerVersion")
 
@@ -78,6 +81,10 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
 
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0")
+
+	implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
 }
 
 kotlin {
@@ -101,4 +108,3 @@ allOpen {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
-

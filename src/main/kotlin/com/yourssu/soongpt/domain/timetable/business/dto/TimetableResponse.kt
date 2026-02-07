@@ -5,18 +5,18 @@ import com.yourssu.soongpt.domain.timetable.implement.Timetable
 data class TimetableResponse(
     val timetableId: Long,
     val tag: String,
-    var score: Int?,
-    val totalCredit: Double,
+    val score: Int? = 0,
+    val totalPoint: Double = 0.0,
     val courses: List<TimetableCourseResponse>,
 ) {
     companion object {
-        fun from(timetable: Timetable, courses: List<TimetableCourseResponse>, score: Int? = null): TimetableResponse {
+        fun from(timetable: Timetable, courses: List<TimetableCourseResponse>): TimetableResponse {
             return TimetableResponse(
                 timetableId = timetable.id!!,
-                tag = timetable.tag.name,
-                score = score,
+                tag = timetable.tag.description,
+                score = timetable.score,
+                totalPoint = courses.sumOf { it.point.toDouble() },
                 courses = courses,
-                totalCredit = courses.sumOf { it.credit }
             )
         }
     }

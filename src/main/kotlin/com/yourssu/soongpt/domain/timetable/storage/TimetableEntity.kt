@@ -14,12 +14,16 @@ class TimetableEntity(
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     val tag: Tag,
+
+    @Column(nullable = false)
+    val score: Int = 0
 ) {
     companion object {
         fun from(timetable: Timetable): TimetableEntity {
             return TimetableEntity(
                 id = timetable.id,
-                tag = timetable.tag
+                tag = timetable.tag,
+                score = timetable.score
             )
         }
     }
@@ -27,7 +31,8 @@ class TimetableEntity(
     fun toDomain(): Timetable {
         return Timetable(
             id = id,
-            tag = tag
+            tag = tag,
+            score = score
         )
     }
 }

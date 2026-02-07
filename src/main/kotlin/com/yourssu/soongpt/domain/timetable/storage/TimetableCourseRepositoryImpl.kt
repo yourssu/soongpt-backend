@@ -18,11 +18,11 @@ class TimetableCourseRepositoryImpl(
             .toDomain()
     }
 
-    override fun findAllCourseByTimetableId(id: Long): List<TimetableCourse> {
+    override fun findAllCourseByTimetableId(timetableId: Long): List<TimetableCourse> {
         return jpaQueryFactory.selectFrom(timetableCourseEntity)
             .join(timetableEntity)
             .on(timetableCourseEntity.timetableId.eq(timetableEntity.id))
-            .where(timetableEntity.id.eq(id))
+            .where(timetableEntity.id.eq(timetableId))
             .fetch()
             .map { it.toDomain() }
     }

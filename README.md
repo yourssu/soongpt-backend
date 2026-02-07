@@ -1,12 +1,16 @@
 # soongpt-backend
 
+## 역사
+
+- 2026.01.29
+    - leopold, moru, piki
+
 ## API Documentation
 [API_DOCUMENTATION](./src/main/resources/api/API_DOCUMENTATION.md)
 
 
 ## Github Actions
-[![Dev - Test](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-pr.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-pr.yml)  
-[![Dev - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-push.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev-push.yml)
+[![Dev - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml)  
 
-[![Prod - Test](https://github.com/yourssu/soongpt-backend/actions/workflows/main-pr.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/main-pr.yml)  
-[![Prod - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/main-push.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/main-push.yml)    
+[![Prod - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/prod.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/prod.yml)    
+

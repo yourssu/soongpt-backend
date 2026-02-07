@@ -5,30 +5,23 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "rating")
-class RatingEntity(
+class RatingEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @Column(name = "course_name", nullable = false)
-    val courseName: String,
-
-    @Column(name = "professor_name", nullable = true)
-    val professorName: String,
+    @Column(name = "code", nullable = false)
+    val code: Long,
 
     @Column(name = "star", nullable = false)
     val star: Double,
-
-    @Column(name = "point", nullable = false)
-    val point: Double,
 ) {
     companion object {
         fun from(rating: Rating): RatingEntity {
             return RatingEntity(
-                courseName = rating.courseName,
-                professorName = rating.professorName,
+                id = rating.id,
+                code = rating.code,
                 star = rating.star,
-                point = rating.point,
             )
         }
     }
@@ -36,10 +29,8 @@ class RatingEntity(
     fun toDomain(): Rating {
         return Rating(
             id = id,
-            courseName = courseName,
-            professorName = professorName,
+            code = code,
             star = star,
-            point = point,
         )
     }
 }

@@ -1,0 +1,44 @@
+### ========================================
+### Kotlin WAS: 유세인트 동기화 (two-track)
+###
+### 1) JWT: 이 요청에는 JWT 안 넣어도 됨. WAS가 받은 뒤 내부에서 rusaint 호출할 때만 JWT 사용.
+### 2) 변수: studentId, sToken 은 http-client.private.env.json 의 "local" 에서 가져옴.
+### 3) "local" 선택: Run 버튼 옆/위 환경 드롭다운에서 "local" 선택 후 실행.
+###    (선택 안 하면 {{studentId}} 가 비어서 에러)
+### ========================================
+# @name syncUsaint
+POST http://localhost:8080/api/usaint/sync
+Content-Type: application/json
+
+{
+  "studentId": "{{studentId}}",
+  "sToken": "{{sToken}}"
+}
+
+###
+
+### ========================================
+### Python rusaint_service 직접 호출 (참고)
+### ========================================
+
+### 학적/성적 이력 조회 (약 4-5초)
+POST http://localhost:8000/api/usaint/snapshot/academic
+Authorization: Bearer internal-jwt-placeholder
+Content-Type: application/json
+
+{
+  "studentId": "{{studentId}}",
+  "sToken": "{{sToken}}"
+}
+
+###
+
+### 졸업사정표 조회 (약 5-6초)
+POST http://localhost:8000/api/usaint/snapshot/graduation
+Authorization: Bearer internal-jwt-placeholder
+Content-Type: application/json
+
+{
+  "studentId": "{{studentId}}",
+  "sToken": "{{sToken}}"
+}

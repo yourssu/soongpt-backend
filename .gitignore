@@ -6,11 +6,17 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-/src/main/resources/application-prod.yml
 .env
-*.pyc
-*.pyo
-__pycache__/
+.env.local
+.env.*.local
+
+# HTTP 클라이언트 민감 변수 (학번·sToken·internalJwt 등). 실제 값은 .example 복사 후 로컬에만 보관.
+**/http-client.private.env.json
+
+# docs/ 내부 md 등 전체 무시 (내부 문서·테스트 가이드 등)
+/docs
+/docs/
+/docs/*
 
 ### 과목 분류 데이터 ###
 /src/main/resources/*.json
@@ -37,12 +43,74 @@ out/
 !**/src/test/**/out/
 logs/
 
+### vscode ###
+.vscode/
+
+### claude ###
+CLAUDE.md
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/s
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+.env.bak/
+.venv.bak/
+
+# PyCharm
+.idea/
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+### Node.js ###
+node_modules/
+.vite/
 
 # target validation generated artifacts
 /script/26-1/target_validation/reports/*
