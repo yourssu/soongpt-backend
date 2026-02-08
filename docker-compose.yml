@@ -1,0 +1,23 @@
+services:
+  soongpt:
+    build: .
+    ports:
+      - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
+    environment:
+      ENVIRONMENT: local
+      SERVER_PORT: ${SERVER_PORT:-8080}
+      RUSAINT_BASE_URL: http://rusaint-service:8001
+    depends_on:
+      rusaint-service:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+
+  rusaint-service:
+    build: ./rusaint_service
+    ports:
+      - "8001:8001"
+    environment:
+      INTERNAL_JWT_SECRET: ${RUSAINT_INTERNAL_JWT_SECRET:-local-internal-jwt-secret-min-32-chars}
+      PSEUDONYM_SECRET: ${RUSAINT_PSEUDONYM_SECRET:-local-pseudonym-secret-min-32-chars}
+      DEBUG: "true"
