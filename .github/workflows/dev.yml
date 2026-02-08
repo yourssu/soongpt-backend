@@ -54,7 +54,7 @@ jobs:
         run: |
           ./gradlew clean build
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build, tag, and push WAS image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
           IMAGE_TAG: ${{ github.sha }}
@@ -62,10 +62,10 @@ jobs:
           echo "ECR_REGISTRY: $ECR_REGISTRY"
           echo "ECR_REPOSITORY: yourssu/${{ vars.PROJECT_NAME }}"
           echo "Full image path: $ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}:latest"
-          
+
           # Create and use a new builder instance
           docker buildx create --use --name arm-builder
-          
+
           # Build ARM64 image and push with cache
           docker buildx build \
             --platform linux/arm64 \
@@ -77,14 +77,56 @@ jobs:
             -t $ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}:latest \
             .
 
+      - name: Build, tag, and push rusaint-service image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker buildx build \
+            --platform linux/arm64 \
+            --push \
+            --provenance=false \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            -t $ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}/rusaint-service:$IMAGE_TAG \
+            -t $ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}/rusaint-service:latest \
+            -f rusaint_service/Dockerfile \
+            rusaint_service/
+
+      - name: Clean up old ECR Public images
+        env:
+          WAS_REPO: yourssu/${{ vars.PROJECT_NAME }}
+          RUSAINT_REPO: yourssu/${{ vars.PROJECT_NAME }}/rusaint-service
+          KEEP_COUNT: 5
+        run: |
+          for REPO in "$WAS_REPO" "$RUSAINT_REPO"; do
+            echo "Cleaning up $REPO (keeping latest $KEEP_COUNT)..."
+            IMAGE_DIGESTS=$(aws ecr-public describe-images \
+              --region us-east-1 \
+              --repository-name "$REPO" \
+              --query "imageDetails | sort_by(@, &imagePushedAt) | reverse(@) | [$KEEP_COUNT:].imageDigest" \
+              --output text 2>/dev/null) || continue
+
+            if [ -n "$IMAGE_DIGESTS" ] && [ "$IMAGE_DIGESTS" != "None" ]; then
+              IMAGE_IDS=$(echo "$IMAGE_DIGESTS" | tr '\t' '\n' | sed 's/^/imageDigest=/')
+              aws ecr-public batch-delete-image \
+                --region us-east-1 \
+                --repository-name "$REPO" \
+                --image-ids $IMAGE_IDS || true
+              echo "Deleted old images from $REPO"
+            else
+              echo "No old images to clean up in $REPO"
+            fi
+          done
+
       - name: Deploy to EC2
         env:
           YOURSSU_PEM: ${{ secrets.YOURSSU_PEM }}
           HOST_URL: ${{ vars.HOST_URL }}
-          
+
           SERVER_PORT: ${{ vars.SERVER_PORT }}
           CORS_ALLOWED_ORIGIN: ${{ vars.CORS_ALLOWED_ORIGIN }}
-          
+
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -93,22 +135,28 @@ jobs:
 
           PROJECT_NAME: ${{ vars.PROJECT_NAME }}
           ENVIRONMENT: ${{ vars.ENVIRONMENT }}
-          
+
           SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
           SLACK_LOG_CHANNEL: ${{ vars.SLACK_LOG_CHANNEL }}
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
-          
+
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+
+          RUSAINT_PSEUDONYM_SECRET: ${{ secrets.RUSAINT_PSEUDONYM_SECRET }}
+          RUSAINT_INTERNAL_JWT_SECRET: ${{ secrets.RUSAINT_INTERNAL_JWT_SECRET }}
+          SSO_FRONTEND_URL: ${{ vars.SSO_FRONTEND_URL }}
+          SSO_CLIENT_JWT_SECRET: ${{ secrets.SSO_CLIENT_JWT_SECRET }}
+          SSO_ALLOWED_REDIRECT_URLS: ${{ vars.SSO_ALLOWED_REDIRECT_URLS }}
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
           echo "$YOURSSU_PEM" > yourssu.pem
           chmod 600 yourssu.pem
-          
+
           # Create environment file
           echo "SERVER_PORT=$SERVER_PORT" >> .env
           echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> .env
-          
+
           echo "DB_URL=$DB_URL" >> .env
           echo "DB_USERNAME=$DB_USERNAME" >> .env
           echo "DB_PASSWORD=$DB_PASSWORD" >> .env
@@ -117,23 +165,31 @@ jobs:
 
           echo "PROJECT_NAME=$PROJECT_NAME" >> .env
           echo "ENVIRONMENT=$ENVIRONMENT" >> .env
-          
+
           echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> .env
           echo "SLACK_LOG_CHANNEL=$SLACK_LOG_CHANNEL" >> .env
           echo "SLACK_TOKEN=$SLACK_TOKEN" >> .env
-          
+
           echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
-          
+
+          echo "RUSAINT_BASE_URL=http://rusaint-service:8001" >> .env
+          echo "RUSAINT_PSEUDONYM_SECRET=$RUSAINT_PSEUDONYM_SECRET" >> .env
+          echo "RUSAINT_INTERNAL_JWT_SECRET=$RUSAINT_INTERNAL_JWT_SECRET" >> .env
+          echo "SSO_FRONTEND_URL=$SSO_FRONTEND_URL" >> .env
+          echo "SSO_CLIENT_JWT_SECRET=$SSO_CLIENT_JWT_SECRET" >> .env
+          echo "SSO_ALLOWED_REDIRECT_URLS=$SSO_ALLOWED_REDIRECT_URLS" >> .env
+
           # Create deployment directory structure
           ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
-          
-          # Deploy environment file and docker script to host machine
+
+          # Deploy environment file, compose file, and docker script to host machine
           scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp -i yourssu.pem docker-compose.deploy.yml ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
           scp -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
 
           # Make the script executable
           ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/docker-deploy.sh"
-          
+
           # Execute the deployment script
           ssh -i yourssu.pem ubuntu@$HOST_URL "cd /home/ubuntu/$PROJECT_NAME-api && \
             PROJECT_NAME=$PROJECT_NAME ./docker-deploy.sh"

@@ -60,12 +60,18 @@ jobs:
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+
+          RUSAINT_PSEUDONYM_SECRET: ${{ secrets.RUSAINT_PSEUDONYM_SECRET }}
+          RUSAINT_INTERNAL_JWT_SECRET: ${{ secrets.RUSAINT_INTERNAL_JWT_SECRET }}
+          SSO_FRONTEND_URL: ${{ vars.SSO_FRONTEND_URL }}
+          SSO_CLIENT_JWT_SECRET: ${{ secrets.SSO_CLIENT_JWT_SECRET }}
+          SSO_ALLOWED_REDIRECT_URLS: ${{ vars.SSO_ALLOWED_REDIRECT_URLS }}
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
           echo "$YOURSSU_PEM" > yourssu.pem
           chmod 600 yourssu.pem
-          
+
           # Create environment file
           echo "SERVER_PORT=$SERVER_PORT" >> .env
           echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> .env
@@ -84,12 +90,20 @@ jobs:
           echo "SLACK_TOKEN=$SLACK_TOKEN" >> .env
 
           echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
-          
+
+          echo "RUSAINT_BASE_URL=http://rusaint-service:8001" >> .env
+          echo "RUSAINT_PSEUDONYM_SECRET=$RUSAINT_PSEUDONYM_SECRET" >> .env
+          echo "RUSAINT_INTERNAL_JWT_SECRET=$RUSAINT_INTERNAL_JWT_SECRET" >> .env
+          echo "SSO_FRONTEND_URL=$SSO_FRONTEND_URL" >> .env
+          echo "SSO_CLIENT_JWT_SECRET=$SSO_CLIENT_JWT_SECRET" >> .env
+          echo "SSO_ALLOWED_REDIRECT_URLS=$SSO_ALLOWED_REDIRECT_URLS" >> .env
+
           # Create deployment directory structure
           ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
-          
-          # Deploy environment file and docker script to host machine
+
+          # Deploy environment file, compose file, and docker script to host machine
           scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp -i yourssu.pem docker-compose.deploy.yml ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
           scp -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
 
           # Make the script executable
