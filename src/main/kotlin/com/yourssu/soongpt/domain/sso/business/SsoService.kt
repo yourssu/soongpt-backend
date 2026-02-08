@@ -57,15 +57,18 @@ class SsoService(
         sToken: String,
         studentId: String,
         referer: String?,
+        redirectUrl: String? = null,
     ): CallbackResult {
         // Referer 로깅 (DEBUG - 배포 시 출력 안 됨)
         logger.debug { "SSO Callback - Referer: $referer, StudentId: ${studentId.take(4)}****" }
+
+        val redirectBase = resolveRedirectBase(redirectUrl)
 
         // sToken 형식 검증
         if (!isValidSTokenFormat(sToken)) {
             logger.warn { "Invalid sToken format" }
             return CallbackResult(
-                redirectUrl = "${ssoProperties.frontendUrl}/error?reason=invalid_token",
+                redirectUrl = "$redirectBase/error?reason=invalid_token",
                 authCookie = null,
             )
         }
@@ -82,7 +85,7 @@ class SsoService(
                 "service_unavailable"
             }
             return CallbackResult(
-                redirectUrl = "${ssoProperties.frontendUrl}/error?reason=$reason",
+                redirectUrl = "$redirectBase/error?reason=$reason",
                 authCookie = null,
             )
         }
@@ -101,9 +104,21 @@ class SsoService(
         startAsyncRusaintFetch(pseudonym, studentId, sToken)
 
         return CallbackResult(
-            redirectUrl = "${ssoProperties.frontendUrl}/loading",
+            redirectUrl = "$redirectBase/loading",
             authCookie = authCookie,
         )
+    }
+
+    private fun resolveRedirectBase(redirectUrl: String?): String {
+        if (redirectUrl == null) {
+            return ssoProperties.frontendUrl
+        }
+        if (ssoProperties.allowedRedirectUrls.contains(redirectUrl)) {
+            logger.debug { "Redirect URL override: $redirectUrl" }
+            return redirectUrl
+        }
+        logger.warn { "Redirect URL not in allowlist, using default: $redirectUrl" }
+        return ssoProperties.frontendUrl
     }
 
     /**

@@ -49,6 +49,7 @@ class SsoController(
         @RequestParam("sIdno")
         @ValidStudentId
         studentId: String,
+        @RequestParam(required = false) redirect: String?,
         request: HttpServletRequest,
         response: HttpServletResponse,
     ): ResponseEntity<Void> {
@@ -58,6 +59,7 @@ class SsoController(
             sToken = sToken,
             studentId = studentId,
             referer = referer,
+            redirectUrl = redirect,
         )
 
         // JWT 쿠키 설정 (있는 경우만)

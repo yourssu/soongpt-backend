@@ -24,15 +24,15 @@ spring:
 
 rusaint:
   base-url: https://rusaint-service.test
-  pseudonym-secret: test-secret-that-is-at-least-32-bytes-long
-  internal-jwt-secret: test-jwt-secret
+  pseudonym-secret: test-secret-at-least-48-bytes-for-validation-ok!!!!!!!!
+  internal-jwt-secret: test-secret-at-least-48-bytes-for-validation-ok!!!!!!!!
 
 admin:
   password: test-admin-password
 
 sso:
   frontend-url: http://localhost:3000
-  client-jwt-secret: test-client-jwt-secret-min-32-chars
+  client-jwt-secret: test-secret-at-least-48-bytes-for-validation-ok!!!!!!!!
   session-ttl-minutes: 60
   jwt-validity-minutes: 60
 
