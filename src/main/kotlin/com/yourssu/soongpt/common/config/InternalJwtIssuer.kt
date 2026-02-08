@@ -19,7 +19,8 @@ class InternalJwtIssuer(
     init {
         val secretSize = rusaintProperties.internalJwtSecret.toByteArray(Charsets.UTF_8).size
         require(secretSize >= KEY_MIN_BYTES) {
-            "Internal JWT secret must be at least $KEY_MIN_BYTES bytes (current: $secretSize)"
+            "Internal JWT secret (rusaint.internal-jwt-secret) must be at least $KEY_MIN_BYTES bytes (current: $secretSize). " +
+                "Please check RUSAINT_INTERNAL_JWT_SECRET environment variable."
         }
     }
 

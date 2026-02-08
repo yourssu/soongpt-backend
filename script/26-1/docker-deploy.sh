@@ -27,7 +27,7 @@ fi
 
 # Get PROJECT_NAME from current directory or passed as argument
 if [ -z "$PROJECT_NAME" ]; then
-  PROJECT_NAME=$(basename $(dirname $(pwd)) | sed 's/-api$//')
+  PROJECT_NAME="$(basename "$(dirname "$(pwd)")" | sed 's/-api$//')"
   if [ -z "$PROJECT_NAME" ]; then
     echo "Error: PROJECT_NAME not set and cannot be determined"
     exit 1
