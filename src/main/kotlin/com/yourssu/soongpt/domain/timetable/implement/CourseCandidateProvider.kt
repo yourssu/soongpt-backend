@@ -1,25 +1,52 @@
 package com.yourssu.soongpt.domain.timetable.implement
 
-import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.timetable.business.dto.PrimaryTimetableCommand
 import com.yourssu.soongpt.domain.timetable.business.dto.SelectedCourseCommand
+import com.yourssu.soongpt.domain.timetable.business.dto.UserContext
+import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
 import org.springframework.stereotype.Component
 
 @Component
-class CourseCandidateProvider(private val courseReader: CourseReader) {
-    fun getCourseCandidates(selectedCourses: List<SelectedCourseCommand>): List<List<Course>> {
-        return selectedCourses.map {
-            // 해당 부분에서 이미 들었던걸 거르는 로직 필요, 이건 피키가 처리할 예정.
-            // 여기서 추가 파라미터로 뭐가 들어가는지는 생각해봐야함
-            val courses =
-                    if (it.selectedCourseIds.isEmpty()) {
-                        // 분반 선택 안할때 (전체 분반 후보)를 가져와서 해야함
-                        // TODO: piki가 만들어준걸 받아온다 가정.
-                        emptyList()
-                    } else {
-                        courseReader.findAllByCode(it.selectedCourseIds)
-                    }
-            courses.ifEmpty { emptyList() }
+class CourseCandidateProvider(
+    private val userContextProvider: UserContextProvider,
+    private val courseReader: CourseReader,
+    private val courseCandidateFactory: CourseCandidateFactory
+) {
+    fun createCourseCandidateGroups(command: PrimaryTimetableCommand): List<List<CourseCandidate>> {
+        // 1. UserContext 가져오기
+        val userContext = userContextProvider.getContext(command.userId)
+
+        // 2. 각 과목 카테고리별로 분반 후보 그룹을 가져와 하나의 리스트로 합침
+        return command.getAllSelectedCourseCommands()
+            .map { selectedCommand -> getCourseCandidates(selectedCommand, userContext) }
+    }
+
+    private fun getCourseCandidates(
+        command: SelectedCourseCommand,
+        userContext: UserContext
+    ): List<CourseCandidate> {
+        val coursesToProcess = if (command.selectedCourseIds.isEmpty()) {
+            // 분반 선택 안했을때: 해당 과목의 모든 분반을 후보로 가져옴
+            // 교양필수 과목 등은 이 분기에서 department, grade에 따라 올바른 과목으로 변환됨
+            courseReader.findAllByClass(userContext.department, command.courseCode, userContext.grade)
+        } else {
+            // 분반 선택 했을때: 선택한 특정 분반만 후보로 가져옴
+            courseReader.findAllByCode(command.selectedCourseIds)
+        }
+
+        return coursesToProcess.map { course ->
+            courseCandidateFactory.create(course)
         }
     }
 }
+
+private fun PrimaryTimetableCommand.getAllSelectedCourseCommands(): List<SelectedCourseCommand> {
+    return this.retakeCourses +
+            this.addedCourses +
+            this.majorRequiredCourses +
+            this.generalRequiredCourses +
+            this.majorElectiveCourses +
+            this.otherMajorCourses
+}
+
