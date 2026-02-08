@@ -28,6 +28,7 @@ CATEGORY_MAP = {
     "교필": "GENERAL_REQUIRED",
     "교선": "GENERAL_ELECTIVE",
     "채플": "CHAPEL",
+    "교직": "TEACHING",
 }
 
 
@@ -73,8 +74,8 @@ def parse_category(major_classification: str) -> str:
     if prefix == "공기":  # 공기_XXX (석사 공통기초) -> OTHER
         return "OTHER"
 
-    if "교직" in normalized:  # 교직 -> OTHER (or add TEACHING if needed)
-        return "OTHER"
+    if "교직" in normalized:  # 교직 -> TEACHING
+        return "TEACHING"
 
     return "OTHER"
 
