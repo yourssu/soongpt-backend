@@ -2,37 +2,47 @@ package com.yourssu.soongpt.domain.sso.application
 
 import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.common.config.ClientJwtProvider
-import com.yourssu.soongpt.common.config.SsoProperties
+import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoResponse
+import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoUpdateRequest
 import com.yourssu.soongpt.domain.sso.application.dto.SyncStatusResponse
 import com.yourssu.soongpt.domain.sso.business.SsoService
 import com.yourssu.soongpt.domain.sso.implement.SyncStatus
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.constraints.Pattern
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.CookieValue
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
+@Tag(name = "SSO", description = "SSO 인증 및 동기화 API")
 @RestController
 @RequestMapping("/api")
 @Validated
 class SsoController(
     private val ssoService: SsoService,
-    private val ssoProperties: SsoProperties,
     private val clientJwtProvider: ClientJwtProvider,
 ) {
     private val logger = KotlinLogging.logger {}
 
-    /**
-     * SSO 콜백 엔드포인트.
-     * 숭실대 SSO에서 로그인 완료 후 sToken, sIdno와 함께 리다이렉트됩니다.
-     */
+    @Operation(
+        summary = "SSO 콜백",
+        description = """
+            숭실대 SSO 로그인 완료 후 리다이렉트를 수신합니다.
+            sToken을 검증하고, JWT 쿠키를 발급한 뒤, 비동기 rusaint 데이터 동기화를 시작합니다.
+            처리 완료 후 프론트엔드 동기화 페이지로 302 리다이렉트합니다.
+        """,
+    )
     @GetMapping("/sso/callback")
     fun ssoCallback(
         @RequestParam("sToken") sToken: String,
@@ -59,51 +69,110 @@ class SsoController(
             .build()
     }
 
-    /**
-     * 동기화 상태 조회 엔드포인트.
-     * 프론트엔드에서 폴링하여 rusaint 동기화 완료 여부를 확인합니다.
-     *
-     * - PROCESSING, COMPLETED: JSON 응답
-     * - 그 외 (REQUIRES_REAUTH, FAILED, 세션없음): 에러 페이지로 302 리다이렉트
-     */
+    @Operation(
+        summary = "동기화 상태 조회",
+        description = """
+            쿠키 기반 인증으로 rusaint 동기화 진행 상태를 조회합니다.
+            프론트엔드에서 fetch 폴링하여 사용하며, 모든 응답은 JSON입니다 (302 리다이렉트 없음).
+            프론트는 HTTP 상태코드 + result.status 값으로 분기합니다.
+
+            - 200 PROCESSING: 동기화 진행 중 (계속 폴링)
+            - 200 COMPLETED: 동기화 완료 (studentInfo 포함)
+            - 200 REQUIRES_REAUTH: sToken 만료, 재인증 필요
+            - 200 FAILED: 동기화 실패
+            - 401 ERROR: 쿠키/JWT 문제 (reason으로 구분)
+        """,
+    )
     @GetMapping("/sync/status")
     fun getSyncStatus(
-        request: HttpServletRequest,
-    ): ResponseEntity<*> {
-        val pseudonymResult = clientJwtProvider.extractPseudonymFromRequest(request)
+        @CookieValue(name = "soongpt_auth", required = false) soongptAuth: String?,
+    ): ResponseEntity<Response<SyncStatusResponse>> {
+        if (soongptAuth == null) {
+            return jsonResponse(HttpStatus.UNAUTHORIZED, "ERROR", reason = "invalid_session")
+        }
+
+        val pseudonymResult = clientJwtProvider.validateAndGetPseudonym(soongptAuth)
 
         if (pseudonymResult.isFailure) {
-            // 쿠키 없거나 JWT 무효 → 에러 페이지로 리다이렉트
-            return redirectToError("invalid_session")
+            return jsonResponse(HttpStatus.UNAUTHORIZED, "ERROR", reason = "invalid_session")
         }
 
         val pseudonym = pseudonymResult.getOrThrow()
         val session = ssoService.getSyncStatus(pseudonym)
 
         if (session == null) {
-            // 세션 없음 (만료됨) → 에러 페이지로 리다이렉트
-            return redirectToError("session_expired")
+            return jsonResponse(HttpStatus.UNAUTHORIZED, "ERROR", reason = "session_expired")
         }
 
         return when (session.status) {
-            SyncStatus.PROCESSING, SyncStatus.COMPLETED -> {
-                ResponseEntity.ok(
-                    Response(
-                        result = SyncStatusResponse(
-                            status = session.status.name,
-                        )
-                    )
-                )
+            SyncStatus.PROCESSING -> {
+                jsonResponse(HttpStatus.OK, "PROCESSING")
             }
-            SyncStatus.REQUIRES_REAUTH -> redirectToError("token_expired")
-            SyncStatus.FAILED -> redirectToError("sync_failed")
+            SyncStatus.COMPLETED -> {
+                val data = session.usaintData
+                val studentInfo = data?.let {
+                    StudentInfoResponse(
+                        grade = it.basicInfo.grade,
+                        semester = it.basicInfo.semester,
+                        year = it.basicInfo.year,
+                        department = it.basicInfo.department,
+                        doubleMajorDepartment = it.flags.doubleMajorDepartment,
+                        minorDepartment = it.flags.minorDepartment,
+                        teaching = it.flags.teaching,
+                    )
+                }
+                jsonResponse(HttpStatus.OK, "COMPLETED", studentInfo = studentInfo)
+            }
+            SyncStatus.REQUIRES_REAUTH -> jsonResponse(HttpStatus.OK, "REQUIRES_REAUTH", reason = "token_expired")
+            SyncStatus.FAILED -> jsonResponse(HttpStatus.OK, "FAILED", reason = "sync_failed")
         }
     }
 
-    private fun redirectToError(reason: String): ResponseEntity<Void> {
+    @Operation(
+        summary = "학적정보 수정",
+        description = """
+            동기화된 학적정보가 틀린 경우 사용자가 직접 수정합니다.
+            수정된 정보는 캐시에 반영되어 이후 화면별 API에서 사용됩니다.
+        """,
+    )
+    @PutMapping("/sync/student-info")
+    fun updateStudentInfo(
+        @CookieValue(name = "soongpt_auth", required = false) soongptAuth: String?,
+        @RequestBody request: StudentInfoUpdateRequest,
+    ): ResponseEntity<Response<SyncStatusResponse>> {
+        if (soongptAuth == null) {
+            return jsonResponse(HttpStatus.UNAUTHORIZED, "ERROR", reason = "invalid_session")
+        }
+
+        val pseudonymResult = clientJwtProvider.validateAndGetPseudonym(soongptAuth)
+
+        if (pseudonymResult.isFailure) {
+            return jsonResponse(HttpStatus.UNAUTHORIZED, "ERROR", reason = "invalid_session")
+        }
+
+        val pseudonym = pseudonymResult.getOrThrow()
+        val updated = ssoService.updateStudentInfo(pseudonym, request)
+            ?: return jsonResponse(HttpStatus.UNAUTHORIZED, "ERROR", reason = "session_expired")
+
+        return jsonResponse(HttpStatus.OK, "COMPLETED", studentInfo = updated)
+    }
+
+    private fun jsonResponse(
+        httpStatus: HttpStatus,
+        status: String,
+        reason: String? = null,
+        studentInfo: StudentInfoResponse? = null,
+    ): ResponseEntity<Response<SyncStatusResponse>> {
         return ResponseEntity
-            .status(HttpStatus.FOUND)
-            .location(URI.create("${ssoProperties.frontendUrl}/error?reason=$reason"))
-            .build()
+            .status(httpStatus)
+            .body(
+                Response(
+                    result = SyncStatusResponse(
+                        status = status,
+                        reason = reason,
+                        studentInfo = studentInfo,
+                    )
+                )
+            )
     }
 }

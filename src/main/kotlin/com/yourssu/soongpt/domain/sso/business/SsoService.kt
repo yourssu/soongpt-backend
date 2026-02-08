@@ -3,11 +3,15 @@ package com.yourssu.soongpt.domain.sso.business
 import com.yourssu.soongpt.common.config.ClientJwtProvider
 import com.yourssu.soongpt.common.config.SsoProperties
 import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
+import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoResponse
+import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoUpdateRequest
 import com.yourssu.soongpt.domain.sso.implement.SyncSession
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.sso.implement.SyncStatus
 import com.yourssu.soongpt.domain.usaint.implement.PseudonymGenerator
 import com.yourssu.soongpt.domain.usaint.implement.RusaintServiceClient
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.Cookie
 import kotlinx.coroutines.CoroutineScope
@@ -85,7 +89,7 @@ class SsoService(
         startAsyncRusaintFetch(pseudonym, studentId, sToken)
 
         return CallbackResult(
-            redirectUrl = ssoProperties.frontendUrl,
+            redirectUrl = "${ssoProperties.frontendUrl}/loading",
             authCookie = authCookie,
         )
     }
@@ -95,6 +99,40 @@ class SsoService(
      */
     fun getSyncStatus(pseudonym: String): SyncSession? {
         return syncSessionStore.getSession(pseudonym)
+    }
+
+    /**
+     * 사용자가 학적정보를 수정하면 캐시의 basicInfo/flags를 업데이트합니다.
+     */
+    fun updateStudentInfo(pseudonym: String, request: StudentInfoUpdateRequest): StudentInfoResponse? {
+        val session = syncSessionStore.getSession(pseudonym) ?: return null
+        val data = session.usaintData ?: return null
+
+        val updatedData = data.copy(
+            basicInfo = RusaintBasicInfoDto(
+                grade = request.grade,
+                semester = request.semester,
+                year = request.year,
+                department = request.department,
+            ),
+            flags = RusaintStudentFlagsDto(
+                doubleMajorDepartment = request.doubleMajorDepartment,
+                minorDepartment = request.minorDepartment,
+                teaching = request.teaching,
+            ),
+        )
+
+        syncSessionStore.updateStatus(pseudonym, SyncStatus.COMPLETED, updatedData)
+
+        return StudentInfoResponse(
+            grade = request.grade,
+            semester = request.semester,
+            year = request.year,
+            department = request.department,
+            doubleMajorDepartment = request.doubleMajorDepartment,
+            minorDepartment = request.minorDepartment,
+            teaching = request.teaching,
+        )
     }
 
     private fun isValidSTokenFormat(sToken: String): Boolean {
