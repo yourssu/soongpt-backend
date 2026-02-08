@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class TimetableService(
     private val timetableReader: TimetableReader,
-    private val timetableGenerator: TimetableGenerator,
     private val timetableCourseReader: TimetableCourseReader,
     private val timetableRecommendationFacade: TimetableRecommendationFacade,
     private val courseReader: CourseReader,
@@ -21,13 +20,6 @@ class TimetableService(
     private val userContextProvider: UserContextProvider,
     private val finalizeTimetableValidator: FinalizeTimetableValidator
 ) {
-    @Transactional
-    fun createTimetable(command: TimetableCreatedCommand): TimetableResponses {
-        val timetableCandidates = timetableGenerator.generate(command)
-        val responses = timetableGenerator.issueTimetables(timetableCandidates)
-        return TimetableResponses(responses)
-    }
-
     fun recommendTimetable(command: PrimaryTimetableCommand): FinalTimetableRecommendationResponse {
         return timetableRecommendationFacade.recommend(command)
     }
