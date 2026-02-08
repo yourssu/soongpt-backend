@@ -1,36 +1,42 @@
 package com.yourssu.soongpt.domain.timetable.implement
 
-import com.yourssu.soongpt.domain.timetable.implement.dto.GroupedCourseCandidates
+import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
 import org.springframework.stereotype.Component
 
 private const val MAXIMUM_TIMETABLE_CANDIDATES = 2000
 
 @Component
-class TimetableCombinationGenerator(private val courseCandidateFactory: CourseCandidateFactory) {
-    fun generate(groupedCandidates: GroupedCourseCandidates): List<TimetableCandidate> {
-        val courseGroups = groupedCandidates.getAllOrdered()
-        val courseCandidateGroups =
-                courseGroups
-                        .filter { it.isNotEmpty() } // 분반이 없는 과목 그룹은 조합에서 제외
-                        .map { group ->
-                            group.map { course -> courseCandidateFactory.create(course) }
-                        }
-
+class TimetableCombinationGenerator {
+    fun generate(
+        courseCandidateGroups: List<List<CourseCandidate>>,
+        baseTimetable: TimetableCandidate? = null
+    ): List<TimetableCandidate> {
         val results = mutableListOf<TimetableCandidate>()
-        val builder = TimetableCandidateBuilder()
+        val builder = if (baseTimetable != null) {
+            TimetableCandidateBuilder(
+                initialCodes = baseTimetable.codes,
+                initialTimeSlot = baseTimetable.timeSlot
+            )
+        } else {
+            TimetableCandidateBuilder()
+        }
+
+        // 비어있는 과목 그룹(선택한 분반이 모두 기수강 과목인 경우 등)은 조합에서 제외
+        val validCourseCandidateGroups = courseCandidateGroups.filter { it.isNotEmpty() }
 
         fun findCombinations(depth: Int) {
             if (results.size >= MAXIMUM_TIMETABLE_CANDIDATES) {
                 return
             }
 
-            if (depth == courseCandidateGroups.size) {
+            if (depth == validCourseCandidateGroups.size) {
                 results.add(builder.build())
                 return
             }
 
-            for (candidate in courseCandidateGroups[depth]) {
+            // 각 과목 그룹(한 과목의 모든 분반 후보)을 순회
+            for (candidate in validCourseCandidateGroups[depth]) {
                 if (builder.add(candidate)) {
                     findCombinations(depth + 1)
                     builder.remove(candidate)
