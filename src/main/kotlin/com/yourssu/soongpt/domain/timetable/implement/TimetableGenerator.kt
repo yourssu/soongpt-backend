@@ -7,13 +7,12 @@ import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryD
 import com.yourssu.soongpt.domain.course.implement.preferWeekday
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.department.implement.Department
-import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.rating.implement.RatingReader
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCourseResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableCreatedCommand
 import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
+import com.yourssu.soongpt.domain.timetable.business.dto.UserContext
 import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
-import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidates
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
 import com.yourssu.soongpt.domain.timetable.storage.exception.TimetableNotFoundException
 import org.springframework.stereotype.Component
@@ -21,15 +20,16 @@ import org.springframework.stereotype.Component
 private const val MAXIMUM_TIMETABLE_CANDIDATES = 1000
 private const val HIGH_STAR_THRESHOLD = 4.2
 private val SPECIAL_CHAPEL_RULE_COLLEGE_IDS = setOf(2, 5, 7, 10)
+
 @Component
-class TimetableGenerator (
+class TimetableGenerator(
     private val courseReader: CourseReader,
-    private val departmentReader: DepartmentReader,
     private val ratingReader: RatingReader,
     private val courseCandidateFactory: CourseCandidateFactory,
     private val timetableWriter: TimetableWriter,
     private val timetableCourseWriter: TimetableCourseWriter,
-){
+    private val userContextProvider: UserContextProvider
+) {
     fun issueTimetables(timetableCandidates: List<TimetableCandidate>): List<TimetableResponse> {
         val responses = ArrayList<TimetableResponse>()
         for (candidate in timetableCandidates) {
@@ -51,6 +51,7 @@ class TimetableGenerator (
         }
         return responses
     }
+
     private fun saveTimetableCourses(codes: List<Long>, timetable: Timetable) {
         val courses = courseReader.groupByCategory(codes)
         val flattenCourses = getFlattenCoursesInCourseGroup(courses)
@@ -58,17 +59,19 @@ class TimetableGenerator (
             timetableCourseWriter.save(TimetableCourse(timetableId = timetable.id!!, courseId = course.id!!))
         }
     }
+
     fun generate(command: TimetableCreatedCommand): List<TimetableCandidate> {
-        val department = departmentReader.getByName(command.departmentName)
-        val baseCourseCandidates = generateCourseCandidatesForBase(command, department)
-        val baseTimeTables = generateBaseTimetable(baseCourseCandidates)
+        // dummy
+        val userContext = userContextProvider.getContext("test")
+        val baseCourseCandidateGroups = generateCourseCandidatesForBase(command, userContext)
+        val baseTimeTables = generateBaseTimetable(baseCourseCandidateGroups)
 
         if (baseTimeTables.isEmpty()) {
             throw TimetableNotFoundException()
         }
 
         val baseBuilders = baseTimeTables.flatMap { it.toBuilders() }
-        val timetableBuilders = generateFinalTimeTables(baseBuilders, command, department)
+        val timetableBuilders = generateFinalTimeTables(baseBuilders, command, userContext)
 
         val finalTimetables = timetableBuilders
             .map { it.build() }
@@ -95,7 +98,8 @@ class TimetableGenerator (
             var isDistinct = true
             for (distinctCandidate in distinctCandidates) {
                 if (candidate.timeSlot.toString() == distinctCandidate.timeSlot.toString() ||
-                    candidate.codes.toSet() == distinctCandidate.codes.toSet()) {
+                    candidate.codes.toSet() == distinctCandidate.codes.toSet()
+                ) {
                     isDistinct = false
                     break
                 }
@@ -122,6 +126,7 @@ class TimetableGenerator (
         val score = candidate.validTags.size * 10
         return score
     }
+
     private fun groupAndSelectTopN(
         candidates: List<TimetableCandidate>,
         n: Int,
@@ -148,22 +153,22 @@ class TimetableGenerator (
     private fun generateFinalTimeTables(
         timeTableBuilders: List<TimetableCandidateBuilder>,
         command: TimetableCreatedCommand,
-        department: Department
+        userContext: UserContext
     ): List<TimetableCandidateBuilder> {
         if (!command.isChapel) {
-            val tables = addGeneralElectives(timeTableBuilders, command, department)
+            val tables = addGeneralElectives(timeTableBuilders, command, userContext)
             return tables
         }
 
-        val collegeId = department.collegeId.toInt()
+        val collegeId = userContext.department.collegeId.toInt()
         if (command.grade == 1 && collegeId !in SPECIAL_CHAPEL_RULE_COLLEGE_IDS) {
-            val mandatoryChapelCandidates = findChapelCandidates(department, command.grade)
+            val mandatoryChapelCandidates = findChapelCandidates(userContext)
             val tablesWithChapel = addChapel(timeTableBuilders, mandatoryChapelCandidates)
-            val tables = addGeneralElectives(tablesWithChapel, command, department)
+            val tables = addGeneralElectives(tablesWithChapel, command, userContext)
             return tables
         } else {
-            val tables = addGeneralElectives(timeTableBuilders, command, department)
-            val optionalChapelCandidates = findChapelCandidates(department, command.grade)
+            val tables = addGeneralElectives(timeTableBuilders, command, userContext)
+            val optionalChapelCandidates = findChapelCandidates(userContext)
             val tablesWithChapel = addChapel(tables, optionalChapelCandidates)
             return tablesWithChapel
         }
@@ -172,7 +177,7 @@ class TimetableGenerator (
     private fun addGeneralElectives(
         builders: List<TimetableCandidateBuilder>,
         command: TimetableCreatedCommand,
-        department: Department
+        userContext: UserContext
     ): List<TimetableCandidateBuilder> {
         if (command.generalElectivePoint <= 0) {
             return builders
@@ -180,7 +185,7 @@ class TimetableGenerator (
 
         val codeToRank = getCodeToRankMap()
         return builders.map { builder ->
-            val sortedElectiveCandidates = generateSortedElectiveCandidates(department, command, codeToRank)
+            val sortedElectiveCandidates = generateSortedElectiveCandidates(userContext, command, codeToRank)
             var remainingPoints = command.generalElectivePoint
 
             for (elective in sortedElectiveCandidates) {
@@ -227,15 +232,16 @@ class TimetableGenerator (
     }
 
 
-    private fun generateSortedElectiveCandidates (
-        department: Department,
+    private fun generateSortedElectiveCandidates(
+        userContext: UserContext,
         command: TimetableCreatedCommand,
         codeToRank: Map<Long, Int>
     ): List<CourseCandidate> {
         val allCourses = courseReader.findAllBy(
             category = Category.GENERAL_ELECTIVE,
-            department = department,
-            grade = command.grade
+            department = userContext.department,
+            schoolId = userContext.schoolId,
+            division = null
         ).preferWeekday()
 
         val electiveFields = courseReader.getFieldsBySchoolId(command.schoolId)
@@ -264,8 +270,7 @@ class TimetableGenerator (
                 preferredCandidates,
                 codeToRank
             ) + otherCandidates
-        }
-        else {
+        } else {
             return sortByPointDescStarDescShuffleEqual(
                 otherCandidates,
                 codeToRank
@@ -295,11 +300,11 @@ class TimetableGenerator (
 
     private fun addChapel(
         baseBuilders: List<TimetableCandidateBuilder>,
-        chapelCandidates: CourseCandidates,
+        chapelCandidates: List<CourseCandidate>,
     ): List<TimetableCandidateBuilder> {
         return baseBuilders.map { builder ->
             builder.also {
-                chapelCandidates.candidates.any { candidate ->
+                chapelCandidates.any { candidate ->
                     it.add(candidate)
                 }
             }
@@ -308,33 +313,33 @@ class TimetableGenerator (
 
 
     private fun findChapelCandidates(
-        department: Department,
-        grade: Int,
-    ): CourseCandidates {
+        userContext: UserContext
+    ): List<CourseCandidate> {
         val tmp = courseReader.findAllBy(
             category = Category.CHAPEL,
-            department = department,
-            grade = grade
+            department = userContext.department,
+            schoolId = userContext.schoolId,
+            division = null
         )
 
-        val chapelCourses = tmp.map {
+        return tmp.map {
             courseCandidateFactory.create(it)
         }
-        return CourseCandidates.from(chapelCourses)
     }
+
     private fun generateCourseCandidatesForBase(
         command: TimetableCreatedCommand,
-        department: Department
-    ): List<CourseCandidates> {
+        userContext: UserContext
+    ): List<List<CourseCandidate>> {
         val courseCodes = getFlattenCourseCodes(command)
         val courseGroup = courseReader.groupByCategory(courseCodes)
         val flattenCourses = getFlattenCoursesInCourseGroup(courseGroup)
 
-        return generateAllCourseCandidates(flattenCourses, department, command.grade)
+        return generateAllCourseCandidates(flattenCourses, userContext)
     }
 
     private fun generateBaseTimetable(
-        courseCandidates: List<CourseCandidates>
+        courseCandidateGroups: List<List<CourseCandidate>>
     ): List<TimetableCandidate> {
         val results = mutableListOf<TimetableCandidate>()
         val builder = TimetableCandidateBuilder()
@@ -344,13 +349,12 @@ class TimetableGenerator (
                 return
             }
 
-            if (depth == courseCandidates.size) {
+            if (depth == courseCandidateGroups.size) {
                 results.add(builder.build())
                 return
             }
 
-            val candidates = courseCandidates[depth].candidates
-            for (candidate in candidates) {
+            for (candidate in courseCandidateGroups[depth]) {
                 if (builder.add(candidate)) {
                     dfs(depth + 1)
                     builder.remove(candidate)
@@ -382,23 +386,17 @@ class TimetableGenerator (
 
     private fun generateAllCourseCandidates(
         courses: List<Course>,
-        department: Department,
-        grade: Int,
-    ): List<CourseCandidates> {
-        val courseCandidates =
-            courses.map {
-                val classes = courseReader.findAllByClass(
-                    department = department,
-                    grade = grade,
-                    code = it.code,
-                )
-
-                CourseCandidates.from(
-                    candidates = classes.map { course ->
-                        courseCandidateFactory.create(course)
-                    }
-                )
+        userContext: UserContext
+    ): List<List<CourseCandidate>> {
+        return courses.map {
+            val classes = courseReader.findAllByClass(
+                department = userContext.department,
+                code = it.code,
+                grade = userContext.grade
+            )
+            classes.map { course ->
+                courseCandidateFactory.create(course)
             }
-        return courseCandidates
+        }
     }
 }
