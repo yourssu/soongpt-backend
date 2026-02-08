@@ -3,24 +3,24 @@
 ## 개요
 
 - **목적**: 사용자가 이번 학기에 재수강할 수 있는 과목을 조회한다.
-- **전제**: 클라이언트는 먼저 `POST /api/usaint/sync`(학번·sToken)를 호출한 뒤, 응답의 **pseudonym**을 저장한다. 본 API는 **pseudonym만** 사용한다(토큰은 sync 시에만 사용).
-- **식별자 보안**: pseudonym은 URL에 넣지 않고 **헤더**로만 전달한다(쿼리 노출·로그·레퍼러 유출 방지).
+- **전제**: 클라이언트는 [SSO 콜백](../sso/sso_callback.md)을 통해 인증 후, `soongpt_auth` 쿠키(JWT)를 발급받는다. JWT claim에 pseudonym이 포함되어 있으며, 서버가 쿠키에서 자동 추출한다.
+- **식별자 보안**: pseudonym은 HttpOnly 쿠키 내 JWT에만 존재하므로, 클라이언트가 직접 다루지 않는다 (XSS·쿼리 노출·로그·레퍼러 유출 방지).
 
 ---
 
 ## Request
 
-### Headers
+### Headers / Cookie
 
-| Name        | Type   | Required | Description |
-|-------------|--------|----------|-------------|
-| `X-Pseudonym` | string | Yes      | Sync 응답에서 받은 pseudonym. 쿼리/바디에 넣지 말 것. |
+| Name            | Type   | Required | Description                      |
+|-----------------|--------|----------|----------------------------------|
+| `soongpt_auth`  | cookie | Yes      | SSO 콜백에서 발급된 JWT 쿠키 (HttpOnly) |
 
 ### 예시
 
 ```
 GET /api/usaint/retake
-X-Pseudonym: {pseudonym}
+Cookie: soongpt_auth={JWT}
 ```
 
 ---
@@ -182,18 +182,18 @@ X-Pseudonym: {pseudonym}
 
 ## 에러 응답
 
-### pseudonym 없음 / 만료 (재동기화 필요)
+### 쿠키 없음 / JWT 만료 (재인증 필요)
 
-**401 Unauthorized** 또는 **404 Not Found**
+**401 Unauthorized**
 
 ```json
 {
   "timestamp": "2025-05-18 15:14:00",
   "result": null,
   "error": {
-    "message": "재동기화가 필요합니다. 유세인트 동기화를 다시 진행해 주세요."
+    "message": "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요."
   }
 }
 ```
 
-- 클라이언트: sync 화면으로 유도 후, 새 pseudonym으로 재요청.
+- 클라이언트: SSO 재로그인으로 유도 후, 새 쿠키 발급 받아 재요청.

@@ -26,6 +26,7 @@ val mockitoKotlinVersion = "3.2.0"
 val loggingVersion = "7.0.3"
 val jjwtVersion = "0.12.6"
 val coroutinesVersion = "1.8.0"
+val caffeineVersion = "3.1.8"
 
 java {
 	toolchain {
@@ -85,6 +86,8 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
+
+	implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
 }
 
 kotlin {

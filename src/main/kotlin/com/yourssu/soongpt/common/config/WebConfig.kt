@@ -8,17 +8,20 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-@EnableConfigurationProperties(CorsProperties::class)
+@EnableConfigurationProperties(CorsProperties::class, SsoProperties::class, RusaintProperties::class)
 class WebConfig {
     @Bean
     fun webMvcConfigurer(corsProperties: CorsProperties): WebMvcConfigurer {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
+                val origins = corsProperties.allowedOrigins.split("&").toTypedArray()
+                val useCredentials = !origins.contains("*")
+
                 registry.addMapping("/**")
-                    .allowedOrigins(*corsProperties.allowedOrigins.split("&").toTypedArray())
+                    .allowedOrigins(*origins)
                     .allowedHeaders("*")
                     .allowedMethods(GET.name(), POST.name(), PUT.name(), DELETE.name(), OPTIONS.name())
-                    .allowCredentials(false)
+                    .allowCredentials(useCredentials)
             }
         }
     }

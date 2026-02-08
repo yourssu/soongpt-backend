@@ -349,40 +349,69 @@ name 필드 기반으로 분류한 핵심 요약 데이터입니다. 분류 규�
 
 ---
 
-## ⚠️ Rate Limiting & 제약사항
+### 3. Validate Token API (SSO 토큰 검증)
 
-### 동시 요청 제한
-
-유세인트 서버의 동시 요청 제한을 회피하기 위해 다음을 준수하세요:
-
-- **권장 간격**: Academic API 호출 후 **0.5초** 대기 후 Graduation API 호출
-- **동시 호출**: 동일 사용자의 여러 API를 동시 호출하지 마세요
-- **재시도**: 실패 시 **2초** 이상 간격을 두고 재시도
+**SSO 토큰 유효성만 빠르게 검증 (세션 생성만 시도, 데이터 조회 없음)**
 
 ```
-✅ 올바른 패턴:
-Academic API → 0.5초 대기 → Graduation API
-
-❌ 잘못된 패턴:
-Academic API + Graduation API (병렬 호출)
+POST /api/usaint/validate-token
 ```
 
-### Timeout 설정
+#### 요청
 
-| API         | 정상 응답 시간 | 권장 Timeout | 최대 Timeout |
-| ----------- | -------------- | ------------ | ------------ |
-| Academic    | 4-5초          | 8초          | 10초         |
-| Graduation  | 5-6초          | 8초          | 10초         |
-| 전체 (조합) | 9.5-11초       | 15초         | 20초         |
+**Headers**
 
-**권장 Timeout 설정 (Kotlin)**:
+```
+Authorization: Bearer {WAS가 발급한 내부 JWT}
+Content-Type: application/json
+```
 
-```kotlin
-private val restTemplate = restTemplateBuilder
-    .rootUri(rusaintProperties.baseUrl)
-    .setConnectTimeout(Duration.ofSeconds(3))
-    .setReadTimeout(Duration.ofSeconds(8))  // ← 권장 8초
-    .build()
+**Body**
+
+```json
+{
+  "studentId": "20233009",
+  "sToken": "SSO_TOKEN_HERE"
+}
+```
+
+| 필드      | 타입   | 필수 | 설명              |
+| --------- | ------ | ---- | ----------------- |
+| studentId | string | ✅   | 학번 (8자리 숫자) |
+| sToken    | string | ✅   | SSO 토큰          |
+
+#### 응답
+
+**Status Code**: `200 OK`
+
+**Response Time**: 약 1-2초
+
+**Timeout**: 클라이언트는 최소 **3초** 타임아웃 권장
+
+**Body**
+
+```json
+{
+  "valid": true
+}
+```
+
+#### 에러 응답
+
+**401 Unauthorized** - SSO 토큰 무효 또는 만료
+
+```json
+{
+  "detail": "SSO token is invalid or expired"
+}
+```
+
+**500 Internal Server Error** - 서버 오류
+
+```json
+{
+  "detail": "Failed to validate SSO token"
+}
 ```
 
 ### SSO 토큰 유효성

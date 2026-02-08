@@ -9,9 +9,14 @@
 [과목 검색 (GET /api/courses/search)](course/search_course.md)
 [학번별 필드 조회 (GET /api/courses/fields/schoolId/{schoolId})](course/get_fields_by_school_id.md)
 
+## SSO
+
+[SSO 콜백 (GET /api/sso/callback)](sso/sso_callback.md)
+[동기화 상태 조회 (GET /api/sync/status)](sso/sync_status.md)
+[학적정보 수정 (PUT /api/sync/student-info)](sso/update_student_info.md)
+
 ## TimeTable
 
-[유세인트 동기화 (POST /api/usaint/sync)](usaint/sync_usaint.md)
 [수동 시간표 생성 (POST /api/timetables/manual)](timetable/create_timetable_manual.md)
 [시간표 조회 (GET /api/timetables/{timetableId})](timetable/get_timetable_id.md)
 [재수강 가능 과목 조회 (GET /api/usaint/retake)](usaint/get_retake_courses.md)
