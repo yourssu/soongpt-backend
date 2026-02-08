@@ -20,7 +20,7 @@ services:
       INTERNAL_JWT_SECRET: ${RUSAINT_INTERNAL_JWT_SECRET}
       PSEUDONYM_SECRET: ${RUSAINT_PSEUDONYM_SECRET}
       DEBUG: "false"
-      ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGIN}
+      ALLOWED_ORIGINS_RAW: ${CORS_ALLOWED_ORIGIN}
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/api/health')"]
       interval: 30s

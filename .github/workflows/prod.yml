@@ -154,31 +154,25 @@ jobs:
           echo "$YOURSSU_PEM" > yourssu.pem
           chmod 600 yourssu.pem
 
-          # Create environment file (values quoted for safe bash sourcing)
-          echo "SERVER_PORT='$SERVER_PORT'" >> .env
-          echo "CORS_ALLOWED_ORIGIN='$CORS_ALLOWED_ORIGIN'" >> .env
-
-          echo "DB_URL='$DB_URL'" >> .env
-          echo "DB_USERNAME='$DB_USERNAME'" >> .env
-          echo "DB_PASSWORD='$DB_PASSWORD'" >> .env
-
-          echo "ADMIN_PASSWORD='$ADMIN_PASSWORD'" >> .env
-
-          echo "PROJECT_NAME='$PROJECT_NAME'" >> .env
-          echo "ENVIRONMENT='$ENVIRONMENT'" >> .env
-
-          echo "SLACK_CHANNEL='$SLACK_CHANNEL'" >> .env
-          echo "SLACK_LOG_CHANNEL='$SLACK_LOG_CHANNEL'" >> .env
-          echo "SLACK_TOKEN='$SLACK_TOKEN'" >> .env
-
-          echo "ECR_REGISTRY='$ECR_REGISTRY'" >> .env
-
-          echo "RUSAINT_BASE_URL='http://rusaint-service:8001'" >> .env
-          echo "RUSAINT_PSEUDONYM_SECRET='$RUSAINT_PSEUDONYM_SECRET'" >> .env
-          echo "RUSAINT_INTERNAL_JWT_SECRET='$RUSAINT_INTERNAL_JWT_SECRET'" >> .env
-          echo "SSO_FRONTEND_URL='$SSO_FRONTEND_URL'" >> .env
-          echo "SSO_CLIENT_JWT_SECRET='$SSO_CLIENT_JWT_SECRET'" >> .env
-          echo "SSO_ALLOWED_REDIRECT_URLS='${SSO_ALLOWED_REDIRECT_URLS:-}'" >> .env
+          # Create environment file (no quotes needed - deploy script uses grep, not source)
+          echo "SERVER_PORT=$SERVER_PORT" >> .env
+          echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> .env
+          echo "DB_URL=$DB_URL" >> .env
+          echo "DB_USERNAME=$DB_USERNAME" >> .env
+          echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+          echo "ADMIN_PASSWORD=$ADMIN_PASSWORD" >> .env
+          echo "PROJECT_NAME=$PROJECT_NAME" >> .env
+          echo "ENVIRONMENT=$ENVIRONMENT" >> .env
+          echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> .env
+          echo "SLACK_LOG_CHANNEL=$SLACK_LOG_CHANNEL" >> .env
+          echo "SLACK_TOKEN=$SLACK_TOKEN" >> .env
+          echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
+          echo "RUSAINT_BASE_URL=http://rusaint-service:8001" >> .env
+          echo "RUSAINT_PSEUDONYM_SECRET=$RUSAINT_PSEUDONYM_SECRET" >> .env
+          echo "RUSAINT_INTERNAL_JWT_SECRET=$RUSAINT_INTERNAL_JWT_SECRET" >> .env
+          echo "SSO_FRONTEND_URL=$SSO_FRONTEND_URL" >> .env
+          echo "SSO_CLIENT_JWT_SECRET=$SSO_CLIENT_JWT_SECRET" >> .env
+          echo "SSO_ALLOWED_REDIRECT_URLS=${SSO_ALLOWED_REDIRECT_URLS:-}" >> .env
 
           # Create deployment directory structure
           ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
