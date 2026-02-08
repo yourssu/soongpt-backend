@@ -3,11 +3,10 @@ package com.yourssu.soongpt.domain.timetable.implement
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.timetable.implement.exception.TimetableConflictException
 import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
 class FinalizeTimetableValidator(
-    private val timetableCourseReader: TimetableCourseReader,
+    private val timetableBitsetConverter: TimetableBitsetConverter,
     private val courseCandidateFactory: CourseCandidateFactory
 ) {
     fun validate(timetableId: Long, coursesToAdd: List<Course>) {
@@ -16,12 +15,7 @@ class FinalizeTimetableValidator(
         }
 
         // 1. 기반 시간표의 시간 정보(BitSet)를 가져옴
-        val baseCourses = timetableCourseReader.findAllCourseByTimetableId(timetableId)
-        val timetableBitSet = BitSet()
-        baseCourses.forEach { course ->
-            val courseCandidate = courseCandidateFactory.create(course)
-            timetableBitSet.or(courseCandidate.timeSlot)
-        }
+        val timetableBitSet = timetableBitsetConverter.convert(timetableId)
 
         // 2. 추가할 과목들과 시간 충돌 검사
         coursesToAdd.forEach { course ->
