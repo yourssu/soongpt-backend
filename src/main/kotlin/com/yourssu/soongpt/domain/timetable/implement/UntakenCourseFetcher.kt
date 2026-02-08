@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component
 @Component
 class UntakenCourseFetcher(
     private val courseReader: CourseReader,
-    private val departmentReader: DepartmentReader,
 ) {
     fun fetchUntakenMajorCourses(
         userContext: UserContext,
@@ -32,12 +31,10 @@ class UntakenCourseFetcher(
 
         // 3. 교체 후보가 될 모든 '전공 선택' 과목을 조회합니다.
         // 다른 과목도 이런식으로 진행. TODO: 기획 변경사항 듣고 구체화
-        val department = departmentReader.getByName(userContext.departmentName)
-
         // 학과, 학년, 분반으로 고정
         val allMajorCourses = courseReader.findAllBy(
             Category.MAJOR_ELECTIVE,
-            department = department,
+            department = userContext.department,
             grade = userContext.grade,
         )
 
