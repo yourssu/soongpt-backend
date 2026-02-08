@@ -63,8 +63,7 @@ class TimetableRecommendationFacade(
             val chapelCourse = courseReader.findAllBy(
                 category = Category.CHAPEL,
                 department = userContext.department,
-                schoolId = userContext.schoolId,
-                division = null
+                grade = userContext.grade
             ).firstOrNull()
 
             if (chapelCourse != null) {
