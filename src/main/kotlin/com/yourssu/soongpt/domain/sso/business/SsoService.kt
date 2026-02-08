@@ -71,13 +71,18 @@ class SsoService(
         }
 
         // sToken 유효성 검증 (동기 호출 - 약 1-2초)
-        // 만료된 토큰이면 즉시 에러 페이지로 리다이렉트
         try {
             rusaintServiceClient.validateToken(studentId, sToken)
         } catch (e: RusaintServiceException) {
-            logger.warn { "sToken 검증 실패 (만료/무효): ${e.message}" }
+            val reason = if (e.isUnauthorized) {
+                logger.warn { "sToken 만료/무효: ${e.message}" }
+                "token_expired"
+            } else {
+                logger.error(e) { "rusaint-service 연결 실패: ${e.message}" }
+                "service_unavailable"
+            }
             return CallbackResult(
-                redirectUrl = "${ssoProperties.frontendUrl}/error?reason=token_expired",
+                redirectUrl = "${ssoProperties.frontendUrl}/error?reason=$reason",
                 authCookie = null,
             )
         }
