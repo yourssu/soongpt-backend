@@ -40,6 +40,9 @@ src/test/
 script/25-2/__pycache__/
 script/25-2/course/__pycache__/
 
+# rusaint-service (separate image)
+rusaint_service/
+
 # Other
 Claude-Code-Usage-Monitor/
 *.pem
