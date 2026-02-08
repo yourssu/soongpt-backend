@@ -24,7 +24,7 @@ spring:
 
 rusaint:
   base-url: https://rusaint-service.test
-  pseudonym-secret: test-secret
+  pseudonym-secret: test-secret-that-is-at-least-32-bytes-long
   internal-jwt-secret: test-jwt-secret
 
 admin:
