@@ -16,10 +16,16 @@ import javax.crypto.SecretKey
 class InternalJwtIssuer(
     private val rusaintProperties: RusaintProperties,
 ) {
+    init {
+        val secretSize = rusaintProperties.internalJwtSecret.toByteArray(Charsets.UTF_8).size
+        require(secretSize >= KEY_MIN_BYTES) {
+            "Internal JWT secret must be at least $KEY_MIN_BYTES bytes (current: $secretSize)"
+        }
+    }
 
     fun issueToken(): String {
         val secretBytes = rusaintProperties.internalJwtSecret.toByteArray(Charsets.UTF_8)
-        val key: SecretKey = Keys.hmacShaKeyFor(secretBytes.copyOf(KEY_MIN_BYTES.coerceAtLeast(secretBytes.size)))
+        val key: SecretKey = Keys.hmacShaKeyFor(secretBytes)
         val now = System.currentTimeMillis()
         val validityMs = rusaintProperties.internalJwtValidityMinutes * 60 * 1000
         val exp = now + validityMs
