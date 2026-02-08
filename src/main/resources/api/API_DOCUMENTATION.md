@@ -17,7 +17,8 @@
 
 ## TimeTable
 
-[수동 시간표 생성 (POST /api/timetables/manual)](timetable/create_timetable_manual.md)
+[시간표 추천 생성 (POST /api/timetables)](timetable/create_recommendation.md)
+[최종 시간표 확정 (POST /api/timetables/finalize)](timetable/finalize_timetable.md)
 [시간표 조회 (GET /api/timetables/{timetableId})](timetable/get_timetable_id.md)
 [재수강 가능 과목 조회 (GET /api/usaint/retake)](usaint/get_retake_courses.md)
 
