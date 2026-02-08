@@ -13,6 +13,7 @@
 
 [SSO 콜백 (GET /api/sso/callback)](sso/sso_callback.md)
 [동기화 상태 조회 (GET /api/sync/status)](sso/sync_status.md)
+[학적정보 수정 (PUT /api/sync/student-info)](sso/update_student_info.md)
 
 ## TimeTable
 

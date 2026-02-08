@@ -3,8 +3,8 @@
 ## 개요
 
 - **목적**: 사용자가 이번 학기에 재수강할 수 있는 과목을 조회한다.
-- **전제**: 클라이언트는 먼저 `POST /api/usaint/sync`(학번·sToken)를 호출한 뒤, 응답의 **pseudonym**을 저장한다. 본 API는 **pseudonym만** 사용한다(토큰은 sync 시에만 사용).
-- **식별자 보안**: pseudonym은 URL에 넣지 않고 **헤더**로만 전달한다(쿼리 노출·로그·레퍼러 유출 방지).
+- **전제**: 클라이언트는 [SSO 콜백](../sso/sso_callback.md)을 통해 인증 후, `soongpt_auth` 쿠키(JWT)를 발급받는다. JWT에 pseudonym이 포함되어 있으며, 서버가 쿠키에서 추출한다. 본 API는 **pseudonym만** 사용한다(토큰은 SSO 콜백 시에만 사용).
+- **식별자 보안**: pseudonym은 JWT 쿠키에 포함되어 있으므로 별도 전달이 불필요하다. 기존 `X-Pseudonym` 헤더 방식도 호환 지원한다.
 
 ---
 
@@ -196,4 +196,4 @@ X-Pseudonym: {pseudonym}
 }
 ```
 
-- 클라이언트: sync 화면으로 유도 후, 새 pseudonym으로 재요청.
+- 클라이언트: SSO 재로그인으로 유도 후, 새 쿠키 발급 받아 재요청.
