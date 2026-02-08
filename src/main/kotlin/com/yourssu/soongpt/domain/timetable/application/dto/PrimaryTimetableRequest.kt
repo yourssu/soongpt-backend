@@ -9,8 +9,6 @@ import org.hibernate.validator.constraints.Range
 
 data class PrimaryTimetableRequest(
         // 해당 정보를 받아올건지? 내부에서 긁어올건지.
-        @field:NotBlank(message = "학과는 필수 입력값입니다.") val departmentName: String,
-        @field:Range(min = 1, max = 5, message = "학년은 1부터 5까지 가능합니다.") val grade: Int,
         @field:Range(min = 0, max = 24, message = "최대 학점은 0에서 24 사이여야 합니다.") val maxCredit: Int,
         @field:Valid val retakeCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val majorRequiredCourses: List<SelectedCourseDto> = emptyList(),
@@ -21,8 +19,6 @@ data class PrimaryTimetableRequest(
 ) {
     fun toCommand(): PrimaryTimetableCommand {
         return PrimaryTimetableCommand(
-                departmentName = departmentName,
-                grade = grade,
                 maxCredit = maxCredit,
                 retakeCourses = retakeCourses.map { it.toCommand() },
                 majorRequiredCourses = majorRequiredCourses.map { it.toCommand() },
