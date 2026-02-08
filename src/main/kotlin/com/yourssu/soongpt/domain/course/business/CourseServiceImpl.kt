@@ -23,25 +23,19 @@ class CourseServiceImpl(
         private val collegeReader: CollegeReader,
         private val courseFieldReader: CourseFieldReader,
 ) : CourseService {
-    override fun findAll(query: FilterCoursesQuery): List<CourseResponse> {
+    override fun findAll(query: FilterCoursesQuery): List<Course> {
         val department = departmentReader.getByName(query.departmentName)
         val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
 
-        val courses =
-                if (query.field != null) {
-                    courseReader.findAllInCategory(
-                            query.category,
-                            courseCodes,
-                            query.field,
-                            query.schoolId
-                    )
-                } else {
-                    courseReader.findAllInCategory(query.category, courseCodes, query.schoolId)
-                }
-
-        return courses.map { course ->
-            val courseTimes = CourseTimes.from(course.scheduleRoom)
-            CourseResponse.from(course, courseTimes.toList())
+        return if (query.field != null) {
+            courseReader.findAllInCategory(
+                query.category,
+                courseCodes,
+                query.field,
+                query.schoolId
+            )
+        } else {
+            courseReader.findAllInCategory(query.category, courseCodes, query.schoolId)
         }
     }
 
