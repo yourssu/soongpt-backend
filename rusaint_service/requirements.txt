@@ -4,9 +4,10 @@ rusaint>=0.1.0
 python-dotenv>=1.0.1
 pydantic-settings>=2.0.0
 PyJWT>=2.8.0
+tenacity>=8.2.0
 
-# 테스트 의존성
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
-pytest-cov>=4.1.0
-httpx>=0.24.0  # FastAPI 테스트용
+# 테스트 의존성 (Docker 빌드에서는 제외 — .dockerignore로 tests/ 폴더 미포함)
+# pytest>=7.4.0
+# pytest-asyncio>=0.21.0
+# pytest-cov>=4.1.0
+# httpx>=0.24.0
