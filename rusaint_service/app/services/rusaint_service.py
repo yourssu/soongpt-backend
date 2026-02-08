@@ -157,3 +157,25 @@ class RusaintService:
         return await self._graduation.fetch_usaint_graduation_info(
             student_id, s_token
         )
+
+    async def validate_token(
+        self,
+        student_id: str,
+        s_token: str,
+    ) -> None:
+        """
+        SSO 토큰 유효성 검증 (세션 생성만 시도 후 즉시 종료).
+
+        콜백 시점에 sToken 만료 여부를 빠르게 확인하는 용도입니다.
+        데이터 조회 없이 세션 생성만 시도하므로 약 1-2초 소요됩니다.
+
+        Raises:
+            ValueError: SSO 토큰이 유효하지 않거나 만료된 경우
+        """
+        session = None
+        try:
+            session = await session_module.create_session(student_id, s_token)
+            logger.info(f"SSO 토큰 검증 성공: student_id={student_id[:4]}****")
+        finally:
+            if session:
+                await session_module.cleanup_sessions([("validate", session)])

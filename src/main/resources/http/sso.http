@@ -1,0 +1,71 @@
+### ========================================
+### SSO 인증 및 동기화 API
+###
+### 사용법:
+###   1) bootRun + rusaint-service 로컬 실행
+###   2) 아래 "SSO 콜백" 요청 실행 → 응답 Set-Cookie 에서 JWT 자동 캡처
+###   3) "동기화 상태 조회" 요청 실행 (캡처된 JWT 자동 사용)
+###
+### 변수: studentId, sToken 은
+### http-client.private.env.json 의 "local" 에서 가져옴.
+### ========================================
+
+### 1) SSO 콜백 테스트 (브라우저 리다이렉트 시뮬레이션)
+### 성공 시 302 → {프론트}/loading + soongpt_auth 쿠키 발급
+### → response handler가 쿠키 값을 client.global 변수에 저장
+# @no-redirect
+GET http://localhost:8080/api/sso/callback?sToken={{sToken}}&sIdno={{studentId}}
+
+> {%
+    const setCookie = response.headers.valuesOf("Set-Cookie");
+    for (const cookie of setCookie) {
+        const match = cookie.match(/soongpt_auth=([^;]+)/);
+        if (match) {
+            client.global.set("soongptAuth", match[1]);
+            client.log("soongpt_auth captured: " + match[1].substring(0, 20) + "...");
+        }
+    }
+%}
+
+###
+
+### 2) 동기화 상태 조회 (위 콜백 실행 후 사용)
+### 모든 응답은 JSON (302 리다이렉트 없음)
+### 200: PROCESSING / COMPLETED(+studentInfo) / REQUIRES_REAUTH / FAILED
+### 401: ERROR (invalid_session / session_expired)
+GET http://localhost:8080/api/sync/status
+Cookie: soongpt_auth={{soongptAuth}}
+
+###
+
+### 3) 학적정보 수정 (COMPLETED 후 정보가 틀린 경우)
+### 캐시의 basicInfo/flags를 업데이트
+PUT http://localhost:8080/api/sync/student-info
+Cookie: soongpt_auth={{soongptAuth}}
+Content-Type: application/json
+
+{
+  "grade": 4,
+  "semester": 7,
+  "year": 2023,
+  "department": "컴퓨터학부",
+  "doubleMajorDepartment": null,
+  "minorDepartment": null,
+  "teaching": false
+}
+
+###
+
+### ========================================
+### Python rusaint-service 직접 호출 (참고)
+### ========================================
+
+### SSO 토큰 검증 (약 1-2초)
+POST http://localhost:8000/api/usaint/validate-token
+Authorization: Bearer internal-jwt-placeholder
+Content-Type: application/json
+
+{
+  "studentId": "{{studentId}}",
+  "sToken": "{{sToken}}"
+}

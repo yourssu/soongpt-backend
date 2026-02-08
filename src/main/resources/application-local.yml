@@ -41,3 +41,13 @@ rusaint:
 
 admin:
   password: ${ADMIN_PASSWORD:admin}
+
+sso:
+  frontend-url: ${SSO_FRONTEND_URL:http://localhost:3000}
+  client-jwt-secret: ${SSO_CLIENT_JWT_SECRET:local-client-jwt-secret-min-32-chars}
+  session-ttl-minutes: ${SSO_SESSION_TTL_MINUTES:60}
+  jwt-validity-minutes: ${SSO_JWT_VALIDITY_MINUTES:60}
+
+logging:
+  level:
+    com.yourssu.soongpt.domain.sso: DEBUG

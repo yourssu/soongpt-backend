@@ -16,6 +16,12 @@ import javax.crypto.spec.SecretKeySpec
 class PseudonymGenerator(
     private val rusaintProperties: RusaintProperties,
 ) {
+    init {
+        val secretSize = rusaintProperties.pseudonymSecret.toByteArray(Charsets.UTF_8).size
+        require(secretSize >= MIN_SECRET_BYTES) {
+            "Pseudonym secret must be at least $MIN_SECRET_BYTES bytes (현재: $secretSize)"
+        }
+    }
 
     fun generate(studentId: String): String {
         val secret = rusaintProperties.pseudonymSecret
@@ -28,5 +34,6 @@ class PseudonymGenerator(
 
     companion object {
         private const val HMAC_SHA256 = "HmacSHA256"
+        private const val MIN_SECRET_BYTES = 32
     }
 }

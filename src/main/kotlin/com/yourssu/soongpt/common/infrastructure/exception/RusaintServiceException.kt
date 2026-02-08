@@ -11,7 +11,11 @@ import org.springframework.http.HttpStatus
  */
 class RusaintServiceException(
     message: String = "rusaint 서비스와 통신 중 오류가 발생했습니다.",
+    val serviceStatusCode: Int? = null,
 ) : InternalServerError(
     status = HttpStatus.SERVICE_UNAVAILABLE,
     message = message,
-)
+) {
+    val isUnauthorized: Boolean
+        get() = serviceStatusCode == 401
+}
