@@ -14,8 +14,8 @@ UNMAPPED_JSON_PATH = os.path.join(BASE_DIR, "unmapped_targets.json")
 # Values can be string or list of strings
 DEPT_ALIAS = {
     # IT College
-    "컴퓨터": "컴퓨터학부",
     "소프트": "소프트웨어학부",
+    "SW학부": "소프트웨어학부",
     "AI융합": "AI융합학부",
     "AI융합학부": "AI융합학부",
     "글미": "글로벌미디어학부",
@@ -86,6 +86,7 @@ DEPT_ALIAS = {
     "영화예술": "예술창작학부 영화예술전공",
     "영화예술전공": "예술창작학부 영화예술전공",
     "스포츠": "스포츠학부",
+    "기독": "기독교학과",
     
     # Law
     "법학": "법학과",
@@ -224,15 +225,17 @@ class IdManager:
         # If I return all containing "건축", "건축공학" query would work, but "건축" query would return everything.
         # This acts like one-to-many.
         
+        # Avoid overly broad partial matching for very short tokens
         partial_matches = []
-        for stored_name, stored_id in self.department_map.items():
-            if name in stored_name: 
-                 partial_matches.append(stored_id)
+        if len(name) >= 4:
+            for stored_name, stored_id in self.department_map.items():
+                if name in stored_name: 
+                     partial_matches.append(stored_id)
         
-        if partial_matches:
-            # If we found matches via substring, use them.
-            # But duplicate filtering later handles over-matching?
-            return partial_matches
+            if partial_matches:
+                # If we found matches via substring, use them.
+                # But duplicate filtering later handles over-matching?
+                return partial_matches
 
         return []
 
@@ -371,6 +374,7 @@ def parse_target(text, id_manager):
     # Store category restrictions separately - will be applied to main targets later
     category_restrictions = []
     dept_college_exclusions = []
+    grade_exclusions = []
 
     for match in exclusion_matches:
         # Check if this is a special category restriction (e.g., "순수외국인입학생 제한")
@@ -390,8 +394,10 @@ def parse_target(text, id_manager):
             ex_targets, _ = parse_target(inner_text, id_manager)
 
             for t in ex_targets:
-                # Only COLLEGE and DEPARTMENT can be excluded, not UNIVERSITY
+                # UNIVERSITY here means a grade-only exclusion (e.g. "(2학년 제외)")
                 if t["scopeType"] == "UNIVERSITY":
+                    t["Effect"] = "Deny"
+                    grade_exclusions.append(t)
                     continue
                 t["Effect"] = "Deny"
                 dept_college_exclusions.append(t)
@@ -571,10 +577,11 @@ def parse_target(text, id_manager):
 
         # Skip tokens containing "융합" or special fusion major patterns (non-existent majors)
         # e.g., "순환경제·친환경화학소재", "빅데이터컴퓨팅융합", "ICT유통물류융합"
-        # BUT allow if the token exists in DEPT_ALIAS (e.g., "AI융합", "IT융합")
-        if ("융합" in token or ("·" in token and "소재" in token)) and token not in DEPT_ALIAS:
-            unmapped_tokens.append(token)
-            continue
+        # BUT allow if the token looks like a real dept/college (학과/학부/전공/대학) or is in DEPT_ALIAS
+        if ("융합" in token or ("·" in token and "소재" in token)):
+            if token not in DEPT_ALIAS and not re.search(r'(학과|학부|전공|대학)$', token):
+                unmapped_tokens.append(token)
+                continue
 
         # Skip group indicators (e.g., "A그룹", "B그룹", "1반", "2반")
         if re.match(r'^[A-Z가-힣]?그룹$', token) or re.match(r'^\d+반$', token):
@@ -785,6 +792,26 @@ def parse_target(text, id_manager):
                 excluded_version["isForeignerOnly"] = restriction['is_foreigner']
                 excluded_version["isMilitaryOnly"] = restriction['is_military']
                 excluded_version["isTeachingCertificateStudent"] = restriction['is_teaching']
+                add_target(excluded_version)
+
+    # Apply grade-only exclusions (e.g., "(2학년 제외)") to main targets
+    if grade_exclusions and final_targets:
+        main_targets = [t for t in final_targets if t.get("Effect") == "Allow"]
+        for exclusion in grade_exclusions:
+            for main_target in main_targets:
+                excluded_version = main_target.copy()
+                excluded_version["Effect"] = "Deny"
+                excluded_version["minGrade"] = exclusion.get("minGrade", main_target.get("minGrade", 1))
+                excluded_version["maxGrade"] = exclusion.get("maxGrade", main_target.get("maxGrade", 5))
+                # Apply category flags from exclusion if present
+                if exclusion.get("isForeignerOnly"):
+                    excluded_version["isForeignerOnly"] = True
+                if exclusion.get("isMilitaryOnly"):
+                    excluded_version["isMilitaryOnly"] = True
+                if exclusion.get("isTeachingCertificateStudent"):
+                    excluded_version["isTeachingCertificateStudent"] = True
+                if exclusion.get("isStrictRestriction"):
+                    excluded_version["isStrictRestriction"] = True
                 add_target(excluded_version)
 
     # Logic to add UNIVERSITY scope if 'exclude' keyword is present (Blacklist logic)
