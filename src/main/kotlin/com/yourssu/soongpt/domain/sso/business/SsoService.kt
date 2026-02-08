@@ -59,8 +59,7 @@ class SsoService(
         referer: String?,
         redirectUrl: String? = null,
     ): CallbackResult {
-        // Referer 로깅 (DEBUG - 배포 시 출력 안 됨)
-        logger.debug { "SSO Callback - Referer: $referer, StudentId: ${studentId.take(4)}****" }
+        logger.info { "SSO Callback - StudentId: ${studentId.take(4)}****, redirect: ${redirectUrl ?: "default"}" }
 
         val redirectBase = resolveRedirectBase(redirectUrl)
 
