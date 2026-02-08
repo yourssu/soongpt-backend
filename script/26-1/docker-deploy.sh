@@ -7,16 +7,16 @@ if ! command -v docker &> /dev/null; then
   sudo apt-get update
   sudo apt-get install -y ca-certificates curl gnupg
   sudo install -m 0755 -d /etc/apt/keyrings
-  
+
   # Force overwrite GPG key to avoid prompts
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
   sudo chmod a+r /etc/apt/keyrings/docker.gpg
-  
+
   # Add repository if not already added
   if [ ! -f /etc/apt/sources.list.d/docker.list ]; then
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   fi
-  
+
   sudo apt-get update
   sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
   sudo usermod -aG docker ubuntu
@@ -34,10 +34,10 @@ if [ -z "$PROJECT_NAME" ]; then
   fi
 fi
 
-# Load environment variables
-source /home/ubuntu/$PROJECT_NAME-api/.env
+DEPLOY_DIR="/home/ubuntu/$PROJECT_NAME-api"
 
-# No AWS credentials or CLI needed for ECR Public (pulling only)
+# Load environment variables
+source "$DEPLOY_DIR/.env"
 
 # Clean up disk space before deployment
 echo "Cleaning up disk space..."
@@ -49,43 +49,32 @@ sudo rm -rf /var/lib/apt/lists/* || true
 echo "Disk usage after cleanup:"
 df -h
 
-# Stop and remove existing container if exists
-docker stop $PROJECT_NAME-container 2>/dev/null || true
-docker rm $PROJECT_NAME-container 2>/dev/null || true
+# Stop existing standalone container (migration from docker run)
+docker stop "$PROJECT_NAME-container" 2>/dev/null || true
+docker rm "$PROJECT_NAME-container" 2>/dev/null || true
+
+# Stop existing compose services
+docker compose -f "$DEPLOY_DIR/docker-compose.deploy.yml" down 2>/dev/null || true
 
 # Check if port is already in use and kill the process
-if lsof -Pi :$SERVER_PORT -sTCP:LISTEN -t >/dev/null ; then
+if lsof -Pi :"$SERVER_PORT" -sTCP:LISTEN -t >/dev/null 2>&1; then
     echo "Warning: Port $SERVER_PORT is already in use. Finding and stopping the process..."
-    
-    # Try to find Docker container using the port
-    EXISTING_CONTAINER=$(docker ps --format "table {{.Names}}" | grep -v NAMES | xargs -I {} sh -c 'docker port {} 2>/dev/null | grep -q "$SERVER_PORT->" && echo {}' || true)
-    if [ ! -z "$EXISTING_CONTAINER" ]; then
-        echo "Stopping container using port $SERVER_PORT: $EXISTING_CONTAINER"
-        docker stop $EXISTING_CONTAINER
-        docker rm $EXISTING_CONTAINER
-    else
-        # If not a Docker container, kill the process directly
-        echo "Killing process using port $SERVER_PORT"
-        sudo fuser -k $SERVER_PORT/tcp || true
-    fi
-    
-    # Wait a moment for port to be released
+    sudo fuser -k "$SERVER_PORT/tcp" || true
     sleep 2
 fi
 
-# Pull the latest image
-docker pull $ECR_REGISTRY/yourssu/$PROJECT_NAME:latest
+# Pull latest images
+echo "Pulling images..."
+docker pull "$ECR_REGISTRY/yourssu/$PROJECT_NAME:${IMAGE_TAG:-latest}"
+docker pull "$ECR_REGISTRY/yourssu/$PROJECT_NAME/rusaint-service:${IMAGE_TAG:-latest}"
 
-# Run the container with environment variables
-docker run -d \
-  --name $PROJECT_NAME-container \
-  --restart unless-stopped \
-  -p $SERVER_PORT:$SERVER_PORT \
-  -v /home/ubuntu/$PROJECT_NAME-api/logs:/app/logs \
-  --env-file /home/ubuntu/$PROJECT_NAME-api/.env \
-  $ECR_REGISTRY/yourssu/$PROJECT_NAME:latest
+# Start services with docker compose
+echo "Starting services with docker compose..."
+IMAGE_TAG="${IMAGE_TAG:-latest}" docker compose -f "$DEPLOY_DIR/docker-compose.deploy.yml" up -d
 
 # Clean up old images
 docker image prune -f
 
 echo 'Deployment completed successfully!'
+echo "Service status:"
+docker compose -f "$DEPLOY_DIR/docker-compose.deploy.yml" ps

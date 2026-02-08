@@ -1,0 +1,23 @@
+services:
+  soongpt:
+    image: ${ECR_REGISTRY}/yourssu/${PROJECT_NAME}:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
+    env_file: .env
+    environment:
+      RUSAINT_BASE_URL: http://rusaint-service:8001
+    depends_on:
+      rusaint-service:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+
+  rusaint-service:
+    image: ${ECR_REGISTRY}/yourssu/${PROJECT_NAME}/rusaint-service:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      INTERNAL_JWT_SECRET: ${RUSAINT_INTERNAL_JWT_SECRET}
+      PSEUDONYM_SECRET: ${RUSAINT_PSEUDONYM_SECRET}
+      DEBUG: "false"
+      ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGIN}
