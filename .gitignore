@@ -7,8 +7,7 @@ build/
 !**/src/test/**/build/
 
 .env
-.env.local
-.env.*.local
+.env.*
 
 # HTTP 클라이언트 민감 변수 (학번·sToken·internalJwt 등). 실제 값은 .example 복사 후 로컬에만 보관.
 **/http-client.private.env.json
