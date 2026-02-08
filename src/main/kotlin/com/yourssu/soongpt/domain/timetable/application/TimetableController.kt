@@ -5,9 +5,7 @@ import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.domain.timetable.application.dto.FinalizeTimetableRequest
 import com.yourssu.soongpt.domain.timetable.application.dto.PrimaryTimetableRequest
 import com.yourssu.soongpt.domain.timetable.business.TimetableService
-import com.yourssu.soongpt.domain.timetable.business.dto.FinalTimetableRecommendationResponse
-import com.yourssu.soongpt.domain.timetable.business.dto.RecommendationStatus
-import com.yourssu.soongpt.domain.timetable.business.dto.TimetableResponse
+import com.yourssu.soongpt.domain.timetable.business.dto.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -41,7 +39,7 @@ class TimetableController(
                     Content(mediaType = "application/json", schema = Schema(implementation = FinalTimetableRecommendationResponse::class))
                 ]
             ),
-            ApiResponse(responseCode = "400", description = "잘못된 입력값", content = [])
+            ApiResponse(responseCode = "400", description = "잘못된 입력값 또는 조합 실패", content = [])
         ]
     )
     @PostMapping
@@ -89,6 +87,44 @@ class TimetableController(
     @GetMapping("/{id}")
     fun getTimetable(@PathVariable id: Long): ResponseEntity<Response<TimetableResponse>> {
         val response = timetableService.getTimeTable(id)
+        return ResponseEntity.ok(Response(result = response))
+    }
+
+    @Operation(summary = "수강 가능한 교양 과목 목록 조회", description = "특정 시간표를 기준으로, 시간이 겹치지 않는 교양 과목들을 영역별로 그룹화하여 반환합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200", description = "조회 성공", content = [
+                    Content(mediaType = "application/json", schema = Schema(implementation = GeneralElectiveDto::class))
+                ]
+            ),
+            ApiResponse(responseCode = "404", description = "존재하지 않는 시간표 ID", content = [])
+        ]
+    )
+    @GetMapping("/{id}/available-general-electives")
+    fun getAvailableGeneralElectives(@PathVariable id: Long): ResponseEntity<Response<List<GeneralElectiveDto>>> {
+        // TODO: 실제 userId는 토큰 등에서 가져와야 함
+        val userId = "anonymous"
+        val response = timetableService.getAvailableGeneralElectives(id, userId)
+        return ResponseEntity.ok(Response(result = response))
+    }
+
+    @Operation(summary = "수강 가능한 채플 과목 목록 조회", description = "특정 시간표를 기준으로, 시간이 겹치지 않는 채플 과목 목록을 반환합니다.")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200", description = "조회 성공", content = [
+                    Content(mediaType = "application/json", schema = Schema(implementation = TimetableCourseResponse::class))
+                ]
+            ),
+            ApiResponse(responseCode = "404", description = "존재하지 않는 시간표 ID", content = [])
+        ]
+    )
+    @GetMapping("/{id}/available-chapels")
+    fun getAvailableChapels(@PathVariable id: Long): ResponseEntity<Response<List<TimetableCourseResponse>>> {
+        // TODO: 실제 userId는 토큰 등에서 가져와야 함
+        val userId = "anonymous"
+        val response = timetableService.getAvailableChapels(id, userId)
         return ResponseEntity.ok(Response(result = response))
     }
 }
