@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.implement
 
 import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
+import com.yourssu.soongpt.domain.department.implement.Department
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

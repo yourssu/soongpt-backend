@@ -88,7 +88,11 @@ class CourseRepositoryImpl(
     }
 
     override fun findAllByClass(code: Long): List<Course> {
-        val codeWithoutDivision = code.div(DIVISION_DIVISOR)
+        val codeWithoutDivision = if (code.toString().length > 8) {
+            code / DIVISION_DIVISOR
+        } else {
+            code
+        }
         return jpaQueryFactory
             .selectFrom(courseEntity)
             .where(courseEntity.code.divide(DIVISION_DIVISOR).longValue().eq(codeWithoutDivision))
