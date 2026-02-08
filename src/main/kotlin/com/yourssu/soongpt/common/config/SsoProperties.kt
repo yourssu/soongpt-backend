@@ -14,6 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class SsoProperties(
     val frontendUrl: String,
     val clientJwtSecret: String,
+    val allowedRedirectUrls: List<String> = emptyList(),
     val sessionTtlMinutes: Long = 60L,
     val jwtValidityMinutes: Long = 60L,
 )
