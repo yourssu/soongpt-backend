@@ -111,6 +111,7 @@ class RusaintServiceClient(
             logger.error(e) { "rusaint-service 호출 실패: call=$callName, status=${e.statusCode.value()}" }
             throw RusaintServiceException(
                 message = "rusaint 서비스 호출이 실패했습니다. (status=${e.statusCode.value()})",
+                serviceStatusCode = e.statusCode.value(),
             )
         } catch (e: RestClientException) {
             logger.error(e) { "rusaint-service 통신 중 예외 발생: call=$callName" }

@@ -19,9 +19,15 @@ import javax.crypto.SecretKey
 class ClientJwtProvider(
     private val ssoProperties: SsoProperties,
 ) {
+    init {
+        val secretSize = ssoProperties.clientJwtSecret.toByteArray(Charsets.UTF_8).size
+        require(secretSize >= KEY_MIN_BYTES) {
+            "SSO client JWT secret must be at least $KEY_MIN_BYTES bytes (현재: $secretSize)"
+        }
+    }
+
     private val key: SecretKey by lazy {
-        val secretBytes = ssoProperties.clientJwtSecret.toByteArray(Charsets.UTF_8)
-        Keys.hmacShaKeyFor(secretBytes.copyOf(KEY_MIN_BYTES.coerceAtLeast(secretBytes.size)))
+        Keys.hmacShaKeyFor(ssoProperties.clientJwtSecret.toByteArray(Charsets.UTF_8))
     }
 
     fun issueToken(pseudonym: String): String {

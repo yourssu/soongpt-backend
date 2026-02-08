@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import jakarta.validation.constraints.Pattern
+import com.yourssu.soongpt.common.validation.ValidStudentId
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -47,7 +47,7 @@ class SsoController(
     fun ssoCallback(
         @RequestParam("sToken") sToken: String,
         @RequestParam("sIdno")
-        @Pattern(regexp = "^20(1[5-9]|2[0-9])\\d{4}$", message = "Invalid student ID format")
+        @ValidStudentId
         studentId: String,
         request: HttpServletRequest,
         response: HttpServletResponse,

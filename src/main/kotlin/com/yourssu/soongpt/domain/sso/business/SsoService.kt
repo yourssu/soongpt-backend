@@ -16,7 +16,10 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.Cookie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.springframework.beans.factory.DisposableBean
 import org.springframework.stereotype.Service
 
 @Service
@@ -26,9 +29,13 @@ class SsoService(
     private val clientJwtProvider: ClientJwtProvider,
     private val syncSessionStore: SyncSessionStore,
     private val rusaintServiceClient: RusaintServiceClient,
-) {
+) : DisposableBean {
     private val logger = KotlinLogging.logger {}
-    private val asyncScope = CoroutineScope(Dispatchers.IO)
+    private val asyncScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    override fun destroy() {
+        asyncScope.cancel("SsoService destroyed")
+    }
 
     data class CallbackResult(
         val redirectUrl: String,
@@ -137,7 +144,7 @@ class SsoService(
 
     private fun isValidSTokenFormat(sToken: String): Boolean {
         // sToken은 Base64 인코딩된 문자열, 길이는 200~600자 정도
-        return sToken.length in 100..1000 &&
+        return sToken.length in 200..700 &&
             sToken.matches(Regex("^[A-Za-z0-9+/=_-]+$"))
     }
 
@@ -159,10 +166,7 @@ class SsoService(
 
                 logger.info { "rusaint fetch 완료: pseudonym=${pseudonym.take(8)}..." }
             } catch (e: RusaintServiceException) {
-                // 401 에러 (토큰 만료/무효)인 경우
-                if (e.message?.contains("401") == true ||
-                    e.message?.contains("invalid or expired") == true
-                ) {
+                if (e.isUnauthorized) {
                     logger.warn { "sToken 만료/무효: pseudonym=${pseudonym.take(8)}..." }
                     syncSessionStore.updateStatus(pseudonym, SyncStatus.REQUIRES_REAUTH)
                 } else {
