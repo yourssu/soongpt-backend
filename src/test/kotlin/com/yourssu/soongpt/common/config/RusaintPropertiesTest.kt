@@ -15,7 +15,7 @@ class RusaintPropertiesTest @Autowired constructor(
     @Test
     fun `RusaintProperties 설정_바인딩이_정상동작한다`() {
         assertEquals("https://rusaint-service.test", rusaintProperties.baseUrl)
-        assertEquals("test-secret", rusaintProperties.pseudonymSecret)
+        assertEquals("test-secret-that-is-at-least-32-bytes-long", rusaintProperties.pseudonymSecret)
         assertEquals("test-jwt-secret", rusaintProperties.internalJwtSecret)
     }
 }
