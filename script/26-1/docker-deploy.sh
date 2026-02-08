@@ -36,8 +36,9 @@ fi
 
 DEPLOY_DIR="/home/ubuntu/$PROJECT_NAME-api"
 
-# Load environment variables
-source "$DEPLOY_DIR/.env"
+# Load only the variables needed by this script (avoids quoting issues with source)
+SERVER_PORT=$(grep '^SERVER_PORT=' "$DEPLOY_DIR/.env" | head -1 | cut -d'=' -f2-)
+ECR_REGISTRY=$(grep '^ECR_REGISTRY=' "$DEPLOY_DIR/.env" | head -1 | cut -d'=' -f2-)
 
 # Clean up disk space before deployment
 echo "Cleaning up disk space..."

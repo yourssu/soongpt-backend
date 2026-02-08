@@ -45,12 +45,13 @@ def test_settings_is_production_property():
 
 
 def test_settings_cors_origins():
-    """CORS 설정 테스트"""
+    """CORS 설정 테스트 - 콤마 구분 문자열"""
     settings = Settings(
         debug=True,
         pseudonym_secret="test",
-        allowed_origins=["http://localhost:8080", "http://localhost:3000"],
+        allowed_origins_raw="http://localhost:8080,http://localhost:3000",
     )
 
     assert len(settings.allowed_origins) == 2
     assert "http://localhost:8080" in settings.allowed_origins
+    assert "http://localhost:3000" in settings.allowed_origins
