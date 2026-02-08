@@ -47,6 +47,7 @@ DB_CONFIG = {
 OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 SQL_FILES = [
     ("26-1-course-inserts.sql", "course"),
+    ("26-1-course-field-inserts.sql", "course_field"),
     ("26-1-course-time-inserts.sql", "course_time"),
     ("26-1-target-inserts.sql", "target"),
     ("26-1-course-secondary-major-inserts.sql", "course_secondary_major_classification"),
