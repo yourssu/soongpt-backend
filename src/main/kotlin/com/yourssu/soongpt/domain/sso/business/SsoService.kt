@@ -110,14 +110,27 @@ class SsoService(
     }
 
     private fun resolveRedirectBase(redirectUrl: String?): String {
-        if (redirectUrl == null) {
+        if (redirectUrl.isNullOrBlank()) {
             return ssoProperties.frontendUrl
         }
-        if (ssoProperties.allowedRedirectUrls.contains(redirectUrl)) {
-            logger.debug { "Redirect URL override: $redirectUrl" }
-            return redirectUrl
+
+        val validatedUrl = try {
+            val url = java.net.URL(redirectUrl)
+            if (url.protocol !in listOf("http", "https")) {
+                logger.warn { "Redirect URL with invalid protocol rejected: ${url.protocol}" }
+                return ssoProperties.frontendUrl
+            }
+            url.toString()
+        } catch (e: java.net.MalformedURLException) {
+            logger.warn { "Malformed redirect URL rejected: $redirectUrl" }
+            return ssoProperties.frontendUrl
         }
-        logger.warn { "Redirect URL not in allowlist, using default: $redirectUrl" }
+
+        if (ssoProperties.allowedRedirectUrls.contains(validatedUrl)) {
+            logger.info { "Redirect URL override approved: $validatedUrl" }
+            return validatedUrl
+        }
+        logger.warn { "Redirect URL not in allowlist, using default: $validatedUrl" }
         return ssoProperties.frontendUrl
     }
 
