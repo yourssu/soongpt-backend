@@ -35,8 +35,12 @@ class Settings(BaseSettings):
     LOW_GRADE_RANKS: set[str] = {"C+", "C0", "C-", "D+", "D0", "D-"}
     FAIL_GRADE: str = "F"
 
-    # CORS 설정
-    allowed_origins: list[str] = ["http://localhost:8080"]  # 환경 변수로 쉼표 구분
+    # CORS 설정 (환경 변수: 콤마 구분 문자열, e.g. "https://a.com,https://b.com")
+    allowed_origins_raw: str = "http://localhost:8080"
+
+    @property
+    def allowed_origins(self) -> list[str]:
+        return [o.strip() for o in self.allowed_origins_raw.split(",") if o.strip()]
 
     # Redis 설정 (Phase 3)
     redis_host: str = "localhost"
