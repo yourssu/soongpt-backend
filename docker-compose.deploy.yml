@@ -21,3 +21,9 @@ services:
       PSEUDONYM_SECRET: ${RUSAINT_PSEUDONYM_SECRET}
       DEBUG: "false"
       ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGIN}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/api/health')"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3

@@ -21,3 +21,9 @@ services:
       INTERNAL_JWT_SECRET: ${RUSAINT_INTERNAL_JWT_SECRET:-local-internal-jwt-secret-min-32-chars}
       PSEUDONYM_SECRET: ${RUSAINT_PSEUDONYM_SECRET:-local-pseudonym-secret-min-32-chars}
       DEBUG: "true"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/api/health')"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
