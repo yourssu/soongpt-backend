@@ -13,12 +13,19 @@ interface FilterTabProps {
   onFilterResults: (results: Course[]) => void;
 }
 
-type FilterMode = 'category' | 'secondaryMajor';
+type FilterMode = 'category' | 'secondaryMajor' | 'teaching';
 
 const secondaryMajorTrackOptions: Array<{ value: SecondaryMajorTrackType; label: string }> = [
   { value: 'DOUBLE_MAJOR', label: '복수전공' },
   { value: 'MINOR', label: '부전공' },
   { value: 'CROSS_MAJOR', label: '타전공인정' },
+];
+
+const teachingAreaOptions: Array<{ value: string; label: string }> = [
+  { value: 'THEORY', label: '교직이론' },
+  { value: 'LITERACY', label: '교직소양' },
+  { value: 'PRACTICE', label: '교육실습' },
+  { value: 'SUBJECT_EDUCATION', label: '교과교육' },
 ];
 
 const secondaryMajorCompletionOptions: Record<
@@ -46,6 +53,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTrackType, setSelectedTrackType] = useState<SecondaryMajorTrackType>('DOUBLE_MAJOR');
   const [selectedCompletionType, setSelectedCompletionType] = useState<SecondaryMajorCompletionType>('REQUIRED');
+  const [selectedTeachingArea, setSelectedTeachingArea] = useState('THEORY');
   const [schoolId] = useState(20);
 
   const handleFilterModeChange = (mode: FilterMode) => {
@@ -80,13 +88,22 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         });
         setFilteredCourses(data);
         onFilterResults(data);
-      } else {
+      } else if (filterMode === 'secondaryMajor') {
         const data = await courseApi.getCoursesByTrack({
           schoolId,
           department: selectedDepartment,
           grade: selectedGrade,
           trackType: selectedTrackType,
           completionType: selectedCompletionType,
+        });
+        setFilteredCourses(data);
+        onFilterResults(data);
+      } else if (filterMode === 'teaching') {
+        const data = await courseApi.getTeachingCourses({
+          schoolId,
+          department: selectedDepartment,
+          grade: selectedGrade,
+          teachingArea: selectedTeachingArea,
         });
         setFilteredCourses(data);
         onFilterResults(data);
@@ -113,6 +130,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
             >
               <option value="category">일반 이수구분</option>
               <option value="secondaryMajor">다전공/부전공</option>
+              <option value="teaching">교직</option>
             </select>
           </div>
 
@@ -208,6 +226,24 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
             </>
           )}
 
+          {filterMode === 'teaching' && (
+            <div className="filter-field">
+              <label htmlFor="teaching-area">교직 영역</label>
+              <select
+                id="teaching-area"
+                value={selectedTeachingArea}
+                onChange={(e) => setSelectedTeachingArea(e.target.value)}
+                className="filter-select"
+              >
+                {teachingAreaOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <button type="submit" className="filter-button">조회</button>
         </div>
       </form>
@@ -257,8 +293,8 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                     <td>{course.department}</td>
                     <td>{course.point}</td>
                     <td>{course.time}</td>
-                    <td>{filterMode === 'secondaryMajor' ? '-' : course.personeel}</td>
-                    <td>{filterMode === 'secondaryMajor' ? '-' : course.scheduleRoom}</td>
+                    <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.personeel}</td>
+                    <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.scheduleRoom}</td>
                     {filterMode === 'category' && <td>{course.target}</td>}
                   </tr>
                 ))}
