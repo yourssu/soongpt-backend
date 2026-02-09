@@ -110,7 +110,7 @@ class CourseRepositoryImpl(
         val scopeCondition = buildScopeCondition(departmentId, collegeId)
         val gradeCondition = buildGradeRangeCondition(maxGrade)
 
-        // Allow 과목 조회 (Target 정보 포함)
+        // Allow 과목 조회 (Target 정보 포함, Deny 제외)
         val allowResults = jpaQueryFactory
             .select(
                 Projections.tuple(
@@ -120,6 +120,7 @@ class CourseRepositoryImpl(
                     targetEntity.grade3,
                     targetEntity.grade4,
                     targetEntity.grade5,
+                    targetEntity.isStrict,
                 )
             )
             .from(courseEntity)
@@ -137,22 +138,8 @@ class CourseRepositoryImpl(
             return emptyList()
         }
 
-        // Deny 과목 코드 조회
-        val denyCodes = jpaQueryFactory
-            .select(targetEntity.courseCode)
-            .from(targetEntity)
-            .where(
-                targetEntity.studentType.eq(StudentType.GENERAL),
-                targetEntity.isDenied.isTrue,
-                gradeCondition,
-                scopeCondition,
-            )
-            .fetch()
-            .toSet()
-
-        // Allow - Deny 적용 및 CourseWithTarget 변환
+        // CourseWithTarget 변환
         return allowResults
-            .filter { it.get(courseEntity)!!.code !in denyCodes }
             .map { tuple ->
                 CourseWithTarget(
                     course = tuple.get(courseEntity)!!.toDomain(),
@@ -163,6 +150,7 @@ class CourseRepositoryImpl(
                         grade4 = tuple.get(targetEntity.grade4) ?: false,
                         grade5 = tuple.get(targetEntity.grade5) ?: false,
                     ),
+                    isStrict = tuple.get(targetEntity.isStrict) ?: false,
                 )
             }
     }
@@ -256,6 +244,50 @@ class CourseRepositoryImpl(
         return condition
     }
 
+
+    override fun findCoursesWithTargetByBaseCodes(baseCodes: List<Long>): List<CourseWithTarget> {
+        if (baseCodes.isEmpty()) return emptyList()
+
+        // baseCode = code / 100 이므로, code / 100 IN baseCodes 조건 사용
+        val baseCodeCondition = courseEntity.code.divide(DIVISION_DIVISOR).longValue().`in`(baseCodes)
+
+        val results = jpaQueryFactory
+            .select(
+                Projections.tuple(
+                    courseEntity,
+                    targetEntity.grade1,
+                    targetEntity.grade2,
+                    targetEntity.grade3,
+                    targetEntity.grade4,
+                    targetEntity.grade5,
+                    targetEntity.isStrict,
+                )
+            )
+            .from(courseEntity)
+            .innerJoin(targetEntity).on(courseEntity.code.eq(targetEntity.courseCode))
+            .where(
+                baseCodeCondition,
+                targetEntity.studentType.eq(StudentType.GENERAL),
+                targetEntity.isDenied.isFalse,
+            )
+            .fetch()
+
+        if (results.isEmpty()) return emptyList()
+
+        return results.map { tuple ->
+            CourseWithTarget(
+                course = tuple.get(courseEntity)!!.toDomain(),
+                targetGrades = CourseWithTarget.extractTargetGrades(
+                    grade1 = tuple.get(targetEntity.grade1) ?: false,
+                    grade2 = tuple.get(targetEntity.grade2) ?: false,
+                    grade3 = tuple.get(targetEntity.grade3) ?: false,
+                    grade4 = tuple.get(targetEntity.grade4) ?: false,
+                    grade5 = tuple.get(targetEntity.grade5) ?: false,
+                ),
+                isStrict = tuple.get(targetEntity.isStrict) ?: false,
+            )
+        }
+    }
 
     override fun save(course: Course): Course {
         return courseJpaRepository.save(CourseEntity.from(course)).toDomain()

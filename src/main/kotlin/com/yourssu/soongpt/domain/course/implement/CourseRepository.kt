@@ -40,6 +40,13 @@ interface CourseRepository {
         maxGrade: Int,
     ): List<CourseWithTarget>
 
+    /**
+     * baseCode 목록으로 과목을 Target 정보와 함께 조회 (재수강용)
+     * - code / 100 IN baseCodes 조건으로 분반 포함 조회
+     * - Allow - Deny 로직 적용
+     */
+    fun findCoursesWithTargetByBaseCodes(baseCodes: List<Long>): List<CourseWithTarget>
+
     fun save(course: Course): Course
     fun delete(code: Long)
 }

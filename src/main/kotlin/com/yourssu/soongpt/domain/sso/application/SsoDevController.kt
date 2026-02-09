@@ -4,6 +4,9 @@ import com.yourssu.soongpt.common.config.ClientJwtProvider
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.sso.implement.SyncStatus
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintChapelSummaryItemDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
 import io.swagger.v3.oas.annotations.Operation
@@ -51,7 +54,52 @@ class SsoDevController(
                     year = 2023,
                     semester = 5,
                     grade = 3,
-                    department = "AI융합학부",
+                    department = "소프트웨어학부",
+                ),
+                graduationSummary = RusaintGraduationSummaryDto(
+                    generalRequired = RusaintCreditSummaryItemDto(
+                        required = 19,
+                        completed = 17,
+                        satisfied = false,
+                    ),
+                    generalElective = RusaintCreditSummaryItemDto(
+                        required = 12,
+                        completed = 15,
+                        satisfied = true,
+                    ),
+                    majorFoundation = RusaintCreditSummaryItemDto(
+                        required = 15,
+                        completed = 9,
+                        satisfied = false,
+                    ),
+                    majorRequired = RusaintCreditSummaryItemDto(
+                        required = 21,
+                        completed = 12,
+                        satisfied = false,
+                    ),
+                    majorElective = RusaintCreditSummaryItemDto(
+                        required = 30,
+                        completed = 18,
+                        satisfied = false,
+                    ),
+                    doubleMajorRequired = RusaintCreditSummaryItemDto(
+                        required = 0,
+                        completed = 0,
+                        satisfied = true,
+                    ),
+                    doubleMajorElective = RusaintCreditSummaryItemDto(
+                        required = 0,
+                        completed = 0,
+                        satisfied = true,
+                    ),
+                    christianCourses = RusaintCreditSummaryItemDto(
+                        required = 6,
+                        completed = 6,
+                        satisfied = true,
+                    ),
+                    chapel = RusaintChapelSummaryItemDto(
+                        satisfied = true,
+                    ),
                 ),
             ),
         )

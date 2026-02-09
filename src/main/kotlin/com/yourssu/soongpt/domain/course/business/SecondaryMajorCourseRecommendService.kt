@@ -58,9 +58,10 @@ class SecondaryMajorCourseRecommendService(
             )
         }
 
-        val recommendedCourses = buildRecommendedCourses(untakenCourses, userGrade)
+        val grouped = untakenCourses.groupBy { it.course.baseCode() }
+        val recommendedCourses = buildRecommendedCourses(grouped, userGrade)
         val gradeGroups = if (completionType == SecondaryMajorCompletionType.ELECTIVE) {
-            buildGradeGroups(recommendedCourses)
+            buildGradeGroups(grouped, userGrade)
         } else {
             null
         }
@@ -101,35 +102,44 @@ class SecondaryMajorCourseRecommendService(
     }
 
     private fun buildRecommendedCourses(
-        coursesWithTarget: List<CourseWithTarget>,
+        grouped: Map<Long, List<CourseWithTarget>>,
         userGrade: Int,
     ): List<RecommendedCourseResponse> {
-        return coursesWithTarget
-            .groupBy { it.course.baseCode() }
+        return grouped.entries
+            .sortedWith(
+                compareBy(
+                    { if (it.value.first().isLateFor(userGrade)) 0 else 1 },
+                    { it.value.first().targetGrades.maxOrNull() ?: 1 },
+                    { it.value.first().course.name },
+                )
+            )
             .map { (_, sections) ->
                 val representative = sections.first()
                 RecommendedCourseResponse.from(
-                    courses = sections.map { it.course },
-                    targetGrades = representative.targetGrades,
+                    coursesWithTarget = sections,
                     isLate = representative.isLateFor(userGrade),
                 )
             }
-            .sortedWith(
-                compareBy(
-                    { it.timing.ordinal },
-                    { it.targetGrades.maxOrNull() ?: 1 },
-                    { it.courseName },
-                )
-            )
     }
 
-    private fun buildGradeGroups(courses: List<RecommendedCourseResponse>): List<GradeGroupResponse> {
-        return courses
-            .groupBy { it.targetGrades.maxOrNull() ?: 1 }
-            .map { (grade, groupCourses) ->
-                GradeGroupResponse(grade = grade, courses = groupCourses)
+    private fun buildGradeGroups(
+        grouped: Map<Long, List<CourseWithTarget>>,
+        userGrade: Int,
+    ): List<GradeGroupResponse> {
+        return grouped.entries
+            .groupBy { it.value.first().targetGrades.maxOrNull() ?: 1 }
+            .entries
+            .sortedBy { it.key }
+            .map { (grade, entries) ->
+                val courses = entries.map { (_, sections) ->
+                    val representative = sections.first()
+                    RecommendedCourseResponse.from(
+                        coursesWithTarget = sections,
+                        isLate = representative.isLateFor(userGrade),
+                    )
+                }
+                GradeGroupResponse(grade = grade, courses = courses)
             }
-            .sortedBy { it.grade }
     }
 
     companion object {

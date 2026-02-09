@@ -1,0 +1,15 @@
+### 전체 전공 추천 (기본, RETAKE 미포함)
+GET {{host}}/api/courses/recommend
+Cookie: soongpt_auth=<JWT>
+
+### 전공필수만
+GET {{host}}/api/courses/recommend?category=MAJOR_REQUIRED
+Cookie: soongpt_auth=<JWT>
+
+### 재수강 과목만
+GET {{host}}/api/courses/recommend?category=RETAKE
+Cookie: soongpt_auth=<JWT>
+
+### 재수강 + 전공필수
+GET {{host}}/api/courses/recommend?category=RETAKE,MAJOR_REQUIRED
+Cookie: soongpt_auth=<JWT>
