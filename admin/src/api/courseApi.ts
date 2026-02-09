@@ -56,7 +56,6 @@ export interface FilterCoursesParams {
 export interface GetCoursesByTrackParams {
   schoolId: number;
   department: string;
-  grade: number;
   trackType: SecondaryMajorTrackType;
   completionType?: SecondaryMajorCompletionType;
 }
@@ -64,7 +63,6 @@ export interface GetCoursesByTrackParams {
 export interface GetTeachingCoursesParams {
   schoolId: number;
   department: string;
-  grade: number;
   teachingArea?: string;
 }
 
