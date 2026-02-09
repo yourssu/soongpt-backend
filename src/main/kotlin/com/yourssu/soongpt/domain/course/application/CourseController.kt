@@ -5,16 +5,19 @@ import com.yourssu.soongpt.domain.course.application.dto.FilterCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByCodeRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldByCodeRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldsRequest
+import com.yourssu.soongpt.domain.course.application.dto.RecommendCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.RecommendSecondaryMajorCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.SecondaryMajorCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse
+import com.yourssu.soongpt.domain.course.business.dto.CourseRecommendationsResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseResponse
 import com.yourssu.soongpt.domain.course.business.dto.SecondaryMajorCourseRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController
 class CourseController(
     private val courseService: CourseService,
     private val secondaryMajorCourseRecommendService: SecondaryMajorCourseRecommendService,
+    private val courseRecommendApplicationService: CourseRecommendApplicationService,
 ) {
     @Operation(
         summary = "강의 필터링 조회 (카테고리별)",
@@ -67,7 +71,7 @@ class CourseController(
         summary = "강의 검색",
         description = """
             키워드로 강의를 검색합니다.
-            
+
             **파라미터 설명:**
             - **q**: 검색어 (필수 아님, 기본값 빈 문자열)
             - **page**: 페이지 번호 (0부터 시작, 기본값 0)
@@ -139,5 +143,46 @@ class CourseController(
     fun getFieldByCode(@Valid @ModelAttribute request: GetFieldByCodeRequest): ResponseEntity<Response<Map<Long, String?>>> {
         val result = request.code.associateWith { courseService.getFieldByCourseCode(it, request.schoolId) }
         return ResponseEntity.ok().body(Response(result = result))
+    }
+
+    @Operation(
+        summary = "통합 과목 추천 조회",
+        description = """
+            SSO 인증된 사용자의 학적정보를 기반으로 모든 이수구분의 과목을 추천합니다.
+
+            **파라미터 설명:**
+            - **category**: 추천할 이수구분 (필수). 콤마 구분으로 여러 개 지정 가능.
+                - `MAJOR_BASIC` (전공기초)
+                - `MAJOR_REQUIRED` (전공필수)
+                - `MAJOR_ELECTIVE` (전공선택)
+                - `GENERAL_REQUIRED` (교양필수)
+                - `GENERAL_ELECTIVE` (교양선택)
+                - `RETAKE` (재수강)
+                - `DOUBLE_MAJOR` (복수전공) — 준비 중
+                - `MINOR` (부전공) — 준비 중
+                - `TEACHING` (교직이수) — 준비 중
+
+            **응답 구조:**
+            - 각 이수구분별로 `CategoryRecommendResponse` 반환
+            - `progress`: 졸업사정 현황 (required/completed/satisfied). 재수강은 null.
+            - `message`: 엣지케이스 안내 메시지 (null이면 정상)
+            - `courses`: 추천 과목 flat list (교양은 빈 배열 — fieldGroups 사용)
+            - `gradeGroups`: 학년별 그룹 (전공선택 전용)
+            - `fieldGroups`: 분야별 그룹 (교양필수/교양선택 전용, ON_TIME만)
+            - `lateFields`: 미수강 LATE 분야명 텍스트 (교양필수 전용)
+
+            **인증:**
+            - `soongpt_auth` 쿠키(JWT) 필수
+            - SyncSessionStore에 캐시된 rusaint 데이터 사용 (동기화 완료된 상태여야 함)
+        """,
+        security = [io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "cookieAuth")]
+    )
+    @GetMapping("/recommend/all")
+    fun recommendCourses(
+        @Valid @ModelAttribute request: RecommendCoursesRequest,
+        httpRequest: HttpServletRequest,
+    ): ResponseEntity<Response<CourseRecommendationsResponse>> {
+        val response = courseRecommendApplicationService.recommend(httpRequest, request)
+        return ResponseEntity.ok().body(Response(result = response))
     }
 }
