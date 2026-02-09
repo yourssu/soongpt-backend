@@ -22,6 +22,7 @@ const secondaryMajorTrackOptions: Array<{ value: SecondaryMajorTrackType; label:
 ];
 
 const teachingAreaOptions: Array<{ value: string; label: string }> = [
+  { value: '', label: '전체' },
   { value: 'THEORY', label: '교직이론' },
   { value: 'LITERACY', label: '교직소양' },
   { value: 'PRACTICE', label: '교육실습' },
@@ -53,7 +54,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTrackType, setSelectedTrackType] = useState<SecondaryMajorTrackType>('DOUBLE_MAJOR');
   const [selectedCompletionType, setSelectedCompletionType] = useState<SecondaryMajorCompletionType>('REQUIRED');
-  const [selectedTeachingArea, setSelectedTeachingArea] = useState('THEORY');
+  const [selectedTeachingArea, setSelectedTeachingArea] = useState('');
   const [schoolId] = useState(20);
 
   const handleFilterModeChange = (mode: FilterMode) => {
@@ -103,7 +104,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
           schoolId,
           department: selectedDepartment,
           grade: selectedGrade,
-          teachingArea: selectedTeachingArea,
+          teachingArea: selectedTeachingArea || undefined,
         });
         setFilteredCourses(data);
         onFilterResults(data);
