@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonInclude
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class FinalTimetableRecommendationResponse(
     val status: RecommendationStatus,
-    val successResponse: FullTimetableRecommendationResponse? = null,
+    val successResponse: List<GroupedTimetableResponse>? = null,
     val singleConflictCourses: List<DeletableCourseDto>? = null
 ) {
     companion object {
-        fun success(response: FullTimetableRecommendationResponse) = FinalTimetableRecommendationResponse(
+        fun success(response: List<GroupedTimetableResponse>) = FinalTimetableRecommendationResponse(
             status = RecommendationStatus.SUCCESS,
             successResponse = response
         )
