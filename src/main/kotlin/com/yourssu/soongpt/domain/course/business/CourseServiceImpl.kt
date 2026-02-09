@@ -332,4 +332,46 @@ class CourseServiceImpl(
         // Delete the course
         courseReader.delete(code)
     }
+
+    override fun findAllTeachingCourses(query: FilterTeachingCoursesQuery): List<CourseResponse> {
+        val department = departmentReader.getByName(query.departmentName)
+        val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
+
+        // TEACHING 카테고리의 모든 과목 조회
+        val courses = courseReader.findAllInCategory(
+            Category.TEACHING,
+            courseCodes,
+            query.schoolId
+        )
+
+        // 영역별 필터링
+        val filteredCourses = when (query.teachingArea) {
+            com.yourssu.soongpt.domain.course.implement.TeachingArea.SUBJECT_EDUCATION -> {
+                // 교과교육 영역: 학과에 맞는 교과만 필터링
+                val subjectCategory = com.yourssu.soongpt.domain.course.implement.SubjectCategory.findByDepartment(query.departmentName)
+                if (subjectCategory != null) {
+                    courses.filter { course ->
+                        course.name.contains(subjectCategory.displayName.replace("교과", "")) ||
+                        (course.name.contains("교과교육론") || course.name.contains("논리및논술"))
+                    }
+                } else {
+                    // 학과 매칭 실패 시 모든 교과교육 과목 반환
+                    courses.filter { course ->
+                        query.teachingArea.keywords.any { keyword -> course.name.contains(keyword) }
+                    }
+                }
+            }
+            else -> {
+                // 다른 영역: 키워드로 필터링
+                courses.filter { course ->
+                    query.teachingArea.keywords.any { keyword -> course.name.contains(keyword) }
+                }
+            }
+        }
+
+        return filteredCourses.map { course ->
+            val courseTimes = CourseTimes.from(course.scheduleRoom)
+            CourseResponse.from(course, courseTimes.toList())
+        }
+    }
 }
