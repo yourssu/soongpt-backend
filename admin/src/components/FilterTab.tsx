@@ -3,7 +3,6 @@ import { courseApi } from '../api/courseApi';
 import type {
   Course,
   SecondaryMajorCompletionType,
-  SecondaryMajorCourseRecommendResponse,
   SecondaryMajorTrackType,
 } from '../types/course';
 import { colleges, categories, grades } from '../data/departments';
@@ -15,15 +14,6 @@ interface FilterTabProps {
 }
 
 type FilterMode = 'category' | 'secondaryMajor';
-
-interface SecondaryMajorSummary {
-  trackType: string;
-  completionType: string;
-  classification: string;
-  progress: string | null;
-  satisfied: boolean;
-  message: string | null;
-}
 
 const secondaryMajorTrackOptions: Array<{ value: SecondaryMajorTrackType; label: string }> = [
   { value: 'DOUBLE_MAJOR', label: '복수전공' },
@@ -46,41 +36,6 @@ const secondaryMajorCompletionOptions: Record<
   CROSS_MAJOR: [{ value: 'RECOGNIZED', label: '타전공인정과목' }],
 };
 
-const formatCredits = (credits: number | null): string => {
-  if (credits === null) {
-    return '-';
-  }
-  return Number.isInteger(credits) ? `${credits}` : credits.toString();
-};
-
-const mapSecondaryMajorCoursesToTableRows = (
-  response: SecondaryMajorCourseRecommendResponse,
-  department: string,
-): Course[] => {
-  return response.courses.flatMap((recommendedCourse) => {
-    const targetText = recommendedCourse.targetGrades.length > 0
-      ? recommendedCourse.targetGrades.map((grade) => `${grade}학년`).join(', ')
-      : '-';
-
-    return recommendedCourse.sections.map((section) => ({
-      id: null,
-      category: 'OTHER',
-      subCategory: response.classification,
-      field: null,
-      code: section.courseCode,
-      name: recommendedCourse.courseName,
-      professor: section.professor,
-      department,
-      division: null,
-      time: section.schedule,
-      point: formatCredits(recommendedCourse.credits),
-      personeel: 0,
-      scheduleRoom: '-',
-      target: targetText,
-    }));
-  });
-};
-
 export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: FilterTabProps) => {
   const [filteredCourses, setFilteredCourses] = useState<Course[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -91,14 +46,12 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTrackType, setSelectedTrackType] = useState<SecondaryMajorTrackType>('DOUBLE_MAJOR');
   const [selectedCompletionType, setSelectedCompletionType] = useState<SecondaryMajorCompletionType>('REQUIRED');
-  const [secondaryMajorSummary, setSecondaryMajorSummary] = useState<SecondaryMajorSummary | null>(null);
   const [schoolId] = useState(20);
 
   const handleFilterModeChange = (mode: FilterMode) => {
     setFilterMode(mode);
     setFilteredCourses(null);
     setError(null);
-    setSecondaryMajorSummary(null);
     onFilterResults([]);
   };
 
@@ -125,27 +78,18 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
           grade: selectedGrade,
           category: selectedCategory || undefined,
         });
-        setSecondaryMajorSummary(null);
         setFilteredCourses(data);
         onFilterResults(data);
       } else {
-        const data = await courseApi.getSecondaryMajorRecommendedCourses({
+        const data = await courseApi.getCoursesByTrack({
+          schoolId,
           department: selectedDepartment,
           grade: selectedGrade,
           trackType: selectedTrackType,
           completionType: selectedCompletionType,
         });
-        const mappedCourses = mapSecondaryMajorCoursesToTableRows(data, selectedDepartment);
-        setSecondaryMajorSummary({
-          trackType: data.trackType,
-          completionType: data.completionType,
-          classification: data.classification,
-          progress: data.progress,
-          satisfied: data.satisfied,
-          message: data.message,
-        });
-        setFilteredCourses(mappedCourses);
-        onFilterResults(mappedCourses);
+        setFilteredCourses(data);
+        onFilterResults(data);
       }
     } catch (err) {
       setError('과목을 불러오는데 실패했습니다.');
@@ -281,21 +225,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         <>
           <div className="course-info">
             총 {filteredCourses.length}개의 과목
-            {secondaryMajorSummary && ` · 분류: ${secondaryMajorSummary.classification}`}
-            {secondaryMajorSummary?.progress && ` · 이수현황: ${secondaryMajorSummary.progress}`}
           </div>
-
-          {secondaryMajorSummary?.message && (
-            <div className="course-info">
-              {secondaryMajorSummary.message}
-            </div>
-          )}
-
-          {secondaryMajorSummary?.satisfied && (
-            <div className="course-info">
-              현재 이수 요건을 이미 충족했습니다.
-            </div>
-          )}
 
           <div className="table-container">
             <table className="course-table">
