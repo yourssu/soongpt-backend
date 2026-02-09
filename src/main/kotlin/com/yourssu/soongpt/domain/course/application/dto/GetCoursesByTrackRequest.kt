@@ -14,9 +14,6 @@ data class GetCoursesByTrackRequest(
     @field:NotBlank
     val department: String,
 
-    @field:Range(min = 1, max = 5, message = "학년은 1부터 5까지 가능합니다.")
-    val grade: Int,
-
     @field:NotBlank
     val trackType: String,
 
@@ -31,7 +28,6 @@ data class GetCoursesByTrackRequest(
         return FilterCoursesByTrackQuery(
             schoolId = schoolId,
             departmentName = department,
-            grade = grade,
             trackType = trackTypeEnum,
             completionType = completionTypeEnum,
         )

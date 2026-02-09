@@ -29,6 +29,7 @@ CATEGORY_MAP = {
     "교선": "GENERAL_ELECTIVE",
     "채플": "CHAPEL",
     "교직": "TEACHING",
+    "교직전공": "TEACHING",  # 교직전공-XXX (교과교육영역)
 }
 
 
@@ -41,12 +42,18 @@ def parse_category(major_classification: str) -> str:
         "전선_목회상담" -> MAJOR_ELECTIVE
         "교필" -> GENERAL_REQUIRED
         "전기-AI융합" -> MAJOR_REQUIRED
+        "교직" -> TEACHING
+        "교직전공-국문" -> TEACHING
     """
     if not major_classification:
         return "OTHER"
 
     # Normalize
     normalized = major_classification.strip()
+
+    # Check for teaching profession courses early (교직, 교직전공-XXX)
+    if "교직" in normalized:
+        return "TEACHING"
 
     # Check for exact matches first
     for key, value in CATEGORY_MAP.items():
@@ -73,9 +80,6 @@ def parse_category(major_classification: str) -> str:
 
     if prefix == "공기":  # 공기_XXX (석사 공통기초) -> OTHER
         return "OTHER"
-
-    if "교직" in normalized:  # 교직 -> TEACHING
-        return "TEACHING"
 
     return "OTHER"
 

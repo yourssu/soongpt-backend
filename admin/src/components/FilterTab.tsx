@@ -6,6 +6,7 @@ import type {
   SecondaryMajorTrackType,
 } from '../types/course';
 import { colleges, categories, grades } from '../data/departments';
+import { isTeachingEligible } from '../data/teachingDepartments';
 
 interface FilterTabProps {
   onCourseClick: (course: Course, index: number) => void;
@@ -93,7 +94,6 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         const data = await courseApi.getCoursesByTrack({
           schoolId,
           department: selectedDepartment,
-          grade: selectedGrade,
           trackType: selectedTrackType,
           completionType: selectedCompletionType,
         });
@@ -103,7 +103,6 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         const data = await courseApi.getTeachingCourses({
           schoolId,
           department: selectedDepartment,
-          grade: selectedGrade,
           teachingArea: selectedTeachingArea || undefined,
         });
         setFilteredCourses(data);
@@ -131,7 +130,9 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
             >
               <option value="category">일반 이수구분</option>
               <option value="secondaryMajor">다전공/부전공</option>
-              <option value="teaching">교직</option>
+              {(!selectedDepartment || isTeachingEligible(selectedDepartment)) && (
+                <option value="teaching">교직</option>
+              )}
             </select>
           </div>
 
@@ -140,37 +141,59 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
             <select
               id="department"
               value={selectedDepartment}
-              onChange={(e) => setSelectedDepartment(e.target.value)}
+              onChange={(e) => {
+                const newDepartment = e.target.value;
+                setSelectedDepartment(newDepartment);
+                // 교직 필터 중이고 새로 선택한 학과가 교직 이수 불가능하면 일반 필터로 변경
+                if (filterMode === 'teaching' && newDepartment && !isTeachingEligible(newDepartment)) {
+                  setFilterMode('category');
+                  alert('선택한 학과는 교직 이수가 불가능하여 일반 이수구분 필터로 전환되었습니다.');
+                }
+              }}
               className="filter-select"
             >
               <option value="">학과 선택</option>
-              {colleges.map((college) => (
-                <optgroup key={college.name} label={college.name}>
-                  {college.departments.map((dept) => (
-                    <option key={dept} value={dept}>
-                      {dept}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
+              {colleges.map((college) => {
+                // 교직 필터일 때는 교직 이수 가능 학과만 표시
+                const filteredDepartments = filterMode === 'teaching'
+                  ? college.departments.filter(dept => isTeachingEligible(dept))
+                  : college.departments;
+
+                // 교직 필터일 때 해당 단과대에 교직 이수 가능 학과가 없으면 optgroup 자체를 숨김
+                if (filterMode === 'teaching' && filteredDepartments.length === 0) {
+                  return null;
+                }
+
+                return (
+                  <optgroup key={college.name} label={college.name}>
+                    {filteredDepartments.map((dept) => (
+                      <option key={dept} value={dept}>
+                        {dept}
+                      </option>
+                    ))}
+                  </optgroup>
+                );
+              })}
             </select>
           </div>
 
-          <div className="filter-field">
-            <label htmlFor="grade">학년</label>
-            <select
-              id="grade"
-              value={selectedGrade}
-              onChange={(e) => setSelectedGrade(Number(e.target.value))}
-              className="filter-select"
-            >
-              {grades.map((grade) => (
-                <option key={grade} value={grade}>
-                  {grade}학년
-                </option>
-              ))}
-            </select>
-          </div>
+          {filterMode === 'category' && (
+            <div className="filter-field">
+              <label htmlFor="grade">학년</label>
+              <select
+                id="grade"
+                value={selectedGrade}
+                onChange={(e) => setSelectedGrade(Number(e.target.value))}
+                className="filter-select"
+              >
+                {grades.map((grade) => (
+                  <option key={grade} value={grade}>
+                    {grade}학년
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {filterMode === 'category' && (
             <div className="filter-field">
