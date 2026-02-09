@@ -141,7 +141,7 @@ def execute_sql_file(cursor, file_path, table_name):
     return success_count, error_count
 
 
-def truncate_tables(cursor):
+def truncate_tables(cursor, conn):
     """Truncate all tables in reverse order."""
     print("\n" + "="*80)
     print("Truncating tables...")
@@ -149,17 +149,21 @@ def truncate_tables(cursor):
 
     # Disable foreign key checks temporarily
     cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+    conn.commit()
 
     # Truncate in reverse order (to handle foreign keys)
     for _, table_name in reversed(SQL_FILES):
         try:
             cursor.execute(f"TRUNCATE TABLE {table_name};")
+            conn.commit()  # Commit immediately after each truncate
             print(f"  ✓ Truncated {table_name}")
         except mysql.connector.Error as e:
             print(f"  ✗ Failed to truncate {table_name}: {e}")
+            conn.rollback()
 
     # Re-enable foreign key checks
     cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
+    conn.commit()
     print("\n✓ All tables truncated")
 
 
@@ -182,7 +186,7 @@ def main():
     # Connect to database
     print("\nConnecting to database...")
     try:
-        conn = mysql.connector.connect(**DB_CONFIG)
+        conn = mysql.connector.connect(**DB_CONFIG, autocommit=False)
         cursor = conn.cursor()
         print("✓ Connected successfully")
     except mysql.connector.Error as e:
@@ -191,8 +195,7 @@ def main():
 
     try:
         # Step 1: Truncate all tables
-        truncate_tables(cursor)
-        conn.commit()
+        truncate_tables(cursor, conn)
 
         # Step 2: Execute each SQL file
         total_success = 0
