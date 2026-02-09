@@ -39,15 +39,21 @@ class SyncSessionStore(
         return cache.getIfPresent(pseudonym)
     }
 
-    fun updateStatus(pseudonym: String, status: SyncStatus, usaintData: RusaintUsaintDataResponse? = null) {
+    fun updateStatus(
+        pseudonym: String,
+        status: SyncStatus,
+        usaintData: RusaintUsaintDataResponse? = null,
+        failReason: String? = null,
+    ) {
         val existing = cache.getIfPresent(pseudonym) ?: return
         val updated = existing.copy(
             status = status,
             updatedAt = Instant.now(),
             usaintData = usaintData ?: existing.usaintData,
+            failReason = failReason,
         )
         cache.put(pseudonym, updated)
-        logger.info { "세션 상태 변경: pseudonym=${pseudonym.take(8)}..., status=$status" }
+        logger.info { "세션 상태 변경: pseudonym=${pseudonym.take(8)}..., status=$status${failReason?.let { ", reason=$it" } ?: ""}" }
     }
 
     fun getUsaintData(pseudonym: String): RusaintUsaintDataResponse? {

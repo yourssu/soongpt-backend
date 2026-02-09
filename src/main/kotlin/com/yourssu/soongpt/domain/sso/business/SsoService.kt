@@ -80,8 +80,9 @@ class SsoService(
                 logger.warn { "sToken 만료/무효: ${e.message}" }
                 "token_expired"
             } else {
-                logger.error(e) { "rusaint-service 연결 실패: ${e.message}" }
-                "service_unavailable"
+                val mapped = mapFailReason(e.serviceStatusCode)
+                logger.error(e) { "rusaint-service 호출 실패: ${e.message}, reason=$mapped" }
+                mapped
             }
             return CallbackResult(
                 redirectUrl = "$redirectBase/error?reason=$reason",
@@ -174,6 +175,12 @@ class SsoService(
         )
     }
 
+    private fun mapFailReason(serviceStatusCode: Int?): String = when (serviceStatusCode) {
+        502 -> "server_unreachable"
+        504 -> "server_timeout"
+        else -> "internal_error"
+    }
+
     private fun isValidSTokenFormat(sToken: String): Boolean {
         // sToken은 Base64 인코딩된 문자열, 길이는 200~600자 정도
         return sToken.length in 200..700 &&
@@ -200,14 +207,15 @@ class SsoService(
             } catch (e: RusaintServiceException) {
                 if (e.isUnauthorized) {
                     logger.warn { "sToken 만료/무효: pseudonym=${pseudonym.take(8)}..." }
-                    syncSessionStore.updateStatus(pseudonym, SyncStatus.REQUIRES_REAUTH)
+                    syncSessionStore.updateStatus(pseudonym, SyncStatus.REQUIRES_REAUTH, failReason = "token_expired")
                 } else {
-                    logger.error(e) { "rusaint fetch 실패: pseudonym=${pseudonym.take(8)}..." }
-                    syncSessionStore.updateStatus(pseudonym, SyncStatus.FAILED)
+                    val reason = mapFailReason(e.serviceStatusCode)
+                    logger.error(e) { "rusaint fetch 실패: pseudonym=${pseudonym.take(8)}..., reason=$reason" }
+                    syncSessionStore.updateStatus(pseudonym, SyncStatus.FAILED, failReason = reason)
                 }
             } catch (e: Exception) {
                 logger.error(e) { "rusaint fetch 예외: pseudonym=${pseudonym.take(8)}..." }
-                syncSessionStore.updateStatus(pseudonym, SyncStatus.FAILED)
+                syncSessionStore.updateStatus(pseudonym, SyncStatus.FAILED, failReason = "internal_error")
             }
         }
     }

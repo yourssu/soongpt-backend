@@ -165,8 +165,8 @@ class SsoController(
                 }
                 jsonResponse(HttpStatus.OK, "COMPLETED", studentInfo = studentInfo)
             }
-            SyncStatus.REQUIRES_REAUTH -> jsonResponse(HttpStatus.OK, "REQUIRES_REAUTH", reason = "token_expired")
-            SyncStatus.FAILED -> jsonResponse(HttpStatus.OK, "FAILED", reason = "sync_failed")
+            SyncStatus.REQUIRES_REAUTH -> jsonResponse(HttpStatus.OK, "REQUIRES_REAUTH", reason = session.failReason ?: "token_expired")
+            SyncStatus.FAILED -> jsonResponse(HttpStatus.OK, "FAILED", reason = session.failReason ?: "internal_error")
         }
     }
 
