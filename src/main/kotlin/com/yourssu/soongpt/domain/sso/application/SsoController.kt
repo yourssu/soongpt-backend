@@ -9,6 +9,10 @@ import com.yourssu.soongpt.domain.sso.business.SsoService
 import com.yourssu.soongpt.domain.sso.implement.SyncStatus
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -116,14 +120,37 @@ class SsoController(
         description = """
             쿠키 기반 인증으로 rusaint 동기화 진행 상태를 조회합니다.
             프론트엔드에서 fetch 폴링하여 사용하며, 모든 응답은 JSON입니다 (302 리다이렉트 없음).
-            프론트는 HTTP 상태코드 + result.status 값으로 분기합니다.
+            프론트는 HTTP 상태코드 + result.status + reason 값으로 분기합니다.
 
+            **status별 응답:**
             - 200 PROCESSING: 동기화 진행 중 (계속 폴링)
             - 200 COMPLETED: 동기화 완료 (studentInfo 포함)
-            - 200 REQUIRES_REAUTH: sToken 만료, 재인증 필요
-            - 200 FAILED: 동기화 실패
-            - 401 ERROR: 쿠키/JWT 문제 (reason으로 구분)
+            - 200 REQUIRES_REAUTH: sToken 만료, 재인증 필요 (reason: token_expired)
+            - 200 FAILED: 동기화 실패 (reason: server_unreachable | server_timeout | internal_error)
+            - 401 ERROR: 쿠키/JWT 문제 (reason: invalid_session | session_expired)
+
+            **reason 값 설명:**
+            - invalid_session: 쿠키가 없거나 JWT가 유효하지 않음 → 재로그인
+            - session_expired: 동기화 세션 TTL 만료 → 재로그인
+            - token_expired: 유세인트 sToken 만료 → SSO 재인증
+            - server_unreachable: 유세인트 서버 접속 불가 → 잠시 후 재시도
+            - server_timeout: 유세인트 서버 응답 시간 초과 → 잠시 후 재시도
+            - internal_error: 내부 서버 오류 → 관리자 문의
         """,
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "동기화 상태 (result.status: PROCESSING | COMPLETED | REQUIRES_REAUTH | FAILED)",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = SyncStatusResponse::class))],
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "쿠키/JWT 없음 또는 무효 (result.status=ERROR, reason: invalid_session | session_expired)",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = SyncStatusResponse::class))],
+            ),
+        ],
     )
     @GetMapping("/sync/status")
     fun getSyncStatus(
