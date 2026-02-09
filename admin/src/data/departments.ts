@@ -126,6 +126,7 @@ export const categories = [
   { value: 'GENERAL_REQUIRED', label: '교필' },
   { value: 'GENERAL_ELECTIVE', label: '교선' },
   { value: 'CHAPEL', label: '채플' },
+  { value: 'TEACHING', label: '교직' },
   { value: 'OTHER', label: '기타' },
 ];
 

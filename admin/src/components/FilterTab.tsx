@@ -58,11 +58,9 @@ const mapSecondaryMajorCoursesToTableRows = (
   department: string,
 ): Course[] => {
   return response.courses.flatMap((recommendedCourse) => {
-    const targetGradeText = recommendedCourse.targetGrades.length > 0
+    const targetText = recommendedCourse.targetGrades.length > 0
       ? recommendedCourse.targetGrades.map((grade) => `${grade}학년`).join(', ')
       : '-';
-    const timingText = recommendedCourse.timing === 'LATE' ? '권장학년 경과' : '권장학년';
-    const targetText = targetGradeText === '-' ? timingText : `${targetGradeText} (${timingText})`;
 
     return recommendedCourse.sections.map((section) => ({
       id: null,
@@ -312,7 +310,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                   <th>시간</th>
                   <th>정원</th>
                   <th>강의실</th>
-                  <th>수강대상</th>
+                  {filterMode === 'category' && <th>수강대상</th>}
                 </tr>
               </thead>
               <tbody>
@@ -331,7 +329,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                     <td>{course.time}</td>
                     <td>{filterMode === 'secondaryMajor' ? '-' : course.personeel}</td>
                     <td>{filterMode === 'secondaryMajor' ? '-' : course.scheduleRoom}</td>
-                    <td>{course.target}</td>
+                    {filterMode === 'category' && <td>{course.target}</td>}
                   </tr>
                 ))}
               </tbody>
