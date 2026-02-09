@@ -13,7 +13,9 @@ data class PrimaryTimetableRequest(
         @field:Valid val retakeCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val majorRequiredCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val majorElectiveCourses: List<SelectedCourseDto> = emptyList(),
-        @field:Valid val otherMajorCourses: List<SelectedCourseDto> = emptyList(),
+        @field:Valid val doubleMajorCourses: List<SelectedCourseDto> = emptyList(),
+        @field:Valid val minorCourses: List<SelectedCourseDto> = emptyList(),
+        @field:Valid val teachingCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val generalRequiredCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val addedCourses: List<SelectedCourseDto> = emptyList()
 ) {
@@ -23,7 +25,9 @@ data class PrimaryTimetableRequest(
                 retakeCourses = retakeCourses.map { it.toCommand() },
                 majorRequiredCourses = majorRequiredCourses.map { it.toCommand() },
                 majorElectiveCourses = majorElectiveCourses.map { it.toCommand() },
-                otherMajorCourses = otherMajorCourses.map { it.toCommand() },
+                doubleMajorCourses = doubleMajorCourses.map { it.toCommand() },
+                minorCourses = minorCourses.map { it.toCommand() },
+                teachingCourses = teachingCourses.map { it.toCommand() },
                 generalRequiredCourses = generalRequiredCourses.map { it.toCommand() },
                 addedCourses = addedCourses.map { it.toCommand() }
         )
