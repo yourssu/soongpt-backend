@@ -1,6 +1,6 @@
 -- Generated SQL INSERT statements for course_secondary_major_classification
 -- Source: ssu26-1.csv (이수구분(다전공))
--- Total inserts: 3358
+-- Total inserts: 3355
 
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (5006762801, 'DOUBLE_MAJOR', 'ELECTIVE', 8, '복선', '컴퓨터');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (5006762802, 'DOUBLE_MAJOR', 'ELECTIVE', 8, '복선', '컴퓨터');
@@ -222,8 +222,6 @@ INSERT INTO course_secondary_major_classification (course_code, track_type, comp
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150163704, 'MINOR', 'ELECTIVE', 2, '부선', 'AI융합');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150594603, 'DOUBLE_MAJOR', 'ELECTIVE', 21, '복선', '글로벌통상');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150594603, 'MINOR', 'ELECTIVE', 21, '부선', '글로벌통상');
-INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150530703, 'DOUBLE_MAJOR', 'ELECTIVE', 21, '복선', '글로벌통상');
-INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150530703, 'MINOR', 'ELECTIVE', 21, '부선', '글로벌통상');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (5010247404, 'DOUBLE_MAJOR', 'REQUIRED', 11, '복필', '경영학부');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (5010247404, 'MINOR', 'ELECTIVE', 11, '부선', '경영학부');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (5010247405, 'DOUBLE_MAJOR', 'REQUIRED', 11, '복필', '경영학부');
@@ -240,7 +238,6 @@ INSERT INTO course_secondary_major_classification (course_code, track_type, comp
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150663306, 'DOUBLE_MAJOR', 'ELECTIVE', 8, '복선', '컴퓨터');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150672704, 'DOUBLE_MAJOR', 'ELECTIVE', 11, '복선', '경영학부');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150672704, 'MINOR', 'ELECTIVE', 11, '부선', '경영학부');
-INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150558502, 'DOUBLE_MAJOR', 'ELECTIVE', 8, '복선', '컴퓨터');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150012301, 'DOUBLE_MAJOR', 'ELECTIVE', 20, '복선', '국제무역');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150012301, 'MINOR', 'ELECTIVE', 20, '부선', '국제무역');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150820503, 'DOUBLE_MAJOR', 'ELECTIVE', 37, '복선', '언론홍보');
@@ -1284,9 +1281,6 @@ INSERT INTO course_secondary_major_classification (course_code, track_type, comp
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150165604, 'DOUBLE_MAJOR', 'ELECTIVE', 2, '복선', 'AI융합');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150165604, 'DOUBLE_MAJOR', 'ELECTIVE', 5, '복선', '소프트');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150165604, 'MINOR', 'ELECTIVE', 2, '부선', 'AI융합');
-INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150165605, 'DOUBLE_MAJOR', 'ELECTIVE', 2, '복선', 'AI융합');
-INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150165605, 'DOUBLE_MAJOR', 'ELECTIVE', 5, '복선', '소프트');
-INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150165605, 'MINOR', 'ELECTIVE', 2, '부선', 'AI융합');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150661001, 'DOUBLE_MAJOR', 'ELECTIVE', 3, '복선', '글로벌미디어');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150661001, 'MINOR', 'ELECTIVE', 3, '부선', '글로벌미디어');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150661002, 'DOUBLE_MAJOR', 'ELECTIVE', 3, '복선', '글로벌미디어');
@@ -1450,6 +1444,8 @@ INSERT INTO course_secondary_major_classification (course_code, track_type, comp
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150530701, 'MINOR', 'ELECTIVE', 21, '부선', '글로벌통상');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150530702, 'DOUBLE_MAJOR', 'ELECTIVE', 21, '복선', '글로벌통상');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150530702, 'MINOR', 'ELECTIVE', 21, '부선', '글로벌통상');
+INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150530703, 'DOUBLE_MAJOR', 'ELECTIVE', 21, '복선', '글로벌통상');
+INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150530703, 'MINOR', 'ELECTIVE', 21, '부선', '글로벌통상');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150267101, 'DOUBLE_MAJOR', 'REQUIRED', 19, '복필', '경제');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150267101, 'MINOR', 'ELECTIVE', 19, '부선', '경제');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150267102, 'DOUBLE_MAJOR', 'REQUIRED', 19, '복필', '경제');
@@ -2469,6 +2465,7 @@ INSERT INTO course_secondary_major_classification (course_code, track_type, comp
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150393901, 'DOUBLE_MAJOR', 'ELECTIVE', 49, '복선', '문예창작');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150393901, 'MINOR', 'ELECTIVE', 49, '부선', '문예창작');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150558501, 'DOUBLE_MAJOR', 'ELECTIVE', 8, '복선', '컴퓨터');
+INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150558502, 'DOUBLE_MAJOR', 'ELECTIVE', 8, '복선', '컴퓨터');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150013701, 'DOUBLE_MAJOR', 'ELECTIVE', 5, '복선', '소프트');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150013702, 'DOUBLE_MAJOR', 'ELECTIVE', 5, '복선', '소프트');
 INSERT INTO course_secondary_major_classification (course_code, track_type, completion_type, department_id, raw_classification, raw_department_token) VALUES (2150013703, 'DOUBLE_MAJOR', 'ELECTIVE', 5, '복선', '소프트');
