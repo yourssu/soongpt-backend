@@ -5,7 +5,7 @@
 ### ========================================
 
 ### 학적/성적 이력 조회 (약 4-5초)
-POST http://localhost:8000/api/usaint/snapshot/academic
+POST http://localhost:8001/api/usaint/snapshot/academic
 Authorization: Bearer internal-jwt-placeholder
 Content-Type: application/json
 
@@ -17,7 +17,7 @@ Content-Type: application/json
 ###
 
 ### 졸업사정표 조회 (약 5-6초)
-POST http://localhost:8000/api/usaint/snapshot/graduation
+POST http://localhost:8001/api/usaint/snapshot/graduation
 Authorization: Bearer internal-jwt-placeholder
 Content-Type: application/json
 
