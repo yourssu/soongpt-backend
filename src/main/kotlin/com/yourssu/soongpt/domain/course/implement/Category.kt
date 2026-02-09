@@ -11,6 +11,7 @@ enum class Category(
     GENERAL_REQUIRED("교필"),
     GENERAL_ELECTIVE("교선"),
     CHAPEL("채플"),
+    TEACHING("교직"),
     OTHER("기타")
     ;
 
@@ -23,6 +24,7 @@ enum class Category(
                 "교필" -> GENERAL_REQUIRED
                 "교선" -> GENERAL_ELECTIVE
                 "채플" -> CHAPEL
+                "교직" -> TEACHING
                 else -> throw InvalidCategoryException()
             }
         }

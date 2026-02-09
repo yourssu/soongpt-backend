@@ -119,3 +119,48 @@ export interface UpdateTargetItem {
 export interface UpdateTargetsRequest {
   targets: UpdateTargetItem[];
 }
+
+export type SecondaryMajorTrackType =
+  | 'DOUBLE_MAJOR'
+  | 'MINOR'
+  | 'CROSS_MAJOR';
+
+export type SecondaryMajorCompletionType =
+  | 'REQUIRED'
+  | 'ELECTIVE'
+  | 'RECOGNIZED';
+
+export type CourseTiming =
+  | 'LATE'
+  | 'ON_TIME';
+
+export interface SecondaryMajorSectionResponse {
+  courseCode: number;
+  professor: string | null;
+  schedule: string;
+}
+
+export interface SecondaryMajorRecommendedCourseResponse {
+  baseCourseCode: number;
+  courseName: string;
+  credits: number | null;
+  targetGrades: number[];
+  timing: CourseTiming;
+  sections: SecondaryMajorSectionResponse[];
+}
+
+export interface SecondaryMajorGradeGroupResponse {
+  grade: number;
+  courses: SecondaryMajorRecommendedCourseResponse[];
+}
+
+export interface SecondaryMajorCourseRecommendResponse {
+  trackType: string;
+  completionType: string;
+  classification: string;
+  progress: string | null;
+  satisfied: boolean;
+  courses: SecondaryMajorRecommendedCourseResponse[];
+  gradeGroups: SecondaryMajorGradeGroupResponse[] | null;
+  message: string | null;
+}

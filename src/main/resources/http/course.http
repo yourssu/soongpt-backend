@@ -42,3 +42,12 @@ GET {{host}}/api/courses/fields/schoolId/25
 
 ### Get Fields by School ID - Different Year
 GET {{host}}/api/courses/fields/schoolId/23
+
+### PT-60: Recommend courses for double major required
+GET {{host}}/api/courses/secondary-major/recommend?department=컴퓨터학부&grade=3&trackType=DOUBLE_MAJOR&completionType=REQUIRED
+
+### PT-60: Recommend courses for minor elective
+GET {{host}}/api/courses/secondary-major/recommend?department=경영학부&grade=2&trackType=MINOR&completionType=ELECTIVE
+
+### PT-60: Korean aliases (복수전공 + 복선)
+GET {{host}}/api/courses/secondary-major/recommend?department=AI융합학부&grade=3&trackType=복수전공&completionType=복선&takenSubjectCodes=2150123400
