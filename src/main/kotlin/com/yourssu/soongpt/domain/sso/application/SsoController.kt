@@ -80,7 +80,7 @@ class SsoController(
         val redirectUrl = try {
             String(Base64.getUrlDecoder().decode(encodedRedirect))
         } catch (e: IllegalArgumentException) {
-            logger.warn { "Invalid Base64 redirect: $encodedRedirect" }
+            logger.warn(e) { "Invalid Base64 redirect (length: ${encodedRedirect.length})" }
             null
         }
         return handleSsoCallback(sToken, studentId, redirectUrl, request, response)
