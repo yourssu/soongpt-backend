@@ -19,11 +19,13 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.CookieValue
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
+import java.util.Base64
 
 @Tag(name = "SSO", description = "SSO 인증 및 동기화 API")
 @RestController
@@ -36,7 +38,7 @@ class SsoController(
     private val logger = KotlinLogging.logger {}
 
     @Operation(
-        summary = "SSO 콜백",
+        summary = "SSO 콜백 (redirect 없음)",
         description = """
             숭실대 SSO 로그인 완료 후 리다이렉트를 수신합니다.
             sToken을 검증하고, JWT 쿠키를 발급한 뒤, 비동기 rusaint 데이터 동기화를 시작합니다.
@@ -49,7 +51,45 @@ class SsoController(
         @RequestParam("sIdno")
         @ValidStudentId
         studentId: String,
-        @RequestParam(required = false) redirect: String?,
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+    ): ResponseEntity<Void> {
+        return handleSsoCallback(sToken, studentId, redirectUrl = null, request, response)
+    }
+
+    @Operation(
+        summary = "SSO 콜백 (redirect 포함)",
+        description = """
+            숭실대 SSO는 apiReturnUrl에 ?sToken=...을 단순 append하므로,
+            redirect를 query parameter로 넘기면 ?가 두 번 생겨 파싱이 깨집니다.
+            이를 우회하기 위해 redirect URL을 Base64 URL-safe로 인코딩하여 path에 포함합니다.
+
+            예: apiReturnUrl=https://api.soongpt.com/api/sso/callback/r/{base64url(http://localhost:5173)}
+        """,
+    )
+    @GetMapping("/sso/callback/r/{encodedRedirect}")
+    fun ssoCallbackWithRedirect(
+        @PathVariable encodedRedirect: String,
+        @RequestParam("sToken") sToken: String,
+        @RequestParam("sIdno")
+        @ValidStudentId
+        studentId: String,
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+    ): ResponseEntity<Void> {
+        val redirectUrl = try {
+            String(Base64.getUrlDecoder().decode(encodedRedirect))
+        } catch (e: IllegalArgumentException) {
+            logger.warn(e) { "Invalid Base64 redirect (length: ${encodedRedirect.length})" }
+            null
+        }
+        return handleSsoCallback(sToken, studentId, redirectUrl, request, response)
+    }
+
+    private fun handleSsoCallback(
+        sToken: String,
+        studentId: String,
+        redirectUrl: String?,
         request: HttpServletRequest,
         response: HttpServletResponse,
     ): ResponseEntity<Void> {
@@ -59,7 +99,7 @@ class SsoController(
             sToken = sToken,
             studentId = studentId,
             referer = referer,
-            redirectUrl = redirect,
+            redirectUrl = redirectUrl,
         )
 
         // JWT 쿠키 설정 (있는 경우만)

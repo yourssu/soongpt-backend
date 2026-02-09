@@ -9,5 +9,5 @@ data class GeneralElectiveDto(
     val trackName: String,
 
     @Schema(description = "해당 영역에서 수강 가능한 과목 목록")
-    val courses: List<Course>
+    val courses: List<TimetableCourseResponse>
 )
