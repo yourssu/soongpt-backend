@@ -5,6 +5,8 @@ import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceExcepti
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAcademicResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -37,7 +39,7 @@ class RusaintServiceClient(
             Supplier {
                 val simple = SimpleClientHttpRequestFactory().apply {
                     setConnectTimeout(Duration.ofSeconds(3))
-                    setReadTimeout(Duration.ofSeconds(8))
+                    setReadTimeout(Duration.ofSeconds(15))
                 }
                 BufferingClientHttpRequestFactory(simple)
             },
@@ -108,16 +110,31 @@ class RusaintServiceClient(
         return try {
             block()
         } catch (e: HttpStatusCodeException) {
-            logger.error(e) { "rusaint-service 호출 실패: call=$callName, status=${e.statusCode.value()}" }
+            val detail = extractDetail(e)
+            logger.error(e) {
+                "rusaint-service 호출 실패: call=$callName, status=${e.statusCode.value()}, detail=$detail"
+            }
             throw RusaintServiceException(
                 message = "rusaint 서비스 호출이 실패했습니다. (status=${e.statusCode.value()})",
                 serviceStatusCode = e.statusCode.value(),
+                serviceDetail = detail,
             )
         } catch (e: RestClientException) {
             logger.error(e) { "rusaint-service 통신 중 예외 발생: call=$callName" }
             throw RusaintServiceException(
                 message = "rusaint 서비스와 통신할 수 없습니다. (${e.message})",
             )
+        }
+    }
+
+    private fun extractDetail(e: HttpStatusCodeException): String? {
+        return try {
+            val body = e.responseBodyAsString
+            if (body.isBlank()) return null
+            val map: Map<String, Any?> = jacksonObjectMapper().readValue(body)
+            map["detail"]?.toString()
+        } catch (_: Exception) {
+            null
         }
     }
 }
