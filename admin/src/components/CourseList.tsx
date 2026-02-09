@@ -195,6 +195,7 @@ export const CourseList = () => {
       GENERAL_REQUIRED: '교필',
       GENERAL_ELECTIVE: '교선',
       CHAPEL: '채플',
+      TEACHING: '교직',
       OTHER: '기타',
     };
     return labels[category] || category;

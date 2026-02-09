@@ -5,6 +5,7 @@ export type Category =
   | 'GENERAL_REQUIRED'
   | 'GENERAL_ELECTIVE'
   | 'CHAPEL'
+  | 'TEACHING'
   | 'OTHER';
 
 export type ScopeType =
