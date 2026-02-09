@@ -37,6 +37,7 @@ class CourseController(
                 - `GENERAL_REQUIRED` (교필)
                 - `GENERAL_ELECTIVE` (교선)
                 - `CHAPEL` (채플)
+                - `TEACHING` (교직)
                 - `OTHER` (기타)
             - **field**: 세부 영역 (선택). 특정 교양 영역이나 전공 분야 필터링에 사용됩니다.
             - **subDepartment**: 세부 전공 (선택).
@@ -118,6 +119,33 @@ class CourseController(
     @GetMapping("/by-track")
     fun getCoursesByTrack(@Valid @ModelAttribute request: GetCoursesByTrackRequest): ResponseEntity<Response<List<CourseResponse>>> {
         val response = courseService.findAllByTrack(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
+        summary = "교직 과목 조회 (영역별)",
+        description = """
+            특정 학과의 교직 과목을 영역별로 조회합니다.
+
+            **파라미터 설명:**
+            - **schoolId**: 학번 (필수)
+            - **department**: 학과명 (필수)
+            - **grade**: 학년 (1~5, 필수)
+            - **teachingArea**: 교직 영역 (필수)
+                - `교직이론` 또는 `THEORY` - 교직이론 과목 (교육학개론, 교육철학, 교육과정 등)
+                - `교직소양` 또는 `LITERACY` - 교직소양 과목 (특수교육학개론, 교직실무, 학교폭력예방 등)
+                - `교육실습` 또는 `PRACTICE` - 교육실습 과목 (학교현장실습, 교육봉사활동 등)
+                - `교과교육` 또는 `SUBJECT_EDUCATION` - 교과교육 과목 (학과별 교과교육론, 논리및논술)
+
+            **교과교육 과목 자동 필터링:**
+            - 학과에 맞는 교과 계열의 과목만 반환
+            - 예: 컴퓨터학부 → 상업교과교육론, 상업교과논리및논술
+            - 예: 물리학과 → 과학교과교육론, 과학교과논리및논술
+        """
+    )
+    @GetMapping("/teaching")
+    fun getTeachingCourses(@Valid @ModelAttribute request: GetTeachingCoursesRequest): ResponseEntity<Response<List<CourseResponse>>> {
+        val response = courseService.findAllTeachingCourses(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 }
