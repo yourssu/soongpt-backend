@@ -109,6 +109,7 @@ DEPT_ALIAS = {
     "차세대반도체": "차세대반도체학과",
     "AI소프트": "AI소프트웨어학부",
     "AI소프트웨어": "AI소프트웨어학부",
+    "컴퓨터": "컴퓨터학부",
 }
 
 COLLEGE_ALIAS = {
@@ -565,6 +566,7 @@ def parse_target(text, id_manager):
         # Category-level terms moved to CATEGORY_MAPPING - now supported!
         # Removed: "인문사회계열", "자연과학계열", "인문사회자연계", "인문사회계열만"
         # Fusion majors are now handled by pattern matching (see below)
+        "컴퓨터학과", # Graduate school department - exclude
     }
 
     for token in tokens:
