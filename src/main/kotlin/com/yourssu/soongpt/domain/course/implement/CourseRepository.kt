@@ -40,6 +40,11 @@ interface CourseRepository {
         maxGrade: Int,
     ): List<CourseWithTarget>
 
+    /**
+     * 특정 trackType에 해당하는 학과 ID 목록 조회
+     */
+    fun findDepartmentIdsByTrackType(trackType: SecondaryMajorTrackType): List<Long>
+
     fun save(course: Course): Course
     fun delete(code: Long)
 }
