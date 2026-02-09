@@ -6,5 +6,5 @@ data class FilterTeachingCoursesQuery(
     val schoolId: Int,
     val departmentName: String,
     val grade: Int,
-    val teachingArea: TeachingArea,
+    val teachingArea: TeachingArea?,
 )

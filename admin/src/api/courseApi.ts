@@ -65,7 +65,7 @@ export interface GetTeachingCoursesParams {
   schoolId: number;
   department: string;
   grade: number;
-  teachingArea: string;
+  teachingArea?: string;
 }
 
 export const courseApi = {
