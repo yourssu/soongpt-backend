@@ -44,6 +44,57 @@ class CourseServiceImpl(
         }
     }
 
+    override fun findAllByTrack(query: FilterCoursesByTrackQuery): List<CourseResponse> {
+        val department = departmentReader.getByName(query.departmentName)
+        val college = collegeReader.get(department.collegeId)
+
+        // completionType이 지정된 경우 해당 이수구분만 조회
+        if (query.completionType != null) {
+            val coursesWithTarget = courseReader.findCoursesWithTargetBySecondaryMajor(
+                trackType = query.trackType,
+                completionType = query.completionType,
+                departmentId = department.id!!,
+                collegeId = college.id!!,
+                maxGrade = query.grade,
+            )
+
+            return coursesWithTarget.map { courseWithTarget ->
+                val courseTimes = CourseTimes.from(courseWithTarget.course.scheduleRoom)
+                CourseResponse.from(courseWithTarget.course, courseTimes.toList())
+            }
+        }
+
+        // completionType이 없으면 해당 trackType의 모든 이수구분 조회
+        val allCompletionTypes = when (query.trackType) {
+            com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType.DOUBLE_MAJOR,
+            com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType.MINOR ->
+                listOf(
+                    com.yourssu.soongpt.domain.course.implement.SecondaryMajorCompletionType.REQUIRED,
+                    com.yourssu.soongpt.domain.course.implement.SecondaryMajorCompletionType.ELECTIVE
+                )
+            com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType.CROSS_MAJOR ->
+                listOf(com.yourssu.soongpt.domain.course.implement.SecondaryMajorCompletionType.RECOGNIZED)
+        }
+
+        val allCourses = allCompletionTypes.flatMap { completionType ->
+            courseReader.findCoursesWithTargetBySecondaryMajor(
+                trackType = query.trackType,
+                completionType = completionType,
+                departmentId = department.id!!,
+                collegeId = college.id!!,
+                maxGrade = query.grade,
+            )
+        }
+
+        // 중복 제거 (같은 과목 코드)
+        val uniqueCourses = allCourses.distinctBy { it.course.code }
+
+        return uniqueCourses.map { courseWithTarget ->
+            val courseTimes = CourseTimes.from(courseWithTarget.course.scheduleRoom)
+            CourseResponse.from(courseWithTarget.course, courseTimes.toList())
+        }
+    }
+
     override fun search(query: SearchCoursesQuery): SearchCoursesResponse {
         val page = courseReader.searchCourses(query.query, query.toPageable())
         return SearchCoursesResponse.from(page)

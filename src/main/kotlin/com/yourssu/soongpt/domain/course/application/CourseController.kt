@@ -1,18 +1,13 @@
 package com.yourssu.soongpt.domain.course.application
 
 import com.yourssu.soongpt.common.business.dto.Response
-import com.yourssu.soongpt.domain.course.application.dto.FilterCoursesRequest
-import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByCodeRequest
-import com.yourssu.soongpt.domain.course.application.dto.GetFieldByCodeRequest
-import com.yourssu.soongpt.domain.course.application.dto.GetFieldsRequest
-import com.yourssu.soongpt.domain.course.application.dto.RecommendSecondaryMajorCoursesRequest
-import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
+import com.yourssu.soongpt.domain.course.application.dto.*
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.SecondaryMajorCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseResponse
-import com.yourssu.soongpt.domain.course.business.dto.SecondaryMajorCourseRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
+import com.yourssu.soongpt.domain.course.business.dto.SecondaryMajorCourseRecommendResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -139,5 +134,30 @@ class CourseController(
     fun getFieldByCode(@Valid @ModelAttribute request: GetFieldByCodeRequest): ResponseEntity<Response<Map<Long, String?>>> {
         val result = request.code.associateWith { courseService.getFieldByCourseCode(it, request.schoolId) }
         return ResponseEntity.ok().body(Response(result = result))
+    }
+
+    @Operation(
+        summary = "다전공/부전공 트랙 조회 (트랙별)",
+        description = """
+            특정 학과의 다전공/부전공 과목을 트랙 유형별로 조회합니다.
+
+            **파라미터 설명:**
+            - **schoolId**: 학번 (필수)
+            - **department**: 학과명 (필수)
+            - **grade**: 학년 (1~5, 필수)
+            - **trackType**: 트랙 유형 (필수)
+                - `DOUBLE_MAJOR` 또는 `복수전공` - 복수전공 과목
+                - `MINOR` 또는 `부전공` - 부전공 과목
+                - `CROSS_MAJOR` 또는 `타전공인정` - 타전공인정 과목
+            - **completionType**: 이수구분 (선택, 없으면 전체 조회)
+                - `REQUIRED` 또는 `필수` - 필수 과목만
+                - `ELECTIVE` 또는 `선택` - 선택 과목만
+                - `RECOGNIZED` 또는 `타전공인정` - 타전공인정 과목만
+        """
+    )
+    @GetMapping("/by-track")
+    fun getCoursesByTrack(@Valid @ModelAttribute request: GetCoursesByTrackRequest): ResponseEntity<Response<List<CourseResponse>>> {
+        val response = courseService.findAllByTrack(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
     }
 }
