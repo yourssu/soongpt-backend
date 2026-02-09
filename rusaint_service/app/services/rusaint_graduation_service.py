@@ -16,6 +16,12 @@ from app.core.security import generate_pseudonym
 from app.services import session as session_module
 from app.services import fetchers
 from app.services.graduation_summary_builder import build_graduation_summary
+from app.services.exceptions import (
+    SSOTokenError,
+    RusaintConnectionError,
+    RusaintTimeoutError,
+    RusaintInternalError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -78,25 +84,24 @@ class RusaintGraduationService:
                 "graduationSummary": graduation_summary,
             }
 
+        except (SSOTokenError, RusaintConnectionError, RusaintTimeoutError, RusaintInternalError):
+            raise
         except rusaint.RusaintError as e:
             logger.error(
                 f"Rusaint 오류 (student_id={student_id[:4]}****): {type(e).__name__}\n"
                 f"에러 메시지: {str(e)}",
                 exc_info=True,
             )
-            raise ValueError("유세인트 로그인에 실패했습니다. SSO 토큰을 확인해주세요.")
-        except ValueError as e:
-            logger.error(f"SSO 토큰 오류 (student_id={student_id[:4]}****): {str(e)}")
-            raise
+            raise RusaintInternalError(f"유세인트 데이터 조회 중 오류: {type(e).__name__} - {str(e)}")
         except asyncio.TimeoutError:
             logger.error(f"유세인트 연결 시간 초과 (student_id={student_id[:4]}****)")
-            raise ValueError("유세인트 연결 시간이 초과되었습니다.")
+            raise RusaintTimeoutError("유세인트 서버 응답 시간이 초과되었습니다.")
         except Exception as e:
             logger.error(
                 f"유세인트 Graduation 데이터 조회 중 오류 발생 (student_id={student_id[:4]}****): {type(e).__name__}\n"
                 f"에러 메시지: {str(e)}",
                 exc_info=True,
             )
-            raise
+            raise RusaintInternalError(f"예기치 않은 오류: {type(e).__name__} - {str(e)}")
         finally:
             await session_module.cleanup_sessions(sessions)
