@@ -13,6 +13,12 @@ import rusaint
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from app.core.config import settings
+from app.services.exceptions import (
+    SSOTokenError,
+    RusaintConnectionError,
+    RusaintTimeoutError,
+    RusaintInternalError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -59,8 +65,10 @@ async def create_session(student_id: str, s_token: str) -> rusaint.USaintSession
         USaintSession: 생성된 세션
 
     Raises:
-        ValueError: SSO 토큰이 유효하지 않을 때
-        asyncio.TimeoutError: 연결 시간 초과 (3회 재시도 후)
+        SSOTokenError: SSO 토큰이 유효하지 않거나 만료된 경우
+        RusaintTimeoutError: 연결 시간 초과 (3회 재시도 후)
+        RusaintConnectionError: 네트워크/DNS/SSL 등 연결 문제
+        RusaintInternalError: rusaint 라이브러리 내부 오류
     """
     try:
         builder = rusaint.USaintSessionBuilder()
@@ -74,13 +82,28 @@ async def create_session(student_id: str, s_token: str) -> rusaint.USaintSession
             f"세션 생성 시간 초과 (student_id={student_id[:4]}****) - 재시도 중..."
         )
         raise
-    except Exception as e:
+    except rusaint.RusaintError as e:
+        error_msg = str(e)
         logger.error(
-            f"세션 생성 실패 (student_id={student_id[:4]}****): {type(e).__name__}\n"
+            f"SSO 토큰 인증 실패 (student_id={student_id[:4]}****): {type(e).__name__}\n"
+            f"에러 메시지: {error_msg}",
+            exc_info=True,
+        )
+        raise SSOTokenError(f"SSO 토큰이 유효하지 않거나 만료되었습니다: {error_msg}")
+    except (ConnectionError, OSError) as e:
+        logger.error(
+            f"숭실대 서버 연결 실패 (student_id={student_id[:4]}****): {type(e).__name__}\n"
             f"에러 메시지: {str(e)}",
             exc_info=True,
         )
-        raise ValueError("SSO 토큰이 유효하지 않거나 만료되었습니다.")
+        raise RusaintConnectionError(f"숭실대 서버 연결 실패: {type(e).__name__} - {str(e)}")
+    except Exception as e:
+        logger.error(
+            f"세션 생성 중 예기치 않은 오류 (student_id={student_id[:4]}****): {type(e).__name__}\n"
+            f"에러 메시지: {str(e)}",
+            exc_info=True,
+        )
+        raise RusaintInternalError(f"rusaint 내부 오류: {type(e).__name__} - {str(e)}")
 
 
 async def get_graduation_app(

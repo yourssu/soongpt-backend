@@ -5,9 +5,16 @@ WAS(Kotlin) <-> rusaint-service(Python) 간 내부 통신용 엔드포인트.
 WAS는 two-track으로 /snapshot/academic → 0.5초 후 /snapshot/graduation 호출 후 병합합니다.
 """
 
+import asyncio
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.schemas.usaint_schemas import UsaintSnapshotRequest
 from app.services.rusaint_service import RusaintService
+from app.services.exceptions import (
+    SSOTokenError,
+    RusaintConnectionError,
+    RusaintTimeoutError,
+    RusaintInternalError,
+)
 from app.core.security import verify_internal_jwt
 import logging
 
@@ -54,22 +61,39 @@ async def validate_token(
         )
         return {"valid": True}
 
-    except ValueError as e:
-        logger.error(f"SSO 토큰 검증 실패: student_id={request.studentId[:4]}****, error_type={type(e).__name__}")
+    except SSOTokenError as e:
+        logger.warning(f"SSO 토큰 만료/무효: student_id={request.studentId[:4]}****, detail={str(e)}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="SSO token is invalid or expired",
+            detail=f"SSO token is invalid or expired: {str(e)}",
+        )
+    except RusaintConnectionError as e:
+        logger.error(f"숭실대 서버 연결 실패: student_id={request.studentId[:4]}****, detail={str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Failed to connect to university server: {str(e)}",
+        )
+    except (RusaintTimeoutError, asyncio.TimeoutError) as e:
+        logger.error(f"숭실대 서버 응답 시간 초과: student_id={request.studentId[:4]}****, detail={str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail=f"University server response timeout: {str(e)}",
+        )
+    except RusaintInternalError as e:
+        logger.error(f"rusaint 내부 오류: student_id={request.studentId[:4]}****, detail={str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal rusaint error: {str(e)}",
         )
     except Exception as e:
         logger.error(
-            f"SSO 토큰 검증 중 오류 발생: student_id={request.studentId[:4]}****, error_type={type(e).__name__}",
+            f"SSO 토큰 검증 중 예기치 않은 오류: student_id={request.studentId[:4]}****, error_type={type(e).__name__}, detail={str(e)}",
             exc_info=True,
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to validate SSO token",
+            detail=f"Unexpected error during token validation: {type(e).__name__}",
         )
-
 
 
 
@@ -102,20 +126,38 @@ async def fetch_usaint_snapshot_academic(
         )
         return snapshot
 
-    except ValueError as e:
-        logger.error(f"SSO 토큰 오류: student_id={request.studentId[:4]}****, error_type={type(e).__name__}")
+    except SSOTokenError as e:
+        logger.warning(f"SSO 토큰 만료/무효 (academic): student_id={request.studentId[:4]}****, detail={str(e)}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="SSO token is invalid or expired",
+            detail=f"SSO token is invalid or expired: {str(e)}",
+        )
+    except RusaintConnectionError as e:
+        logger.error(f"숭실대 서버 연결 실패 (academic): student_id={request.studentId[:4]}****, detail={str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Failed to connect to university server: {str(e)}",
+        )
+    except (RusaintTimeoutError, asyncio.TimeoutError) as e:
+        logger.error(f"숭실대 서버 응답 시간 초과 (academic): student_id={request.studentId[:4]}****, detail={str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail=f"University server response timeout: {str(e)}",
+        )
+    except RusaintInternalError as e:
+        logger.error(f"rusaint 내부 오류 (academic): student_id={request.studentId[:4]}****, detail={str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal rusaint error: {str(e)}",
         )
     except Exception as e:
         logger.error(
-            f"유세인트 Academic 데이터 조회 중 오류 발생: student_id={request.studentId[:4]}****, error_type={type(e).__name__}",
+            f"유세인트 Academic 데이터 조회 중 예기치 않은 오류: student_id={request.studentId[:4]}****, error_type={type(e).__name__}, detail={str(e)}",
             exc_info=True,
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to fetch usaint academic data",
+            detail=f"Failed to fetch usaint academic data: {type(e).__name__}",
         )
 
 
@@ -146,18 +188,36 @@ async def fetch_usaint_graduation_info(
         )
         return graduation_info
 
-    except ValueError as e:
-        logger.error(f"SSO 토큰 오류: student_id={request.studentId[:4]}****, error_type={type(e).__name__}")
+    except SSOTokenError as e:
+        logger.warning(f"SSO 토큰 만료/무효 (graduation): student_id={request.studentId[:4]}****, detail={str(e)}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="SSO token is invalid or expired",
+            detail=f"SSO token is invalid or expired: {str(e)}",
+        )
+    except RusaintConnectionError as e:
+        logger.error(f"숭실대 서버 연결 실패 (graduation): student_id={request.studentId[:4]}****, detail={str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Failed to connect to university server: {str(e)}",
+        )
+    except (RusaintTimeoutError, asyncio.TimeoutError) as e:
+        logger.error(f"숭실대 서버 응답 시간 초과 (graduation): student_id={request.studentId[:4]}****, detail={str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail=f"University server response timeout: {str(e)}",
+        )
+    except RusaintInternalError as e:
+        logger.error(f"rusaint 내부 오류 (graduation): student_id={request.studentId[:4]}****, detail={str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal rusaint error: {str(e)}",
         )
     except Exception as e:
         logger.error(
-            f"유세인트 Graduation 데이터 조회 중 오류 발생: student_id={request.studentId[:4]}****, error_type={type(e).__name__}",
+            f"유세인트 Graduation 데이터 조회 중 예기치 않은 오류: student_id={request.studentId[:4]}****, error_type={type(e).__name__}, detail={str(e)}",
             exc_info=True,
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to fetch usaint graduation data",
+            detail=f"Failed to fetch usaint graduation data: {type(e).__name__}",
         )
