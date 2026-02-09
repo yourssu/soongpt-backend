@@ -130,7 +130,9 @@ private fun PrimaryTimetableCommand.getAllCourseCodes(): List<SelectedCourseComm
     return this.retakeCourses +
             this.majorRequiredCourses +
             this.majorElectiveCourses +
-            this.otherMajorCourses +
+            this.doubleMajorCourses +
+            this.minorCourses +
+            this.teachingCourses +
             this.generalRequiredCourses +
             this.addedCourses
 }
@@ -140,7 +142,9 @@ private fun PrimaryTimetableCommand.copyWithoutCourse(courseCode: Long): Primary
         retakeCourses = this.retakeCourses.filterNot { it.courseCode == courseCode },
         majorRequiredCourses = this.majorRequiredCourses.filterNot { it.courseCode == courseCode },
         majorElectiveCourses = this.majorElectiveCourses.filterNot { it.courseCode == courseCode },
-        otherMajorCourses = this.otherMajorCourses.filterNot { it.courseCode == courseCode },
+        doubleMajorCourses = this.doubleMajorCourses.filterNot { it.courseCode == courseCode },
+        minorCourses = this.minorCourses.filterNot { it.courseCode == courseCode },
+        teachingCourses = this.teachingCourses.filterNot { it.courseCode == courseCode },
         generalRequiredCourses = this.generalRequiredCourses.filterNot { it.courseCode == courseCode },
         addedCourses = this.addedCourses.filterNot { it.courseCode == courseCode }
     )
