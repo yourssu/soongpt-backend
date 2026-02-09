@@ -12,6 +12,7 @@ data class SyncSession(
     val createdAt: Instant = Instant.now(),
     val updatedAt: Instant = Instant.now(),
     val usaintData: RusaintUsaintDataResponse? = null,
+    val failReason: String? = null,
 )
 
 enum class SyncStatus {
