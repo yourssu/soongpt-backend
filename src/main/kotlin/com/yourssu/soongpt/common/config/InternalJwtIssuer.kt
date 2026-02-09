@@ -36,7 +36,7 @@ class InternalJwtIssuer(
             .issuer(ISSUER)
             .issuedAt(Date(now))
             .expiration(Date(exp))
-            .signWith(key)
+            .signWith(key, Jwts.SIG.HS256)
             .compact()
     }
 
