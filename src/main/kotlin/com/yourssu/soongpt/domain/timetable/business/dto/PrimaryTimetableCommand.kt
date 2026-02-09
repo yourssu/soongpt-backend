@@ -6,7 +6,9 @@ data class PrimaryTimetableCommand(
     val retakeCourses: List<SelectedCourseCommand> = emptyList(),
     val majorRequiredCourses: List<SelectedCourseCommand> = emptyList(),
     val majorElectiveCourses: List<SelectedCourseCommand> = emptyList(),
-    val otherMajorCourses: List<SelectedCourseCommand> = emptyList(),
+    val doubleMajorCourses: List<SelectedCourseCommand> = emptyList(),
+    val minorCourses: List<SelectedCourseCommand> = emptyList(),
+    val teachingCourses: List<SelectedCourseCommand> = emptyList(),
     val generalRequiredCourses: List<SelectedCourseCommand> = emptyList(),
     val addedCourses: List<SelectedCourseCommand> = emptyList(),
 )
