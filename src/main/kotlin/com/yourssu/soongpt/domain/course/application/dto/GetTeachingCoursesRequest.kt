@@ -16,11 +16,10 @@ data class GetTeachingCoursesRequest(
     @field:Range(min = 1, max = 5, message = "학년은 1부터 5까지 가능합니다.")
     val grade: Int,
 
-    @field:NotBlank
-    val teachingArea: String,
+    val teachingArea: String? = null,
 ) {
     fun toQuery(): FilterTeachingCoursesQuery {
-        val teachingAreaEnum = TeachingArea.from(teachingArea)
+        val teachingAreaEnum = teachingArea?.let { TeachingArea.from(it) }
 
         return FilterTeachingCoursesQuery(
             schoolId = schoolId,
