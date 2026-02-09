@@ -16,7 +16,7 @@ import sys
 # Configuration
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CSV_PATH = os.path.join(BASE_DIR, "general_elective", "merged_courses.csv")
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+OUTPUT_DIR = os.path.join(BASE_DIR, "../target_parser/output")
 OUTPUT_SQL_PATH = os.path.join(OUTPUT_DIR, "26-1-course-field-inserts.sql")
 
 

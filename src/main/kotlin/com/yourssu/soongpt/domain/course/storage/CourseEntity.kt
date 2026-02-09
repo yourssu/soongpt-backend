@@ -27,6 +27,9 @@ class CourseEntity(
     @Column(nullable = true)
     val subCategory: String? = null,
 
+    @Column(nullable = true, columnDefinition = "TEXT")
+    val multiMajorCategory: String? = null,
+
     @Column(nullable = true)
     val field: String? = null,
 
@@ -70,6 +73,7 @@ class CourseEntity(
                 id = course.id,
                 category = course.category,
                 subCategory = course.subCategory,
+                multiMajorCategory = course.multiMajorCategory,
                 field = course.field,
                 code = course.code,
                 name = course.name,
@@ -92,6 +96,7 @@ class CourseEntity(
             id = id,
             category = category,
             subCategory = subCategory,
+            multiMajorCategory = multiMajorCategory,
             field = field,
             code = code,
             name = name,

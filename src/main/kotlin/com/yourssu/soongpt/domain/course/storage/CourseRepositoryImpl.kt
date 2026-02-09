@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import com.yourssu.soongpt.domain.course.implement.*
 import com.yourssu.soongpt.domain.course.implement.dto.GroupedCoursesByCategoryDto
 import com.yourssu.soongpt.domain.course.storage.QCourseEntity.courseEntity
+import com.yourssu.soongpt.domain.course.storage.QCourseSecondaryMajorClassificationEntity.courseSecondaryMajorClassificationEntity
 import com.yourssu.soongpt.domain.target.implement.ScopeType
 import com.yourssu.soongpt.domain.target.implement.StudentType
 import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
@@ -150,6 +151,74 @@ class CourseRepositoryImpl(
             .toSet()
 
         // Allow - Deny 적용 및 CourseWithTarget 변환
+        return allowResults
+            .filter { it.get(courseEntity)!!.code !in denyCodes }
+            .map { tuple ->
+                CourseWithTarget(
+                    course = tuple.get(courseEntity)!!.toDomain(),
+                    targetGrades = CourseWithTarget.extractTargetGrades(
+                        grade1 = tuple.get(targetEntity.grade1) ?: false,
+                        grade2 = tuple.get(targetEntity.grade2) ?: false,
+                        grade3 = tuple.get(targetEntity.grade3) ?: false,
+                        grade4 = tuple.get(targetEntity.grade4) ?: false,
+                        grade5 = tuple.get(targetEntity.grade5) ?: false,
+                    ),
+                )
+            }
+    }
+
+    override fun findCoursesWithTargetBySecondaryMajor(
+        trackType: SecondaryMajorTrackType,
+        completionType: SecondaryMajorCompletionType,
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int,
+    ): List<CourseWithTarget> {
+        val scopeCondition = buildScopeCondition(departmentId, collegeId)
+        val gradeCondition = buildGradeRangeCondition(maxGrade)
+
+        val allowResults = jpaQueryFactory
+            .select(
+                Projections.tuple(
+                    courseEntity,
+                    targetEntity.grade1,
+                    targetEntity.grade2,
+                    targetEntity.grade3,
+                    targetEntity.grade4,
+                    targetEntity.grade5,
+                )
+            )
+            .from(courseEntity)
+            .innerJoin(courseSecondaryMajorClassificationEntity)
+            .on(courseEntity.code.eq(courseSecondaryMajorClassificationEntity.courseCode))
+            .innerJoin(targetEntity).on(courseEntity.code.eq(targetEntity.courseCode))
+            .where(
+                courseSecondaryMajorClassificationEntity.trackType.eq(trackType),
+                courseSecondaryMajorClassificationEntity.completionType.eq(completionType),
+                courseSecondaryMajorClassificationEntity.departmentId.eq(departmentId),
+                targetEntity.studentType.eq(StudentType.GENERAL),
+                targetEntity.isDenied.isFalse,
+                gradeCondition,
+                scopeCondition,
+            )
+            .fetch()
+
+        if (allowResults.isEmpty()) {
+            return emptyList()
+        }
+
+        val denyCodes = jpaQueryFactory
+            .select(targetEntity.courseCode)
+            .from(targetEntity)
+            .where(
+                targetEntity.studentType.eq(StudentType.GENERAL),
+                targetEntity.isDenied.isTrue,
+                gradeCondition,
+                scopeCondition,
+            )
+            .fetch()
+            .toSet()
+
         return allowResults
             .filter { it.get(courseEntity)!!.code !in denyCodes }
             .map { tuple ->

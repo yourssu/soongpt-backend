@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.implement.Category
 data class UpdateCourseCommand(
     val category: Category,
     val subCategory: String?,
+    val multiMajorCategory: String? = null,
     val field: String?,
     val name: String,
     val professor: String?,
