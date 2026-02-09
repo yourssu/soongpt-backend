@@ -3,6 +3,7 @@ package com.yourssu.soongpt.domain.course.business
 import com.yourssu.soongpt.domain.course.business.dto.*
 import com.yourssu.soongpt.domain.course.business.query.FilterCoursesByTrackQuery
 import com.yourssu.soongpt.domain.course.business.query.FilterCoursesQuery
+import com.yourssu.soongpt.domain.course.business.query.FilterTeachingCoursesQuery
 import com.yourssu.soongpt.domain.course.business.query.SearchCoursesQuery
 
 interface CourseService {

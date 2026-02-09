@@ -61,6 +61,13 @@ export interface GetCoursesByTrackParams {
   completionType?: SecondaryMajorCompletionType;
 }
 
+export interface GetTeachingCoursesParams {
+  schoolId: number;
+  department: string;
+  grade: number;
+  teachingArea: string;
+}
+
 export const courseApi = {
   getAllCourses: async (params: GetCoursesParams = {}): Promise<CoursesResponse> => {
     const response = await api.get<ApiResponse<CoursesResponse>>('/admin/courses', {
@@ -88,6 +95,13 @@ export const courseApi = {
 
   getCoursesByTrack: async (params: GetCoursesByTrackParams): Promise<Course[]> => {
     const response = await api.get<ApiResponse<Course[]>>('/courses/by-track', {
+      params,
+    });
+    return response.data.result;
+  },
+
+  getTeachingCourses: async (params: GetTeachingCoursesParams): Promise<Course[]> => {
+    const response = await api.get<ApiResponse<Course[]>>('/courses/teaching', {
       params,
     });
     return response.data.result;
