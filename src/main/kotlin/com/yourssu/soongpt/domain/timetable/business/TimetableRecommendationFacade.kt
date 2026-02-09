@@ -82,35 +82,29 @@ class TimetableRecommendationFacade(
         combinations: List<TimetableCandidate>,
         userContext: UserContext,
         command: PrimaryTimetableCommand
-    ): FullTimetableRecommendationResponse {
-        val rankedCombinations = timetableRanker.rank(combinations)
-        val primaryTimetableCandidate = rankedCombinations.first()
-        val remainingCandidates = rankedCombinations.drop(1)
+    ): List<GroupedTimetableResponse> {
+        // 로직 구현은 우선순위가 아니므로, 타입에 맞게 간단한 로직만 구성합니다.
+        // 1. 모든 조합을 랭킹 매기고, 추천 DTO로 변환
+        val allRecommendations = timetableRanker.rank(combinations).map { candidate ->
+            val timetableResponse = timetablePersister.persist(candidate)
+            // TODO: 추후 Suggestion 로직을 통해 구체적인 설명으로 변경 필요
+            val description = "'${timetableResponse.tag}' 태그가 적용된 시간표입니다."
+            RecommendationDto(
+                description = description,
+                timetable = timetableResponse
+            )
+        }
 
-        val divisionChangeSuggestions: List<SuggestionCandidate> =
-            divisionChangeSuggester.suggest(primaryTimetableCandidate, remainingCandidates)
+        // 2. 태그를 기준으로 그룹화
+        val groupedByTag = allRecommendations.groupBy { it.timetable.tag }
 
-        val untakenMajorCourses =
-            untakenCourseFetcher.fetchUntakenMajorCourses(userContext, primaryTimetableCandidate)
-        val courseSwapSuggestions: List<SuggestionCandidate> =
-            courseSwapSuggester.suggest(primaryTimetableCandidate, command, untakenMajorCourses)
-
-        val allSuggestions = divisionChangeSuggestions + courseSwapSuggestions
-        val rankedSuggestions = timetableRanker.rankSuggestions(allSuggestions).take(6)
-
-        val primaryResponse = timetablePersister.persist(primaryTimetableCandidate)
-        val recommendationDtos =
-            rankedSuggestions.map { suggestion ->
-                RecommendationDto(
-                    description = suggestion.description,
-                    timetable = timetablePersister.persist(suggestion.resultingTimetableCandidate)
-                )
-            }
-
-        return FullTimetableRecommendationResponse(
-            primaryTimetable = primaryResponse,
-            alternativeSuggestions = recommendationDtos
-        )
+        // 3. 최종 응답 형태로 변환
+        return groupedByTag.map { (tag, recommendations) ->
+            GroupedTimetableResponse(
+                tag = tag,
+                recommendations = recommendations
+            )
+        }
     }
 
     private fun findSingleConflictCourses(command: PrimaryTimetableCommand, baseTimetable: TimetableCandidate?): List<DeletableCourseDto> {
