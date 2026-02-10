@@ -100,15 +100,16 @@ Content-Type: application/json
     "teaching": false
   },
   "basicInfo": {
-    "year": 2024,
+    "year": 2025,
     "grade": 1,
     "semester": 1,
     "department": "컴퓨터학부"
-  }
+  },
+  "warnings": ["NO_SEMESTER_INFO", "NO_COURSE_HISTORY"]
 }
 ```
 
-> **Note**: `basicInfo`의 필수 필드(year, grade, semester, department)가 조회되지 않으면 에러가 발생합니다.
+> **Note**: `basicInfo`의 필수 필드(year, grade, department)가 조회되지 않으면 에러가 발생합니다. `semester`(학기)는 조회 실패 시 기본값(1)을 사용하고 `NO_SEMESTER_INFO` warning을 포함합니다.
 
 #### 응답 스키마
 
@@ -150,6 +151,17 @@ Content-Type: application/json
 | department | string | 주전공 학과명                                                        |
 
 > **Note**: `grade`와 `semester`는 현재 +1학기 보정이 적용됩니다. 예: 유세인트 3학년 6학기 → 응답 4학년 7학기
+
+##### warnings (빈 데이터 경고)
+
+| 타입     | 설명                                                                     |
+| -------- | ------------------------------------------------------------------------ |
+| string[] | 빈 데이터 경고 코드 목록. 경고가 없으면 필드 자체가 생략됨              |
+
+| 코드                | 의미                                    |
+| ------------------- | --------------------------------------- |
+| `NO_COURSE_HISTORY` | 수강 이력 없음 (빈 학기 목록)           |
+| `NO_SEMESTER_INFO`  | 학기 정보 없어 기본값(1학기) 사용       |
 
 #### 에러 응답
 

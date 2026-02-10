@@ -36,7 +36,8 @@ Cookie: soongpt_auth={JWT}
   "result": {
     "status": "PROCESSING | COMPLETED | REQUIRES_REAUTH | FAILED",
     "reason": "string (에러 시에만)",
-    "studentInfo": { ... } // COMPLETED 시에만
+    "studentInfo": { ... },  // COMPLETED 시에만
+    "warnings": ["..."]      // COMPLETED 시에만, 빈 데이터 경고 (nullable)
   }
 }
 ```
@@ -60,7 +61,7 @@ Cookie: soongpt_auth={JWT}
 
 ### 200 OK — COMPLETED (동기화 완료)
 
-프론트: 폴링 중단, `studentInfo`를 화면에 표시한다.
+프론트: 폴링 중단, `studentInfo`를 화면에 표시한다. `warnings`가 있으면 일부 데이터가 비어있음을 의미한다.
 
 ```json
 {
@@ -76,7 +77,30 @@ Cookie: soongpt_auth={JWT}
       "doubleMajorDepartment": null,
       "minorDepartment": "경영학부",
       "teaching": false
-    }
+    },
+    "warnings": null
+  }
+}
+```
+
+#### 새내기(수강 이력 없음) 예시
+
+```json
+{
+  "timestamp": "2025-05-18 15:14:00",
+  "result": {
+    "status": "COMPLETED",
+    "reason": null,
+    "studentInfo": {
+      "grade": 1,
+      "semester": 1,
+      "year": 2025,
+      "department": "컴퓨터학부",
+      "doubleMajorDepartment": null,
+      "minorDepartment": null,
+      "teaching": false
+    },
+    "warnings": ["NO_SEMESTER_INFO", "NO_COURSE_HISTORY", "NO_GRADUATION_DATA"]
   }
 }
 ```
@@ -92,6 +116,16 @@ Cookie: soongpt_auth={JWT}
 | `doubleMajorDepartment`  | string  | Yes      | 복수전공 학과        |
 | `minorDepartment`        | string  | Yes      | 부전공 학과          |
 | `teaching`               | boolean | No       | 교직 이수 여부       |
+
+#### warnings 필드
+
+| Code                 | 의미                                    |
+|----------------------|-----------------------------------------|
+| `NO_COURSE_HISTORY`  | 수강 이력 없음 (빈 학기 목록)           |
+| `NO_SEMESTER_INFO`   | 학기 정보 없어 기본값(1학기) 사용       |
+| `NO_GRADUATION_DATA` | 졸업사정표 조회 불가                    |
+
+`warnings`는 COMPLETED 시에만 포함되며, 경고가 없으면 `null`이다. 동기화 자체는 정상 완료이므로 기존 COMPLETED 플로우 그대로 진행하면 된다.
 
 ### 200 OK — REQUIRES_REAUTH (재인증 필요)
 
