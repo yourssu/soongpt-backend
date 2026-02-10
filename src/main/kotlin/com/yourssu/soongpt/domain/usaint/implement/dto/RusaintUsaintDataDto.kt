@@ -9,4 +9,5 @@ data class RusaintUsaintDataResponse(
     val basicInfo: RusaintBasicInfoDto,
     val graduationRequirements: RusaintGraduationRequirementsDto? = null,
     val graduationSummary: RusaintGraduationSummaryDto? = null,
+    val warnings: List<String> = emptyList(),
 )

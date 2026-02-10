@@ -7,6 +7,7 @@ data class RusaintAcademicResponseDto(
     val lowGradeSubjectCodes: List<String>,
     val flags: RusaintStudentFlagsDto,
     val basicInfo: RusaintBasicInfoDto,
+    val warnings: List<String> = emptyList(),
 )
 
 data class RusaintTakenCourseDto(
