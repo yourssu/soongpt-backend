@@ -6,7 +6,7 @@ Update TEST_CHECKLIST.md with 2nd round review results
 import re
 from pathlib import Path
 
-CHECKLIST_FILE = Path(__file__).parent / "TEST_CHECKLIST.md"
+CHECKLIST_FILE = Path(__file__).parent / "qa" / "checklists" / "TEST_CHECKLIST.md"
 
 # 2nd Round Test results
 RESULTS = [

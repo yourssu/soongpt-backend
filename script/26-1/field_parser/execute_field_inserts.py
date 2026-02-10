@@ -44,7 +44,7 @@ DB_CONFIG = {
 }
 
 # SQL file to execute
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+OUTPUT_DIR = os.path.join(BASE_DIR, "output", "sql")
 SQL_FILE = "26-1-course-field-inserts.sql"
 
 

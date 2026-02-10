@@ -17,7 +17,7 @@ import sys
 # Configuration
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CSV_PATH = os.path.abspath(os.path.join(BASE_DIR, "../course/ssu26-1.csv"))
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+OUTPUT_DIR = os.path.join(BASE_DIR, "output", "sql")
 OUTPUT_SQL_PATH = os.path.join(OUTPUT_DIR, "26-1-course-inserts.sql")
 
 # Category mapping (based on Category.kt)
