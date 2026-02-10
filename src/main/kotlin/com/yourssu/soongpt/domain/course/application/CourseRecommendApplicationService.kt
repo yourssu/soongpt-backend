@@ -124,7 +124,14 @@ class CourseRecommendApplicationService(
                 noDataResponse(category).copy(progress = progress)
             }
 
-            RecommendCategory.MINOR, RecommendCategory.TEACHING -> {
+            RecommendCategory.MINOR -> {
+                val summaryItem = ctx.graduationSummary?.minor
+                    ?: return noDataResponse(category)
+                val progress = Progress.from(summaryItem)
+                noDataResponse(category).copy(progress = progress)
+            }
+
+            RecommendCategory.TEACHING -> {
                 throw IllegalArgumentException("${category.displayName} 추천은 준비 중입니다.")
             }
         }
