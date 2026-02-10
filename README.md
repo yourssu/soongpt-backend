@@ -24,6 +24,7 @@
 
 ## Github Actions
 - Env var sync helper: `ops/github/sync-env-vars.sh`
+- AWS OIDC setup: `ops/github/AWS_OIDC_SETUP.md`
 - Manual deploy workflow: `.github/workflows/deploy-only.yml` (dev/dev-backup/prod)
 [![Dev - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml)  
 

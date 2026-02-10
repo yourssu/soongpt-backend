@@ -98,6 +98,7 @@ curl -I https://api.backup.soongpt.yourssu.com/actuator/health
 
 - `dev.yml`은 기존대로 `dev` 환경 자동 배포용
 - `deploy-only.yml`은 수동 배포 전용 (`workflow_dispatch`)이며 `dev-backup/dev/prod` 선택 가능
+- AWS 인증은 static key가 아닌 OIDC 사용 (`ops/github/AWS_OIDC_SETUP.md` 참고)
 
 ### Variables (Environment: dev-backup)
 
@@ -112,6 +113,7 @@ REPO=yourssu/soongpt-backend SOURCE_ENV=dev TARGET_ENV=dev-backup HOST_URL_OVERR
 - `PROJECT_NAME=soongpt`
 - `ENVIRONMENT=dev`
 - `ECR_PUBLIC_REGISTRY_ID`
+- `AWS_ROLE_TO_ASSUME` (OIDC IAM Role ARN)
 - `CORS_ALLOWED_ORIGIN`
 - `SLACK_CHANNEL`
 - `SLACK_LOG_CHANNEL`
@@ -124,8 +126,6 @@ REPO=yourssu/soongpt-backend SOURCE_ENV=dev TARGET_ENV=dev-backup HOST_URL_OVERR
 (주의: GitHub 정책상 기존 환경 secret 값을 조회할 수 없어 수동 복사 필요)
 
 - `HOME_PEM`
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
 - `DB_URL`
 - `DB_USERNAME`
 - `DB_PASSWORD`
