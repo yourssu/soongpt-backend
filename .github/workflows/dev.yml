@@ -8,7 +8,7 @@ on:
 jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
-    environment: dev
+    environment: dev-backup
 
     defaults:
       run:

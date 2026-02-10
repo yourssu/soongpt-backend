@@ -20,8 +20,10 @@
 ## Nginx Template
 - `ops/nginx/soongpt.current-host.conf.template`
 - `ops/nginx/install-current-host.sh`
+- `ops/nginx/enable-https-letsencrypt.sh`
 
 ## Github Actions
+- Env var sync helper: `ops/github/sync-env-vars.sh`
 [![Dev - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml)  
 
 [![Prod - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/prod.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/prod.yml)    

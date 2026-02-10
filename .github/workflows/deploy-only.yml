@@ -6,9 +6,10 @@ on:
       environment:
         description: 'Environment to deploy to'
         required: true
-        default: 'dev'
+        default: 'dev-backup'
         type: choice
         options:
+          - dev-backup
           - dev
           - prod
       image_tag:
