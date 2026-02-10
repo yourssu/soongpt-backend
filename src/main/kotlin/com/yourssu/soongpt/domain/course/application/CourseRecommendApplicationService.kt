@@ -114,27 +114,48 @@ class CourseRecommendApplicationService(
                 val summaryItem = ctx.graduationSummary?.doubleMajorRequired
                     ?: return noDataResponse(category)
                 val progress = Progress.from(summaryItem)
-                noDataResponse(category).copy(progress = progress)
+                progressOnlyResponse(category, progress)
             }
 
             RecommendCategory.DOUBLE_MAJOR_ELECTIVE -> {
                 val summaryItem = ctx.graduationSummary?.doubleMajorElective
                     ?: return noDataResponse(category)
                 val progress = Progress.from(summaryItem)
-                noDataResponse(category).copy(progress = progress)
+                progressOnlyResponse(category, progress)
             }
 
             RecommendCategory.MINOR -> {
                 val summaryItem = ctx.graduationSummary?.minor
                     ?: return noDataResponse(category)
                 val progress = Progress.from(summaryItem)
-                noDataResponse(category).copy(progress = progress)
+                progressOnlyResponse(category, progress)
             }
 
             RecommendCategory.TEACHING -> {
                 throw IllegalArgumentException("${category.displayName} 추천은 준비 중입니다.")
             }
         }
+    }
+
+    private fun progressOnlyResponse(
+        category: RecommendCategory,
+        progress: Progress,
+    ): CategoryRecommendResponse {
+        val message = if (progress.satisfied) {
+            "${category.displayName} 학점을 이미 모두 이수하셨습니다."
+        } else {
+            "${category.displayName} 과목 추천 기능은 준비 중입니다."
+        }
+        return CategoryRecommendResponse(
+            category = category.name,
+            progress = progress,
+            message = message,
+            userGrade = null,
+            courses = emptyList(),
+            gradeGroups = null,
+            fieldGroups = null,
+            lateFields = null,
+        )
     }
 
     private fun noDataResponse(category: RecommendCategory) = CategoryRecommendResponse(

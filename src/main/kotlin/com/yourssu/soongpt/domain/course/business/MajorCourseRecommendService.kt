@@ -213,7 +213,7 @@ class MajorCourseRecommendService(
             return emptyList()
         }
 
-        val takenBaseCodes = takenSubjectCodes.map { it.toLong() }.toSet()
+        val takenBaseCodes = takenSubjectCodes.mapNotNull { it.toLongOrNull() }.toSet()
         return coursesWithTarget.filter { it.course.baseCode() !in takenBaseCodes }
     }
 

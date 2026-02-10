@@ -205,14 +205,31 @@ def build_graduation_summary(
         combined_result = _safe_bool(major_combined.result)
 
         if major_required is not None:
-            # 전공필수 단독 있음 → 전공선택 = 복합 - 전공필수
-            major_elective = CreditSummaryItem(
-                required=max(0, combined_req - major_required.required),
-                completed=max(0, combined_calc - major_required.completed),
-                satisfied=combined_result,
-            )
+            elective_req = max(0, combined_req - major_required.required)
+            elective_calc = max(0, combined_calc - major_required.completed)
+            if combined_result:
+                major_required = CreditSummaryItem(
+                    required=major_required.required,
+                    completed=major_required.completed,
+                    satisfied=True,
+                )
+                major_elective = CreditSummaryItem(
+                    required=elective_req,
+                    completed=elective_calc,
+                    satisfied=True,
+                )
+            else:
+                major_required = CreditSummaryItem(
+                    required=major_required.required,
+                    completed=major_required.completed,
+                    satisfied=major_required.completed >= major_required.required,
+                )
+                major_elective = CreditSummaryItem(
+                    required=elective_req,
+                    completed=elective_calc,
+                    satisfied=elective_calc >= elective_req,
+                )
         else:
-            # 전공필수 단독 없음 → 복합 전체를 전공선택으로 처리
             major_elective = CreditSummaryItem(
                 required=combined_req,
                 completed=combined_calc,
@@ -227,14 +244,31 @@ def build_graduation_summary(
         combined_result = _safe_bool(double_major_combined.result)
 
         if double_major_required is not None:
-            # 복필 단독 있음 → 복선 = 복수전공 - 복필
-            double_major_elective = CreditSummaryItem(
-                required=max(0, combined_req - double_major_required.required),
-                completed=max(0, combined_calc - double_major_required.completed),
-                satisfied=combined_result,
-            )
+            elective_req = max(0, combined_req - double_major_required.required)
+            elective_calc = max(0, combined_calc - double_major_required.completed)
+            if combined_result:
+                double_major_required = CreditSummaryItem(
+                    required=double_major_required.required,
+                    completed=double_major_required.completed,
+                    satisfied=True,
+                )
+                double_major_elective = CreditSummaryItem(
+                    required=elective_req,
+                    completed=elective_calc,
+                    satisfied=True,
+                )
+            else:
+                double_major_required = CreditSummaryItem(
+                    required=double_major_required.required,
+                    completed=double_major_required.completed,
+                    satisfied=double_major_required.completed >= double_major_required.required,
+                )
+                double_major_elective = CreditSummaryItem(
+                    required=elective_req,
+                    completed=elective_calc,
+                    satisfied=elective_calc >= elective_req,
+                )
         else:
-            # 복필 단독 없음 → 복수전공 전체를 복선으로 처리
             double_major_elective = CreditSummaryItem(
                 required=combined_req,
                 completed=combined_calc,

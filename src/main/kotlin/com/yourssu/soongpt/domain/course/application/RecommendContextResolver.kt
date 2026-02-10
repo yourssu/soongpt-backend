@@ -42,7 +42,7 @@ class RecommendContextResolver(
             .distinct()
 
         val basicInfo = usaintData.basicInfo
-        val schoolId = (basicInfo.year - basicInfo.grade + 1) % 100
+        val schoolId = basicInfo.year % 100
 
         return RecommendContext(
             departmentName = basicInfo.department,

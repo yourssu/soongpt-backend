@@ -20,7 +20,10 @@ class RetakeCourseRecommendService(
             return MajorCourseRecommendResponse.retakeEmpty("재수강 가능한 C+ 이하 과목이 없습니다.")
         }
 
-        val baseCodes = lowGradeSubjectCodes.map { it.toLong() }
+        val baseCodes = lowGradeSubjectCodes.mapNotNull { it.toLongOrNull() }
+        if (baseCodes.isEmpty()) {
+            return MajorCourseRecommendResponse.retakeEmpty("재수강 가능한 C+ 이하 과목이 없습니다.")
+        }
         val coursesWithTarget = courseRepository.findCoursesWithTargetByBaseCodes(baseCodes)
 
         if (coursesWithTarget.isEmpty()) {
