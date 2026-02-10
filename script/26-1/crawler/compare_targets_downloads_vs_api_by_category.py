@@ -273,19 +273,21 @@ def main() -> int:
         )
     lines.append("\n")
 
-    # Missing details
-    missing_any = [x for x in report_per_file if x.get("missing")]
+    # Missing details (treat as 'mismatch courses' from Downloads perspective)
+    missing_any = [x for x in report_per_file if x.get("missing") or x.get("api_error")]
     if missing_any:
-        lines.append("## Downloads에만 존재(= API by-category로 조회되지 않음)\n")
-        lines.append("- Downloads가 원본이므로, 아래 과목은 **DB의 target/조회 로직 관점에서 해당 학과에서 조회가 안 되는 상태**일 가능성이 큼\n")
-        for x in sorted(missing_any, key=lambda r: (-r.get("api_error") if r.get("api_error") else 0, -r["missing"], r["file"])):
-            if x.get("api_error"):
-                lines.append(f"- `{x['file']}` ({x['department']}): API error {x['api_error']} → 학과 파라미터가 API에서 미지원/미매핑 가능\n")
-                continue
-            lines.append(f"- `{x['file']}` ({x['department']}): missing {x['missing']}\n")
-            for code, name, ecc_t in (x.get("missing_details") or [])[:20]:
-                lines.append(f"  - {code} {name} / `{ecc_t}`\n")
+        lines.append("## 불일치 과목(Downloads 원본 기준)\n")
+        lines.append("- Downloads(원본)에 존재하지만 API `/by-category` 조회 결과에서 **누락**되는 과목(또는 학과 자체 404)을 나열합니다.\n")
         lines.append("\n")
+        for x in sorted(missing_any, key=lambda r: (-(1 if r.get("api_error") else 0), -r.get("missing", 0), r["file"])):
+            if x.get("api_error"):
+                lines.append(f"### `{x['file']}` ({x['department']}) — API error {x['api_error']}\n")
+                lines.append("- `/by-category`가 404를 반환하여 비교 불가. API의 학과명 매핑/허용값 확인 필요.\n\n")
+                continue
+            lines.append(f"### `{x['file']}` ({x['department']}) — missing {x['missing']}\n")
+            for code, name, ecc_t in (x.get("missing_details") or []):
+                lines.append(f"- {code} {name} / `{ecc_t}`\n")
+            lines.append("\n")
 
     if mismatch_rows:
         lines.append("## 수강대상 불일치(의미적)\n")
