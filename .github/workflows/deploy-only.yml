@@ -73,6 +73,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           SSH_PORT="${SSH_PORT:-22}"
+          SSH_COMMON_OPTS="-o ServerAliveInterval=30 -o ServerAliveCountMax=10"
           ssh-keyscan -p "$SSH_PORT" -H $HOST_URL >> ~/.ssh/known_hosts
           echo "$YOURSSU_PEM" > yourssu.pem
           chmod 600 yourssu.pem
@@ -104,16 +105,16 @@ jobs:
           echo "SSO_ALLOWED_REDIRECT_URLS=${SSO_ALLOWED_REDIRECT_URLS:-}" >> .env
 
           # Create deployment directory structure
-          ssh -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
 
           # Deploy environment file, compose file, and docker script to host machine
-          scp -P "$SSH_PORT" -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
-          scp -P "$SSH_PORT" -i yourssu.pem docker-compose.deploy.yml ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
-          scp -P "$SSH_PORT" -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem docker-compose.deploy.yml ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
 
           # Make the script executable
-          ssh -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/docker-deploy.sh"
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/docker-deploy.sh"
 
           # Execute the deployment script
-          ssh -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "cd /home/ubuntu/$PROJECT_NAME-api && \
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "cd /home/ubuntu/$PROJECT_NAME-api && \
             PROJECT_NAME=$PROJECT_NAME IMAGE_TAG=${{ github.event.inputs.image_tag || 'latest' }} ./docker-deploy.sh"
