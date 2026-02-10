@@ -60,7 +60,7 @@ IMAGE_TAG=<git-sha-or-tag> docker compose -f docker-compose.deploy.yml up -d
 
 ---
 
-## 4) 현재 컴퓨터용 Nginx 템플릿 적용
+## 4) 현재 컴퓨터용 Nginx + HTTPS(Let's Encrypt) 적용
 
 템플릿 파일:
 
@@ -68,32 +68,79 @@ IMAGE_TAG=<git-sha-or-tag> docker compose -f docker-compose.deploy.yml up -d
 
 자동 설치 스크립트:
 
-- `ops/nginx/install-current-host.sh`
+- HTTP만 먼저 적용: `ops/nginx/install-current-host.sh`
+- HTTPS(Let's Encrypt)까지 적용: `ops/nginx/enable-https-letsencrypt.sh`
 
-적용 커맨드:
+적용 커맨드 (권장):
 
 ```bash
 cd /path/to/soongpt-backend
-SERVER_NAME=<도메인 또는 _> SERVER_PORT=8080 ./ops/nginx/install-current-host.sh
+SERVER_NAME=api.backup.soongpt.yourssu.com SERVER_PORT=9001 LETSENCRYPT_EMAIL=<email> ./ops/nginx/enable-https-letsencrypt.sh
 ```
 
-예시:
+HTTP만 테스트할 때:
 
 ```bash
-SERVER_NAME=api.soongpt.com SERVER_PORT=8080 ./ops/nginx/install-current-host.sh
+SERVER_NAME=api.backup.soongpt.yourssu.com SERVER_PORT=9001 ./ops/nginx/install-current-host.sh
 ```
 
 검증:
 
 ```bash
 sudo nginx -t
-curl -I http://127.0.0.1:8080/actuator/health
-curl -I http://<SERVER_NAME>/actuator/health
+curl -I http://127.0.0.1:9001/actuator/health
+curl -I https://api.backup.soongpt.yourssu.com/actuator/health
 ```
 
 ---
 
-## 5) GitHub Actions와의 연결 포인트
+## 5) GitHub Actions 환경 설정 (dev-backup)
+
+`dev.yml`은 `dev-backup` 환경을 사용하도록 구성되어 있음.
+
+### Variables (Environment: dev-backup)
+
+자동 동기화 스크립트:
+
+```bash
+REPO=yourssu/soongpt-backend SOURCE_ENV=dev TARGET_ENV=dev-backup HOST_URL_OVERRIDE=api.backup.soongpt.yourssu.com ./ops/github/sync-env-vars.sh
+```
+
+- `HOST_URL=api.backup.soongpt.yourssu.com`
+- `SERVER_PORT=9001`
+- `PROJECT_NAME=soongpt`
+- `ENVIRONMENT=dev`
+- `ECR_PUBLIC_REGISTRY_ID`
+- `CORS_ALLOWED_ORIGIN`
+- `SLACK_CHANNEL`
+- `SLACK_LOG_CHANNEL`
+- `SSO_FRONTEND_URL`
+- `SSO_ALLOWED_REDIRECT_URLS`
+
+### Secrets (Environment: dev-backup)
+
+아래 키들을 `dev`와 동일 값으로 반드시 등록:
+(주의: GitHub 정책상 기존 환경 secret 값을 조회할 수 없어 수동 복사 필요)
+
+- `YOURSSU_PEM`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `DB_URL`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+- `ADMIN_PASSWORD`
+- `SLACK_TOKEN`
+- `RUSAINT_PSEUDONYM_SECRET`
+- `RUSAINT_INTERNAL_JWT_SECRET`
+- `SSO_CLIENT_JWT_SECRET`
+
+### Deploy-only 수동 배포
+
+`deploy-only.yml`에서 `environment=dev-backup` 선택 후 실행.
+
+---
+
+## 6) 운영 팁
 
 - CI에서 이미지를 push하면 (`dev.yml`, `prod.yml`) 서버는 `docker-compose.deploy.yml` 기준으로 재기동
 - 롤백 시에는 `deploy-only.yml` 또는 서버에서 `IMAGE_TAG=<old-sha>`로 재배포
