@@ -43,13 +43,44 @@ NAME_COL = "과목명"
 DEPT_COL = "개설학과"
 
 _ws_re = re.compile(r"\s+")
+_paren_dup_re = re.compile(r"(\([^)]*\))(?:\1)+")
 
 
 def norm(s: str | None) -> str:
+    """Light normalization: collapse whitespace."""
     if s is None:
         return ""
     s = s.replace("\u00a0", " ")
     s = _ws_re.sub(" ", s)
+    return s.strip()
+
+
+def norm_semantic(s: str | None) -> str:
+    """Semantic normalization for target strings.
+
+    Goal: treat formatting noise as equal.
+    - normalize whitespace
+    - normalize comma spacing
+    - collapse duplicated parenthetical markers e.g. (대상외수강제한)(대상외수강제한)
+    - collapse repeated identical parenthetical groups in general
+    """
+    s = norm(s)
+    if not s:
+        return ""
+
+    # unify comma spacing: "A, B" (also handles missing spaces like ",B")
+    s = re.sub(r"\s*,\s*", ", ", s)
+
+    # collapse duplicated parenthetical groups anywhere
+    # repeatedly apply until stable (to handle triple repeats)
+    prev = None
+    while prev != s:
+        prev = s
+        s = _paren_dup_re.sub(r"\1", s)
+
+    # very common noisy repeat: 대상외수강제한 appearing twice with optional spaces
+    s = re.sub(r"\(대상외수강제한\)\s*\(대상외수강제한\)", "(대상외수강제한)", s)
+
     return s.strip()
 
 
@@ -146,7 +177,16 @@ def main() -> int:
                 missing_in_api.append((fname, code, row.name))
                 continue
             api_target = norm(api_item.get("target"))
-            if norm(row.ecc_target) != api_target:
+            # Compare using semantic normalization (ignore formatting noise)
+            ecc_n = norm_semantic(row.ecc_target)
+            api_n = norm_semantic(api_target)
+
+            # If one side looks like a truncated prefix of the other (LibreOffice CSV conversion may truncate long cells),
+            # treat as equivalent.
+            short, long = (ecc_n, api_n) if len(ecc_n) <= len(api_n) else (api_n, ecc_n)
+            is_trunc_prefix = len(short) >= 30 and long.startswith(short)
+
+            if ecc_n != api_n and not is_trunc_prefix:
                 mismatches.append((fname, code, row.name, row.ecc_target, api_target))
 
     # summary per file
@@ -154,7 +194,17 @@ def main() -> int:
     for fname, rows in per_file.items():
         codes = list(rows.keys())
         miss = sum(1 for c in codes if c not in api_map)
-        mm = sum(1 for c in codes if (c in api_map and norm(rows[c].ecc_target) != norm(api_map[c].get("target"))))
+        def is_mm(c: int) -> bool:
+            ecc_n = norm_semantic(rows[c].ecc_target)
+            api_n = norm_semantic(api_map[c].get("target"))
+            if ecc_n == api_n:
+                return False
+            short, long = (ecc_n, api_n) if len(ecc_n) <= len(api_n) else (api_n, ecc_n)
+            if len(short) >= 30 and long.startswith(short):
+                return False
+            return True
+
+        mm = sum(1 for c in codes if (c in api_map and is_mm(c)))
         per_file_stats.append((fname, len(rows), miss, mm))
 
     # write report
