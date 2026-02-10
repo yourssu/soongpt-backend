@@ -97,8 +97,8 @@ class RusaintService:
 
             data_start = time.time()
             (
-                basic_info,
-                (taken_courses, low_grade_codes),
+                (basic_info, basic_warnings),
+                (taken_courses, low_grade_codes, course_warnings),
                 flags,
             ) = await asyncio.gather(
                 fetchers.fetch_basic_info(student_info_app),
@@ -108,6 +108,10 @@ class RusaintService:
                 fetchers.fetch_flags(student_info_app),
             )
             logger.info(f"데이터 조회 완료: {time.time() - data_start:.2f}초")
+
+            warnings = basic_warnings + course_warnings
+            if warnings:
+                logger.info(f"Snapshot warnings: {warnings}")
 
             total_time = time.time() - start_time
             logger.info(

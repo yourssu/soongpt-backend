@@ -190,7 +190,8 @@ class SsoController(
                         teaching = it.flags.teaching,
                     )
                 }
-                jsonResponse(HttpStatus.OK, "COMPLETED", studentInfo = studentInfo)
+                val warnings = data?.warnings?.ifEmpty { null }
+                jsonResponse(HttpStatus.OK, "COMPLETED", studentInfo = studentInfo, warnings = warnings)
             }
             SyncStatus.REQUIRES_REAUTH -> jsonResponse(HttpStatus.OK, "REQUIRES_REAUTH", reason = session.failReason ?: "token_expired")
             SyncStatus.FAILED -> jsonResponse(HttpStatus.OK, "FAILED", reason = session.failReason ?: "internal_error")
@@ -231,6 +232,7 @@ class SsoController(
         status: String,
         reason: String? = null,
         studentInfo: StudentInfoResponse? = null,
+        warnings: List<String>? = null,
     ): ResponseEntity<Response<SyncStatusResponse>> {
         return ResponseEntity
             .status(httpStatus)
@@ -240,6 +242,7 @@ class SsoController(
                         status = status,
                         reason = reason,
                         studentInfo = studentInfo,
+                        warnings = warnings,
                     )
                 )
             )

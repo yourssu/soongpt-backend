@@ -80,8 +80,8 @@ class RusaintAcademicService:
 
             data_start = time.time()
             (
-                basic_info,
-                (taken_courses, low_grade_codes),
+                (basic_info, basic_warnings),
+                (taken_courses, low_grade_codes, course_warnings),
                 flags,
             ) = await asyncio.gather(
                 fetchers.fetch_basic_info(student_info_app),
@@ -92,19 +92,26 @@ class RusaintAcademicService:
             )
             logger.info(f"데이터 조회 완료: {time.time() - data_start:.2f}초")
 
+            warnings = basic_warnings + course_warnings
+            if warnings:
+                logger.info(f"Academic warnings: {warnings}")
+
             total_time = time.time() - start_time
             logger.info(
                 f"유세인트 Academic 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)"
             )
 
             pseudonym = generate_pseudonym(student_id, settings.pseudonym_secret)
-            return {
+            result = {
                 "pseudonym": pseudonym,
                 "takenCourses": taken_courses,
                 "lowGradeSubjectCodes": low_grade_codes,
                 "flags": flags,
                 "basicInfo": basic_info,
             }
+            if warnings:
+                result["warnings"] = warnings
+            return result
 
         except (SSOTokenError, RusaintConnectionError, RusaintTimeoutError, RusaintInternalError):
             raise
