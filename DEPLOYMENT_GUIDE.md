@@ -125,7 +125,7 @@ REPO=yourssu/soongpt-backend SOURCE_ENV=dev TARGET_ENV=dev-backup HOST_URL_OVERR
 아래 키들을 `dev`와 동일 값으로 반드시 등록:
 (주의: GitHub 정책상 기존 환경 secret 값을 조회할 수 없어 수동 복사 필요)
 
-- `HOME_PEM`
+- `YOURSSU_PEM`
 - `DB_URL`
 - `DB_USERNAME`
 - `DB_PASSWORD`
