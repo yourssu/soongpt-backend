@@ -32,7 +32,7 @@ jobs:
 
       - name: Deploy to EC2
         env:
-          YOURSSU_PEM: ${{ secrets.YOURSSU_PEM }}
+          HOME_PEM: ${{ secrets.HOME_PEM }}
           HOST_URL: ${{ vars.HOST_URL }}
 
           SERVER_PORT: ${{ vars.SERVER_PORT }}
@@ -61,7 +61,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
-          echo "$YOURSSU_PEM" > yourssu.pem
+          echo "$HOME_PEM" > yourssu.pem
           chmod 600 yourssu.pem
 
           # Create environment file (no quotes needed - deploy script uses grep, not source)
