@@ -16,23 +16,23 @@ GET /api/courses/recommend/all?category={categories}
 
 ## Request
 
-| 파라미터 | 타입 | 필수 | 설명 |
-|---------|------|------|------|
-| `category` | String | O | 콤마 구분 이수구분. 아래 enum 값 사용 |
+| 파라미터     | 타입   | 필수 | 설명                                  |
+| ------------ | ------ | ---- | ------------------------------------- |
+| `category` | String | O    | 콤마 구분 이수구분. 아래 enum 값 사용 |
 
 ### RecommendCategory
 
-| 값 | 설명 |
-|---|---|
-| `MAJOR_BASIC` | 전공기초 |
-| `MAJOR_REQUIRED` | 전공필수 |
-| `MAJOR_ELECTIVE` | 전공선택 |
-| `GENERAL_REQUIRED` | 교양필수 |
-| `RETAKE` | 재수강 |
+| 값                        | 설명         |
+| ------------------------- | ------------ |
+| `MAJOR_BASIC`           | 전공기초     |
+| `MAJOR_REQUIRED`        | 전공필수     |
+| `MAJOR_ELECTIVE`        | 전공선택     |
+| `GENERAL_REQUIRED`      | 교양필수     |
+| `RETAKE`                | 재수강       |
 | `DOUBLE_MAJOR_REQUIRED` | 복수전공필수 |
 | `DOUBLE_MAJOR_ELECTIVE` | 복수전공선택 |
-| `MINOR` | 부전공 |
-| `TEACHING` | 교직이수 |
+| `MINOR`                 | 부전공       |
+| `TEACHING`              | 교직이수     |
 
 > 교양선택(`GENERAL_ELECTIVE`)은 별도 API로 제공 예정
 
@@ -62,56 +62,56 @@ Response<CourseRecommendationsResponse>
 }
 ```
 
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `warnings` | String[] | rusaint 동기화 경고 메시지. 빈 배열이면 경고 없음 |
-| `categories` | CategoryRecommendResponse[] | 이수구분별 추천 결과 |
+| 필드           | 타입                        | 설명                                              |
+| -------------- | --------------------------- | ------------------------------------------------- |
+| `warnings`   | String[]                    | rusaint 동기화 경고 메시지. 빈 배열이면 경고 없음 |
+| `categories` | CategoryRecommendResponse[] | 이수구분별 추천 결과                              |
 
 ### CategoryRecommendResponse
 
-| 필드 | 타입 | nullable | 설명 |
-|------|------|----------|------|
-| `category` | String | X | 이수구분 (`RecommendCategory` enum name) |
-| `progress` | Progress | O | 졸업사정 이수 현황. **재수강은 null, 졸업사정표 없으면 null** |
-| `message` | String | O | 안내 메시지. **null이면 정상 (과목 존재)** |
-| `userGrade` | Int | O | 사용자 학년 |
-| `courses` | RecommendedCourseResponse[] | X | 추천 과목 flat list |
-| `lateFields` | String[] | O | 교양필수 전용: 미수강 LATE 분야명 텍스트 |
+| 필드           | 타입                        | nullable | 설명                                                               |
+| -------------- | --------------------------- | -------- | ------------------------------------------------------------------ |
+| `category`   | String                      | X        | 이수구분 (`RecommendCategory` enum name)                         |
+| `progress`   | Progress                    | O        | 졸업사정 이수 현황.**재수강은 null, 졸업사정표 없으면 null** |
+| `message`    | String                      | O        | 안내 메시지.**null이면 정상 (과목 존재)**                    |
+| `userGrade`  | Int                         | O        | 사용자 학년                                                        |
+| `courses`    | RecommendedCourseResponse[] | X        | 추천 과목 flat list                                                |
+| `lateFields` | String[]                    | O        | 교양필수 전용: 미수강 LATE 분야명 텍스트                           |
 
 ### Progress
 
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `required` | Int | 졸업 요구 학점 |
-| `completed` | Int | 현재 이수 학점 |
-| `satisfied` | Boolean | 충족 여부 |
+| 필드          | 타입    | 설명           |
+| ------------- | ------- | -------------- |
+| `required`  | Int     | 졸업 요구 학점 |
+| `completed` | Int     | 현재 이수 학점 |
+| `satisfied` | Boolean | 충족 여부      |
 
 ### RecommendedCourseResponse (과목 카드)
 
-| 필드 | 타입 | nullable | 설명 |
-|------|------|----------|------|
-| `baseCourseCode` | Long | X | 과목 코드 (8자리, 분반 제외) |
-| `courseName` | String | X | 과목명 |
-| `credits` | Double | O | 학점 |
-| `target` | String | X | 수강대상 텍스트 |
-| `targetGrades` | Int[] | X | 대상 학년 (e.g., `[1, 2]`) |
-| `isStrictRestriction` | Boolean | X | 대상외수강제한 여부 |
-| `isCrossMajor` | Boolean | X | 타전공인정 과목 여부. 전공선택에서 타전공 그룹 분리용 |
-| `timing` | String | O | `"LATE"` / `"ON_TIME"`. 재수강은 null |
-| `field` | String | O | 카테고리 내 하위 그룹 키. 아래 표 참고 |
-| `professors` | String[] | X | 교수 목록 (전 분반 합산, 중복제거) |
-| `department` | String | O | 개설학과 |
-| `sections` | SectionResponse[] | X | 분반 상세 목록 |
+| 필드                    | 타입              | nullable | 설명                                                  |
+| ----------------------- | ----------------- | -------- | ----------------------------------------------------- |
+| `baseCourseCode`      | Long              | X        | 과목 코드 (8자리, 분반 제외)                          |
+| `courseName`          | String            | X        | 과목명                                                |
+| `credits`             | Double            | O        | 학점                                                  |
+| `target`              | String            | X        | 수강대상 텍스트                                       |
+| `targetGrades`        | Int[]             | X        | 대상 학년 (e.g.,`[1, 2]`)                           |
+| `isStrictRestriction` | Boolean           | X        | 대상외수강제한 여부                                   |
+| `isCrossMajor`        | Boolean           | X        | 타전공인정 과목 여부. 전공선택에서 타전공 그룹 분리용 |
+| `timing`              | String            | O        | `"LATE"` / `"ON_TIME"`. 재수강은 null             |
+| `field`               | String            | O        | 카테고리 내 하위 그룹 키. 아래 표 참고                |
+| `professors`          | String[]          | X        | 교수 목록 (전 분반 합산, 중복제거)                    |
+| `department`          | String            | O        | 개설학과                                              |
+| `sections`            | SectionResponse[] | X        | 분반 상세 목록                                        |
 
 ### SectionResponse (분반 상세 — 카드 클릭 시)
 
-| 필드 | 타입 | nullable | 설명 |
-|------|------|----------|------|
-| `courseCode` | Long | X | 과목 코드 (10자리, 분반 포함) |
-| `professor` | String | O | 분반 교수 |
-| `division` | String | O | 분반명 (`"01"`, `"02"`, ...) |
-| `schedule` | String | X | 강의시간 (e.g., `"월09:00-10:15, 수09:00-10:15"`) |
-| `isStrictRestriction` | Boolean | X | 대상외수강제한 여부 |
+| 필드                    | 타입    | nullable | 설명                                               |
+| ----------------------- | ------- | -------- | -------------------------------------------------- |
+| `courseCode`          | Long    | X        | 과목 코드 (10자리, 분반 포함)                      |
+| `professor`           | String  | O        | 분반 교수                                          |
+| `division`            | String  | O        | 분반명 (`"01"`, `"02"`, ...)                   |
+| `schedule`            | String  | X        | 강의시간 (e.g.,`"월09:00-10:15, 수09:00-10:15"`) |
+| `isStrictRestriction` | Boolean | X        | 대상외수강제한 여부                                |
 
 ---
 
@@ -120,31 +120,32 @@ Response<CourseRecommendationsResponse>
 백엔드는 `courses`를 **flat array**로 전달합니다.
 각 과목에 그룹핑에 필요한 모든 정보가 포함되어 있습니다.
 
-| 그룹핑 기준 | 사용 필드 | 해당 카테고리 |
-|---|---|---|
-| 학년별 그룹 | `targetGrades` | MAJOR_ELECTIVE |
-| 타전공 구분 | `isCrossMajor` | MAJOR_ELECTIVE |
-| 하위 분류 그룹 | `field` | GENERAL_REQUIRED, DOUBLE_MAJOR_REQUIRED, DOUBLE_MAJOR_ELECTIVE, MINOR, TEACHING |
-| LATE/ON_TIME 구분 | `timing` | 전체 (재수강 제외) |
-| 현재 학년 | `userGrade` (category 레벨) | MAJOR_ELECTIVE |
-| LATE 분야 안내 | `lateFields` (category 레벨) | GENERAL_REQUIRED |
+| 그룹핑 기준       | 사용 필드                      | 해당 카테고리                                                                   |
+| ----------------- | ------------------------------ | ------------------------------------------------------------------------------- |
+| 학년별 그룹       | `targetGrades`               | MAJOR_ELECTIVE                                                                  |
+| 타전공 구분       | `isCrossMajor`               | MAJOR_ELECTIVE                                                                  |
+| 하위 분류 그룹    | `field`                      | GENERAL_REQUIRED, DOUBLE_MAJOR_REQUIRED, DOUBLE_MAJOR_ELECTIVE, MINOR, TEACHING |
+| LATE/ON_TIME 구분 | `timing`                     | 전체 (재수강 제외)                                                              |
+| 현재 학년         | `userGrade` (category 레벨)  | MAJOR_ELECTIVE                                                                  |
+| LATE 분야 안내    | `lateFields` (category 레벨) | GENERAL_REQUIRED                                                                |
 
 ### `field` 값 매트릭스
 
-| 카테고리 | `field` 값 예시 | 설명 |
-|---|---|---|
-| GENERAL_REQUIRED | `"SW와AI"`, `"창의적사고와혁신"` | 교양 분야명 |
-| DOUBLE_MAJOR_REQUIRED | `"복필"` | 복수전공필수 |
-| DOUBLE_MAJOR_ELECTIVE | `"복선"` | 복수전공선택 |
-| MINOR | `"부필"`, `"부선"` | 부전공 이수구분 |
-| TEACHING | `"전공"`, `"교직"`, `"특성화"` | 교직 영역 |
-| 그 외 | `null` | 사용하지 않음 |
+| 카테고리              | `field` 값 예시                    | 설명            |
+| --------------------- | ------------------------------------ | --------------- |
+| GENERAL_REQUIRED      | `"SW와AI"`, `"창의적사고와혁신"` | 교양 분야명     |
+| DOUBLE_MAJOR_REQUIRED | `"복필"`                           | 복수전공필수    |
+| DOUBLE_MAJOR_ELECTIVE | `"복선"`                           | 복수전공선택    |
+| MINOR                 | `"부필"`, `"부선"`               | 부전공 이수구분 |
+| TEACHING              | `"전공"`, `"교직"`, `"특성화"` | 교직 영역       |
+| 그 외                 | `null`                             | 사용하지 않음   |
 
 ---
 
 ## 엣지케이스 처리
 
 **프론트 분기 로직:**
+
 1. `warnings` 비어있지 않음 → 경고 배너 표시
 2. `progress == null` (재수강 제외) → 졸업사정표 없어서 판단 불가
 3. `progress.required == 0 && satisfied == true` → 해당 없는 이수구분 → 스킵
@@ -195,7 +196,7 @@ Response<CourseRecommendationsResponse>
     {
       "baseCourseCode": 21500123,
       "courseName": "자료구조",
-      "credits": 3.0,
+      "credits": 3,
       "target": "소프트웨어학부 2학년",
       "targetGrades": [2],
       "isStrictRestriction": false,
@@ -305,6 +306,7 @@ Response<CourseRecommendationsResponse>
 ```
 
 프론트 렌더링 (userGrade=3 기준):
+
 ```
 ├── 1학년   (해당 과목 없음)
 ├── 2학년   (timing=LATE)
@@ -367,6 +369,7 @@ Response<CourseRecommendationsResponse>
 ```
 
 프론트 렌더링:
+
 ```
 ├── [LATE 분야 안내] "글로벌시민의식", "글로벌소통과언어"
 ├── SW와AI
@@ -552,6 +555,7 @@ Response<CourseRecommendationsResponse>
 ```
 
 프론트 렌더링 (`field`로 groupBy):
+
 ```
 ├── 전공
 │   └── 소프트웨어공학 (ON_TIME)
