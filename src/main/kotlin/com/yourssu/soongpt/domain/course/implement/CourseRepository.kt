@@ -46,6 +46,8 @@ interface CourseRepository {
      * - Allow - Deny 로직 적용
      */
     fun findCoursesWithTargetByBaseCodes(baseCodes: List<Long>): List<CourseWithTarget>
+
+    /**
      * 특정 trackType에 해당하는 학과 ID 목록 조회
      */
     fun findDepartmentIdsByTrackType(trackType: SecondaryMajorTrackType): List<Long>

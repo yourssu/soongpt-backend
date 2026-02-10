@@ -5,10 +5,11 @@ import com.yourssu.soongpt.domain.course.application.dto.FilterCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByCodeRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldByCodeRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldsRequest
+import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByTrackRequest
+import com.yourssu.soongpt.domain.course.application.dto.GetTeachingCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.RecommendCoursesRequest
-import com.yourssu.soongpt.domain.course.application.dto.RecommendSecondaryMajorCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
-import com.yourssu.soongpt.domain.course.application.dto.*
+
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseRecommendationsResponse
@@ -29,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/courses")
 class CourseController(
     private val courseService: CourseService,
-    private val secondaryMajorCourseRecommendService: SecondaryMajorCourseRecommendService,
     private val courseRecommendApplicationService: CourseRecommendApplicationService,
 ) {
     @Operation(
@@ -146,6 +146,10 @@ class CourseController(
         httpRequest: HttpServletRequest,
     ): ResponseEntity<Response<CourseRecommendationsResponse>> {
         val response = courseRecommendApplicationService.recommend(httpRequest, request)
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
         summary = "다전공/부전공 트랙 조회 (트랙별)",
         description = """
             특정 학과의 다전공/부전공 과목을 트랙 유형별로 조회합니다.
