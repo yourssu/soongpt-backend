@@ -2,9 +2,9 @@
   "summary": {
     "checklist_course_count": 3048,
     "course_found_in_db": 3048,
-    "suspicious_count": 527,
+    "suspicious_count": 503,
     "issue_counts": {
-      "TARGET_ROW_MISSING": 286,
+      "TARGET_ROW_MISSING": 262,
       "TARGET_PARSE_MISMATCH": 148,
       "UNMAPPED_NON_FUSION_TOKEN": 95
     }
@@ -13,159 +13,17 @@
     "rule": "국어국문학과/철학과/사학과/불어불문학과/평생교육학과/문예창작학과 중 ssu26-1.csv 과정이 석박과정인 항목 제외",
     "removed_count": 38
   },
+  "department_exclude_note": {
+    "rule": "개설학과가 생활체육학과/컴퓨터학과/사회복지대학원/실내디자인학과인 항목 제외",
+    "removed_count": 24,
+    "removed_by_department": {
+      "생활체육학과": 6,
+      "컴퓨터학과": 6,
+      "실내디자인학과": 2,
+      "사회복지대학원": 10
+    }
+  },
   "suspicious": [
-    {
-      "code": 2160127001,
-      "name": "생활체육프로그램론",
-      "department": "생활체육학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생체",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160127101,
-      "name": "생활체육통계학",
-      "department": "생활체육학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생체",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160127501,
-      "name": "생활체육마케팅",
-      "department": "생활체육학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생체",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160127701,
-      "name": "체육학연구법",
-      "department": "생활체육학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생체",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160127801,
-      "name": "스포츠심리학연구",
-      "department": "생활체육학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생체",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160127901,
-      "name": "생활체육학특론",
-      "department": "생활체육학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생체",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160424401,
-      "name": "운영체제론",
-      "department": "컴퓨터학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_컴퓨터",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160429401,
-      "name": "컴퓨터구조특론Ⅱ",
-      "department": "컴퓨터학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_컴퓨터",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
     {
       "code": 2160498301,
       "name": "마이크로파수치해석",
@@ -191,101 +49,6 @@
       "department": "정보통신공학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_정보통신",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160533501,
-      "name": "실내디자인세미나Ⅰ",
-      "department": "실내디자인학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_실내",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160534301,
-      "name": "공간브랜드기획연구",
-      "department": "실내디자인학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_실내",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160652601,
-      "name": "사회문제론",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공선택",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160653901,
-      "name": "사회복지자료분석론",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공선택",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160655701,
-      "name": "프로그램개발과평가",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공선택",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -965,106 +728,11 @@
       }
     },
     {
-      "code": 5029251701,
-      "name": "사회복지조사론(3학점)",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공선택",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5029252301,
-      "name": "인간행동과사회환경(3학점)",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공선택",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5029252601,
-      "name": "사회복지현장실습A",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공필수",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5029253001,
-      "name": "사회복지윤리와철학A",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공필수",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5029377601,
       "name": "빅데이터전략",
       "department": "소프트웨어공학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전선_소프트공학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5029393801,
-      "name": "사회복지윤리와철학B",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공필수",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -1369,25 +1037,6 @@
       "department": "커리어·학습코칭전공",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전선_커리어·학습코칭",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032744501,
-      "name": "사회복지와 인권",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공선택",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -2053,25 +1702,6 @@
       "department": "안전환경융합공학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전선_안전환경융합공학과",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5044484601,
-      "name": "기술과 창업",
-      "department": "컴퓨터학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_컴퓨터",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -2846,25 +2476,6 @@
       }
     },
     {
-      "code": 5050286501,
-      "name": "여성복지론",
-      "department": "사회복지대학원",
-      "category": "OTHER",
-      "sub_category": "공통 전공선택",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5050360001,
       "name": "빅데이터분석",
       "department": "IT정책경영학과",
@@ -2908,25 +2519,6 @@
       "department": "교육경영학과(계약학과)",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공-교육경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5051047601,
-      "name": "SW감리론",
-      "department": "컴퓨터학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_컴퓨터",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -5150,44 +4742,6 @@
       "department": "미디어학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_미디어",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055472701,
-      "name": "인터넷콘텐츠보호기술",
-      "department": "컴퓨터학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_컴퓨터",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055472901,
-      "name": "AI 시대의 지식재산과 법적 쟁점",
-      "department": "컴퓨터학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_컴퓨터",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
