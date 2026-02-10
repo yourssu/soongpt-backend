@@ -204,11 +204,19 @@ data class SectionResponse(
     val isStrictRestriction: Boolean,
 ) {
     companion object {
-        fun from(course: Course, isStrictRestriction: Boolean = false): SectionResponse {
+        fun from(
+            course: Course,
+            isStrictRestriction: Boolean = false,
+            divisionFromCourseCode: Boolean = false,
+        ): SectionResponse {
+            val division = when {
+                divisionFromCourseCode -> "%02d".format(course.code % 100)
+                else -> course.division
+            }
             return SectionResponse(
                 courseCode = course.code,
                 professor = course.professor,
-                division = course.division,
+                division = division,
                 schedule = course.scheduleWithoutRoom(),
                 isStrictRestriction = isStrictRestriction,
             )
