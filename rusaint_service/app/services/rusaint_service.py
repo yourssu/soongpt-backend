@@ -123,6 +123,7 @@ class RusaintService:
                 lowGradeSubjectCodes=low_grade_codes,
                 flags=flags,
                 basicInfo=basic_info,
+                warnings=warnings,
             )
 
         except (SSOTokenError, RusaintConnectionError, RusaintTimeoutError, RusaintInternalError):

@@ -79,6 +79,8 @@ class RusaintServiceClient(
                 throw e
             }
             // 500 등 데이터 없음 에러 → null 반환 (새내기 등)
+            // TODO(PT-134): rusaint 라이브러리가 "데이터 없음"과 "파싱 오류"를 구분하지 못하는 제약사항.
+            //  401/502/504는 위에서 throw하고, 500은 세션 생성 후 데이터 파싱 실패이므로 보수적으로 null 처리.
             logger.warn { "졸업사정표 조회 실패 (데이터 없음 가능성), null 반환: status=${e.serviceStatusCode}, detail=${e.serviceDetail}" }
             null
         }
