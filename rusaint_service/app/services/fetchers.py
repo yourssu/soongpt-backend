@@ -23,7 +23,7 @@ from app.schemas.usaint_schemas import (
 logger = logging.getLogger(__name__)
 
 
-async def fetch_basic_info(student_info_app) -> BasicInfo:
+async def fetch_basic_info(student_info_app) -> tuple[BasicInfo, list[str]]:
     """
     기본 학적 정보를 조회합니다.
 
@@ -32,8 +32,12 @@ async def fetch_basic_info(student_info_app) -> BasicInfo:
 
     Args:
         student_info_app: 학생정보 애플리케이션
+
+    Returns:
+        tuple: (BasicInfo, warnings) — warnings에 NO_SEMESTER_INFO가 포함될 수 있음
     """
     try:
+        warnings: list[str] = []
         student_info = await student_info_app.general()
 
         # basicInfo.semester = 재학 누적 학기 (1~8). 학년+현재학기(1/2)로 계산 (예: 3학년 2학기 → 6).
@@ -55,8 +59,9 @@ async def fetch_basic_info(student_info_app) -> BasicInfo:
             student_info, "semester", None
         )
         if term_raw is None:
-            logger.error("학기 정보를 찾을 수 없습니다 (term/semester)")
-            raise ValueError("필수 학적 정보(학기)를 조회할 수 없습니다")
+            logger.warning("학기 정보가 없어 기본값(1학기) 사용 (새내기 가능성)")
+            warnings.append("NO_SEMESTER_INFO")
+            term_raw = 1
         if 1 <= term_raw <= 2:
             # 현재 학기(1/2) → 재학 누적 학기 계산: (학년-1)*2 + 현재학기
             semester = (grade - 1) * 2 + term_raw
@@ -84,7 +89,7 @@ async def fetch_basic_info(student_info_app) -> BasicInfo:
             grade=grade,
             semester=semester,
             department=department,
-        )
+        ), warnings
     except ValueError:
         raise
     except Exception as e:
@@ -96,7 +101,7 @@ async def fetch_all_course_data_parallel(
     course_grades_app1,
     course_grades_app2,
     semester_type_map: Dict[Any, str],
-) -> tuple[list[TakenCourse], list[str]]:
+) -> tuple[list[TakenCourse], list[str], list[str]]:
     """
     2개의 CourseGradesApplication으로 학기를 나눠서 병렬 조회합니다.
 
@@ -106,13 +111,14 @@ async def fetch_all_course_data_parallel(
         semester_type_map: 학기 타입 매핑 (SEMESTER_TYPE_MAP)
 
     Returns:
-        tuple: (taken_courses, low_grade_subject_codes)
+        tuple: (taken_courses, low_grade_subject_codes, warnings)
     """
     try:
         semesters = await course_grades_app1.semesters(rusaint.CourseType.BACHELOR)
 
         if not semesters:
-            raise ValueError("학기 정보가 없습니다")
+            logger.warning("수강 이력 없음 (빈 학기 목록) — 새내기 가능성")
+            return [], [], ["NO_COURSE_HISTORY"]
 
         if len(semesters) <= 1:
             semesters_group1 = semesters
@@ -201,7 +207,7 @@ async def fetch_all_course_data_parallel(
             if rank_str == settings.FAIL_GRADE or rank_str in settings.LOW_GRADE_RANKS:
                 low_grade_codes.append(code)
 
-        return taken_courses, low_grade_codes
+        return taken_courses, low_grade_codes, []
 
     except Exception as e:
         logger.error(f"성적 관련 데이터 조회 실패 (병렬): {type(e).__name__}")

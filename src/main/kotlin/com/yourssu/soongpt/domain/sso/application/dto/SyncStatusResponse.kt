@@ -21,6 +21,12 @@ data class SyncStatusResponse(
     val reason: String? = null,
     @Schema(description = "학적정보 (COMPLETED 시에만 포함)", nullable = true)
     val studentInfo: StudentInfoResponse? = null,
+    @Schema(
+        description = "빈 데이터 경고 목록 (COMPLETED 시에만 포함). NO_COURSE_HISTORY: 수강 이력 없음, NO_SEMESTER_INFO: 학기 정보 없어 기본값 사용, NO_GRADUATION_DATA: 졸업사정표 조회 불가",
+        nullable = true,
+        example = "[\"NO_COURSE_HISTORY\", \"NO_GRADUATION_DATA\"]",
+    )
+    val warnings: List<String>? = null,
 )
 
 @Schema(description = "학적정보 응답")

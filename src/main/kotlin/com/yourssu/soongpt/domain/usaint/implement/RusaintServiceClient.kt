@@ -63,14 +63,24 @@ class RusaintServiceClient(
     fun getGraduationSnapshot(
         studentId: String,
         sToken: String,
-    ): RusaintGraduationResponseDto {
+    ): RusaintGraduationResponseDto? {
         val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
-        return executeRusaintCall("graduation") {
-            val responseEntity = restTemplate.postForEntity<RusaintGraduationResponseDto>(
-                "/api/usaint/snapshot/graduation",
-                requestEntity,
-            )
-            requireNotNull(responseEntity.body) { "Empty response from rusaint-service (graduation)" }
+        return try {
+            executeRusaintCall("graduation") {
+                val responseEntity = restTemplate.postForEntity<RusaintGraduationResponseDto>(
+                    "/api/usaint/snapshot/graduation",
+                    requestEntity,
+                )
+                requireNotNull(responseEntity.body) { "Empty response from rusaint-service (graduation)" }
+            }
+        } catch (e: RusaintServiceException) {
+            // 401/502/504 인프라 에러는 그대로 throw
+            if (e.isUnauthorized || e.serviceStatusCode in listOf(502, 504)) {
+                throw e
+            }
+            // 500 등 데이터 없음 에러 → null 반환 (새내기 등)
+            logger.warn { "졸업사정표 조회 실패 (데이터 없음 가능성), null 반환: status=${e.serviceStatusCode}, detail=${e.serviceDetail}" }
+            null
         }
     }
 
