@@ -31,9 +31,6 @@
 ```
 GET /api/courses/search?q=김남미              # 교수명으로 검색
 GET /api/courses/search?q=물리1               # 과목명으로 검색
-GET /api/courses/search?q=Business+English    # 영문 과목명 검색
-GET /api/courses/search?q=&page=1&size=50     # 빈 검색어 + 페이지네이션
-GET /api/courses/search?page=0&size=20        # 전체 강의 목록 조회
 ```
 
 ---
