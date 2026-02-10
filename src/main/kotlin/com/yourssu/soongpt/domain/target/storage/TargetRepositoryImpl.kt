@@ -26,6 +26,15 @@ class TargetRepositoryImpl(
                 .map { it.toDomain() }
     }
 
+    override fun findAllByCodes(codes: List<Long>): List<Target> {
+        if (codes.isEmpty()) return emptyList()
+        return jpaQueryFactory
+                .selectFrom(targetEntity)
+                .where(targetEntity.courseCode.`in`(codes))
+                .fetch()
+                .map { it.toDomain() }
+    }
+
     override fun findAllByDepartmentGrade(
             departmentId: Long,
             collegeId: Long,
