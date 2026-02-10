@@ -27,6 +27,7 @@ data class RusaintGraduationSummaryDto(
     val majorFoundation: RusaintCreditSummaryItemDto,
     val majorRequired: RusaintCreditSummaryItemDto,
     val majorElective: RusaintCreditSummaryItemDto,
+    val minor: RusaintCreditSummaryItemDto,
     val doubleMajorRequired: RusaintCreditSummaryItemDto,
     val doubleMajorElective: RusaintCreditSummaryItemDto,
     val christianCourses: RusaintCreditSummaryItemDto,

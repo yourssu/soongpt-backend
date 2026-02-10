@@ -1,6 +1,10 @@
-# 재수강 가능 과목 조회 (GET /api/usaint/retake)
+# 재수강 가능 과목 조회 (DEPRECATED → GET /api/courses/recommend?category=RETAKE)
 
-## 개요
+> **NOTE**: 이 엔드포인트는 별도로 구현되지 않았으며, 기존 전공 추천 엔드포인트에 `RETAKE` 카테고리로 통합되었습니다.
+> 새로운 사용법: `GET /api/courses/recommend?category=RETAKE`
+> 상세 스키마: [get_recommend_major.md](../course/get_recommend_major.md)
+
+## 개요 (레거시 설계 문서)
 
 - **목적**: 사용자가 이번 학기에 재수강할 수 있는 과목을 조회한다.
 - **전제**: 클라이언트는 [SSO 콜백](../sso/sso_callback.md)을 통해 인증 후, `soongpt_auth` 쿠키(JWT)를 발급받는다. JWT claim에 pseudonym이 포함되어 있으며, 서버가 쿠키에서 자동 추출한다.

@@ -79,6 +79,7 @@ class RusaintDtoDeserializationTest : DescribeSpec({
                         "majorElective": {"required": 54, "completed": 30, "satisfied": false},
                         "doubleMajorRequired": {"required": 0, "completed": 0, "satisfied": true},
                         "doubleMajorElective": {"required": 0, "completed": 0, "satisfied": true},
+                        "minor": {"required": 0, "completed": 0, "satisfied": true},
                         "christianCourses": {"required": 6, "completed": 6, "satisfied": true},
                         "chapel": {"satisfied": true}
                     }
@@ -125,6 +126,7 @@ class RusaintDtoDeserializationTest : DescribeSpec({
                         "majorElective": {"required": 0, "completed": 0, "satisfied": true},
                         "doubleMajorRequired": {"required": 0, "completed": 0, "satisfied": true},
                         "doubleMajorElective": {"required": 0, "completed": 0, "satisfied": true},
+                        "minor": {"required": 0, "completed": 0, "satisfied": true},
                         "christianCourses": {"required": 0, "completed": 0, "satisfied": true},
                         "chapel": {"satisfied": true}
                     }

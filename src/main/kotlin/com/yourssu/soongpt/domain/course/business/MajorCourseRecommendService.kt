@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.business
 
+import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.GradeGroupResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorCourseRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
@@ -29,14 +30,13 @@ class MajorCourseRecommendService(
         userGrade: Int,
         category: Category,
         takenSubjectCodes: List<String>,
-        progress: String? = null,
-        satisfied: Boolean = false,
+        progress: com.yourssu.soongpt.domain.course.business.dto.Progress,
     ): MajorCourseRecommendResponse {
         require(category == Category.MAJOR_BASIC || category == Category.MAJOR_REQUIRED) {
             "Category must be MAJOR_BASIC or MAJOR_REQUIRED"
         }
 
-        if (satisfied) {
+        if (progress.satisfied) {
             return MajorCourseRecommendResponse.satisfied(category, progress)
         }
 
@@ -58,7 +58,6 @@ class MajorCourseRecommendService(
         return MajorCourseRecommendResponse.of(
             category = category,
             progress = progress,
-            satisfied = false,
             courses = recommendedCourses,
         )
     }
@@ -66,18 +65,17 @@ class MajorCourseRecommendService(
     /**
      * 전공선택 과목 추천
      * - 학년 범위: 전체 (1~5학년)
-     * - 학년별 그룹핑 포함
+     * - 대상학년 순으로 정렬
      */
     fun recommendMajorElective(
         departmentName: String,
         userGrade: Int,
         takenSubjectCodes: List<String>,
-        progress: String? = null,
-        satisfied: Boolean = false,
+        progress: com.yourssu.soongpt.domain.course.business.dto.Progress,
     ): MajorCourseRecommendResponse {
         val category = Category.MAJOR_ELECTIVE
 
-        if (satisfied) {
+        if (progress.satisfied) {
             return MajorCourseRecommendResponse.satisfied(category, progress)
         }
 
@@ -95,15 +93,103 @@ class MajorCourseRecommendService(
         }
 
         val recommendedCourses = buildRecommendedCourses(untakenCourses, userGrade)
-        val gradeGroups = buildGradeGroups(recommendedCourses)
 
         return MajorCourseRecommendResponse.of(
             category = category,
             progress = progress,
-            satisfied = false,
             courses = recommendedCourses,
-            gradeGroups = gradeGroups,
         )
+    }
+
+    /**
+     * 전공선택 과목 추천 (학년별 그룹 포함)
+     * - 통합 엔드포인트용: CategoryRecommendResponse + gradeGroups 반환
+     * - 학년 범위: 전체 (1~5학년)
+     * - gradeGroups: 대상학년별 과목 그룹핑
+     */
+    fun recommendMajorElectiveWithGroups(
+        departmentName: String,
+        userGrade: Int,
+        takenSubjectCodes: List<String>,
+        progress: com.yourssu.soongpt.domain.course.business.dto.Progress,
+    ): CategoryRecommendResponse {
+        val category = Category.MAJOR_ELECTIVE
+
+        if (progress.satisfied) {
+            return CategoryRecommendResponse(
+                category = category.name,
+                progress = progress,
+                message = "전공선택 학점을 이미 모두 이수하셨습니다.",
+                userGrade = userGrade,
+                courses = emptyList(),
+                gradeGroups = null,
+                fieldGroups = null,
+                lateFields = null,
+            )
+        }
+
+        val department = departmentReader.getByName(departmentName)
+        val untakenCourses = getUntakenCoursesWithTarget(
+            category = category,
+            departmentId = department.id!!,
+            collegeId = department.collegeId,
+            maxGrade = MAX_GRADE,
+            takenSubjectCodes = takenSubjectCodes,
+        )
+
+        if (untakenCourses.isEmpty()) {
+            return CategoryRecommendResponse(
+                category = category.name,
+                progress = progress,
+                message = "이번 학기에 수강 가능한 전공선택 과목이 없습니다.",
+                userGrade = userGrade,
+                courses = emptyList(),
+                gradeGroups = null,
+                fieldGroups = null,
+                lateFields = null,
+            )
+        }
+
+        val allCourses = buildRecommendedCourses(untakenCourses, userGrade)
+        val gradeGroups = buildGradeGroups(untakenCourses, userGrade)
+
+        return CategoryRecommendResponse(
+            category = category.name,
+            progress = progress,
+            message = null,
+            userGrade = userGrade,
+            courses = allCourses,
+            gradeGroups = gradeGroups,
+            fieldGroups = null,
+            lateFields = null,
+        )
+    }
+
+    /**
+     * 학년별 과목 그룹핑 (전선용)
+     */
+    private fun buildGradeGroups(
+        coursesWithTarget: List<CourseWithTarget>,
+        userGrade: Int,
+    ): List<GradeGroupResponse> {
+        return coursesWithTarget
+            .groupBy { it.course.baseCode() }
+            .entries
+            .groupBy { it.value.first().targetGrades.maxOrNull() ?: 1 }
+            .entries
+            .sortedBy { it.key }
+            .map { (grade, entries) ->
+                val courses = entries
+                    .sortedBy { it.value.first().course.name }
+                    .map { (_, sections) ->
+                        val representative = sections.first()
+                        RecommendedCourseResponse.from(
+                            coursesWithTarget = sections,
+                            isLate = representative.isLateFor(userGrade),
+                        )
+                    }
+                GradeGroupResponse(grade = grade, courses = courses)
+            }
     }
 
     /**
@@ -127,7 +213,7 @@ class MajorCourseRecommendService(
             return emptyList()
         }
 
-        val takenBaseCodes = takenSubjectCodes.map { it.toLong() }.toSet()
+        val takenBaseCodes = takenSubjectCodes.mapNotNull { it.toLongOrNull() }.toSet()
         return coursesWithTarget.filter { it.course.baseCode() !in takenBaseCodes }
     }
 
@@ -135,6 +221,7 @@ class MajorCourseRecommendService(
      * 분반 그룹을 추천 과목 응답으로 변환
      * - 같은 baseCode를 가진 과목들을 그룹핑
      * - Target의 grade 정보로 CourseTiming 판단
+     * - 정렬: timing(LATE먼저) → 대상학년 → 과목명
      */
     private fun buildRecommendedCourses(
         coursesWithTarget: List<CourseWithTarget>,
@@ -142,34 +229,21 @@ class MajorCourseRecommendService(
     ): List<RecommendedCourseResponse> {
         return coursesWithTarget
             .groupBy { it.course.baseCode() }
+            .entries
+            .sortedWith(
+                compareBy(
+                    { if (it.value.first().isLateFor(userGrade)) 0 else 1 },
+                    { it.value.first().targetGrades.maxOrNull() ?: 1 },
+                    { it.value.first().course.name },
+                )
+            )
             .map { (_, sections) ->
                 val representative = sections.first()
                 RecommendedCourseResponse.from(
-                    courses = sections.map { it.course },
-                    targetGrades = representative.targetGrades,
+                    coursesWithTarget = sections,
                     isLate = representative.isLateFor(userGrade),
                 )
             }
-            .sortedWith(
-                compareBy(
-                    { it.timing.ordinal },
-                    { it.targetGrades.maxOrNull() ?: 1 },
-                    { it.courseName },
-                )
-            )
-    }
-
-    /**
-     * 학년별 그룹핑 (전선용)
-     * - targetGrades의 최대값 기준으로 그룹핑
-     */
-    private fun buildGradeGroups(courses: List<RecommendedCourseResponse>): List<GradeGroupResponse> {
-        return courses
-            .groupBy { it.targetGrades.maxOrNull() ?: 1 }
-            .map { (grade, groupCourses) ->
-                GradeGroupResponse(grade = grade, courses = groupCourses)
-            }
-            .sortedBy { it.grade }
     }
 
     companion object {

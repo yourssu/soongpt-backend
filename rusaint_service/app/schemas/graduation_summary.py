@@ -44,6 +44,10 @@ class GraduationSummary(BaseModel):
         default_factory=CreditSummaryItem,
         description="전공선택",
     )
+    minor: CreditSummaryItem = Field(
+        default_factory=CreditSummaryItem,
+        description="부전공",
+    )
     doubleMajorRequired: CreditSummaryItem = Field(
         default_factory=CreditSummaryItem,
         description="복수전공필수",
