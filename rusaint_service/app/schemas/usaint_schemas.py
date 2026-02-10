@@ -77,3 +77,4 @@ class UsaintSnapshotResponse(BaseModel):
     lowGradeSubjectCodes: list[str] = Field(default_factory=list, description="C 이하 성적 과목 코드 리스트 (재수강 대상)")
     flags: Flags = Field(default_factory=Flags, description="복수전공/부전공 및 교직 이수 정보")
     basicInfo: BasicInfo = Field(..., description="기본 학적 정보")
+    warnings: list[str] = Field(default_factory=list, description="빈 데이터 경고 코드 (NO_COURSE_HISTORY, NO_SEMESTER_INFO 등)")
