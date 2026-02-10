@@ -43,6 +43,7 @@ sso:
   session-ttl-minutes: ${SSO_SESSION_TTL_MINUTES:60}
   jwt-validity-minutes: ${SSO_JWT_VALIDITY_MINUTES:60}
   allowed-redirect-urls: ${SSO_ALLOWED_REDIRECT_URLS:}
+  cookie-same-site: None
 
 logging:
   level:

@@ -17,4 +17,5 @@ data class SsoProperties(
     val allowedRedirectUrls: List<String> = emptyList(),
     val sessionTtlMinutes: Long = 60L,
     val jwtValidityMinutes: Long = 60L,
+    val cookieSameSite: String = "Lax",
 )

@@ -51,7 +51,7 @@ class ClientJwtProvider(
             secure = true
             path = "/"
             maxAge = (ssoProperties.jwtValidityMinutes * 60).toInt()
-            setAttribute("SameSite", "Lax")
+            setAttribute("SameSite", ssoProperties.cookieSameSite)
         }
     }
 
@@ -61,7 +61,7 @@ class ClientJwtProvider(
             secure = true
             path = "/"
             maxAge = 0
-            setAttribute("SameSite", "Lax")
+            setAttribute("SameSite", ssoProperties.cookieSameSite)
         }
     }
 
