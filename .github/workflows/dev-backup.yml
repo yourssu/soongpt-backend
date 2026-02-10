@@ -1,16 +1,8 @@
-name: Deploy Only
+name: Deploy Only (Dev-Backup)
 
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: 'dev'
-        type: choice
-        options:
-          - dev
-          - prod
       image_tag:
         description: 'Image tag to deploy'
         required: false
@@ -19,7 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: dev-backup
 
     steps:
       - uses: actions/checkout@v4
