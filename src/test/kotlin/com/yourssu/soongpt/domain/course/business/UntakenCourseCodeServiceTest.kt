@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.course.business
 
-import com.yourssu.soongpt.common.config.ClientJwtProvider
+import com.yourssu.soongpt.common.auth.CurrentPseudonymHolder
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
@@ -18,21 +18,15 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.shouldBe
-import jakarta.servlet.http.HttpServletRequest
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.springframework.mock.web.MockHttpServletRequest
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
 
 class UntakenCourseCodeServiceTest : BehaviorSpec({
 
     val courseRepository = mock<CourseRepository>()
     val departmentReader = mock<DepartmentReader>()
-    val clientJwtProvider = mock<ClientJwtProvider>()
     val syncSessionStore = mock<SyncSessionStore>()
-    val service = UntakenCourseCodeService(courseRepository, departmentReader, clientJwtProvider, syncSessionStore)
+    val service = UntakenCourseCodeService(courseRepository, departmentReader, syncSessionStore)
 
     val department = Department(id = 1L, name = "컴퓨터학부", collegeId = 10L)
     val pseudonym = "test-pseudonym"
@@ -47,17 +41,14 @@ class UntakenCourseCodeServiceTest : BehaviorSpec({
         basicInfo = RusaintBasicInfoDto(year = 2023, semester = 1, grade = 3, department = "컴퓨터학부"),
     )
 
-    val mockRequest = MockHttpServletRequest()
-
     beforeSpec {
-        RequestContextHolder.setRequestAttributes(ServletRequestAttributes(mockRequest))
-        whenever(clientJwtProvider.extractPseudonymFromRequest(any<HttpServletRequest>())).thenReturn(Result.success(pseudonym))
+        CurrentPseudonymHolder.set(pseudonym)
         whenever(syncSessionStore.getUsaintData(pseudonym)).thenReturn(usaintData)
         whenever(departmentReader.getByName("컴퓨터학부")).thenReturn(department)
     }
 
     afterSpec {
-        RequestContextHolder.resetRequestAttributes()
+        CurrentPseudonymHolder.clear()
     }
 
     given("전기 - 미수강 과목코드 조회") {

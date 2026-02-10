@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.course.business
 
-import com.yourssu.soongpt.common.config.ClientJwtProvider
+import com.yourssu.soongpt.common.auth.CurrentPseudonymHolder
 import com.yourssu.soongpt.common.handler.UnauthorizedException
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
@@ -9,31 +9,35 @@ import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Service
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
 
 /**
  * 이수구분별 미수강 과목코드(10자리) 조회 서비스
  *
+ * pseudonym은 [CurrentPseudonymHolder]에서 조회한다. HTTP 요청 시 [CurrentPseudonymFilter]가 세팅하므로
+ * 컨트롤러·다른 서비스는 인자를 넘기지 않아도 된다.
+ *
  * 사용법:
  *   val codes = untakenCourseCodeService.getUntakenCourseCodes(Category.MAJOR_REQUIRED)
  *   val fieldMap = untakenCourseCodeService.getUntakenCourseCodesByField(Category.GENERAL_ELECTIVE)
+ *
+ * 비동기/스케줄러 등 HTTP 요청이 아닌 경우: 호출 전 [CurrentPseudonymHolder.set]으로 세팅하거나,
+ * 오버로드 메서드에 pseudonym 인자를 넘긴다.
  */
 @Service
 class UntakenCourseCodeService(
     private val courseRepository: CourseRepository,
     private val departmentReader: DepartmentReader,
-    private val clientJwtProvider: ClientJwtProvider,
     private val syncSessionStore: SyncSessionStore,
 ) {
 
     /**
      * 일반 이수구분용 미수강 과목코드 조회 (전기/전필/전선)
+     *
+     * @param pseudonym HTTP 요청이 아닌 컨텍스트(비동기 등)에서 호출할 때만 넘긴다. null이면 [CurrentPseudonymHolder] 사용.
      */
-    fun getUntakenCourseCodes(category: Category): List<Long> {
-        val usaintData = resolveUsaintData()
+    fun getUntakenCourseCodes(category: Category, pseudonym: String? = null): List<Long> {
+        val usaintData = resolveUsaintData(pseudonym)
         val department = departmentReader.getByName(usaintData.basicInfo.department)
         val maxGrade = if (category == Category.MAJOR_ELECTIVE) MAX_GRADE else usaintData.basicInfo.grade
 
@@ -54,10 +58,11 @@ class UntakenCourseCodeService(
     /**
      * 교양용 미수강 과목코드 조회 (교필/교선 — 분야별 그룹핑)
      *
+     * @param pseudonym HTTP 요청이 아닌 컨텍스트(비동기 등)에서 호출할 때만 넘긴다. null이면 [CurrentPseudonymHolder] 사용.
      * @return 분야명 → 미수강 10자리 과목코드 리스트
      */
-    fun getUntakenCourseCodesByField(category: Category): Map<String, List<Long>> {
-        val usaintData = resolveUsaintData()
+    fun getUntakenCourseCodesByField(category: Category, pseudonym: String? = null): Map<String, List<Long>> {
+        val usaintData = resolveUsaintData(pseudonym)
         val department = departmentReader.getByName(usaintData.basicInfo.department)
         val schoolId = usaintData.basicInfo.year % 100
 
@@ -99,18 +104,11 @@ class UntakenCourseCodeService(
         }
     }
 
-    private fun currentRequest(): HttpServletRequest {
-        val attrs = RequestContextHolder.getRequestAttributes() as? ServletRequestAttributes
-            ?: throw IllegalStateException("HTTP 요청 컨텍스트가 없습니다.")
-        return attrs.request
-    }
+    private fun resolveUsaintData(pseudonym: String? = null): RusaintUsaintDataResponse {
+        val p = pseudonym ?: CurrentPseudonymHolder.get()
+            ?: throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.")
 
-    private fun resolveUsaintData(): RusaintUsaintDataResponse {
-        val request = currentRequest()
-        val pseudonym = clientJwtProvider.extractPseudonymFromRequest(request)
-            .getOrElse { throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.") }
-
-        return syncSessionStore.getUsaintData(pseudonym)
+        return syncSessionStore.getUsaintData(p)
             ?: throw UnauthorizedException(message = "세션이 만료되었습니다. SSO 로그인을 다시 진행해 주세요.")
     }
 
