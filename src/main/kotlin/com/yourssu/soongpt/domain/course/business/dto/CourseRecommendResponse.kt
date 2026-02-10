@@ -6,6 +6,7 @@ package com.yourssu.soongpt.domain.course.business.dto
  * result = { categories: CategoryRecommendResponse[] }
  */
 data class CourseRecommendationsResponse(
+    val warnings: List<String>,
     val categories: List<CategoryRecommendResponse>,
 )
 

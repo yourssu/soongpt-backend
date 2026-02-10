@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.business.dto.FieldGroupResponse
 import com.yourssu.soongpt.domain.course.business.dto.Progress
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.Category
+import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import com.yourssu.soongpt.domain.course.implement.baseCode
@@ -66,22 +67,70 @@ class GeneralCourseRecommendService(
             }
             .groupBy({ it.first }, { it.second })
 
-        // 분야 단위 이수 필터링: 해당 분야에 이미 수강한 과목이 하나라도 있으면 분야 전체 제외
-        val untakenFields = coursesByField.filter { (_, courses) ->
-            courses.none { it.course.baseCode() in takenBaseCodes }
-        }
-
-        if (untakenFields.isEmpty()) {
-            return empty(category, progress)
-        }
-
         return when (category) {
-            Category.GENERAL_REQUIRED -> buildGeneralRequiredResponse(
-                untakenFields, userGrade, progress,
-            )
-            else -> buildGeneralElectiveResponse(
-                untakenFields, userGrade, category, progress,
-            )
+            Category.GENERAL_REQUIRED -> {
+                // 교필: 분야 단위 이수 필터링 — 분야 내 하나라도 이수 시 분야 전체 제외
+                val untakenFields = coursesByField.filter { (_, courses) ->
+                    courses.none { it.course.baseCode() in takenBaseCodes }
+                }
+                if (untakenFields.isEmpty()) return empty(category, progress)
+                buildGeneralRequiredResponse(untakenFields, userGrade, progress)
+            }
+            else -> {
+                // 교선: 과목 단위 이수 필터링 — baseCode(8자리) 일치 과목만 개별 제외
+                val filteredByField = coursesByField.mapValues { (_, courses) ->
+                    courses.filter { it.course.baseCode() !in takenBaseCodes }
+                }.filter { (_, courses) -> courses.isNotEmpty() }
+                if (filteredByField.isEmpty()) return empty(category, progress)
+                buildGeneralElectiveResponse(filteredByField, userGrade, category, progress)
+            }
+        }
+    }
+
+    /**
+     * 교양선택 트랙(분야)별 미수강 과목 조회
+     *
+     * - 이수 필터: baseCode(8자리) 단위 제외 (분야 단위 제외 X — 전공과 동일)
+     * - 이미 충족한 트랙(분야 내 이수 과목 1개 이상) → 빈 리스트
+     * - 미충족 트랙 → 해당 분야의 미수강 과목 리스트
+     *
+     * @return 트랙명 → 미수강 Course 리스트 (충족 트랙은 emptyList)
+     */
+    fun resolveElectiveFields(
+        departmentName: String,
+        userGrade: Int,
+        schoolId: Int,
+        takenSubjectCodes: List<String>,
+    ): Map<String, List<Course>> {
+        val department = departmentReader.getByName(departmentName)
+        val allCourses = courseRepository.findCoursesWithTargetByCategory(
+            category = Category.GENERAL_ELECTIVE,
+            departmentId = department.id!!,
+            collegeId = department.collegeId,
+            maxGrade = userGrade,
+        ).distinctBy { it.course.code }
+
+        if (allCourses.isEmpty()) return emptyMap()
+
+        val takenBaseCodes = takenSubjectCodes.mapNotNull { it.toLongOrNull() }.toSet()
+
+        val coursesByField = allCourses
+            .mapNotNull { cwt ->
+                val fieldName = cwt.course.field
+                    ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                    ?.takeIf { it.isNotBlank() }
+                    ?: return@mapNotNull null
+                Pair(fieldName, cwt)
+            }
+            .groupBy({ it.first }, { it.second })
+
+        return coursesByField.mapValues { (_, courses) ->
+            val completed = courses.any { it.course.baseCode() in takenBaseCodes }
+            if (completed) {
+                emptyList()
+            } else {
+                courses.map { it.course }
+            }
         }
     }
 

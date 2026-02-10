@@ -12,7 +12,8 @@ enum class RecommendCategory(val displayName: String) {
     GENERAL_REQUIRED("교양필수"),
     GENERAL_ELECTIVE("교양선택"),
     RETAKE("재수강"),
-    DOUBLE_MAJOR("복수전공"),
+    DOUBLE_MAJOR_REQUIRED("복수전공필수"),
+    DOUBLE_MAJOR_ELECTIVE("복수전공선택"),
     MINOR("부전공"),
     TEACHING("교직이수"),
 }

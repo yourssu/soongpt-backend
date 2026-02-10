@@ -121,7 +121,8 @@ class CourseController(
                 - `GENERAL_REQUIRED` (교양필수)
                 - `GENERAL_ELECTIVE` (교양선택)
                 - `RETAKE` (재수강)
-                - `DOUBLE_MAJOR` (복수전공) — 준비 중
+                - `DOUBLE_MAJOR_REQUIRED` (복수전공필수) — progress만 제공
+                - `DOUBLE_MAJOR_ELECTIVE` (복수전공선택) — progress만 제공
                 - `MINOR` (부전공) — 준비 중
                 - `TEACHING` (교직이수) — 준비 중
 

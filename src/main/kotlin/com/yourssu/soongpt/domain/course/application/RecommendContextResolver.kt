@@ -1,7 +1,6 @@
 package com.yourssu.soongpt.domain.course.application
 
 import com.yourssu.soongpt.common.config.ClientJwtProvider
-import com.yourssu.soongpt.common.handler.ConflictException
 import com.yourssu.soongpt.common.handler.UnauthorizedException
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryDto
@@ -16,8 +15,9 @@ data class RecommendContext(
     val schoolId: Int,
     val takenSubjectCodes: List<String>,
     val lowGradeSubjectCodes: List<String>,
-    val graduationSummary: RusaintGraduationSummaryDto,
+    val graduationSummary: RusaintGraduationSummaryDto?,
     val flags: RusaintStudentFlagsDto,
+    val warnings: List<String>,
 )
 
 @Component
@@ -37,9 +37,6 @@ class RecommendContextResolver(
         val usaintData = syncSessionStore.getUsaintData(pseudonym)
             ?: throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.")
 
-        val graduationSummary = usaintData.graduationSummary
-            ?: throw ConflictException(message = "졸업사정표 데이터가 없습니다.")
-
         val takenSubjectCodes = usaintData.takenCourses
             .flatMap { it.subjectCodes }
             .distinct()
@@ -53,8 +50,9 @@ class RecommendContextResolver(
             schoolId = schoolId,
             takenSubjectCodes = takenSubjectCodes,
             lowGradeSubjectCodes = usaintData.lowGradeSubjectCodes,
-            graduationSummary = graduationSummary,
+            graduationSummary = usaintData.graduationSummary,
             flags = usaintData.flags,
+            warnings = usaintData.warnings,
         )
     }
 }

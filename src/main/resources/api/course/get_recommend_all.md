@@ -29,7 +29,8 @@ GET /api/courses/recommend/all?category={categories}
 | `MAJOR_ELECTIVE` | 전공선택 |
 | `GENERAL_REQUIRED` | 교양필수 |
 | `RETAKE` | 재수강 |
-| `DOUBLE_MAJOR` | 복수전공 |
+| `DOUBLE_MAJOR_REQUIRED` | 복수전공필수 |
+| `DOUBLE_MAJOR_ELECTIVE` | 복수전공선택 |
 | `MINOR` | 부전공 |
 | `TEACHING` | 교직이수 |
 
@@ -55,17 +56,23 @@ Response<CourseRecommendationsResponse>
 {
   "timestamp": "2025-03-01 12:00:00",
   "result": {
+    "warnings": [],
     "categories": [ CategoryRecommendResponse, ... ]
   }
 }
 ```
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| `warnings` | String[] | rusaint 동기화 경고 메시지. 빈 배열이면 경고 없음 |
+| `categories` | CategoryRecommendResponse[] | 이수구분별 추천 결과 |
 
 ### CategoryRecommendResponse
 
 | 필드 | 타입 | nullable | 설명 |
 |------|------|----------|------|
 | `category` | String | X | 이수구분 (`RecommendCategory` enum name) |
-| `progress` | Progress | O | 졸업사정 이수 현황. **재수강은 null** |
+| `progress` | Progress | O | 졸업사정 이수 현황. **재수강은 null, 졸업사정표 없으면 null** |
 | `message` | String | O | 안내 메시지. **null이면 정상 (과목 존재)** |
 | `userGrade` | Int | O | 사용자 학년 |
 | `courses` | RecommendedCourseResponse[] | X | 추천 과목 flat list |
@@ -117,7 +124,7 @@ Response<CourseRecommendationsResponse>
 |---|---|---|
 | 학년별 그룹 | `targetGrades` | MAJOR_ELECTIVE |
 | 타전공 구분 | `isCrossMajor` | MAJOR_ELECTIVE |
-| 하위 분류 그룹 | `field` | GENERAL_REQUIRED, DOUBLE_MAJOR, MINOR, TEACHING |
+| 하위 분류 그룹 | `field` | GENERAL_REQUIRED, DOUBLE_MAJOR_REQUIRED, DOUBLE_MAJOR_ELECTIVE, MINOR, TEACHING |
 | LATE/ON_TIME 구분 | `timing` | 전체 (재수강 제외) |
 | 현재 학년 | `userGrade` (category 레벨) | MAJOR_ELECTIVE |
 | LATE 분야 안내 | `lateFields` (category 레벨) | GENERAL_REQUIRED |
@@ -127,7 +134,8 @@ Response<CourseRecommendationsResponse>
 | 카테고리 | `field` 값 예시 | 설명 |
 |---|---|---|
 | GENERAL_REQUIRED | `"SW와AI"`, `"창의적사고와혁신"` | 교양 분야명 |
-| DOUBLE_MAJOR | `"복필"`, `"복선"` | 복수전공 이수구분 |
+| DOUBLE_MAJOR_REQUIRED | `"복필"` | 복수전공필수 |
+| DOUBLE_MAJOR_ELECTIVE | `"복선"` | 복수전공선택 |
 | MINOR | `"부필"`, `"부선"` | 부전공 이수구분 |
 | TEACHING | `"전공"`, `"교직"`, `"특성화"` | 교직 영역 |
 | 그 외 | `null` | 사용하지 않음 |
@@ -136,7 +144,14 @@ Response<CourseRecommendationsResponse>
 
 ## 엣지케이스 처리
 
-**프론트 분기 로직: `message != null` → 안내 배너 표시, `message == null` → 과목 카드 렌더링**
+**프론트 분기 로직:**
+1. `warnings` 비어있지 않음 → 경고 배너 표시
+2. `progress == null` (재수강 제외) → 졸업사정표 없어서 판단 불가
+3. `progress.required == 0 && satisfied == true` → 해당 없는 이수구분 → 스킵
+4. `message != null` → 안내 배너 표시 (이미 이수 / 개설 없음)
+5. `message == null` → 과목 카드 렌더링
+
+상세: `recommend_edge_cases.md` 참고
 
 ### 1. 이수구분 이미 충족 (satisfied=true)
 
@@ -360,12 +375,12 @@ Response<CourseRecommendationsResponse>
     └── 디자인씽킹
 ```
 
-### 복수전공
+### 복수전공필수
 
 ```json
 {
-  "category": "DOUBLE_MAJOR",
-  "progress": { "required": 36, "completed": 9, "satisfied": false },
+  "category": "DOUBLE_MAJOR_REQUIRED",
+  "progress": { "required": 18, "completed": 6, "satisfied": false },
   "message": null,
   "userGrade": null,
   "courses": [
@@ -390,7 +405,21 @@ Response<CourseRecommendationsResponse>
           "isStrictRestriction": false
         }
       ]
-    },
+    }
+  ],
+  "lateFields": null
+}
+```
+
+### 복수전공선택
+
+```json
+{
+  "category": "DOUBLE_MAJOR_ELECTIVE",
+  "progress": { "required": 18, "completed": 3, "satisfied": false },
+  "message": null,
+  "userGrade": null,
+  "courses": [
     {
       "baseCourseCode": 21600200,
       "courseName": "마케팅원론",
@@ -408,14 +437,6 @@ Response<CourseRecommendationsResponse>
   ],
   "lateFields": null
 }
-```
-
-프론트 렌더링 (`field`로 groupBy):
-```
-├── 복필
-│   └── 경영학원론 (LATE)
-└── 복선
-    └── 마케팅원론 (ON_TIME)
 ```
 
 ### 부전공
@@ -583,6 +604,7 @@ Response<CourseRecommendationsResponse>
 
 ```typescript
 interface CourseRecommendationsResponse {
+  warnings: string[];
   categories: CategoryRecommendResponse[];
 }
 
@@ -631,7 +653,8 @@ type RecommendCategory =
   | 'MAJOR_ELECTIVE'
   | 'GENERAL_REQUIRED'
   | 'RETAKE'
-  | 'DOUBLE_MAJOR'
+  | 'DOUBLE_MAJOR_REQUIRED'
+  | 'DOUBLE_MAJOR_ELECTIVE'
   | 'MINOR'
   | 'TEACHING';
 ```

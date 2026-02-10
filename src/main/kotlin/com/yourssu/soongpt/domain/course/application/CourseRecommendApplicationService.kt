@@ -37,7 +37,10 @@ class CourseRecommendApplicationService(
             dispatch(category, ctx)
         }
 
-        return CourseRecommendationsResponse(categories = results)
+        return CourseRecommendationsResponse(
+            warnings = ctx.warnings,
+            categories = results,
+        )
     }
 
     private fun dispatch(
@@ -46,7 +49,9 @@ class CourseRecommendApplicationService(
     ): CategoryRecommendResponse {
         return when (category) {
             RecommendCategory.MAJOR_BASIC -> {
-                val progress = Progress.from(ctx.graduationSummary.majorFoundation)
+                val summaryItem = ctx.graduationSummary?.majorFoundation
+                    ?: return noDataResponse(category)
+                val progress = Progress.from(summaryItem)
                 majorCourseRecommendService.recommendMajorBasicOrRequired(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -57,7 +62,9 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.MAJOR_REQUIRED -> {
-                val progress = Progress.from(ctx.graduationSummary.majorRequired)
+                val summaryItem = ctx.graduationSummary?.majorRequired
+                    ?: return noDataResponse(category)
+                val progress = Progress.from(summaryItem)
                 majorCourseRecommendService.recommendMajorBasicOrRequired(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -68,7 +75,9 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.MAJOR_ELECTIVE -> {
-                val progress = Progress.from(ctx.graduationSummary.majorElective)
+                val summaryItem = ctx.graduationSummary?.majorElective
+                    ?: return noDataResponse(category)
+                val progress = Progress.from(summaryItem)
                 majorCourseRecommendService.recommendMajorElectiveWithGroups(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -78,7 +87,9 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.GENERAL_REQUIRED -> {
-                val progress = Progress.from(ctx.graduationSummary.generalRequired)
+                val summaryItem = ctx.graduationSummary?.generalRequired
+                    ?: return noDataResponse(category)
+                val progress = Progress.from(summaryItem)
                 generalCourseRecommendService.recommend(
                     category = Category.GENERAL_REQUIRED,
                     departmentName = ctx.departmentName,
@@ -99,9 +110,34 @@ class CourseRecommendApplicationService(
                 throw IllegalArgumentException("교양선택은 별도 API로 제공 예정입니다.")
             }
 
-            RecommendCategory.DOUBLE_MAJOR, RecommendCategory.MINOR, RecommendCategory.TEACHING -> {
+            RecommendCategory.DOUBLE_MAJOR_REQUIRED -> {
+                val summaryItem = ctx.graduationSummary?.doubleMajorRequired
+                    ?: return noDataResponse(category)
+                val progress = Progress.from(summaryItem)
+                noDataResponse(category).copy(progress = progress)
+            }
+
+            RecommendCategory.DOUBLE_MAJOR_ELECTIVE -> {
+                val summaryItem = ctx.graduationSummary?.doubleMajorElective
+                    ?: return noDataResponse(category)
+                val progress = Progress.from(summaryItem)
+                noDataResponse(category).copy(progress = progress)
+            }
+
+            RecommendCategory.MINOR, RecommendCategory.TEACHING -> {
                 throw IllegalArgumentException("${category.displayName} 추천은 준비 중입니다.")
             }
         }
     }
+
+    private fun noDataResponse(category: RecommendCategory) = CategoryRecommendResponse(
+        category = category.name,
+        progress = null,
+        message = null,
+        userGrade = null,
+        courses = emptyList(),
+        gradeGroups = null,
+        fieldGroups = null,
+        lateFields = null,
+    )
 }
