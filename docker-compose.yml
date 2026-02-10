@@ -1,3 +1,4 @@
+# Local development compose (alias of docker-compose.local.yml)
 services:
   soongpt:
     build: .
