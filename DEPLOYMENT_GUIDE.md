@@ -109,6 +109,7 @@ REPO=yourssu/soongpt-backend SOURCE_ENV=dev TARGET_ENV=dev-backup HOST_URL_OVERR
 ```
 
 - `HOST_URL=api.backup.soongpt.yourssu.com`
+- `SSH_PORT=2222` (dev-backup 기준)
 - `SERVER_PORT=9001`
 - `PROJECT_NAME=soongpt`
 - `ENVIRONMENT=dev`
