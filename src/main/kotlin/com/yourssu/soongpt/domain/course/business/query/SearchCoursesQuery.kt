@@ -11,7 +11,8 @@ class SearchCoursesQuery(
     val sort: String,
 ) {
     fun toPageable(): Pageable {
-        return PageRequest.of(page, size, Sort.by(sort))
+        val direction = Sort.Direction.fromString(sort)
+        return PageRequest.of(page, size, Sort.by(direction, "name"))
     }
 
     fun query(): String {
