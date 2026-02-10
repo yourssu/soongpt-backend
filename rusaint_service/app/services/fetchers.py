@@ -59,7 +59,10 @@ async def fetch_basic_info(student_info_app) -> tuple[BasicInfo, list[str]]:
             student_info, "semester", None
         )
         if term_raw is None:
-            logger.warning("학기 정보가 없어 기본값(1학기) 사용 (새내기 가능성)")
+            logger.warning(
+                "학기 정보가 없어 기본값(1학기) 사용. "
+                "새내기일 가능성이 높지만, 데이터 누락일 수도 있음"
+            )
             warnings.append("NO_SEMESTER_INFO")
             term_raw = 1
         if 1 <= term_raw <= 2:
