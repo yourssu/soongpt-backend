@@ -16,14 +16,17 @@ class RusaintSnapshotMerger {
         academic: RusaintAcademicResponseDto,
         graduation: RusaintGraduationResponseDto?,
     ): RusaintUsaintDataResponse {
-        val pseudonym = if (graduation != null) {
+        val hasGraduationData = graduation != null &&
+            graduation.graduationRequirements.requirements.isNotEmpty()
+
+        val pseudonym = if (hasGraduationData) {
             academic.pseudonym.ifBlank { graduation.pseudonym }
         } else {
             academic.pseudonym
         }
 
         val warnings = academic.warnings.toMutableList()
-        if (graduation == null) {
+        if (!hasGraduationData) {
             warnings.add("NO_GRADUATION_DATA")
         }
 
@@ -33,8 +36,8 @@ class RusaintSnapshotMerger {
             lowGradeSubjectCodes = academic.lowGradeSubjectCodes,
             flags = academic.flags,
             basicInfo = academic.basicInfo,
-            graduationRequirements = graduation?.graduationRequirements,
-            graduationSummary = graduation?.graduationSummary,
+            graduationRequirements = if (hasGraduationData) graduation.graduationRequirements else null,
+            graduationSummary = if (hasGraduationData) graduation.graduationSummary else null,
             warnings = warnings,
         )
     }

@@ -68,6 +68,11 @@ def _is_double_major_combined(name: str) -> bool:
     return "복수전공" in name
 
 
+def _is_minor(name: str) -> bool:
+    """부전공 여부 (필수/선택 구분 없이 전체 부전공)"""
+    return "부전공" in name
+
+
 def _is_christian(name: str) -> bool:
     """기독교과목 여부"""
     return "기독교" in name
@@ -99,6 +104,7 @@ def build_graduation_summary(
     major_combined: Optional[GraduationRequirementItem] = None
     double_major_required: Optional[CreditSummaryItem] = None
     double_major_combined: Optional[GraduationRequirementItem] = None
+    minor: Optional[CreditSummaryItem] = None
     christian: Optional[CreditSummaryItem] = None
     chapel: Optional[ChapelSummaryItem] = None
 
@@ -169,7 +175,16 @@ def build_graduation_summary(
             )
             continue
 
-        # 9. 기독교과목
+        # 9. 부전공 (필수/선택 구분 없이 전체 부전공)
+        if _is_minor(name):
+            minor = CreditSummaryItem(
+                required=_safe_int(req.requirement),
+                completed=_safe_int(req.calculation),
+                satisfied=_safe_bool(req.result),
+            )
+            continue
+
+        # 10. 기독교과목
         if _is_christian(name):
             christian = CreditSummaryItem(
                 required=_safe_int(req.requirement),
@@ -178,7 +193,7 @@ def build_graduation_summary(
             )
             continue
 
-        # 10. 채플 (학점 없이 충족 여부만)
+        # 11. 채플 (학점 없이 충족 여부만)
         if _is_chapel(name):
             chapel = ChapelSummaryItem(satisfied=_safe_bool(req.result))
             continue
@@ -232,6 +247,7 @@ def build_graduation_summary(
         majorFoundation=major_foundation or CreditSummaryItem(),
         majorRequired=major_required or CreditSummaryItem(),
         majorElective=major_elective or CreditSummaryItem(),
+        minor=minor or CreditSummaryItem(),
         doubleMajorRequired=double_major_required or CreditSummaryItem(),
         doubleMajorElective=double_major_elective or CreditSummaryItem(),
         christianCourses=christian or CreditSummaryItem(),
