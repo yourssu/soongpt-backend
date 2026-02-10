@@ -97,7 +97,7 @@ curl -I https://api.backup.soongpt.yourssu.com/actuator/health
 ## 5) GitHub Actions 환경 설정 (dev-backup)
 
 - `dev.yml`은 기존대로 `dev` 환경 자동 배포용
-- `dev-backup.yml`은 `dev-backup` 환경 수동 배포 전용 (`workflow_dispatch`)
+- `deploy-only.yml`은 수동 배포 전용 (`workflow_dispatch`)이며 `dev-backup/dev/prod` 선택 가능
 
 ### Variables (Environment: dev-backup)
 
@@ -137,9 +137,8 @@ REPO=yourssu/soongpt-backend SOURCE_ENV=dev TARGET_ENV=dev-backup HOST_URL_OVERR
 
 ### Dev-backup 수동 배포
 
-`Actions > Deploy Only (Dev-Backup)`에서 실행.
-
-(`deploy-only.yml`은 기존 dev/prod 선택용으로 유지)
+`Actions > Deploy Only` 실행 후 `environment=dev-backup` 선택.
+(같은 워크플로에서 `dev`/`prod`도 선택 가능)
 
 ---
 

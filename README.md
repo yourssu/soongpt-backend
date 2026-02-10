@@ -24,7 +24,7 @@
 
 ## Github Actions
 - Env var sync helper: `ops/github/sync-env-vars.sh`
-- Manual dev-backup deploy workflow: `.github/workflows/dev-backup.yml`
+- Manual deploy workflow: `.github/workflows/deploy-only.yml` (dev/dev-backup/prod)
 [![Dev - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml)  
 
 [![Prod - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/prod.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/prod.yml)    
