@@ -39,11 +39,13 @@ class UntakenCourseCodeService(
     fun getUntakenCourseCodes(category: Category, pseudonym: String? = null): List<Long> {
         val usaintData = resolveUsaintData(pseudonym)
         val department = departmentReader.getByName(usaintData.basicInfo.department)
+        val departmentId = department.id
+            ?: throw IllegalStateException("학과 ID가 없습니다: ${department.name}")
         val maxGrade = if (category == Category.MAJOR_ELECTIVE) MAX_GRADE else usaintData.basicInfo.grade
 
         val coursesWithTarget = courseRepository.findCoursesWithTargetByCategory(
             category = category,
-            departmentId = department.id!!,
+            departmentId = departmentId,
             collegeId = department.collegeId,
             maxGrade = maxGrade,
         )
@@ -64,11 +66,13 @@ class UntakenCourseCodeService(
     fun getUntakenCourseCodesByField(category: Category, pseudonym: String? = null): Map<String, List<Long>> {
         val usaintData = resolveUsaintData(pseudonym)
         val department = departmentReader.getByName(usaintData.basicInfo.department)
+        val departmentId = department.id
+            ?: throw IllegalStateException("학과 ID가 없습니다: ${department.name}")
         val schoolId = usaintData.basicInfo.year % 100
 
         val allCourses = courseRepository.findCoursesWithTargetByCategory(
             category = category,
-            departmentId = department.id!!,
+            departmentId = departmentId,
             collegeId = department.collegeId,
             maxGrade = usaintData.basicInfo.grade,
         ).distinctBy { it.course.code }
