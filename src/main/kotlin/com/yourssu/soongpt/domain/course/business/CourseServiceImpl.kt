@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.business.dto.*
 import com.yourssu.soongpt.domain.course.business.query.*
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
@@ -117,7 +118,26 @@ class CourseServiceImpl(
 
     override fun search(query: SearchCoursesQuery): SearchCoursesResponse {
         val page = courseReader.searchCourses(query.query, query.toPageable())
-        return SearchCoursesResponse.from(page)
+        val courses = page.content.filter { it.baseCode() !in CHAPEL_BASE_CODES }
+
+        val codes = courses.map { it.code }.distinct()
+        val targetsByCode = targetReader.findAllByCodes(codes)
+        val isStrictByCode = codes.associateWith { code ->
+            (targetsByCode[code] ?: emptyList()).any { it.isStrict }
+        }
+
+        val grouped = courses.groupBy { it.baseCode() }
+        val coursesList = grouped.map { (_, groupCourses) ->
+            SearchCourseGroupResponse.from(groupCourses, isStrictByCode)
+        }
+
+        return SearchCoursesResponse(
+            courses = coursesList,
+            totalElements = page.totalElements,
+            totalPages = page.totalPages,
+            size = page.size,
+            page = page.number,
+        )
     }
 
     override fun findAllByCode(codes: List<Long>): List<CourseDetailResponse> {
@@ -415,5 +435,9 @@ class CourseServiceImpl(
             val courseTimes = CourseTimes.from(course.scheduleRoom)
             CourseResponse.from(course, courseTimes.toList())
         }
+    }
+
+    companion object {
+        private val CHAPEL_BASE_CODES = setOf(21500785L, 21501015L)
     }
 }
