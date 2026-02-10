@@ -4,7 +4,6 @@ import type {
   CoursesResponse,
   CourseTargetResponse,
   Course,
-  SecondaryMajorCourseRecommendResponse,
   SecondaryMajorTrackType,
   SecondaryMajorCompletionType,
 } from '../types/course';
@@ -54,14 +53,17 @@ export interface FilterCoursesParams {
   field?: string;
 }
 
-export interface SecondaryMajorRecommendParams {
+export interface GetCoursesByTrackParams {
+  schoolId: number;
   department: string;
-  grade: number;
   trackType: SecondaryMajorTrackType;
-  completionType: SecondaryMajorCompletionType;
-  takenSubjectCodes?: string[];
-  progress?: string;
-  satisfied?: boolean;
+  completionType?: SecondaryMajorCompletionType;
+}
+
+export interface GetTeachingCoursesParams {
+  schoolId: number;
+  department: string;
+  teachingArea?: string;
 }
 
 export const courseApi = {
@@ -89,10 +91,15 @@ export const courseApi = {
     return response.data.result;
   },
 
-  getSecondaryMajorRecommendedCourses: async (
-    params: SecondaryMajorRecommendParams,
-  ): Promise<SecondaryMajorCourseRecommendResponse> => {
-    const response = await api.get<ApiResponse<SecondaryMajorCourseRecommendResponse>>('/courses/secondary-major/recommend', {
+  getCoursesByTrack: async (params: GetCoursesByTrackParams): Promise<Course[]> => {
+    const response = await api.get<ApiResponse<Course[]>>('/courses/by-track', {
+      params,
+    });
+    return response.data.result;
+  },
+
+  getTeachingCourses: async (params: GetTeachingCoursesParams): Promise<Course[]> => {
+    const response = await api.get<ApiResponse<Course[]>>('/courses/teaching', {
       params,
     });
     return response.data.result;

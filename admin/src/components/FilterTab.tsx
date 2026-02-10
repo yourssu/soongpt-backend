@@ -3,10 +3,10 @@ import { courseApi } from '../api/courseApi';
 import type {
   Course,
   SecondaryMajorCompletionType,
-  SecondaryMajorCourseRecommendResponse,
   SecondaryMajorTrackType,
 } from '../types/course';
 import { colleges, categories, grades } from '../data/departments';
+import { isTeachingEligible } from '../data/teachingDepartments';
 
 interface FilterTabProps {
   onCourseClick: (course: Course, index: number) => void;
@@ -14,21 +14,20 @@ interface FilterTabProps {
   onFilterResults: (results: Course[]) => void;
 }
 
-type FilterMode = 'category' | 'secondaryMajor';
-
-interface SecondaryMajorSummary {
-  trackType: string;
-  completionType: string;
-  classification: string;
-  progress: string | null;
-  satisfied: boolean;
-  message: string | null;
-}
+type FilterMode = 'category' | 'secondaryMajor' | 'teaching';
 
 const secondaryMajorTrackOptions: Array<{ value: SecondaryMajorTrackType; label: string }> = [
   { value: 'DOUBLE_MAJOR', label: '복수전공' },
   { value: 'MINOR', label: '부전공' },
   { value: 'CROSS_MAJOR', label: '타전공인정' },
+];
+
+const teachingAreaOptions: Array<{ value: string; label: string }> = [
+  { value: '', label: '전체' },
+  { value: 'THEORY', label: '교직이론' },
+  { value: 'LITERACY', label: '교직소양' },
+  { value: 'PRACTICE', label: '교육실습' },
+  { value: 'SUBJECT_EDUCATION', label: '교과교육' },
 ];
 
 const secondaryMajorCompletionOptions: Record<
@@ -46,43 +45,6 @@ const secondaryMajorCompletionOptions: Record<
   CROSS_MAJOR: [{ value: 'RECOGNIZED', label: '타전공인정과목' }],
 };
 
-const formatCredits = (credits: number | null): string => {
-  if (credits === null) {
-    return '-';
-  }
-  return Number.isInteger(credits) ? `${credits}` : credits.toString();
-};
-
-const mapSecondaryMajorCoursesToTableRows = (
-  response: SecondaryMajorCourseRecommendResponse,
-  department: string,
-): Course[] => {
-  return response.courses.flatMap((recommendedCourse) => {
-    const targetGradeText = recommendedCourse.targetGrades.length > 0
-      ? recommendedCourse.targetGrades.map((grade) => `${grade}학년`).join(', ')
-      : '-';
-    const timingText = recommendedCourse.timing === 'LATE' ? '권장학년 경과' : '권장학년';
-    const targetText = targetGradeText === '-' ? timingText : `${targetGradeText} (${timingText})`;
-
-    return recommendedCourse.sections.map((section) => ({
-      id: null,
-      category: 'OTHER',
-      subCategory: response.classification,
-      field: null,
-      code: section.courseCode,
-      name: recommendedCourse.courseName,
-      professor: section.professor,
-      department,
-      division: null,
-      time: section.schedule,
-      point: formatCredits(recommendedCourse.credits),
-      personeel: 0,
-      scheduleRoom: '-',
-      target: targetText,
-    }));
-  });
-};
-
 export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: FilterTabProps) => {
   const [filteredCourses, setFilteredCourses] = useState<Course[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -93,14 +55,13 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTrackType, setSelectedTrackType] = useState<SecondaryMajorTrackType>('DOUBLE_MAJOR');
   const [selectedCompletionType, setSelectedCompletionType] = useState<SecondaryMajorCompletionType>('REQUIRED');
-  const [secondaryMajorSummary, setSecondaryMajorSummary] = useState<SecondaryMajorSummary | null>(null);
+  const [selectedTeachingArea, setSelectedTeachingArea] = useState('');
   const [schoolId] = useState(20);
 
   const handleFilterModeChange = (mode: FilterMode) => {
     setFilterMode(mode);
     setFilteredCourses(null);
     setError(null);
-    setSecondaryMajorSummary(null);
     onFilterResults([]);
   };
 
@@ -127,27 +88,25 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
           grade: selectedGrade,
           category: selectedCategory || undefined,
         });
-        setSecondaryMajorSummary(null);
         setFilteredCourses(data);
         onFilterResults(data);
-      } else {
-        const data = await courseApi.getSecondaryMajorRecommendedCourses({
+      } else if (filterMode === 'secondaryMajor') {
+        const data = await courseApi.getCoursesByTrack({
+          schoolId,
           department: selectedDepartment,
-          grade: selectedGrade,
           trackType: selectedTrackType,
           completionType: selectedCompletionType,
         });
-        const mappedCourses = mapSecondaryMajorCoursesToTableRows(data, selectedDepartment);
-        setSecondaryMajorSummary({
-          trackType: data.trackType,
-          completionType: data.completionType,
-          classification: data.classification,
-          progress: data.progress,
-          satisfied: data.satisfied,
-          message: data.message,
+        setFilteredCourses(data);
+        onFilterResults(data);
+      } else if (filterMode === 'teaching') {
+        const data = await courseApi.getTeachingCourses({
+          schoolId,
+          department: selectedDepartment,
+          teachingArea: selectedTeachingArea || undefined,
         });
-        setFilteredCourses(mappedCourses);
-        onFilterResults(mappedCourses);
+        setFilteredCourses(data);
+        onFilterResults(data);
       }
     } catch (err) {
       setError('과목을 불러오는데 실패했습니다.');
@@ -171,6 +130,9 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
             >
               <option value="category">일반 이수구분</option>
               <option value="secondaryMajor">다전공/부전공</option>
+              {(!selectedDepartment || isTeachingEligible(selectedDepartment)) && (
+                <option value="teaching">교직</option>
+              )}
             </select>
           </div>
 
@@ -179,37 +141,59 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
             <select
               id="department"
               value={selectedDepartment}
-              onChange={(e) => setSelectedDepartment(e.target.value)}
+              onChange={(e) => {
+                const newDepartment = e.target.value;
+                setSelectedDepartment(newDepartment);
+                // 교직 필터 중이고 새로 선택한 학과가 교직 이수 불가능하면 일반 필터로 변경
+                if (filterMode === 'teaching' && newDepartment && !isTeachingEligible(newDepartment)) {
+                  setFilterMode('category');
+                  alert('선택한 학과는 교직 이수가 불가능하여 일반 이수구분 필터로 전환되었습니다.');
+                }
+              }}
               className="filter-select"
             >
               <option value="">학과 선택</option>
-              {colleges.map((college) => (
-                <optgroup key={college.name} label={college.name}>
-                  {college.departments.map((dept) => (
-                    <option key={dept} value={dept}>
-                      {dept}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
+              {colleges.map((college) => {
+                // 교직 필터일 때는 교직 이수 가능 학과만 표시
+                const filteredDepartments = filterMode === 'teaching'
+                  ? college.departments.filter(dept => isTeachingEligible(dept))
+                  : college.departments;
+
+                // 교직 필터일 때 해당 단과대에 교직 이수 가능 학과가 없으면 optgroup 자체를 숨김
+                if (filterMode === 'teaching' && filteredDepartments.length === 0) {
+                  return null;
+                }
+
+                return (
+                  <optgroup key={college.name} label={college.name}>
+                    {filteredDepartments.map((dept) => (
+                      <option key={dept} value={dept}>
+                        {dept}
+                      </option>
+                    ))}
+                  </optgroup>
+                );
+              })}
             </select>
           </div>
 
-          <div className="filter-field">
-            <label htmlFor="grade">학년</label>
-            <select
-              id="grade"
-              value={selectedGrade}
-              onChange={(e) => setSelectedGrade(Number(e.target.value))}
-              className="filter-select"
-            >
-              {grades.map((grade) => (
-                <option key={grade} value={grade}>
-                  {grade}학년
-                </option>
-              ))}
-            </select>
-          </div>
+          {filterMode === 'category' && (
+            <div className="filter-field">
+              <label htmlFor="grade">학년</label>
+              <select
+                id="grade"
+                value={selectedGrade}
+                onChange={(e) => setSelectedGrade(Number(e.target.value))}
+                className="filter-select"
+              >
+                {grades.map((grade) => (
+                  <option key={grade} value={grade}>
+                    {grade}학년
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {filterMode === 'category' && (
             <div className="filter-field">
@@ -266,6 +250,24 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
             </>
           )}
 
+          {filterMode === 'teaching' && (
+            <div className="filter-field">
+              <label htmlFor="teaching-area">교직 영역</label>
+              <select
+                id="teaching-area"
+                value={selectedTeachingArea}
+                onChange={(e) => setSelectedTeachingArea(e.target.value)}
+                className="filter-select"
+              >
+                {teachingAreaOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <button type="submit" className="filter-button">조회</button>
         </div>
       </form>
@@ -283,21 +285,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         <>
           <div className="course-info">
             총 {filteredCourses.length}개의 과목
-            {secondaryMajorSummary && ` · 분류: ${secondaryMajorSummary.classification}`}
-            {secondaryMajorSummary?.progress && ` · 이수현황: ${secondaryMajorSummary.progress}`}
           </div>
-
-          {secondaryMajorSummary?.message && (
-            <div className="course-info">
-              {secondaryMajorSummary.message}
-            </div>
-          )}
-
-          {secondaryMajorSummary?.satisfied && (
-            <div className="course-info">
-              현재 이수 요건을 이미 충족했습니다.
-            </div>
-          )}
 
           <div className="table-container">
             <table className="course-table">
@@ -312,7 +300,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                   <th>시간</th>
                   <th>정원</th>
                   <th>강의실</th>
-                  <th>수강대상</th>
+                  {filterMode === 'category' && <th>수강대상</th>}
                 </tr>
               </thead>
               <tbody>
@@ -329,9 +317,9 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                     <td>{course.department}</td>
                     <td>{course.point}</td>
                     <td>{course.time}</td>
-                    <td>{filterMode === 'secondaryMajor' ? '-' : course.personeel}</td>
-                    <td>{filterMode === 'secondaryMajor' ? '-' : course.scheduleRoom}</td>
-                    <td>{course.target}</td>
+                    <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.personeel}</td>
+                    <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.scheduleRoom}</td>
+                    {filterMode === 'category' && <td>{course.target}</td>}
                   </tr>
                 ))}
               </tbody>

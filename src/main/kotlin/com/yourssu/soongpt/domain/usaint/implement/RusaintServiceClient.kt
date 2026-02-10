@@ -5,6 +5,8 @@ import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceExcepti
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAcademicResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -37,7 +39,7 @@ class RusaintServiceClient(
             Supplier {
                 val simple = SimpleClientHttpRequestFactory().apply {
                     setConnectTimeout(Duration.ofSeconds(3))
-                    setReadTimeout(Duration.ofSeconds(8))
+                    setReadTimeout(Duration.ofSeconds(15))
                 }
                 BufferingClientHttpRequestFactory(simple)
             },
@@ -61,14 +63,26 @@ class RusaintServiceClient(
     fun getGraduationSnapshot(
         studentId: String,
         sToken: String,
-    ): RusaintGraduationResponseDto {
+    ): RusaintGraduationResponseDto? {
         val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
-        return executeRusaintCall("graduation") {
-            val responseEntity = restTemplate.postForEntity<RusaintGraduationResponseDto>(
-                "/api/usaint/snapshot/graduation",
-                requestEntity,
-            )
-            requireNotNull(responseEntity.body) { "Empty response from rusaint-service (graduation)" }
+        return try {
+            executeRusaintCall("graduation") {
+                val responseEntity = restTemplate.postForEntity<RusaintGraduationResponseDto>(
+                    "/api/usaint/snapshot/graduation",
+                    requestEntity,
+                )
+                requireNotNull(responseEntity.body) { "Empty response from rusaint-service (graduation)" }
+            }
+        } catch (e: RusaintServiceException) {
+            // 401/502/504 인프라 에러는 그대로 throw
+            if (e.isUnauthorized || e.serviceStatusCode in listOf(502, 504)) {
+                throw e
+            }
+            // 500 등 데이터 없음 에러 → null 반환 (새내기 등)
+            // TODO(PT-134): rusaint 라이브러리가 "데이터 없음"과 "파싱 오류"를 구분하지 못하는 제약사항.
+            //  401/502/504는 위에서 throw하고, 500은 세션 생성 후 데이터 파싱 실패이므로 보수적으로 null 처리.
+            logger.warn { "졸업사정표 조회 실패 (데이터 없음 가능성), null 반환: status=${e.serviceStatusCode}, detail=${e.serviceDetail}" }
+            null
         }
     }
 
@@ -108,16 +122,31 @@ class RusaintServiceClient(
         return try {
             block()
         } catch (e: HttpStatusCodeException) {
-            logger.error(e) { "rusaint-service 호출 실패: call=$callName, status=${e.statusCode.value()}" }
+            val detail = extractDetail(e)
+            logger.error(e) {
+                "rusaint-service 호출 실패: call=$callName, status=${e.statusCode.value()}, detail=$detail"
+            }
             throw RusaintServiceException(
                 message = "rusaint 서비스 호출이 실패했습니다. (status=${e.statusCode.value()})",
                 serviceStatusCode = e.statusCode.value(),
+                serviceDetail = detail,
             )
         } catch (e: RestClientException) {
             logger.error(e) { "rusaint-service 통신 중 예외 발생: call=$callName" }
             throw RusaintServiceException(
                 message = "rusaint 서비스와 통신할 수 없습니다. (${e.message})",
             )
+        }
+    }
+
+    private fun extractDetail(e: HttpStatusCodeException): String? {
+        return try {
+            val body = e.responseBodyAsString
+            if (body.isBlank()) return null
+            val map: Map<String, Any?> = jacksonObjectMapper().readValue(body)
+            map["detail"]?.toString()
+        } catch (_: Exception) {
+            null
         }
     }
 }

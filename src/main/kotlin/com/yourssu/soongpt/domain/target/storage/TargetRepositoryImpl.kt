@@ -14,35 +14,47 @@ import org.springframework.stereotype.Component
 
 @Component
 class TargetRepositoryImpl(
-    val targetJpaRepository: TargetJpaRepository,
-    val jpaQueryFactory: JPAQueryFactory,
+        val targetJpaRepository: TargetJpaRepository,
+        val jpaQueryFactory: JPAQueryFactory,
 ) : TargetRepository {
 
     override fun findAllByCode(code: Long): List<Target> {
         return jpaQueryFactory
-            .selectFrom(targetEntity)
-            .where(targetEntity.courseCode.eq(code))
-            .fetch()
-            .map { it.toDomain() }
+                .selectFrom(targetEntity)
+                .where(targetEntity.courseCode.eq(code))
+                .fetch()
+                .map { it.toDomain() }
     }
 
     override fun findAllByDepartmentGrade(
-        departmentId: Long,
-        collegeId: Long,
-        grade: Int
+            departmentId: Long,
+            collegeId: Long,
+            grade: Int
     ): List<Long> {
-        val gradeCondition = buildGradeCondition(grade)
-            ?: throw IllegalArgumentException("Invalid grade: $grade")
-        return findCourseCodesByCondition(departmentId, collegeId, gradeCondition)
+        val gradeCondition =
+                buildGradeCondition(grade)
+                        ?: throw IllegalArgumentException("Invalid grade: $grade")
+        return findCourseCodesByCondition(departmentId, collegeId, gradeCondition, StudentType.GENERAL)
+    }
+
+    override fun findAllByDepartmentGradeForTeaching(
+            departmentId: Long,
+            collegeId: Long,
+            grade: Int
+    ): List<Long> {
+        val gradeCondition =
+                buildGradeCondition(grade)
+                        ?: throw IllegalArgumentException("Invalid grade: $grade")
+        return findCourseCodesByCondition(departmentId, collegeId, gradeCondition, StudentType.TEACHING_CERT)
     }
 
     override fun findAllByDepartmentGradeRange(
-        departmentId: Long,
-        collegeId: Long,
-        maxGrade: Int
+            departmentId: Long,
+            collegeId: Long,
+            maxGrade: Int
     ): List<Long> {
         val gradeCondition = buildGradeRangeCondition(maxGrade)
-        return findCourseCodesByCondition(departmentId, collegeId, gradeCondition)
+        return findCourseCodesByCondition(departmentId, collegeId, gradeCondition, StudentType.GENERAL)
     }
 
     override fun findAllByClass(departmentId: Long, code: Long, grade: Int): List<Target> {
@@ -50,79 +62,86 @@ class TargetRepositoryImpl(
         val gradeCondition = buildGradeCondition(grade)
 
         return jpaQueryFactory
-            .selectFrom(targetEntity)
-            .innerJoin(courseEntity)
-            .on(targetEntity.courseCode.eq(courseEntity.code))
-            .where(
-                targetEntity.departmentId.eq(departmentId),
-                courseEntity.code.divide(DIVISION_DIVISOR).longValue().eq(codeWithoutDivision),
-                gradeCondition
-            )
-            .fetch()
-            .map { it.toDomain() }
+                .selectFrom(targetEntity)
+                .innerJoin(courseEntity)
+                .on(targetEntity.courseCode.eq(courseEntity.code))
+                .where(
+                        targetEntity.departmentId.eq(departmentId),
+                        courseEntity
+                                .code
+                                .divide(DIVISION_DIVISOR)
+                                .longValue()
+                                .eq(codeWithoutDivision),
+                        gradeCondition
+                )
+                .fetch()
+                .map { it.toDomain() }
     }
 
     // ============ Private Helper Methods ============
 
-    /**
-     * 공통 과목 코드 조회 로직 (Allow - Deny)
-     */
+    /** 공통 과목 코드 조회 로직 (Allow - Deny) */
     private fun findCourseCodesByCondition(
-        departmentId: Long,
-        collegeId: Long,
-        gradeCondition: BooleanExpression
+            departmentId: Long,
+            collegeId: Long,
+            gradeCondition: BooleanExpression,
+            studentType: StudentType = StudentType.GENERAL
     ): List<Long> {
         val scopeCondition = buildScopeCondition(departmentId, collegeId)
 
-        val allowCourses = jpaQueryFactory
-            .select(targetEntity.courseCode)
-            .from(targetEntity)
-            .where(
-                targetEntity.studentType.eq(StudentType.GENERAL),
-                targetEntity.isDenied.isFalse,
-                gradeCondition,
-                scopeCondition
-            )
-            .fetch()
-            .toSet()
+        val allowCourses =
+                jpaQueryFactory
+                        .select(targetEntity.courseCode)
+                        .from(targetEntity)
+                        .where(
+                                targetEntity.studentType.eq(studentType),
+                                targetEntity.isDenied.isFalse,
+                                gradeCondition,
+                                scopeCondition
+                        )
+                        .fetch()
+                        .toSet()
 
         if (allowCourses.isEmpty()) {
             return emptyList()
         }
 
-        val denyCourses = jpaQueryFactory
-            .select(targetEntity.courseCode)
-            .from(targetEntity)
-            .where(
-                targetEntity.studentType.eq(StudentType.GENERAL),
-                targetEntity.isDenied.isTrue,
-                gradeCondition,
-                scopeCondition
-            )
-            .fetch()
-            .toSet()
+        val denyCourses =
+                jpaQueryFactory
+                        .select(targetEntity.courseCode)
+                        .from(targetEntity)
+                        .where(
+                                targetEntity.studentType.eq(studentType),
+                                targetEntity.isDenied.isTrue,
+                                gradeCondition,
+                                scopeCondition
+                        )
+                        .fetch()
+                        .toSet()
 
         return (allowCourses - denyCourses).toList()
     }
 
-    /**
-     * 범위 조건 (UNIVERSITY / COLLEGE / DEPARTMENT)
-     */
+    /** 범위 조건 (UNIVERSITY / COLLEGE / DEPARTMENT) */
     private fun buildScopeCondition(departmentId: Long, collegeId: Long): BooleanExpression {
-        return targetEntity.scopeType.eq(ScopeType.UNIVERSITY)
-            .or(
-                targetEntity.scopeType.eq(ScopeType.COLLEGE)
-                    .and(targetEntity.collegeId.eq(collegeId))
-            )
-            .or(
-                targetEntity.scopeType.eq(ScopeType.DEPARTMENT)
-                    .and(targetEntity.departmentId.eq(departmentId))
-            )
+        return targetEntity
+                .scopeType
+                .eq(ScopeType.UNIVERSITY)
+                .or(
+                        targetEntity
+                                .scopeType
+                                .eq(ScopeType.COLLEGE)
+                                .and(targetEntity.collegeId.eq(collegeId))
+                )
+                .or(
+                        targetEntity
+                                .scopeType
+                                .eq(ScopeType.DEPARTMENT)
+                                .and(targetEntity.departmentId.eq(departmentId))
+                )
     }
 
-    /**
-     * 단일 학년 조건
-     */
+    /** 단일 학년 조건 */
     private fun buildGradeCondition(grade: Int): BooleanExpression? {
         return when (grade) {
             1 -> targetEntity.grade1.isTrue
@@ -134,9 +153,7 @@ class TargetRepositoryImpl(
         }
     }
 
-    /**
-     * 학년 범위 조건 (1 ~ maxGrade)
-     */
+    /** 학년 범위 조건 (1 ~ maxGrade) */
     private fun buildGradeRangeCondition(maxGrade: Int): BooleanExpression {
         var condition = targetEntity.grade1.isTrue
         if (maxGrade >= 2) condition = condition.or(targetEntity.grade2.isTrue)
@@ -145,7 +162,6 @@ class TargetRepositoryImpl(
         if (maxGrade >= 5) condition = condition.or(targetEntity.grade5.isTrue)
         return condition
     }
-
 
     override fun saveAll(targets: List<Target>): List<Target> {
         val entities = targets.map { TargetEntity.from(it) }

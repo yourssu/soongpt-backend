@@ -16,6 +16,12 @@ from app.core.security import generate_pseudonym
 from app.services.constants import SEMESTER_TYPE_MAP
 from app.services import session as session_module
 from app.services import fetchers
+from app.services.exceptions import (
+    SSOTokenError,
+    RusaintConnectionError,
+    RusaintTimeoutError,
+    RusaintInternalError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -74,8 +80,8 @@ class RusaintAcademicService:
 
             data_start = time.time()
             (
-                basic_info,
-                (taken_courses, low_grade_codes),
+                (basic_info, basic_warnings),
+                (taken_courses, low_grade_codes, course_warnings),
                 flags,
             ) = await asyncio.gather(
                 fetchers.fetch_basic_info(student_info_app),
@@ -86,39 +92,45 @@ class RusaintAcademicService:
             )
             logger.info(f"데이터 조회 완료: {time.time() - data_start:.2f}초")
 
+            warnings = basic_warnings + course_warnings
+            if warnings:
+                logger.info(f"Academic warnings: {warnings}")
+
             total_time = time.time() - start_time
             logger.info(
                 f"유세인트 Academic 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)"
             )
 
             pseudonym = generate_pseudonym(student_id, settings.pseudonym_secret)
-            return {
+            result = {
                 "pseudonym": pseudonym,
                 "takenCourses": taken_courses,
                 "lowGradeSubjectCodes": low_grade_codes,
                 "flags": flags,
                 "basicInfo": basic_info,
             }
+            if warnings:
+                result["warnings"] = warnings
+            return result
 
+        except (SSOTokenError, RusaintConnectionError, RusaintTimeoutError, RusaintInternalError):
+            raise
         except rusaint.RusaintError as e:
             logger.error(
                 f"Rusaint 오류 (student_id={student_id[:4]}****): {type(e).__name__}\n"
                 f"에러 메시지: {str(e)}",
                 exc_info=True,
             )
-            raise ValueError("유세인트 로그인에 실패했습니다. SSO 토큰을 확인해주세요.")
-        except ValueError as e:
-            logger.error(f"SSO 토큰 오류 (student_id={student_id[:4]}****): {str(e)}")
-            raise
+            raise RusaintInternalError(f"유세인트 데이터 조회 중 오류: {type(e).__name__} - {str(e)}")
         except asyncio.TimeoutError:
             logger.error(f"유세인트 연결 시간 초과 (student_id={student_id[:4]}****)")
-            raise ValueError("유세인트 연결 시간이 초과되었습니다.")
+            raise RusaintTimeoutError("유세인트 서버 응답 시간이 초과되었습니다.")
         except Exception as e:
             logger.error(
                 f"유세인트 Academic 데이터 조회 중 오류 발생 (student_id={student_id[:4]}****): {type(e).__name__}\n"
                 f"에러 메시지: {str(e)}",
                 exc_info=True,
             )
-            raise
+            raise RusaintInternalError(f"예기치 않은 오류: {type(e).__name__} - {str(e)}")
         finally:
             await session_module.cleanup_sessions(sessions)

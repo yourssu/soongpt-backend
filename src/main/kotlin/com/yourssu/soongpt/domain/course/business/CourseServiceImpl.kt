@@ -6,9 +6,9 @@ import com.yourssu.soongpt.domain.course.business.query.*
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
-import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
+import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.ScopeType
 import com.yourssu.soongpt.domain.target.implement.TargetReader
@@ -27,20 +27,91 @@ class CourseServiceImpl(
         val department = departmentReader.getByName(query.departmentName)
         val courseCodes = targetReader.findAllByDepartmentGrade(department, query.grade)
         val courses =
-            if (query.field != null) {
-                courseReader.findAllInCategory(
-                    query.category,
-                    courseCodes,
-                    query.field,
-                    query.schoolId
-                )
-            } else {
-                courseReader.findAllInCategory(query.category, courseCodes, query.schoolId)
-            }
+                if (query.field != null) {
+                    courseReader.findAllInCategory(
+                            query.category,
+                            courseCodes,
+                            query.field,
+                            query.schoolId
+                    )
+                } else {
+                    courseReader.findAllInCategory(query.category, courseCodes, query.schoolId)
+                }
 
         return courses.map { course ->
             val courseTimes = CourseTimes.from(course.scheduleRoom)
             CourseResponse.from(course, courseTimes.toList())
+        }
+    }
+
+    override fun findAllByTrack(query: FilterCoursesByTrackQuery): List<CourseResponse> {
+        val department = departmentReader.getByName(query.departmentName)
+        val college = collegeReader.get(department.collegeId)
+
+        // 전체 학년(1-5) 조회
+        val allGrades = (1..5)
+
+        // completionType이 지정된 경우 해당 이수구분만 조회
+        if (query.completionType != null) {
+            val coursesWithTarget =
+                    allGrades.flatMap { grade ->
+                        courseReader.findCoursesWithTargetBySecondaryMajor(
+                                trackType = query.trackType,
+                                completionType = query.completionType,
+                                departmentId = department.id!!,
+                                collegeId = college.id!!,
+                                maxGrade = grade,
+                        )
+                    }
+
+            // 중복 제거 (같은 과목 코드)
+            val uniqueCourses = coursesWithTarget.distinctBy { it.course.code }
+
+            return uniqueCourses.map { courseWithTarget ->
+                val courseTimes = CourseTimes.from(courseWithTarget.course.scheduleRoom)
+                CourseResponse.from(courseWithTarget.course, courseTimes.toList())
+            }
+        }
+
+        // completionType이 없으면 해당 trackType의 모든 이수구분 조회
+        val allCompletionTypes =
+                when (query.trackType) {
+                    com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType
+                            .DOUBLE_MAJOR,
+                    com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType.MINOR ->
+                            listOf(
+                                    com.yourssu.soongpt.domain.course.implement
+                                            .SecondaryMajorCompletionType.REQUIRED,
+                                    com.yourssu.soongpt.domain.course.implement
+                                            .SecondaryMajorCompletionType.ELECTIVE
+                            )
+                    com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType
+                            .CROSS_MAJOR ->
+                            listOf(
+                                    com.yourssu.soongpt.domain.course.implement
+                                            .SecondaryMajorCompletionType.RECOGNIZED
+                            )
+                }
+
+        val allCourses =
+                allGrades.flatMap { grade ->
+                    allCompletionTypes.flatMap { completionType ->
+                        courseReader.findCoursesWithTargetBySecondaryMajor(
+                                trackType = query.trackType,
+                                completionType = completionType,
+                                departmentId = department.id!!,
+                                collegeId = college.id!!,
+                                maxGrade = grade,
+                        )
+                    }
+                }
+
+        // 중복 제거 (같은 과목 코드)
+        val uniqueCourses = allCourses.distinctBy { it.course.code }
+
+        return uniqueCourses.map { courseWithTarget ->
+            val courseTimes = CourseTimes.from(courseWithTarget.course.scheduleRoom)
+            CourseResponse.from(courseWithTarget.course, courseTimes.toList())
         }
     }
 
@@ -109,8 +180,7 @@ class CourseServiceImpl(
                     )
                 }
 
-        val courseTimeResponses = courseTimes.toList()
-            .map { CourseTimeResponse.from(it) }
+        val courseTimeResponses = courseTimes.toList().map { CourseTimeResponse.from(it) }
 
         return CourseTargetResponse(
                 code = course.code,
@@ -181,7 +251,8 @@ class CourseServiceImpl(
                 existingCourse.copy(
                         category = command.category,
                         subCategory = command.subCategory,
-                        multiMajorCategory = command.multiMajorCategory ?: existingCourse.multiMajorCategory,
+                        multiMajorCategory = command.multiMajorCategory
+                                        ?: existingCourse.multiMajorCategory,
                         field = command.field ?: "",
                         name = command.name,
                         professor = command.professor,
@@ -251,23 +322,24 @@ class CourseServiceImpl(
 
     @Transactional
     override fun createCourse(command: CreateCourseCommand): CourseDetailResponse {
-        val newCourse = com.yourssu.soongpt.domain.course.implement.Course(
-            id = null,
-            category = command.category,
-            subCategory = command.subCategory,
-            multiMajorCategory = command.multiMajorCategory,
-            field = command.field ?: "",
-            code = command.code,
-            name = command.name,
-            professor = command.professor,
-            department = command.department,
-            division = command.division,
-            time = command.time,
-            point = command.point,
-            personeel = command.personeel,
-            scheduleRoom = command.scheduleRoom,
-            target = command.target
-        )
+        val newCourse =
+                com.yourssu.soongpt.domain.course.implement.Course(
+                        id = null,
+                        category = command.category,
+                        subCategory = command.subCategory,
+                        multiMajorCategory = command.multiMajorCategory,
+                        field = command.field ?: "",
+                        code = command.code,
+                        name = command.name,
+                        professor = command.professor,
+                        department = command.department,
+                        division = command.division,
+                        time = command.time,
+                        point = command.point,
+                        personeel = command.personeel,
+                        scheduleRoom = command.scheduleRoom,
+                        target = command.target
+                )
 
         val savedCourse = courseReader.save(newCourse)
         val courseTimes = CourseTimes.from(savedCourse.scheduleRoom)
@@ -280,5 +352,68 @@ class CourseServiceImpl(
         targetReader.deleteAllByCourseCode(code)
         // Delete the course
         courseReader.delete(code)
+    }
+
+    override fun findAllTeachingCourses(query: FilterTeachingCoursesQuery): List<CourseResponse> {
+        val department = departmentReader.getByName(query.departmentName)
+
+        // 전체 학년(1-5) 조회 - 일반 학생(GENERAL) 타입으로 조회
+        val allGrades = (1..5)
+        val allCourseCodes =
+                allGrades
+                        .flatMap { grade ->
+                            targetReader.findAllByDepartmentGrade(department, grade)
+                        }
+                        .distinct()
+
+        // TEACHING 카테고리의 모든 과목 조회
+        val courses =
+                courseReader.findAllInCategory(Category.TEACHING, allCourseCodes, query.schoolId)
+
+        // teachingArea가 null이면 모든 교직 과목 반환
+        val filteredCourses =
+                if (query.teachingArea == null) {
+                    courses
+                } else {
+                    // 영역별 필터링
+                    when (query.teachingArea) {
+                        com.yourssu.soongpt.domain.course.implement.TeachingArea
+                                .SUBJECT_EDUCATION -> {
+                            // 교과교육 영역: 학과에 맞는 교과만 필터링
+                            val subjectCategory =
+                                    com.yourssu.soongpt.domain.course.implement.SubjectCategory
+                                            .findByDepartment(query.departmentName)
+                            if (subjectCategory != null) {
+                                courses.filter { course ->
+                                    course.name.contains(
+                                            subjectCategory.displayName.replace("교과", "")
+                                    ) ||
+                                            (course.name.contains("교과교육론") ||
+                                                    course.name.contains("논리및논술"))
+                                }
+                            } else {
+                                // 학과 매칭 실패 시 모든 교과교육 과목 반환
+                                courses.filter { course ->
+                                    query.teachingArea.keywords.any { keyword ->
+                                        course.name.contains(keyword)
+                                    }
+                                }
+                            }
+                        }
+                        else -> {
+                            // 다른 영역: 키워드로 필터링
+                            courses.filter { course ->
+                                query.teachingArea.keywords.any { keyword ->
+                                    course.name.contains(keyword)
+                                }
+                            }
+                        }
+                    }
+                }
+
+        return filteredCourses.map { course ->
+            val courseTimes = CourseTimes.from(course.scheduleRoom)
+            CourseResponse.from(course, courseTimes.toList())
+        }
     }
 }

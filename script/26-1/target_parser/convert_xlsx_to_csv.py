@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # File paths
-input_file = "../course/export20260206144825.xlsx"
+input_file = "../course/export20260209193730.xlsx"
 output_file = "../course/ssu26-1.csv"
 
 # Current directory

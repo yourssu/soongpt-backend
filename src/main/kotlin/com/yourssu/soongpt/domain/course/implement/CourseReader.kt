@@ -92,4 +92,20 @@ class CourseReader(
     fun delete(code: Long) {
         courseRepository.delete(code)
     }
+
+    fun findCoursesWithTargetBySecondaryMajor(
+        trackType: SecondaryMajorTrackType,
+        completionType: SecondaryMajorCompletionType,
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int,
+    ): List<CourseWithTarget> {
+        return courseRepository.findCoursesWithTargetBySecondaryMajor(
+            trackType = trackType,
+            completionType = completionType,
+            departmentId = departmentId,
+            collegeId = collegeId,
+            maxGrade = maxGrade,
+        )
+    }
 }

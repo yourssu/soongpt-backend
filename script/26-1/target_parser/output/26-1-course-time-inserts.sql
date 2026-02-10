@@ -1,6 +1,6 @@
 -- Generated SQL INSERT statements for course_time table
 -- Generated from: ssu26-1.csv
--- Total inserts: 6512
+-- Total inserts: 6506
 
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5043723901, 'SATURDAY', 980, 1030, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5043723901, 'SATURDAY', 1040, 1090, NULL);
@@ -86,9 +86,6 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055369101, 'MONDAY', 1260, 1305, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150143501, 'FRIDAY', 720, 770, '진리관 11302');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150143501, 'FRIDAY', 780, 830, '진리관 11302');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501401, 'TUESDAY', 960, 1010, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501401, 'TUESDAY', 1020, 1070, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501401, 'TUESDAY', 1080, 1130, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055369301, 'WEDNESDAY', 1140, 1185, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055369301, 'WEDNESDAY', 1200, 1245, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055369301, 'WEDNESDAY', 1260, 1305, NULL);
@@ -263,10 +260,10 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055452001, 'FRIDAY', 840, 890, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055452001, 'FRIDAY', 900, 950, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055452001, 'FRIDAY', 960, 1010, NULL);
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102705, 'SATURDAY', 540, 615, '진리관 11112');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102705, 'SATURDAY', 630, 705, '진리관 11112');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102746, 'SATURDAY', 540, 615, '진리관 11107');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102746, 'SATURDAY', 630, 705, '진리관 11107');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102747, 'SATURDAY', 540, 615, '진리관 11112');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102747, 'SATURDAY', 630, 705, '진리관 11112');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102413, 'TUESDAY', 1170, 1220, '진리관 11517');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102413, 'TUESDAY', 1230, 1280, '진리관 11517');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102414, 'TUESDAY', 1170, 1220, '미래관 20202');
@@ -1153,8 +1150,6 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150059901, 'MONDAY', 1140, 1190, '전산관 19531(70인 강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160657501, 'MONDAY', 1140, 1230, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160657501, 'MONDAY', 1240, 1285, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530703, 'MONDAY', 990, 1065, '문화관 03106');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530703, 'MONDAY', 1080, 1155, '문화관 03106');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150107701, 'THURSDAY', 900, 975, '백마관 07116');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150107701, 'THURSDAY', 990, 1065, '백마관 07116');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150107701, 'THURSDAY', 900, 975, '백마관 07116');
@@ -1165,6 +1160,9 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055502001, 'THURSDAY', 960, 1010, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055502001, 'THURSDAY', 1020, 1070, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055502001, 'THURSDAY', 1080, 1130, NULL);
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055542601, 'TUESDAY', 990, 1040, NULL);
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055542601, 'TUESDAY', 1050, 1100, NULL);
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055542601, 'TUESDAY', 1110, 1160, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5051041701, 'MONDAY', 540, 590, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5051041701, 'MONDAY', 600, 650, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5051041701, 'MONDAY', 660, 710, NULL);
@@ -1483,8 +1481,6 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150672704, 'WEDNESDAY', 540, 615, '숭덕경상관 02101');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150141301, 'WEDNESDAY', 540, 615, '형남공학관 05116');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150141301, 'FRIDAY', 540, 615, '형남공학관 05116');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150558502, 'THURSDAY', 540, 615, '미래관 20403');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150558502, 'THURSDAY', 630, 705, '미래관 20403');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5028121101, 'MONDAY', 1140, 1185, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5028121101, 'MONDAY', 1200, 1245, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5028121101, 'MONDAY', 1260, 1305, NULL);
@@ -1635,9 +1631,6 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5022800101, 'SATURDAY', 980, 1030, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5022800101, 'SATURDAY', 1040, 1090, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5022800101, 'SATURDAY', 1100, 1150, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5052279401, 'TUESDAY', 990, 1040, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5052279401, 'TUESDAY', 1050, 1100, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5052279401, 'TUESDAY', 1110, 1160, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160289701, 'MONDAY', 900, 950, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160289701, 'MONDAY', 960, 1010, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160289701, 'MONDAY', 1020, 1070, NULL);
@@ -1867,9 +1860,9 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055357801, 'SATURDAY', 1105, 1150, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150521701, 'TUESDAY', 900, 975, '전산관 19531(70인 강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150521701, 'TUESDAY', 990, 1065, '전산관 19531(70인 강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501601, 'SATURDAY', 600, 650, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501601, 'SATURDAY', 660, 710, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501601, 'SATURDAY', 720, 770, NULL);
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501601, 'THURSDAY', 1140, 1190, NULL);
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501601, 'THURSDAY', 1200, 1250, NULL);
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5055501601, 'THURSDAY', 1260, 1310, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160056601, 'FRIDAY', 900, 950, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160056601, 'FRIDAY', 960, 1010, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160056601, 'FRIDAY', 1020, 1070, NULL);
@@ -2180,9 +2173,6 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5053190801, 'MONDAY', 1080, 1170, '웨스트민스터홀 22434');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5044574601, 'TUESDAY', 1270, 1360, '조만식기념관 12524 (안재국강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5008955801, 'MONDAY', 900, 1035, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160207801, 'MONDAY', 780, 830, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160207801, 'MONDAY', 840, 890, NULL);
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160207801, 'MONDAY', 900, 950, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2160754001, 'MONDAY', 750, 885, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5051054801, 'SATURDAY', 580, 630, NULL);
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (5051054801, 'SATURDAY', 640, 690, NULL);
@@ -2979,8 +2969,8 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150103203, 'WEDNESDAY', 840, 890, '조만식기념관 12424');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150675201, 'TUESDAY', 660, 735, '베어드홀 01102 (한덕우강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150675201, 'TUESDAY', 750, 825, '베어드홀 01102 (한덕우강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150675202, 'WEDNESDAY', 840, 915, '교육관 06203');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150675202, 'WEDNESDAY', 930, 1005, '교육관 06203');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150675202, 'WEDNESDAY', 900, 975, '교육관 06203');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150675202, 'WEDNESDAY', 990, 1065, '교육관 06203');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150651901, 'TUESDAY', 630, 705, '형남공학관 05630-B');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150651901, 'TUESDAY', 720, 795, '형남공학관 05630-B');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150651902, 'TUESDAY', 630, 705, '형남공학관 05617-A');
@@ -3131,10 +3121,10 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150480304, 'THURSDAY', 870, 920, '형남공학관 05617-A');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150480304, 'THURSDAY', 930, 980, '형남공학관 05617-A');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150480304, 'THURSDAY', 990, 1040, '형남공학관 05617-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150386701, 'MONDAY', 540, 615, '백마관 07317');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150386701, 'TUESDAY', 720, 795, '백마관 07317');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150386702, 'MONDAY', 540, 615, '백마관 07403');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150386702, 'TUESDAY', 720, 795, '백마관 07403');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150386701, 'MONDAY', 540, 615, '숭덕경상관 02107');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150386701, 'TUESDAY', 720, 795, '숭덕경상관 02101');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150386702, 'MONDAY', 540, 615, '숭덕경상관 02108');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150386702, 'TUESDAY', 720, 795, '숭덕경상관 02207');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150518201, 'MONDAY', 630, 705, '문화관 03312');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150518201, 'FRIDAY', 540, 615, '문화관 03312');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150518202, 'MONDAY', 630, 705, '미래관 20205');
@@ -3182,18 +3172,18 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150484101, 'MONDAY', 960, 1010, '형남공학관 05115');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150484102, 'MONDAY', 1020, 1070, '형남공학관 05115');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150484102, 'MONDAY', 1080, 1130, '형남공학관 05115');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150484103, 'TUESDAY', 900, 950, '형남공학관 05115');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150484103, 'TUESDAY', 960, 1010, '형남공학관 05115');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150484103, 'TUESDAY', 1020, 1070, '형남공학관 05115');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150484103, 'TUESDAY', 1080, 1130, '형남공학관 05115');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150303201, 'MONDAY', 810, 885, '진리관 11301');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150303201, 'WEDNESDAY', 720, 795, '미래관 20301');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017201, 'TUESDAY', 810, 860, '문화관 03111 (토론식강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017201, 'TUESDAY', 870, 920, '문화관 03111 (토론식강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017201, 'TUESDAY', 930, 980, '문화관 03111 (토론식강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017201, 'TUESDAY', 990, 1040, '문화관 03111 (토론식강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017202, 'TUESDAY', 810, 860, '형남공학관 05630-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017202, 'TUESDAY', 870, 920, '형남공학관 05630-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017202, 'TUESDAY', 930, 980, '형남공학관 05630-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017202, 'TUESDAY', 990, 1040, '형남공학관 05630-A');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017201, 'MONDAY', 900, 950, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017201, 'MONDAY', 990, 1010, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017201, 'MONDAY', 1020, 1070, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017201, 'MONDAY', 1080, 1130, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017202, 'TUESDAY', 810, 860, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017202, 'TUESDAY', 870, 920, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017202, 'TUESDAY', 930, 980, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017202, 'TUESDAY', 990, 1040, '문화관 03111 (토론식강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017101, 'FRIDAY', 900, 975, '형남공학관 05113');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017101, 'FRIDAY', 990, 1065, '형남공학관 05113');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150017301, 'MONDAY', 540, 590, '형남공학관 05619');
@@ -3706,10 +3696,8 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150642005, 'MONDAY', 990, 1065, '숭덕경상관 02210');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150642006, 'TUESDAY', 990, 1065, '숭덕경상관 02210');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150642006, 'THURSDAY', 990, 1065, '숭덕경상관 02210');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150060501, 'MONDAY', 720, 795, '숭덕경상관 02109');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150060501, 'WEDNESDAY', 720, 795, '숭덕경상관 02109');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150060502, 'TUESDAY', 720, 795, '진리관 11522 (이효계강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150060502, 'THURSDAY', 720, 795, '진리관 11522 (이효계강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150060501, 'TUESDAY', 720, 795, '진리관 11522 (이효계강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150060501, 'THURSDAY', 720, 795, '진리관 11522 (이효계강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150543001, 'WEDNESDAY', 630, 705, '조만식기념관 12202');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150543001, 'FRIDAY', 810, 885, '조만식기념관 12404');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150543002, 'WEDNESDAY', 810, 885, '조만식기념관 12201');
@@ -3799,8 +3787,6 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102703, 'THURSDAY', 540, 615, '진리관 11109');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102704, 'TUESDAY', 540, 615, '진리관 11105');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102704, 'THURSDAY', 540, 615, '진리관 11105');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102705, 'TUESDAY', 540, 615, '진리관 11113');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102705, 'THURSDAY', 540, 615, '진리관 11113');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102706, 'TUESDAY', 540, 615, '진리관 11214');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102706, 'THURSDAY', 540, 615, '진리관 11214');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150102707, 'TUESDAY', 630, 705, '진리관 11108');
@@ -4280,6 +4266,8 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150165601, 'THURSDAY', 900, 975, '정보과학관 21206');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150165602, 'MONDAY', 630, 705, '정보과학관 21501');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150165602, 'WEDNESDAY', 630, 705, '정보과학관 21301');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150165603, 'MONDAY', 810, 885, '정보과학관 21501');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150165603, 'WEDNESDAY', 810, 885, '정보과학관 21301');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150165604, 'MONDAY', 630, 705, '정보과학관 21206');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150165604, 'WEDNESDAY', 720, 795, '정보과학관 21301');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150661001, 'TUESDAY', 810, 885, '정보과학관 21502 (실습실');
@@ -4436,6 +4424,8 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530701, 'WEDNESDAY', 720, 795, '진리관 11309');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530702, 'MONDAY', 900, 975, '백마관 07119');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530702, 'WEDNESDAY', 900, 975, '숭덕경상관 02111');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530703, 'MONDAY', 990, 1065, '문화관 03106');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530703, 'MONDAY', 1080, 1155, '문화관 03106');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150267101, 'THURSDAY', 630, 705, '숭덕경상관 02107');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150267101, 'FRIDAY', 630, 705, '숭덕경상관 02209');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150267102, 'THURSDAY', 720, 795, '숭덕경상관 02107');
@@ -4776,14 +4766,14 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150202603, 'FRIDAY', 630, 705, '문화관 03106');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150202604, 'TUESDAY', 630, 705, '미래관 20405');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150202604, 'TUESDAY', 720, 795, '미래관 20405');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379901, 'WEDNESDAY', 630, 680, '형남공학관 05630-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379901, 'WEDNESDAY', 690, 740, '형남공학관 05630-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379901, 'WEDNESDAY', 750, 800, '형남공학관 05630-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379901, 'WEDNESDAY', 810, 860, '형남공학관 05630-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379902, 'MONDAY', 990, 1040, '형남공학관 05617-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379902, 'MONDAY', 1050, 1100, '형남공학관 05617-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379902, 'MONDAY', 1110, 1160, '형남공학관 05617-A');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379902, 'MONDAY', 1170, 1220, '형남공학관 05617-A');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379901, 'WEDNESDAY', 900, 950, '형남공학관 05630-B');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379901, 'WEDNESDAY', 960, 1010, '형남공학관 05630-B');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379901, 'WEDNESDAY', 1020, 1070, '형남공학관 05630-B');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379901, 'WEDNESDAY', 1080, 1130, '형남공학관 05630-B');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379902, 'WEDNESDAY', 630, 680, '형남공학관 05630-A');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379902, 'WEDNESDAY', 690, 740, '형남공학관 05630-A');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379902, 'WEDNESDAY', 750, 800, '형남공학관 05630-A');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150379902, 'WEDNESDAY', 810, 860, '형남공학관 05630-A');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530001, 'THURSDAY', 900, 975, '미래관 20109');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150530001, 'FRIDAY', 810, 885, '미래관 20302');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150034601, 'TUESDAY', 720, 795, '진리관 11307');
@@ -5080,8 +5070,8 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150100912, 'FRIDAY', 840, 890, '조만식기념관 12407');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150100913, 'FRIDAY', 780, 830, '문화관 03105');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150100913, 'FRIDAY', 840, 890, '문화관 03105');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150413301, 'MONDAY', 810, 885, '문화관 03111 (토론식강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150413301, 'MONDAY', 900, 975, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150413301, 'MONDAY', 810, 885, '형남공학관 05630-A');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150413301, 'MONDAY', 900, 975, '형남공학관 05630-A');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150404001, 'FRIDAY', 630, 705, '숭덕경상관 02111');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150404001, 'FRIDAY', 720, 795, '숭덕경상관 02111');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150404002, 'FRIDAY', 900, 975, '숭덕경상관 02212');
@@ -5471,7 +5461,7 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150472801, 'WEDNESDAY', 630, 705, '백마관 07117');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150162001, 'MONDAY', 810, 885, '벤처중소기업센터 10511');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150162001, 'MONDAY', 900, 975, '벤처중소기업센터 10511');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150585601, 'TUESDAY', 630, 705, '형남공학관 05630-A');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150585601, 'MONDAY', 630, 705, '형남공학관 05630-A');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150585601, 'TUESDAY', 720, 795, '형남공학관 05630-A');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150234701, 'WEDNESDAY', 630, 705, '조만식기념관 12524 (안재국강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150234701, 'FRIDAY', 720, 795, '조만식기념관 12326 (조해자강의실');
@@ -5501,6 +5491,8 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150393901, 'FRIDAY', 810, 885, '진리관 11401');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150558501, 'THURSDAY', 900, 975, '정보과학관 21403');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150558501, 'THURSDAY', 990, 1065, '정보과학관 21403');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150558502, 'THURSDAY', 540, 615, '미래관 20403');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150558502, 'THURSDAY', 630, 705, '미래관 20403');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150013701, 'TUESDAY', 900, 975, '정보과학관 21304');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150013701, 'WEDNESDAY', 900, 975, '정보과학관 21304');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150013702, 'TUESDAY', 990, 1065, '정보과학관 21304');
@@ -6040,8 +6032,10 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150545302, 'TUESDAY', 780, 830, '조만식기념관 12407');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150545302, 'TUESDAY', 840, 890, '조만식기념관 12407');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150545302, 'TUESDAY', 900, 950, '조만식기념관 12407');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150557401, 'FRIDAY', 630, 705, '정보과학관 21503 (실습실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150557401, 'FRIDAY', 720, 795, '정보과학관 21503 (실습실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150557401, 'FRIDAY', 630, 680, '정보과학관 21503 (실습실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150557401, 'FRIDAY', 690, 740, '정보과학관 21503 (실습실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150557401, 'FRIDAY', 750, 800, '정보과학관 21503 (실습실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150557401, 'FRIDAY', 810, 860, '정보과학관 21503 (실습실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150167601, 'MONDAY', 900, 975, '문화관 03307');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150167601, 'WEDNESDAY', 900, 975, '문화관 03307');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150167602, 'FRIDAY', 900, 975, '정보과학관 21202 (이준호강의실');
@@ -6399,8 +6393,8 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150021601, 'FRIDAY', 720, 795, '미래관 20201');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150037101, 'MONDAY', 810, 885, '진리관 11305');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150037101, 'WEDNESDAY', 900, 975, '조만식기념관 12530 (경제학과겸임교수강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150077101, 'FRIDAY', 630, 705, '문화관 03208');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150077101, 'FRIDAY', 720, 795, '문화관 03208');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150077101, 'MONDAY', 990, 1065, '베어드홀 01101');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150077101, 'MONDAY', 1080, 1155, '베어드홀 01101');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150077201, 'TUESDAY', 630, 705, '숭덕경상관 02109');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150077201, 'TUESDAY', 720, 795, '숭덕경상관 02109');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150389801, 'WEDNESDAY', 810, 885, '미래관 20301');
@@ -6415,8 +6409,8 @@ INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, roo
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150167501, 'WEDNESDAY', 900, 975, '정보과학관 21206');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150167502, 'MONDAY', 990, 1065, '문화관 03307');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150167502, 'WEDNESDAY', 990, 1065, '문화관 03307');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150483901, 'THURSDAY', 900, 975, '문화관 03111 (토론식강의실');
-INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150483901, 'THURSDAY', 990, 1065, '문화관 03111 (토론식강의실');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150483901, 'THURSDAY', 900, 975, '형남공학관 05630-A');
+INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150483901, 'THURSDAY', 990, 1065, '형남공학관 05630-A');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150604601, 'FRIDAY', 630, 680, '정보과학관 21202 (이준호강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150604601, 'FRIDAY', 690, 740, '정보과학관 21202 (이준호강의실');
 INSERT INTO course_time (course_code, day_of_week, start_minute, end_minute, room) VALUES (2150175701, 'TUESDAY', 810, 885, '정보과학관 21203 (김재상강의실');

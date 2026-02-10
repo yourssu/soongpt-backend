@@ -6,10 +6,27 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class SyncStatusResponse(
     @Schema(description = "동기화 상태", example = "COMPLETED", allowableValues = ["PROCESSING", "COMPLETED", "REQUIRES_REAUTH", "FAILED", "ERROR"])
     val status: String,
-    @Schema(description = "에러/실패 사유 (에러 시에만 포함)", example = "token_expired", nullable = true)
+    @Schema(
+        description = """에러/실패 사유 (status가 ERROR, FAILED, REQUIRES_REAUTH일 때 포함).
+            - invalid_session: 쿠키/JWT 문제 (재로그인 필요)
+            - session_expired: 동기화 세션 만료 (재로그인 필요)
+            - token_expired: sToken 만료 (재인증 필요, REQUIRES_REAUTH)
+            - server_unreachable: 유세인트 서버 접속 불가
+            - server_timeout: 유세인트 서버 응답 시간 초과
+            - internal_error: 내부 서버 오류""",
+        example = "token_expired",
+        nullable = true,
+        allowableValues = ["invalid_session", "session_expired", "token_expired", "server_unreachable", "server_timeout", "internal_error"],
+    )
     val reason: String? = null,
     @Schema(description = "학적정보 (COMPLETED 시에만 포함)", nullable = true)
     val studentInfo: StudentInfoResponse? = null,
+    @Schema(
+        description = "빈 데이터 경고 목록 (COMPLETED 시에만 포함). NO_COURSE_HISTORY: 수강 이력 없음, NO_SEMESTER_INFO: 학기 정보 없어 기본값 사용, NO_GRADUATION_DATA: 졸업사정표 조회 불가",
+        nullable = true,
+        example = "[\"NO_COURSE_HISTORY\", \"NO_GRADUATION_DATA\"]",
+    )
+    val warnings: List<String>? = null,
 )
 
 @Schema(description = "학적정보 응답")

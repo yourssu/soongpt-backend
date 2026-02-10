@@ -27,12 +27,15 @@ class CourseCandidateProvider(
         userContext: UserContext
     ): List<CourseCandidate> {
         val coursesToProcess = if (command.selectedCourseIds.isEmpty()) {
-            // 분반 선택 안했을때: 해당 과목의 모든 분반을 후보로 가져옴
+            // 분반 선택 안했을때: 8자리 과목 코드로 모든 분반을 후보로 가져옴
             // 교양필수 과목 등은 이 분기에서 department, grade에 따라 올바른 과목으로 변환됨
             courseReader.findAllByClass(userContext.department, command.courseCode, userContext.grade)
         } else {
-            // 분반 선택 했을때: 선택한 특정 분반만 후보로 가져옴
-            courseReader.findAllByCode(command.selectedCourseIds)
+            // 분반 선택 했을때: 8자리 과목 코드와 분반 번호를 조합하여 10자리 코드를 생성하고, 해당 분반들만 후보로 가져옴
+            val fullCourseCodes = command.selectedCourseIds.map { division ->
+                (command.courseCode * 100) + division
+            }
+            courseReader.findAllByCode(fullCourseCodes)
         }
 
         return coursesToProcess.map { course ->
@@ -47,6 +50,8 @@ private fun PrimaryTimetableCommand.getAllSelectedCourseCommands(): List<Selecte
             this.majorRequiredCourses +
             this.generalRequiredCourses +
             this.majorElectiveCourses +
-            this.otherMajorCourses
+            this.doubleMajorCourses +
+            this.minorCourses +
+            this.teachingCourses
 }
 

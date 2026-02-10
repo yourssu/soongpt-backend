@@ -14,17 +14,28 @@ class RusaintSnapshotMerger {
 
     fun merge(
         academic: RusaintAcademicResponseDto,
-        graduation: RusaintGraduationResponseDto,
+        graduation: RusaintGraduationResponseDto?,
     ): RusaintUsaintDataResponse {
-        val pseudonym = academic.pseudonym.ifBlank { graduation.pseudonym }
+        val pseudonym = if (graduation != null) {
+            academic.pseudonym.ifBlank { graduation.pseudonym }
+        } else {
+            academic.pseudonym
+        }
+
+        val warnings = academic.warnings.toMutableList()
+        if (graduation == null) {
+            warnings.add("NO_GRADUATION_DATA")
+        }
+
         return RusaintUsaintDataResponse(
             pseudonym = pseudonym,
             takenCourses = academic.takenCourses,
             lowGradeSubjectCodes = academic.lowGradeSubjectCodes,
             flags = academic.flags,
             basicInfo = academic.basicInfo,
-            graduationRequirements = graduation.graduationRequirements,
-            graduationSummary = graduation.graduationSummary,
+            graduationRequirements = graduation?.graduationRequirements,
+            graduationSummary = graduation?.graduationSummary,
+            warnings = warnings,
         )
     }
 }

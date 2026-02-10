@@ -244,6 +244,14 @@ class CourseRepositoryImpl(
         return condition
     }
 
+    override fun findDepartmentIdsByTrackType(trackType: SecondaryMajorTrackType): List<Long> {
+        return jpaQueryFactory
+            .select(courseSecondaryMajorClassificationEntity.departmentId)
+            .from(courseSecondaryMajorClassificationEntity)
+            .where(courseSecondaryMajorClassificationEntity.trackType.eq(trackType))
+            .distinct()
+            .fetch()
+    }
 
     override fun findCoursesWithTargetByBaseCodes(baseCodes: List<Long>): List<CourseWithTarget> {
         if (baseCodes.isEmpty()) return emptyList()

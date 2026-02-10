@@ -1,3 +1,4 @@
+# Deployment compose (pulls prebuilt images from ECR)
 services:
   soongpt:
     image: ${ECR_REGISTRY}/yourssu/${PROJECT_NAME}:${IMAGE_TAG:-latest}

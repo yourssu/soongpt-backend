@@ -6,9 +6,10 @@ on:
       environment:
         description: 'Environment to deploy to'
         required: true
-        default: 'dev'
+        default: 'dev-backup'
         type: choice
         options:
+          - dev-backup
           - dev
           - prod
       image_tag:
@@ -20,15 +21,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
       - name: Login to Amazon ECR Public
@@ -42,6 +45,7 @@ jobs:
         env:
           YOURSSU_PEM: ${{ secrets.YOURSSU_PEM }}
           HOST_URL: ${{ vars.HOST_URL }}
+          SSH_PORT: ${{ vars.SSH_PORT }}
 
           SERVER_PORT: ${{ vars.SERVER_PORT }}
           CORS_ALLOWED_ORIGIN: ${{ vars.CORS_ALLOWED_ORIGIN }}
@@ -68,7 +72,9 @@ jobs:
           SSO_ALLOWED_REDIRECT_URLS: ${{ vars.SSO_ALLOWED_REDIRECT_URLS }}
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
+          SSH_PORT="${SSH_PORT:-22}"
+          SSH_COMMON_OPTS="-o ServerAliveInterval=30 -o ServerAliveCountMax=10"
+          ssh-keyscan -p "$SSH_PORT" -H $HOST_URL >> ~/.ssh/known_hosts
           echo "$YOURSSU_PEM" > yourssu.pem
           chmod 600 yourssu.pem
 
@@ -99,16 +105,16 @@ jobs:
           echo "SSO_ALLOWED_REDIRECT_URLS=${SSO_ALLOWED_REDIRECT_URLS:-}" >> .env
 
           # Create deployment directory structure
-          ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
 
           # Deploy environment file, compose file, and docker script to host machine
-          scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
-          scp -i yourssu.pem docker-compose.deploy.yml ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
-          scp -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem docker-compose.deploy.yml ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
 
           # Make the script executable
-          ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/docker-deploy.sh"
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/docker-deploy.sh"
 
           # Execute the deployment script
-          ssh -i yourssu.pem ubuntu@$HOST_URL "cd /home/ubuntu/$PROJECT_NAME-api && \
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "cd /home/ubuntu/$PROJECT_NAME-api && \
             PROJECT_NAME=$PROJECT_NAME IMAGE_TAG=${{ github.event.inputs.image_tag || 'latest' }} ./docker-deploy.sh"

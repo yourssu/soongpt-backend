@@ -8,12 +8,11 @@ import com.yourssu.soongpt.domain.course.application.dto.GetFieldsRequest
 import com.yourssu.soongpt.domain.course.application.dto.RecommendCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.RecommendSecondaryMajorCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
+import com.yourssu.soongpt.domain.course.application.dto.*
 import com.yourssu.soongpt.domain.course.business.CourseService
-import com.yourssu.soongpt.domain.course.business.SecondaryMajorCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseRecommendationsResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseResponse
-import com.yourssu.soongpt.domain.course.business.dto.SecondaryMajorCourseRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -49,6 +48,7 @@ class CourseController(
                 - `GENERAL_REQUIRED` (교필)
                 - `GENERAL_ELECTIVE` (교선)
                 - `CHAPEL` (채플)
+                - `TEACHING` (교직)
                 - `OTHER` (기타)
             - **field**: 세부 영역 (선택). 특정 교양 영역이나 전공 분야 필터링에 사용됩니다.
             - **subDepartment**: 세부 전공 (선택).
@@ -82,43 +82,6 @@ class CourseController(
     @GetMapping("/search")
     fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
         val response = courseService.search(request.toQuery())
-        return ResponseEntity.ok().body(Response(result = response))
-    }
-
-    @Operation(
-        summary = "복수/부전공 이수구분별 과목 추천",
-        description = """
-            다전공 이수구분(복필/복선/부필/부선/타전공인정)에 따라 과목을 조회합니다.
-
-            **파라미터 설명:**
-            - **department**: 복수전공/부전공 대상 학과명 (필수)
-            - **grade**: 사용자 학년 (1~5, 필수)
-            - **trackType**: 다전공 유형 (필수)
-                - `DOUBLE_MAJOR` 또는 `복수전공`
-                - `MINOR` 또는 `부전공`
-                - `CROSS_MAJOR` 또는 `타전공인정`
-            - **completionType**: 이수구분 (필수)
-                - `REQUIRED`, `ELECTIVE`, `RECOGNIZED`
-                - 또는 `복필`, `복선`, `부필`, `부선`, `타전공인정과목`
-            - **takenSubjectCodes**: 기이수 과목코드 리스트 (선택)
-            - **progress**: 이수 현황 문자열 (선택)
-            - **satisfied**: 이수 완료 여부 (선택, 기본 false)
-        """
-    )
-    @GetMapping("/secondary-major/recommend")
-    fun recommendSecondaryMajorCourses(
-        @Valid @ModelAttribute request: RecommendSecondaryMajorCoursesRequest,
-    ): ResponseEntity<Response<SecondaryMajorCourseRecommendResponse>> {
-        val command = request.toCommand()
-        val response = secondaryMajorCourseRecommendService.recommend(
-            departmentName = command.departmentName,
-            userGrade = command.grade,
-            trackType = command.trackType,
-            completionType = command.completionType,
-            takenSubjectCodes = command.takenSubjectCodes,
-            progress = command.progress,
-            satisfied = command.satisfied,
-        )
         return ResponseEntity.ok().body(Response(result = response))
     }
 
@@ -183,6 +146,54 @@ class CourseController(
         httpRequest: HttpServletRequest,
     ): ResponseEntity<Response<CourseRecommendationsResponse>> {
         val response = courseRecommendApplicationService.recommend(httpRequest, request)
+        summary = "다전공/부전공 트랙 조회 (트랙별)",
+        description = """
+            특정 학과의 다전공/부전공 과목을 트랙 유형별로 조회합니다.
+            전체 학년(1~5학년)의 과목을 조회합니다.
+
+            **파라미터 설명:**
+            - **schoolId**: 학번 (필수)
+            - **department**: 학과명 (필수)
+            - **trackType**: 트랙 유형 (필수)
+                - `DOUBLE_MAJOR` 또는 `복수전공` - 복수전공 과목
+                - `MINOR` 또는 `부전공` - 부전공 과목
+                - `CROSS_MAJOR` 또는 `타전공인정` - 타전공인정 과목
+            - **completionType**: 이수구분 (선택, 없으면 전체 조회)
+                - `REQUIRED` 또는 `필수` - 필수 과목만
+                - `ELECTIVE` 또는 `선택` - 선택 과목만
+                - `RECOGNIZED` 또는 `타전공인정` - 타전공인정 과목만
+        """
+    )
+    @GetMapping("/by-track")
+    fun getCoursesByTrack(@Valid @ModelAttribute request: GetCoursesByTrackRequest): ResponseEntity<Response<List<CourseResponse>>> {
+        val response = courseService.findAllByTrack(request.toQuery())
+        return ResponseEntity.ok().body(Response(result = response))
+    }
+
+    @Operation(
+        summary = "교직 과목 조회 (영역별)",
+        description = """
+            특정 학과의 교직 과목을 영역별로 조회합니다.
+            전체 학년(1~5학년)의 과목을 조회합니다.
+
+            **파라미터 설명:**
+            - **schoolId**: 학번 (필수)
+            - **department**: 학과명 (필수)
+            - **teachingArea**: 교직 영역 (선택, 없으면 모든 교직 과목 조회)
+                - `교직이론` 또는 `THEORY` - 교직이론 과목 (교육학개론, 교육철학, 교육과정 등)
+                - `교직소양` 또는 `LITERACY` - 교직소양 과목 (특수교육학개론, 교직실무, 학교폭력예방 등)
+                - `교육실습` 또는 `PRACTICE` - 교육실습 과목 (학교현장실습, 교육봉사활동 등)
+                - `교과교육` 또는 `SUBJECT_EDUCATION` - 교과교육 과목 (학과별 교과교육론, 논리및논술)
+
+            **교과교육 과목 자동 필터링:**
+            - 학과에 맞는 교과 계열의 과목만 반환
+            - 예: 컴퓨터학부 → 상업교과교육론, 상업교과논리및논술
+            - 예: 물리학과 → 과학교과교육론, 과학교과논리및논술
+        """
+    )
+    @GetMapping("/teaching")
+    fun getTeachingCourses(@Valid @ModelAttribute request: GetTeachingCoursesRequest): ResponseEntity<Response<List<CourseResponse>>> {
+        val response = courseService.findAllTeachingCourses(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 }

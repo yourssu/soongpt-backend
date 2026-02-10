@@ -10,6 +10,9 @@ jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
     environment: prod
+    permissions:
+      id-token: write
+      contents: read
 
     defaults:
       run:
@@ -27,11 +30,10 @@ jobs:
           driver-opts: |
             image=moby/buildkit:latest
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
       - name: Login to Amazon ECR Public
@@ -69,7 +71,7 @@ jobs:
 
           # Build ARM64 image and push with cache
           docker buildx build \
-            --platform linux/arm64 \
+            --platform linux/amd64,linux/arm64 \
             --push \
             --provenance=false \
             --cache-from type=gha \
@@ -84,7 +86,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker buildx build \
-            --platform linux/arm64 \
+            --platform linux/amd64,linux/arm64 \
             --push \
             --provenance=false \
             --cache-from type=gha \
