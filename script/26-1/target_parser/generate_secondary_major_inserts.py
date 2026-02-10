@@ -41,7 +41,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, "../../../"))
 CSV_PATH = os.path.abspath(os.path.join(BASE_DIR, "../course/ssu26-1.csv"))
 RECOGNIZED_COURSES_DIR = os.path.abspath(os.path.join(BASE_DIR, "../course/recognized-courses26-1"))
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+OUTPUT_DIR = os.path.join(BASE_DIR, "output", "sql")
 OUTPUT_SQL_PATH = os.path.join(OUTPUT_DIR, "26-1-course-secondary-major-inserts.sql")
 
 

@@ -4,9 +4,9 @@ import os
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PARENT_DIR = os.path.dirname(BASE_DIR)  # target_parser directory
-PARSED_JSON_PATH = os.path.join(PARENT_DIR, "parsed_unique_targets.json")
-UNMAPPED_JSON_PATH = os.path.join(PARENT_DIR, "unmapped_targets.json")
+PARENT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))  # target_parser directory
+PARSED_JSON_PATH = os.path.join(PARENT_DIR, "data", "parsed_unique_targets.json")
+UNMAPPED_JSON_PATH = os.path.join(PARENT_DIR, "data", "unmapped_targets.json")
 TEST_DIR = BASE_DIR  # Now we're in the test directory
 
 # Load data

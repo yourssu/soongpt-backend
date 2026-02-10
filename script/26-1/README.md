@@ -24,11 +24,15 @@
   - 기타 파이썬 파일 (`main.py`)
 
 - `target_parser/`
-  - **실행용 Python 스크립트 + 파서 설정/데이터(json,yml) + output/sql + 테스트 파일**
-  - 스크립트 동작 안정성을 위해 실행 파일들은 유지했습니다.
+  - Python 실행 스크립트(루트)
+  - `data/` (json/yml 파서 데이터)
+  - `output/sql/` (생성 SQL)
+  - `qa/checklists/`, `qa/tests/` (검증용 체크리스트/테스트)
 
 - `field_parser/`
-  - field parser 관련 Python/입력 데이터/output
+  - Python 실행 스크립트(루트)
+  - `data/` (입력 엑셀/CSV)
+  - `sql/`, `output/sql/`, `assets/`로 분리
 
 - `course/`
   - 원본 CSV/XLSX 데이터
