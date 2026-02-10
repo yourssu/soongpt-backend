@@ -92,6 +92,11 @@ class SsoDevController(
                         completed = 0,
                         satisfied = true,
                     ),
+                    minor = RusaintCreditSummaryItemDto(
+                        required = 0,
+                        completed = 0,
+                        satisfied = true,
+                    ),
                     christianCourses = RusaintCreditSummaryItemDto(
                         required = 6,
                         completed = 6,
