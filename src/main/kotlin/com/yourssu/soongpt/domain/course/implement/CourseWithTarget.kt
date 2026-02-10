@@ -3,10 +3,12 @@ package com.yourssu.soongpt.domain.course.implement
 /**
  * 과목 정보와 수강 대상 학년 정보를 함께 담는 도메인 모델
  * - Target 테이블의 grade1~5 정보를 List<Int>로 변환하여 제공
+ * - isStrict: 대상외수강제한 여부 (isStrictRestriction)
  */
 data class CourseWithTarget(
     val course: Course,
     val targetGrades: List<Int>,
+    val isStrict: Boolean = false,
 ) {
     /**
      * 사용자 학년이 대상 학년에 포함되는지 확인
