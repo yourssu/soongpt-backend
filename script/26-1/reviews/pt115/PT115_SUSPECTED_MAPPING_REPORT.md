@@ -3,12 +3,26 @@
 - 기준 체크리스트: `script/26-1/reviews/checklists/PT115_ALL_COURSE_LIST_CHECKLIST.md`
 - 점검 과목 수: **3048**
 - DB course 조회 성공: **3048**
-- 의심 과목 수: **565**
+- 의심 과목 수: **527**
+
+## 석박과정 제외 분석 (요청 반영)
+
+- 기준: `ssu26-1.csv`의 `과정` 컬럼
+- 대상 학과: `국어국문학과`, `철학과`, `사학과`, `불어불문학과`, `평생교육학과`, `문예창작학과`
+- 제외 조건: 위 학과 + `석박과정`
+- 제외된 항목: **38건**
+
+- 국어국문학과: 석박과정 5건, 학사과정 3건
+- 문예창작학과: 석박과정 7건
+- 불어불문학과: 석박과정 2건, 학사과정 2건
+- 사학과: 석박과정 7건, 학사과정 2건
+- 철학과: 석박과정 6건, 학사과정 3건
+- 평생교육학과: 석박과정 11건, 학사과정 1건
 
 ## 이슈 집계
 
 - `TARGET_ROW_MISSING`: **286건**
-- `TARGET_PARSE_MISMATCH`: **186건**
+- `TARGET_PARSE_MISMATCH`: **148건**
 - `UNMAPPED_NON_FUSION_TOKEN`: **95건**
 
 ## 의심 과목 목록
@@ -2099,721 +2113,525 @@
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-299. [2160003601] `현대시문학연구`
-   - 개설학과: `국어국문학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_국문`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-300. [2160003801] `현대문학사론`
-   - 개설학과: `국어국문학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_국문`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-301. [2160052901] `아리스토텔레스철학연구Ⅰ`
-   - 개설학과: `철학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_철학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-302. [2160056601] `이데올로기론에관한연구`
-   - 개설학과: `철학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_철학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-303. [2160058601] `심리철학연습Ⅰ`
-   - 개설학과: `철학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_철학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-304. [2160059801] `사회정의론연구`
-   - 개설학과: `철학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_철학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-305. [2160062901] `한국유학과서학`
-   - 개설학과: `철학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_철학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-306. [2160074202] `니체연구`
-   - 개설학과: `철학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_철학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-307. [2160082101] `한국독립운동사연구`
-   - 개설학과: `사학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_사학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-308. [2160091201] `러시아사연습`
-   - 개설학과: `사학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_사학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-309. [2160093801] `고고학이론과방법`
-   - 개설학과: `사학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_사학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-310. [2160094401] `역사고고학연구`
-   - 개설학과: `사학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_사학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-311. [2160095601] `한국조각사연구`
-   - 개설학과: `사학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_사학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-312. [2160099901] `조선후기사회사`
-   - 개설학과: `사학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_사학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-313. [2160108101] `현대프랑스소설 연구`
-   - 개설학과: `불어불문학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_불문`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-314. [2160108901] `프랑스문학과예술`
-   - 개설학과: `불어불문학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_불문`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-315. [2160117001] `평생교육기초통계`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-316. [2160120001] `경력개발론`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-317. [2160121901] `평생학습연구및심리검사개발`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-318. [2160122501] `평생교육이슈`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-319. [2160124101] `평생교육실무실습`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-320. [2160129301] `문예연구방법론`
-   - 개설학과: `문예창작학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_문창`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-321. [2160130301] `시창작특강`
-   - 개설학과: `문예창작학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_문창`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-322. [2160131201] `영상문학연구`
-   - 개설학과: `문예창작학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_문창`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-323. [2160132001] `한국문학사`
-   - 개설학과: `문예창작학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_문창`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-324. [2160132201] `한국최근작가연구`
-   - 개설학과: `문예창작학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_문창`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-325. [2160132801] `현대소설분석`
-   - 개설학과: `문예창작학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_문창`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-326. [2160132901] `현대문학의기법연구`
-   - 개설학과: `문예창작학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_문창`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-327. [2160138501] `형사판례연구`
+299. [2160138501] `형사판례연구`
    - 개설학과: `법학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_법학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-328. [2160144801] `물권법특수연구`
+300. [2160144801] `물권법특수연구`
    - 개설학과: `법학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_법학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-329. [2160151301] `M＆A법특수연구`
+301. [2160151301] `M＆A법특수연구`
    - 개설학과: `법학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_법학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-330. [2160173901] `연구조사방법론`
+302. [2160173901] `연구조사방법론`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-331. [2160175901] `서비스마케팅`
+303. [2160175901] `서비스마케팅`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-332. [2160181801] `전략적품질경영`
+304. [2160181801] `전략적품질경영`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-333. [2160182301] `SCM및응용`
+305. [2160182301] `SCM및응용`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-334. [2160186201] `이문화관리론`
+306. [2160186201] `이문화관리론`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-335. [2160186701] `재무이론`
+307. [2160186701] `재무이론`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-336. [2160186901] `고급금융시계열세미나`
+308. [2160186901] `고급금융시계열세미나`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-337. [2160188201] `실증가격결정론`
+309. [2160188201] `실증가격결정론`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-338. [2160194201] `국제금융론`
+310. [2160194201] `국제금융론`
    - 개설학과: `무역학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_무역`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-339. [2160197001] `국제계약론`
+311. [2160197001] `국제계약론`
    - 개설학과: `무역학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_무역`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-340. [2160198401] `국제거래법연습`
+312. [2160198401] `국제거래법연습`
    - 개설학과: `무역학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_무역`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-341. [2160200701] `국제마케팅연습`
+313. [2160200701] `국제마케팅연습`
    - 개설학과: `무역학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_무역`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-342. [2160206801] `고급사회복지조사론(박사)`
+314. [2160206801] `고급사회복지조사론(박사)`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-343. [2160208401] `사회복지조사론`
+315. [2160208401] `사회복지조사론`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-344. [2160210801] `사례관리론`
+316. [2160210801] `사례관리론`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-345. [2160212001] `사회복지자료분석론`
+317. [2160212001] `사회복지자료분석론`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-346. [2160212801] `복지국가론`
+318. [2160212801] `복지국가론`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-347. [2160222001] `행정계량분석Ⅰ`
+319. [2160222001] `행정계량분석Ⅰ`
    - 개설학과: `행정학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_행정`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-348. [2160222901] `인사행정세미나`
+320. [2160222901] `인사행정세미나`
    - 개설학과: `행정학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_행정`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-349. [2160225501] `고급정책이론`
+321. [2160225501] `고급정책이론`
    - 개설학과: `행정학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_행정`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-350. [2160228501] `회계학연구조사방법론Ⅱ`
+322. [2160228501] `회계학연구조사방법론Ⅱ`
    - 개설학과: `회계학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_회계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-351. [2160229701] `재무회계세미나`
+323. [2160229701] `재무회계세미나`
    - 개설학과: `회계학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_회계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-352. [2160230501] `관리회계특수연구`
+324. [2160230501] `관리회계특수연구`
    - 개설학과: `회계학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_회계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-353. [2160235401] `현대정치사상`
+325. [2160235401] `현대정치사상`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정외`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-354. [2160238302] `강대국과한반도분단문제`
+326. [2160238302] `강대국과한반도분단문제`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정외`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-355. [2160238401] `한국정치론`
+327. [2160238401] `한국정치론`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정외`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-356. [2160250401] `벤처 중소기업 마케팅 세미나`
+328. [2160250401] `벤처 중소기업 마케팅 세미나`
    - 개설학과: `벤처중소기업학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_벤처`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-357. [2160251701] `중소.벤처기업지원육성정책세미나`
+329. [2160251701] `중소.벤처기업지원육성정책세미나`
    - 개설학과: `벤처중소기업학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_벤처`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-358. [2160253901] `기업인수합병 및 전략적제휴`
+330. [2160253901] `기업인수합병 및 전략적제휴`
    - 개설학과: `벤처중소기업학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_벤처`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-359. [2160277001] `복소수함수론`
+331. [2160277001] `복소수함수론`
    - 개설학과: `수학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_수학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-360. [2160278801] `편미분방정식론Ⅰ`
+332. [2160278801] `편미분방정식론Ⅰ`
    - 개설학과: `수학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_수학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-361. [2160287601] `고전역학`
+333. [2160287601] `고전역학`
    - 개설학과: `물리학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_물리`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-362. [2160287901] `양자역학`
+334. [2160287901] `양자역학`
    - 개설학과: `물리학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_물리`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-363. [2160289701] `양자광학`
+335. [2160289701] `양자광학`
    - 개설학과: `물리학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_물리`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-364. [2160292801] `방사광물리학`
+336. [2160292801] `방사광물리학`
    - 개설학과: `물리학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_물리`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-365. [2160303201] `세미나Ⅱ`
+337. [2160303201] `세미나Ⅱ`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-366. [2160306301] `생물물리화학`
+338. [2160306301] `생물물리화학`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-367. [2160310701] `고급생유기화학`
+339. [2160310701] `고급생유기화학`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-368. [2160313401] `단백질정제론`
+340. [2160313401] `단백질정제론`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-369. [2160324801] `재무수리Ⅰ`
+341. [2160324801] `재무수리Ⅰ`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정보통계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-370. [2160326701] `보험수리학 I`
+342. [2160326701] `보험수리학 I`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정보통계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-371. [2160332501] `매스커뮤니케이션이론1`
+343. [2160332501] `매스커뮤니케이션이론1`
    - 개설학과: `언론홍보학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_언론`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-372. [2160342701] `일본어학특강`
+344. [2160342701] `일본어학특강`
    - 개설학과: `일어일문학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_일어일문학과`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-373. [2160343001] `일본어통사론`
+345. [2160343001] `일본어통사론`
    - 개설학과: `일어일문학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_일어일문학과`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-374. [2160345301] `일본대중문화론`
+346. [2160345301] `일본대중문화론`
    - 개설학과: `일어일문학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_일어일문학과`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-375. [2160349001] `정보화와한국사회`
+347. [2160349001] `정보화와한국사회`
    - 개설학과: `정보사회학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정보사회`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-376. [2160349201] `정보사회공동체의이해`
+348. [2160349201] `정보사회공동체의이해`
    - 개설학과: `정보사회학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정보사회`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-377. [2160349301] `인터넷과사회운동`
+349. [2160349301] `인터넷과사회운동`
    - 개설학과: `정보사회학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정보사회`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-378. [2160350701] `디스플레이공학`
+350. [2160350701] `디스플레이공학`
    - 개설학과: `화학공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학공학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-379. [2160353701] `고분자물성론`
+351. [2160353701] `고분자물성론`
    - 개설학과: `화학공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학공학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-380. [2160382401] `시계열분석`
+352. [2160382401] `시계열분석`
    - 개설학과: `전자공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전자`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-381. [2160388201] `안테나이론및설계`
+353. [2160388201] `안테나이론및설계`
    - 개설학과: `전자공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전자`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-382. [2160391801] `인공지능`
+354. [2160391801] `인공지능`
    - 개설학과: `전자공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전자`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-383. [2160412401] `계장제어시스템`
+355. [2160412401] `계장제어시스템`
    - 개설학과: `전기공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전기`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-384. [2160413401] `계측신호처리특론`
+356. [2160413401] `계측신호처리특론`
    - 개설학과: `전기공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전기`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-385. [2160418001] `전력계통설비의설계및응용`
+357. [2160418001] `전력계통설비의설계및응용`
    - 개설학과: `전기공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전기`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-386. [2160421601] `고급제어공학`
+358. [2160421601] `고급제어공학`
    - 개설학과: `전기공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전기`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-387. [2160459101] `신뢰성공학`
+359. [2160459101] `신뢰성공학`
    - 개설학과: `기계공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-388. [2160460301] `로버스트제어`
+360. [2160460301] `로버스트제어`
    - 개설학과: `기계공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-389. [2160468001] `최적화특론`
+361. [2160468001] `최적화특론`
    - 개설학과: `산업·정보시스템공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_산업정보`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-390. [2160484601] `주거단지계획론`
+362. [2160484601] `주거단지계획론`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-391. [2160485301] `현대건축의결정적건물연구`
+363. [2160485301] `현대건축의결정적건물연구`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-392. [2160487701] `데이터베이스관리시스템응용건축설계`
+364. [2160487701] `데이터베이스관리시스템응용건축설계`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-393. [2160489601] `내진공학`
+365. [2160489601] `내진공학`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-394. [2160655201] `지역사회복지론`
+366. [2160655201] `지역사회복지론`
    - 개설학과: `사회복지전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지/전선_사회복지행정·정책`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-395. [2160656101] `사회복지정책론`
+367. [2160656101] `사회복지정책론`
    - 개설학과: `사회복지전공`
    - 분류: `MAJOR_REQUIRED` / `전필_사회복지/전필_사회복지행정·정책`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-396. [2160657101] `강점관점실천실기`
+368. [2160657101] `강점관점실천실기`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-397. [2160657501] `미술치료`
+369. [2160657501] `미술치료`
    - 개설학과: `상담복지전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_상담복지`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-398. [2160664401] `이상심리`
+370. [2160664401] `이상심리`
    - 개설학과: `상담복지전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_상담복지`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-399. [2160665401] `호스피스연구`
+371. [2160665401] `호스피스연구`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-400. [2160666101] `사례관리론`
+372. [2160666101] `사례관리론`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-401. [5006762501] `기초공학수학1`
+373. [5006762501] `기초공학수학1`
    - 개설학과: `수학과`
    - 분류: `MAJOR_BASIC` / `전기-AI융합/전기-IT융합/전기-건축공학/전기-건축학부/전기-기계/전기-산업·정보/전기-신소재/전기-전기/전기-전자공학/전기-컴퓨터/전기-화공`
    - 원본 대상: `2학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전자정보공학부-IT융합, 전자정보공학부-전자공학, 컴퓨터 / 3학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전자정보공학부-IT융합, 전자정보공학부-전자공학, 컴퓨터 / 4학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전`
@@ -2821,7 +2639,7 @@
    - 비-융합 잔여 토큰: `전`
    - target diff: missing=0, extra=3
 
-402. [5006762502] `기초공학수학1`
+374. [5006762502] `기초공학수학1`
    - 개설학과: `수학과`
    - 분류: `MAJOR_BASIC` / `전기-AI융합/전기-IT융합/전기-건축공학/전기-건축학부/전기-기계/전기-산업·정보/전기-신소재/전기-전기/전기-전자공학/전기-컴퓨터/전기-화공`
    - 원본 대상: `2학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전자정보공학부-IT융합, 전자정보공학부-전자공학, 컴퓨터 / 3학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전자정보공학부-IT융합, 전자정보공학부-전자공학, 컴퓨터 / 4학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전`
@@ -2829,1141 +2647,1071 @@
    - 비-융합 잔여 토큰: `전`
    - target diff: missing=0, extra=3
 
-403. [5008407901] `건축환경론`
+375. [5008407901] `건축환경론`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-404. [5008418701] `소비자 정보처리이론`
+376. [5008418701] `소비자 정보처리이론`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-405. [5010623101] `사회복지실천론(3학점)`
+377. [5010623101] `사회복지실천론(3학점)`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_REQUIRED` / `전필_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-406. [5011615901] `중국고분론`
-   - 개설학과: `사학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_사학`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-407. [5011906601] `사회복지실천기술론(3학점)`
+378. [5011906601] `사회복지실천기술론(3학점)`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_REQUIRED` / `전필_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-408. [5012482401] `할리우드 영화 커뮤니케이션`
+379. [5012482401] `할리우드 영화 커뮤니케이션`
    - 개설학과: `언론홍보학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_언론`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-409. [5013877201] `평생교육연구방법론`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-410. [5022740701] `생애설계와 자기주도학습`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-411. [5022822702] `법사상사연구`
+380. [5022822702] `법사상사연구`
    - 개설학과: `법학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_법학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-412. [5023547901] `계리실무Ⅰ`
+381. [5023547901] `계리실무Ⅰ`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_정보통계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-413. [5023557901] `건물에너지해석세미나Ⅱ`
+382. [5023557901] `건물에너지해석세미나Ⅱ`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-414. [5023619101] `여성복지론`
+383. [5023619101] `여성복지론`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-415. [5027628101] `기독론`
+384. [5027628101] `기독론`
    - 개설학과: `기독교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기독교`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-416. [5029139901] `평생교육질적연구심화`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-417. [5029854901] `한국어교육실습`
-   - 개설학과: `국어국문학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_국문`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-418. [5031664301] `사회복지실천세미나`
+385. [5031664301] `사회복지실천세미나`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-419. [5036483101] `한국어발음교육론`
-   - 개설학과: `국어국문학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_국문`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-420. [5036647601] `기계학습과 인공지능`
+386. [5036647601] `기계학습과 인공지능`
    - 개설학과: `전자공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전자`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-421. [5036706201] `심리측정 및 평가`
+387. [5036706201] `심리측정 및 평가`
    - 개설학과: `상담복지전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_상담복지`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-422. [5037708901] `교육복지론`
+388. [5037708901] `교육복지론`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-423. [5038858101] `한국어통사론연구`
-   - 개설학과: `국어국문학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_국문`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-424. [5038951701] `개인행동의 이해`
+389. [5038951701] `개인행동의 이해`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-425. [5039937701] `고급진로상담세미나`
+390. [5039937701] `고급진로상담세미나`
    - 개설학과: `기독교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기독교`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-426. [5040638801] `심리검사와 사례적용`
+391. [5040638801] `심리검사와 사례적용`
    - 개설학과: `기독교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기독교`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-427. [5042265501] `청소년심리 및 상담 세미나`
+392. [5042265501] `청소년심리 및 상담 세미나`
    - 개설학과: `기독교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기독교`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-428. [5042544701] `사회복지인적자원관리`
+393. [5042544701] `사회복지인적자원관리`
    - 개설학과: `복지경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_복지경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-429. [5043732001] `디지털 마케팅`
+394. [5043732001] `디지털 마케팅`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-430. [5043745401] `연료전지시스템공학`
+395. [5043745401] `연료전지시스템공학`
    - 개설학과: `기계공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기계`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-431. [5044493901] `조직과 리더십`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-432. [5044741501] `상담심리학특론`
+396. [5044741501] `상담심리학특론`
    - 개설학과: `복지경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_복지경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-433. [5045441401] `성격심리학`
+397. [5045441401] `성격심리학`
    - 개설학과: `복지경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_복지경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-434. [5048225101] `스타트업 세미나`
+398. [5048225101] `스타트업 세미나`
    - 개설학과: `벤처중소기업학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_벤처`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-435. [5048287501] `현대복지국가의 이슈와 쟁점`
+399. [5048287501] `현대복지국가의 이슈와 쟁점`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-436. [5048909901] `사회혁신과 평생학습`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-437. [5049632201] `전기분석화학개론`
+400. [5049632201] `전기분석화학개론`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-438. [5051008401] `대상관계이론`
+401. [5051008401] `대상관계이론`
    - 개설학과: `기독교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기독교`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-439. [5051036801] `다문화와 사회복지`
+402. [5051036801] `다문화와 사회복지`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-440. [5051039201] `지진방재 산학 특강`
+403. [5051039201] `지진방재 산학 특강`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-441. [5051039401] `비파괴시험`
+404. [5051039401] `비파괴시험`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-442. [5051041701] `박막공학특론`
+405. [5051041701] `박막공학특론`
    - 개설학과: `신소재공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_신소재·파이버`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-443. [5051056301] `융복합디지털사회복지`
+406. [5051056301] `융복합디지털사회복지`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-444. [5052210101] `가족상담 및 가족치료`
+407. [5052210101] `가족상담 및 가족치료`
    - 개설학과: `상담복지전공`
    - 분류: `MAJOR_REQUIRED` / `전필_상담복지`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-445. [5052210801] `지속가능경영과 사회공헌`
+408. [5052210801] `지속가능경영과 사회공헌`
    - 개설학과: `NGO·기업사회공헌전공`
    - 분류: `MAJOR_REQUIRED` / `전필_NGO·기업사회공`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-446. [5052309401] `정보보안과경영`
+409. [5052309401] `정보보안과경영`
    - 개설학과: `경영학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_경영`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-447. [5052409501] `구조지질학`
+410. [5052409501] `구조지질학`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-448. [5053160001] `극자외선 리소그래피`
+411. [5053160001] `극자외선 리소그래피`
    - 개설학과: `전자공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전자`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-449. [5053169001] `에너지 재료공학개론`
+412. [5053169001] `에너지 재료공학개론`
    - 개설학과: `신소재공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_신소재·파이버`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-450. [5053185501] `비영리조직과 국제개발협력`
+413. [5053185501] `비영리조직과 국제개발협력`
    - 개설학과: `NGO·기업사회공헌전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_NGO·기업사회공`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-451. [5053201401] `중독과 사회복지실천`
+414. [5053201401] `중독과 사회복지실천`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-452. [5053201801] `NGO 모금과 자원개발`
+415. [5053201801] `NGO 모금과 자원개발`
    - 개설학과: `NGO·기업사회공헌전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_NGO·기업사회공`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-453. [5053328001] `재난관리론`
+416. [5053328001] `재난관리론`
    - 개설학과: `건축학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_건축`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-454. [5054495201] `사회복지와 공공행정`
+417. [5054495201] `사회복지와 공공행정`
    - 개설학과: `사회복지전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-455. [5054542501] `엔지니어링섬유소재`
+418. [5054542501] `엔지니어링섬유소재`
    - 개설학과: `신소재공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_섬유`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-456. [5055184601] `비영리조직의 마케팅`
+419. [5055184601] `비영리조직의 마케팅`
    - 개설학과: `사회복지전공`
    - 분류: `OTHER` / `공통 전공선택`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-457. [5055222701] `사회복지역사`
+420. [5055222701] `사회복지역사`
    - 개설학과: `사회복지전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-458. [5055223001] `인지행동치료`
+421. [5055223001] `인지행동치료`
    - 개설학과: `사회복지실천전공`
    - 분류: `MAJOR_ELECTIVE` / `전선_사회복지실천`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-459. [5055409601] `누가복음`
+422. [5055409601] `누가복음`
    - 개설학과: `기독교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기독교`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-460. [5055409801] `엘리야-엘리사 내러티브`
+423. [5055409801] `엘리야-엘리사 내러티브`
    - 개설학과: `기독교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기독교`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-461. [5055410001] `고급심리통계`
+424. [5055410001] `고급심리통계`
    - 개설학과: `기독교학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_기독교`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-462. [5055438601] `최적화 알고리즘`
+425. [5055438601] `최적화 알고리즘`
    - 개설학과: `수학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_수학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-463. [5055438801] `딥러닝의 수학적 기초`
+426. [5055438801] `딥러닝의 수학적 기초`
    - 개설학과: `수학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_수학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-464. [5055440901] `글로벌 직업교육훈련 세미나`
-   - 개설학과: `평생교육학과`
-   - 분류: `MAJOR_ELECTIVE` / `전공_평생`
-   - 원본 대상: `전체`
-   - 이슈: `TARGET_PARSE_MISMATCH`
-   - target diff: missing=1, extra=1
-
-465. [5055444501] `고급분리공정특론`
+427. [5055444501] `고급분리공정특론`
    - 개설학과: `화학공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학공학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-466. [5055444701] `화공최적화및머신러닝`
+428. [5055444701] `화공최적화및머신러닝`
    - 개설학과: `화학공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_화학공학`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-467. [5055465001] `구조방정식 개론`
+429. [5055465001] `구조방정식 개론`
    - 개설학과: `벤처중소기업학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_벤처`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-468. [5055471401] `개별지도연구 Ⅵ`
+430. [5055471401] `개별지도연구 Ⅵ`
    - 개설학과: `언론홍보학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_언론`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-469. [5055471901] `인지행동치료`
+431. [5055471901] `인지행동치료`
    - 개설학과: `사회복지학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_사복`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-470. [5055495501] `광정보처리`
+432. [5055495501] `광정보처리`
    - 개설학과: `전기공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_전기`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-471. [5055496401] `AI 논문 연구 I`
+433. [5055496401] `AI 논문 연구 I`
    - 개설학과: `벤처중소기업학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_벤처`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-472. [5055503201] `창의공학연습`
+434. [5055503201] `창의공학연습`
    - 개설학과: `신소재공학과`
    - 분류: `MAJOR_ELECTIVE` / `전공_섬유`
    - 원본 대상: `전체`
    - 이슈: `TARGET_PARSE_MISMATCH`
    - target diff: missing=1, extra=1
 
-473. [2150040801] `고분자물성`
+435. [2150040801] `고분자물성`
    - 개설학과: `화학공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-화공`
    - 원본 대상: `4학년 화공,스마트소재/제품융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트소재`
 
-474. [2150040802] `고분자물성`
+436. [2150040802] `고분자물성`
    - 개설학과: `화학공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-화공`
    - 원본 대상: `4학년 화공,스마트소재/제품융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트소재`
 
-475. [2150043301] `문화와철학`
+437. [2150043301] `문화와철학`
    - 개설학과: `철학과`
    - 분류: `MAJOR_BASIC` / `전기-철학`
    - 원본 대상: `1학년 철학, 뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-476. [2150046801] `International organization & Treaty`
+438. [2150046801] `International organization & Treaty`
    - 개설학과: `국제법무학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-국제법무`
    - 원본 대상: `2학년 국제법무,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-477. [2150052001] `박물관학`
+439. [2150052001] `박물관학`
    - 개설학과: `사학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-사학`
    - 원본 대상: `4학년 사학,뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-478. [2150078501] `소그룹채플`
+440. [2150078501] `소그룹채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `1학년 자유전공학부(A그룹/수) (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `A그룹, 수`
 
-479. [2150078504] `소그룹채플`
+441. [2150078504] `소그룹채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `1학년 법과대(법학,국제법무(A그룹/목), 자유전공(A그룹/목)) (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `A그룹, 목`
 
-480. [2150078505] `소그룹채플`
+442. [2150078505] `소그룹채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `1학년 경영대(경영,회계,벤처중소,금융(A그룹/목)) (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `A그룹, 목`
 
-481. [2150078507] `소그룹채플`
+443. [2150078507] `소그룹채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `1학년 자유전공학부(B그룹/수) (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `B그룹, 수`
 
-482. [2150078510] `소그룹채플`
+444. [2150078510] `소그룹채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `1학년 법과대(법학,국제법무(B그룹/목), 자유전공학부(B그룹/목)) (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `B그룹, 목`
 
-483. [2150078511] `소그룹채플`
+445. [2150078511] `소그룹채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `1학년 경영대(경영,회계,벤처중소,금융(B그룹/목)) (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `B그룹, 목`
 
-484. [2150081801] `건축환경과안전`
+446. [2150081801] `건축환경과안전`
    - 개설학과: `건축학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-건축공학`
    - 원본 대상: `전체학년 건축공학,스마트안전보건환경`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트안전보건환경`
 
-485. [2150101501] `비전채플`
+447. [2150101501] `비전채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `2학년 경통대, IT대, AI대학(정보보호학과(계약) 포함)  (수강제한:1학년 인문,법,사회,경통,경영,자유전공)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `계약`
 
-486. [2150101506] `비전채플`
+448. [2150101506] `비전채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `3학년 경통대, IT대, AI대(정보보호학과(계약) 포함)  (수강제한:1학년 인문,법,사회,경통,경영,자유전공)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `계약`
 
-487. [2150101508] `비전채플`
+449. [2150101508] `비전채플`
    - 개설학과: `학원선교팀`
    - 분류: `CHAPEL` / `채플`
    - 원본 대상: `1학년 외국국적학생(1학년), IT대, AI대(정보보호학과(계약) 포함)  (수강제한:1학년 인문,법,사회,경통,경영,자유전공)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `계약`
 
-488. [2150112701] `시장경제와지속가능한규제`
+450. [2150112701] `시장경제와지속가능한규제`
    - 개설학과: `행정학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-행정학부`
    - 원본 대상: `4학년 행정학부,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-489. [2150118301] `교육실습`
+451. [2150118301] `교육실습`
    - 개설학과: `학사팀`
    - 분류: `TEACHING` / `교직`
    - 원본 대상: `4학년 ;교직이수자 (실습학교 확정된 학생만 수강 가능)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `수강`
 
-490. [2150129401] `노동경제학`
+452. [2150129401] `노동경제학`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경제`
    - 원본 대상: `3학년 경제,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-491. [2150129402] `노동경제학`
+453. [2150129402] `노동경제학`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경제`
    - 원본 대상: `3학년 경제,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-492. [2150140401] `무기화학`
+454. [2150140401] `무기화학`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-화학`
    - 원본 대상: `3학년 화학, 순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-493. [2150141201] `빅데이터와경제분석기초`
+455. [2150141201] `빅데이터와경제분석기초`
    - 개설학과: `경제학과`
    - 분류: `OTHER` / ``
    - 원본 대상: `전체학년 순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-494. [2150152001] `분석화학1`
+456. [2150152001] `분석화학1`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-화학`
    - 원본 대상: `2학년 화학, 양자나노융합, 인공지능반도체융합, 순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-495. [2150185201] `유기화학1`
+457. [2150185201] `유기화학1`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-화학`
    - 원본 대상: `2학년 화학, 양자나노융합, 순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-496. [2150189001] `인식론`
+458. [2150189001] `인식론`
    - 개설학과: `철학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-철학`
    - 원본 대상: `3학년 철학, 뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-497. [2150191501] `재정거버넌스와전략`
+459. [2150191501] `재정거버넌스와전략`
    - 개설학과: `행정학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-행정학부`
    - 원본 대상: `2학년 행정학부,사회적기업과사회혁신융합,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-498. [2150212401] `표본론`
+460. [2150212401] `표본론`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-통계·보험`
    - 원본 대상: `3학년 통계보험,빅데이터융합,여론조사컨설팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `여론조사컨설팅`
 
-499. [2150220601] `행정학특강`
+461. [2150220601] `행정학특강`
    - 개설학과: `행정학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-행정학부`
    - 원본 대상: `4학년 행정학부,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-500. [2150236201] `회귀분석1`
+462. [2150236201] `회귀분석1`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_REQUIRED` / `전필-통계·보험`
    - 원본 대상: `2학년 통계보험,빅데이터융합,AI모빌리티융합,여론조사컨설팅 (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `여론조사컨설팅`
 
-501. [2150236202] `회귀분석1`
+463. [2150236202] `회귀분석1`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_REQUIRED` / `전필-통계·보험`
    - 원본 대상: `2학년 통계보험,빅데이터융합,AI모빌리티융합,여론조사컨설팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `여론조사컨설팅`
 
-502. [2150267101] `미시경제학`
+464. [2150267101] `미시경제학`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_REQUIRED` / `전필-경제`
    - 원본 대상: `2학년 경제,동아시아경제통상융합,순환경제·친환경화학소재 ,경제`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-503. [2150267102] `미시경제학`
+465. [2150267102] `미시경제학`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_REQUIRED` / `전필-경제`
    - 원본 대상: `2학년 경제,동아시아경제통상융합,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-504. [2150267103] `미시경제학`
+466. [2150267103] `미시경제학`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_REQUIRED` / `전필-경제`
    - 원본 대상: `2학년 경제,동아시아경제통상융합,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-505. [2150267104] `미시경제학`
+467. [2150267104] `미시경제학`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_REQUIRED` / `전필-경제`
    - 원본 대상: `2학년 경제,동아시아경제통상융합,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-506. [2150324801] `수리통계1`
+468. [2150324801] `수리통계1`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_REQUIRED` / `전필-통계·보험`
    - 원본 대상: `2학년 통계보험,여론조사컨설팅 (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `여론조사컨설팅`
 
-507. [2150324802] `수리통계1`
+469. [2150324802] `수리통계1`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_REQUIRED` / `전필-통계·보험`
    - 원본 대상: `2학년 통계보험,여론조사컨설팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `여론조사컨설팅`
 
-508. [2150337801] `국제정치의이해`
+470. [2150337801] `국제정치의이해`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정외`
    - 원본 대상: `2학년 정외,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-509. [2150340204] `조직개발론`
+471. [2150340204] `조직개발론`
    - 개설학과: `경영학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-경영학부`
    - 원본 대상: `전체학년 경영학부;시간제 (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `시간제`
 
-510. [2150348701] `공정시스템`
+472. [2150348701] `공정시스템`
    - 개설학과: `화학공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-화공`
    - 원본 대상: `4학년 화공, 스마트안전보건환경`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트안전보건환경`
 
-511. [2150353301] `산업조직과공정거래`
+473. [2150353301] `산업조직과공정거래`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경제`
    - 원본 대상: `3학년 경제,동아시아경제통상융합,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-512. [2150353302] `산업조직과공정거래`
+474. [2150353302] `산업조직과공정거래`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경제`
    - 원본 대상: `3학년 경제,동아시아경제통상융합,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-513. [2150356001] `비교정치`
+475. [2150356001] `비교정치`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정외`
    - 원본 대상: `2학년 정외,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-514. [2150358801] `기호논리학`
+476. [2150358801] `기호논리학`
    - 개설학과: `철학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-철학`
    - 원본 대상: `2학년 철학,뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-515. [2150361401] `세라믹공학`
+477. [2150361401] `세라믹공학`
    - 개설학과: `신소재공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-신소재`
    - 원본 대상: `3학년 신소재, 스마트소재/제품융합, 인공지능반도체융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트소재`
 
-516. [2150368901] `프랑스문학과예술`
+478. [2150368901] `프랑스문학과예술`
    - 개설학과: `불어불문학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-불문`
    - 원본 대상: `2학년 불문,뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-517. [2150370501] `Understanding Foreign Policy`
+479. [2150370501] `Understanding Foreign Policy`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정외`
    - 원본 대상: `3학년 정외,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-518. [2150389801] `초현실주의와현대시`
+480. [2150389801] `초현실주의와현대시`
    - 개설학과: `불어불문학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-불문`
    - 원본 대상: `4학년 불문,뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-519. [2150394701] `TV드라마창작실습`
+481. [2150394701] `TV드라마창작실습`
    - 개설학과: `예술창작학부 문예창작전공`
    - 분류: `MAJOR_ELECTIVE` / `전선-문예창작`
    - 원본 대상: `2학년 문예창작전공, 문화예술마케팅, 소셜벤처미디어`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `문화예술마케팅, 소셜벤처미디어`
 
-520. [2150401201] `사회조사방법론`
+482. [2150401201] `사회조사방법론`
    - 개설학과: `정보사회학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정보사회`
    - 원본 대상: `2학년 정보사회, 문화예술마케팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `문화예술마케팅`
 
-521. [2150431601] `비교정치경제`
+483. [2150431601] `비교정치경제`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정외`
    - 원본 대상: `2학년 정외,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-522. [2150434401] `기업경제학`
+484. [2150434401] `기업경제학`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경제`
    - 원본 대상: `3학년 경제,동아시아경제통상융합,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-523. [2150434402] `기업경제학`
+485. [2150434402] `기업경제학`
    - 개설학과: `경제학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경제`
    - 원본 대상: `3학년 경제,동아시아경제통상융합,순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-524. [2150446407] `품질경영`
+486. [2150446407] `품질경영`
    - 개설학과: `경영학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-경영학부`
    - 원본 대상: `전체학년 경영학부;시간제 (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `시간제`
 
-525. [2150459101] `생명정보개론`
+487. [2150459101] `생명정보개론`
    - 개설학과: `의생명시스템학부`
    - 분류: `MAJOR_REQUIRED` / `전필-의생명시스템`
    - 원본 대상: `1학년 의생명시스템, 빅데이터컴퓨팅, 지식재산`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `빅데이터컴퓨팅, 지식재산`
 
-526. [2150459102] `생명정보개론`
+488. [2150459102] `생명정보개론`
    - 개설학과: `의생명시스템학부`
    - 분류: `MAJOR_REQUIRED` / `전필-의생명시스템`
    - 원본 대상: `1학년 의생명시스템, 빅데이터컴퓨팅, 지식재산`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `빅데이터컴퓨팅, 지식재산`
 
-527. [2150459701] `정보사회학`
+489. [2150459701] `정보사회학`
    - 개설학과: `정보사회학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정보사회`
    - 원본 대상: `2학년 정보사회,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-528. [2150465601] `PR론`
+490. [2150465601] `PR론`
    - 개설학과: `언론홍보학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-언론홍보`
    - 원본 대상: `2학년 언론홍보, 순수 외국인 수강 제한`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `수강, 순수, 외국인`
 
-529. [2150472601] `전산통계2`
+491. [2150472601] `전산통계2`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-통계·보험`
    - 원본 대상: `3학년 통계보험,빅데이터융합,AI모빌리티융합,여론조사컨설팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `여론조사컨설팅`
 
-530. [2150472602] `전산통계2`
+492. [2150472602] `전산통계2`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-통계·보험`
    - 원본 대상: `3학년 통계보험,빅데이터융합,AI모빌리티융합,여론조사컨설팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `여론조사컨설팅`
 
-531. [2150492501] `인터넷과사회운동`
+493. [2150492501] `인터넷과사회운동`
    - 개설학과: `정보사회학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정보사회`
    - 원본 대상: `3학년 정보사회,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-532. [2150501401] `비평론`
+494. [2150501401] `비평론`
    - 개설학과: `예술창작학부 문예창작전공`
    - 분류: `MAJOR_REQUIRED` / `전필-문예창작`
    - 원본 대상: `3학년 문예창작전공,문화서비스산업`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `문화서비스산업`
 
-533. [2150501701] `시세미나`
+495. [2150501701] `시세미나`
    - 개설학과: `예술창작학부 문예창작전공`
    - 분류: `MAJOR_ELECTIVE` / `전선-문예창작`
    - 원본 대상: `4학년 문예창작전공,문화서비스산업`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `문화서비스산업`
 
-534. [2150516503] `고분자화학`
+496. [2150516503] `고분자화학`
    - 개설학과: `화학공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-화공`
    - 원본 대상: `3학년 화공, 스마트소재/제품융`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트소재, 제품융`
 
-535. [2150530501] `사회통계1`
+497. [2150530501] `사회통계1`
    - 개설학과: `정보사회학과`
    - 분류: `MAJOR_REQUIRED` / `전필-정보사회`
    - 원본 대상: `2학년 정보사회, 뉴미디어마케팅융합, 문화예술마케팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `문화예술마케팅`
 
-536. [2150542301] `구비문학의이해`
+498. [2150542301] `구비문학의이해`
    - 개설학과: `국어국문학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-국문`
    - 원본 대상: `2학년 국문,뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-537. [2150547204] `서비스마케팅`
+499. [2150547204] `서비스마케팅`
    - 개설학과: `경영학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-경영학부`
    - 원본 대상: `전체학년 경영학부;시간제 (대상외수강제한)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `시간제`
 
-538. [2150547801] `추정검정론`
+500. [2150547801] `추정검정론`
    - 개설학과: `정보통계·보험수리학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-통계·보험`
    - 원본 대상: `3학년 통계보험,여론조사컨설팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `여론조사컨설팅`
 
-539. [2150548301] `스마트웨어러블`
+501. [2150548301] `스마트웨어러블`
    - 개설학과: `신소재공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-신소재`
    - 원본 대상: `4학년 신소재, 스마트소재/제품융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트소재`
 
-540. [2150560201] `북한의정치와경제`
+502. [2150560201] `북한의정치와경제`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정외`
    - 원본 대상: `2학년 정외,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-541. [2150562301] `담화와텍스트`
+503. [2150562301] `담화와텍스트`
    - 개설학과: `국어국문학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-국문`
    - 원본 대상: `3학년 국문, 뉴미디어콘텐츠 / 4학년 국문, 뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-542. [2150569601] `고전문학과콘텐츠`
+504. [2150569601] `고전문학과콘텐츠`
    - 개설학과: `국어국문학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-국문`
    - 원본 대상: `3학년 국문, 뉴미디어콘텐츠 / 4학년 국문, 뉴미디어콘텐츠`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `뉴미디어콘텐츠`
 
-543. [2150580801] `기초생화학`
+505. [2150580801] `기초생화학`
    - 개설학과: `화학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-화학`
    - 원본 대상: `3학년 화학, 양자나노융합, 순환경제·친환경화학소재`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `순환경제·친환경화학소재`
 
-544. [2150581501] `사회보장론`
+506. [2150581501] `사회보장론`
    - 개설학과: `사회복지학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-사회복지`
    - 원본 대상: `3학년 사회복지,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-545. [2150615901] `지역사회교육론`
+507. [2150615901] `지역사회교육론`
    - 개설학과: `평생교육학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-평생교육`
    - 원본 대상: `2학년 평생교육,통일외교 및 개발협력융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교`
 
-546. [2150626701] `동아시아법`
+508. [2150626701] `동아시아법`
    - 개설학과: `국제법무학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-국제법무`
    - 원본 대상: `4학년 국제법무학과,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-547. [2150635401] `디스플레이원리`
+509. [2150635401] `디스플레이원리`
    - 개설학과: `전기공학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-IT융합/전선-전기/전선-전자공학`
    - 원본 대상: `3학년 전기,전자공학전공,IT융합전공(디스플레이트랙)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `디스플레이트랙`
 
-548. [2150635402] `디스플레이원리`
+510. [2150635402] `디스플레이원리`
    - 개설학과: `전기공학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-IT융합/전선-전기/전선-전자공학`
    - 원본 대상: `3학년 전기,전자공학전공,IT융합전공(디스플레이트랙)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `디스플레이트랙`
 
-549. [2150635403] `디스플레이원리`
+511. [2150635403] `디스플레이원리`
    - 개설학과: `전기공학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-IT융합/전선-전기/전선-전자공학`
    - 원본 대상: `3학년 전기,전자공학전공,IT융합전공(디스플레이트랙)`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `디스플레이트랙`
 
-550. [2150642701] `재무회계`
+512. [2150642701] `재무회계`
    - 개설학과: `회계학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경영학부/전필-금융학부/전필-벤처중소/전필-회계학과`
    - 원본 대상: `2학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크 / 3학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크 / 4학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `보험계리리스크`
 
-551. [2150642702] `재무회계`
+513. [2150642702] `재무회계`
    - 개설학과: `회계학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경영학부/전필-금융학부/전필-벤처중소/전필-회계학과`
    - 원본 대상: `2학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크 / 3학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크 / 4학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `보험계리리스크`
 
-552. [2150642703] `재무회계`
+514. [2150642703] `재무회계`
    - 개설학과: `회계학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-경영학부/전필-금융학부/전필-벤처중소/전필-회계학과`
    - 원본 대상: `2학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크 / 3학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크 / 4학년 경영학부 ,회계학과 ,벤처중소 ,금융, 보험계리리스크`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `보험계리리스크`
 
-553. [2150647901] `투자론`
+515. [2150647901] `투자론`
    - 개설학과: `금융학부`
    - 분류: `MAJOR_REQUIRED` / `전필-금융학부`
    - 원본 대상: `2학년 금융, 동아시아경제통상`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `동아시아경제통상`
 
-554. [2150647902] `투자론`
+516. [2150647902] `투자론`
    - 개설학과: `금융학부`
    - 분류: `MAJOR_REQUIRED` / `전필-금융학부`
    - 원본 대상: `2학년 금융, 동아시아경제통상`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `동아시아경제통상`
 
-555. [2150660101] `AI예술과매체서사`
+517. [2150660101] `AI예술과매체서사`
    - 개설학과: `예술창작학부 문예창작전공`
    - 분류: `MAJOR_ELECTIVE` / `전선-문예창작`
    - 원본 대상: `2학년 문예창작전공, 문화서비스산업, 문예예술마케팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `문예예술마케팅, 문화서비스산업`
 
-556. [2150660501] `Intellectual Property Law`
+518. [2150660501] `Intellectual Property Law`
    - 개설학과: `국제법무학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-국제법무`
    - 원본 대상: `4학년 국제법무학과, 지식재산융합, 통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-557. [2150664701] `Int'l Business Transaction`
+519. [2150664701] `Int'l Business Transaction`
    - 개설학과: `국제법무학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-국제법무`
    - 원본 대상: `4학년 국제법무학과,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-558. [2150664901] `확률통계2`
+520. [2150664901] `확률통계2`
    - 개설학과: `산업·정보시스템공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-산업·정보`
    - 원본 대상: `2학년 산업정보, ICT유통물류융합, 스마트소재/제품융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트소재`
 
-559. [2150664902] `확률통계2`
+521. [2150664902] `확률통계2`
    - 개설학과: `산업·정보시스템공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-산업·정보`
    - 원본 대상: `2학년 산업정보, ICT유통물류융합, 스마트소재/제품융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트소재`
 
-560. [2150664904] `확률통계2`
+522. [2150664904] `확률통계2`
    - 개설학과: `산업·정보시스템공학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-산업·정보`
    - 원본 대상: `2학년 산업정보, ICT유통물류융합, 스마트소재/제품융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `스마트소재`
 
-561. [2150667201] `산업기술정책`
+523. [2150667201] `산업기술정책`
    - 개설학과: `행정학부`
    - 분류: `MAJOR_ELECTIVE` / `전선-행정학부`
    - 원본 대상: `4학년 행정학부,통일외교및개발협력,사회적기업과사회혁신융합`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-562. [2150667301] `글로벌협력과발전`
+524. [2150667301] `글로벌협력과발전`
    - 개설학과: `정치외교학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-정외`
    - 원본 대상: `3학년 정외,통일외교및개발협력`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `통일외교및개발협력`
 
-563. [2150673401] `게임과서사`
+525. [2150673401] `게임과서사`
    - 개설학과: `예술창작학부 문예창작전공`
    - 분류: `MAJOR_ELECTIVE` / `전선-문예창작`
    - 원본 대상: `3학년 문예창작전공,문화서비스산업,융합창업연계,문화예술마케팅`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `문화서비스산업, 문화예술마케팅`
 
-564. [2150677501] `GTEP무역실습1`
+526. [2150677501] `GTEP무역실습1`
    - 개설학과: `글로벌통상학과`
    - 분류: `MAJOR_ELECTIVE` / `전선-글로벌통상`
    - 원본 대상: `전체학년 글로벌통상, GTEP 실습생`
    - 이슈: `UNMAPPED_NON_FUSION_TOKEN`
    - 비-융합 잔여 토큰: `GTEP, 실습생`
 
-565. [2150820601] `중국사입문`
+527. [2150820601] `중국사입문`
    - 개설학과: `사학과`
    - 분류: `MAJOR_BASIC` / `전기-사학`
    - 원본 대상: `1학년 사학,뉴미디어콘텐츠`
