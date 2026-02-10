@@ -28,6 +28,10 @@ class TargetReader(
         return targetRepository.findAllByCode(code)
     }
 
+    fun findAllByCodes(codes: List<Long>): Map<Long, List<Target>> {
+        return targetRepository.findAllByCodes(codes).groupBy { it.courseCode }
+    }
+
     /**
      * 카테고리에 따라 적절한 학년 범위로 과목 코드 조회
      * - 전기/전필: 1~현재학년 (상한 제한)
