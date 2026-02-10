@@ -9,6 +9,18 @@
 [API_DOCUMENTATION](./src/main/resources/api/API_DOCUMENTATION.md)
 
 
+## Deployment Guide
+- [DEPLOYMENT_GUIDE](./DEPLOYMENT_GUIDE.md)
+
+## Compose Files
+- Local: `docker-compose.local.yml` (or `docker-compose.yml`)
+- Deploy: `docker-compose.deploy.yml`
+- Env examples: `examples/local.env.example`, `examples/deploy.env.example`
+
+## Nginx Template
+- `ops/nginx/soongpt.current-host.conf.template`
+- `ops/nginx/install-current-host.sh`
+
 ## Github Actions
 [![Dev - Build and Deploy to EC2](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml/badge.svg)](https://github.com/yourssu/soongpt-backend/actions/workflows/dev.yml)  
 
