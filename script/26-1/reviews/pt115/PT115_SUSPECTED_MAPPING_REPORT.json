@@ -2,9 +2,9 @@
   "summary": {
     "checklist_course_count": 3048,
     "course_found_in_db": 3048,
-    "suspicious_count": 503,
+    "suspicious_count": 393,
     "issue_counts": {
-      "TARGET_ROW_MISSING": 262,
+      "TARGET_ROW_MISSING": 152,
       "TARGET_PARSE_MISMATCH": 148,
       "UNMAPPED_NON_FUSION_TOKEN": 95
     }
@@ -23,640 +23,36 @@
       "사회복지대학원": 10
     }
   },
+  "department_exclude_note_2": {
+    "rule": "개설학과가 요청 목록(교육대학원/유아교육전공/평생교육·HRD전공/기독교상담학과/성서·신학과/회계·세무학과/프로젝트경영학과/생명정보학과/인공지능IT융합학과/정보통신공학과/글로벌법률학과/재난안전관리학과/융합영재교육전공/안전·보건융합공학과/기독교통일지도자학과/커리어·학습코칭전공)인 항목 제외",
+    "removed_count": 110,
+    "removed_by_department": {
+      "정보통신공학과": 4,
+      "교육대학원": 3,
+      "유아교육전공": 9,
+      "평생교육·HRD전공": 6,
+      "프로젝트경영학과": 8,
+      "성서·신학과": 3,
+      "기독교상담학과": 8,
+      "회계·세무학과": 2,
+      "프로젝트경영학과(계약학과)": 5,
+      "생명정보학과": 3,
+      "인공지능IT융합학과(계약학과)": 9,
+      "커리어·학습코칭전공": 5,
+      "기독교통일지도자학과": 9,
+      "글로벌법률학과": 7,
+      "재난안전관리학과": 13,
+      "융합영재교육전공": 6,
+      "안전·보건융합공학과": 10
+    }
+  },
   "suspicious": [
-    {
-      "code": 2160498301,
-      "name": "마이크로파수치해석",
-      "department": "정보통신공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_정보통신",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160517501,
-      "name": "임베디드시스템설계및구현",
-      "department": "정보통신공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_정보통신",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160668801,
-      "name": "학교교육심리",
-      "department": "교육대학원",
-      "category": "OTHER",
-      "sub_category": "전공선택",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160668901,
-      "name": "현대사회와교육문제",
-      "department": "교육대학원",
-      "category": "OTHER",
-      "sub_category": "전공선택",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160682501,
-      "name": "유아교육론",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160684101,
-      "name": "유아정신건강",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160686001,
-      "name": "아동문학",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160686301,
-      "name": "유아교육프로그램세미나",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160701601,
-      "name": "평생교육프로그램개발론",
-      "department": "평생교육·HRD전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_평생교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160702101,
-      "name": "평생교육연구방법론",
-      "department": "평생교육·HRD전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_평생교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160704501,
-      "name": "평생교육실습",
-      "department": "평생교육·HRD전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_평생교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160731001,
-      "name": "프로젝트경영개론",
-      "department": "프로젝트경영학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영학과",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160732001,
-      "name": "프로젝트경영세미나",
-      "department": "프로젝트경영학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영학과",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160738501,
-      "name": "누가복음-사도행전연구",
-      "department": "성서·신학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_기독신학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160749701,
-      "name": "심리검사와상담",
-      "department": "기독교상담학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_목회상담",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160754001,
-      "name": "집단상담",
-      "department": "기독교상담학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_목회상담",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 2160772901,
-      "name": "법인세회계",
-      "department": "회계·세무학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_회계세무",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5005914601,
-      "name": "프로젝트경영사례연구Ⅱ",
-      "department": "프로젝트경영학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5006017301,
-      "name": "연구조사방법론",
-      "department": "프로젝트경영학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5007276201,
-      "name": "세미나Ⅳ",
-      "department": "생명정보학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생명정보",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5007398901,
-      "name": "평생교육론",
-      "department": "평생교육·HRD전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_평생교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5007510401,
-      "name": "청소년상담",
-      "department": "기독교상담학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_목회상담",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5008955801,
-      "name": "진로상담",
-      "department": "기독교상담학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_목회상담",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5010640401,
-      "name": "인지행동치료",
-      "department": "기독교상담학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_목회상담",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5012821805,
-      "name": "교사교육세미나",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5012827401,
-      "name": "유아관찰및행동지도",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5022723701,
-      "name": "경영정보시스템",
-      "department": "프로젝트경영학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
     {
       "code": 5022800101,
       "name": "암호화정책론",
       "department": "IT정책경영학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_IT경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5023890901,
-      "name": "상담 및 심리치료 이론",
-      "department": "기독교상담학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_목회상담",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5025554401,
-      "name": "개인정보보호론",
-      "department": "정보통신공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_정보통신",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5027131101,
-      "name": "임베디드시스템",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5027131601,
-      "name": "이동통신시스템",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5027644901,
-      "name": "IT융합프로젝트형세미나",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5027648801,
-      "name": "스마트그리드",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -747,315 +143,11 @@
       }
     },
     {
-      "code": 5029904801,
-      "name": "경력개발론",
-      "department": "커리어·학습코칭전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_커리어·학습코칭",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5030186201,
       "name": "창의적 문제해결과 경영의사결정",
       "department": "이노비즈니스학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_이노비즈니스학과",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5031421001,
-      "name": "영유아발달평가및통계",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032182401,
-      "name": "통일법론",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032197801,
-      "name": "북한현안연구",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032198001,
-      "name": "통일국가제도론",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032225901,
-      "name": "비교법특수연구",
-      "department": "글로벌법률학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_글로벌법률학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032266501,
-      "name": "미국민사소송법특수연구",
-      "department": "글로벌법률학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_글로벌법률학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032296001,
-      "name": "일본법연구",
-      "department": "글로벌법률학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_글로벌법률학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032297401,
-      "name": "국제환경법연구",
-      "department": "글로벌법률학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_글로벌법률학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032357201,
-      "name": "비교형사소송법제도연구",
-      "department": "글로벌법률학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_글로벌법률학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032360101,
-      "name": "형벌및보안처분론",
-      "department": "글로벌법률학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_글로벌법률학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032598201,
-      "name": "BCMS프로젝트실습Ⅰ",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032599401,
-      "name": "BCMS프로젝트실습Ⅱ",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032600001,
-      "name": "기업리스크관리연구",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032648301,
-      "name": "연구방법론",
-      "department": "커리어·학습코칭전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_커리어·학습코칭",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5032880101,
-      "name": "산업/조직 심리",
-      "department": "평생교육·HRD전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_평생교육",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -1089,106 +181,11 @@
       }
     },
     {
-      "code": 5033906601,
-      "name": "비즈니스코칭 이론 및 실습",
-      "department": "커리어·학습코칭전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_커리어·학습코칭",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5033953601,
-      "name": "재난심리학",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5034689801,
-      "name": "창의성계발과교육",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5034696801,
-      "name": "영재/재능계발 교육기관 운영관리",
-      "department": "융합영재교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_융합영재",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5034855201,
       "name": "위성통신 송수신시스템",
       "department": "정보통신융합학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_정보통신융합학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5034958501,
-      "name": "경영통계",
-      "department": "프로젝트경영학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영학과",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -1241,106 +238,11 @@
       }
     },
     {
-      "code": 5036523101,
-      "name": "위기관리 커뮤니케이션",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5036523301,
-      "name": "논문작성법",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5036698701,
       "name": "이상심리",
       "department": "상담교육심리전공",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전선_상담교육심리",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5036841201,
-      "name": "코칭현장의 이해",
-      "department": "커리어·학습코칭전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_커리어·학습코칭",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5037453601,
-      "name": "딥러닝기초",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5037469701,
-      "name": "인프라 시스템 개발",
-      "department": "정보통신공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_정보통신",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -1412,25 +314,6 @@
       }
     },
     {
-      "code": 5038890801,
-      "name": "북한도시민연구1",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5038963201,
       "name": "IT정책경영 위기관리 리더십",
       "department": "IT정책경영학과",
@@ -1469,144 +352,11 @@
       }
     },
     {
-      "code": 5039877301,
-      "name": "영상처리용 머신러닝 시스템",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5039942801,
-      "name": "화학물질 유해 및 위해관리 특론",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5039943401,
-      "name": "도시건축안전시공특론",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5041341901,
-      "name": "사고조사 및 산재실무",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5042320201,
-      "name": "북한이탈주민이해",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5042801801,
       "name": "IT정책경영부트캠프Ⅱ",
       "department": "IT정책경영학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_IT경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5043708701,
-      "name": "기독교통일지도자론1",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5043718501,
-      "name": "재해경감활동이해(BCMS)",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -1716,25 +466,6 @@
       }
     },
     {
-      "code": 5044499101,
-      "name": "IoT프로그래밍",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5044500901,
       "name": "인문학과 성서",
       "department": "기독교인문사회학과",
@@ -1792,68 +523,11 @@
       }
     },
     {
-      "code": 5045852101,
-      "name": "STOP코칭",
-      "department": "커리어·학습코칭전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_커리어·학습코칭",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5045911901,
       "name": "에너지와환경(계약)",
       "department": "경제학과(계약학과)",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_경제(계약)",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5045922401,
-      "name": "프로젝트경영사례연구Ⅰ",
-      "department": "프로젝트경영학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5045922601,
-      "name": "비영리조직의이해",
-      "department": "프로젝트경영학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영학",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -1892,25 +566,6 @@
       "department": "기독교인문사회학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전선_기독인문",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5045963401,
-      "name": "상담사례개념화",
-      "department": "기독교상담학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_목회상담",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -1968,101 +623,6 @@
       "department": "메타버스·문화콘텐츠학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_문화콘텐츠",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5046766601,
-      "name": "안전융합세미나",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5046767401,
-      "name": "안전보건법규론",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5046772901,
-      "name": "재난관리 조사 방법론",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5046773501,
-      "name": "재난측정 및 평가",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5046833601,
-      "name": "AI시대의 지식재산 보호와 관리 지도방법",
-      "department": "융합영재교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_융합영재",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -2191,25 +751,6 @@
       }
     },
     {
-      "code": 5048187401,
-      "name": "로봇위험성평가개론",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5048399101,
       "name": "안보공익자료분석특강",
       "department": "안보·공익경영학과",
@@ -2248,87 +789,11 @@
       }
     },
     {
-      "code": 5048453101,
-      "name": "예술과 창의성",
-      "department": "융합영재교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_융합영재",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5048720703,
       "name": "작업환경관리특론",
       "department": "안전환경융합공학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전선_안전환경융합공학과",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5048847801,
-      "name": "기독론",
-      "department": "성서·신학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_기독신학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5048908501,
-      "name": "문화콘텐츠 생성 발전, 세계관 및 법제 연구",
-      "department": "글로벌법률학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_글로벌법률학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5049018401,
-      "name": "노인교육현장이슈",
-      "department": "평생교육·HRD전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_평생교육",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -2362,25 +827,6 @@
       }
     },
     {
-      "code": 5049120401,
-      "name": "Pedagogies of Engagement",
-      "department": "교육대학원",
-      "category": "OTHER",
-      "sub_category": "전공선택",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5049120801,
       "name": "발달심리와상담",
       "department": "상담교육심리전공",
@@ -2400,68 +846,11 @@
       }
     },
     {
-      "code": 5049253901,
-      "name": "연구조사방법론II",
-      "department": "프로젝트경영학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5049410401,
       "name": "공간이미지경영",
       "department": "이미지경영학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_이미지경영학과",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5049412001,
-      "name": "기업신용분석",
-      "department": "회계·세무학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_회계세무",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5050243301,
-      "name": "오믹스특론",
-      "department": "생명정보학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생명정보",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -2538,101 +927,6 @@
       "department": "지능형반도체학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_지능형반도체학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5051054401,
-      "name": "상담심리세미나",
-      "department": "프로젝트경영학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5051054801,
-      "name": "집단상담및프로그램개발",
-      "department": "프로젝트경영학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5051055201,
-      "name": "성과보상관리론",
-      "department": "프로젝트경영학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5051055601,
-      "name": "유해위험물질 환경 및 안전관리",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5051055801,
-      "name": "논문연구Ⅰ",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -2799,25 +1093,6 @@
       }
     },
     {
-      "code": 5052312601,
-      "name": "영사외교연구",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5052312801,
       "name": "에너지와 기후변화(계약)",
       "department": "경제학과(계약학과)",
@@ -2918,25 +1193,6 @@
       "department": "금융학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_금융",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5053160701,
-      "name": "코리안 디아스포라와 통일",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -3070,25 +1326,6 @@
       "department": "기업승계학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전선_기업승계학과",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5053190801,
-      "name": "직업세계의 변화와 창의적 대응",
-      "department": "융합영재교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_융합영재",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -3502,106 +1739,11 @@
       }
     },
     {
-      "code": 5055239001,
-      "name": "구약성서 이해를 위한 고대근동 역사와 고고학",
-      "department": "성서·신학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_기독신학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055246702,
-      "name": "유아창의과학",
-      "department": "유아교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_유아교육",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055247301,
-      "name": "AI 활용 진로진학지도",
-      "department": "융합영재교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_융합영재",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055247501,
-      "name": "AI 활용 창의융합 교수설계",
-      "department": "융합영재교육전공",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_융합영재",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5055270001,
       "name": "서비스 커뮤니케이션과 고객경험",
       "department": "서비스경영학과",
       "category": "OTHER",
       "sub_category": "교과목 전체/전공_서비스경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055271601,
-      "name": "아동미술심리상담",
-      "department": "기독교상담학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전선_목회상담",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
@@ -4129,177 +2271,6 @@
       }
     },
     {
-      "code": 5055431101,
-      "name": "북한의 엘리트 연구",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055431301,
-      "name": "환대의 철학",
-      "department": "기독교통일지도자학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_기독교통일지도자학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055432301,
-      "name": "전기설비 안전진단",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055432501,
-      "name": "화공안전특론",
-      "department": "안전·보건융합공학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_안전보건",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055439901,
-      "name": "차세대레이다시스템",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055440101,
-      "name": "위성통신개론",
-      "department": "인공지능IT융합학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_IT융합",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055441901,
-      "name": "공공외교 이론과 실제",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055442101,
-      "name": "재난관리론 Ⅱ",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055442301,
-      "name": "재난사례분석 질적연구",
-      "department": "재난안전관리학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_재난안전관리학",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5055444101,
       "name": "하이테크섬유개론",
       "department": "친환경화학소재융합학과",
@@ -4813,25 +2784,6 @@
       }
     },
     {
-      "code": 5055502601,
-      "name": "사회복지경영론",
-      "department": "프로젝트경영학과(계약학과)",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_프로젝트경영",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
       "code": 5055504001,
       "name": "IT유통물류세미나",
       "department": "IT유통물류학과",
@@ -4970,25 +2922,6 @@
       "department": "AI융합보안학과",
       "category": "MAJOR_ELECTIVE",
       "sub_category": "전공_AI융학보안",
-      "raw_target": "전체",
-      "issues": [
-        "TARGET_ROW_MISSING"
-      ],
-      "details": {
-        "target_diff_missing_count": 1,
-        "target_diff_extra_count": 0,
-        "target_diff_missing_sample": [
-          "('UNIVERSITY', None, None, (1, 2, 3, 4, 5), 0, 0, 0)"
-        ],
-        "target_diff_extra_sample": []
-      }
-    },
-    {
-      "code": 5055542601,
-      "name": "바이오 연구 전략 I",
-      "department": "생명정보학과",
-      "category": "MAJOR_ELECTIVE",
-      "sub_category": "전공_생명정보",
       "raw_target": "전체",
       "issues": [
         "TARGET_ROW_MISSING"
