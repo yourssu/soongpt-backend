@@ -2,10 +2,9 @@
   "summary": {
     "checklist_course_count": 3048,
     "course_found_in_db": 3048,
-    "suspicious_count": 95,
+    "suspicious_count": 93,
     "issue_counts": {
-      "TARGET_PARSE_MISMATCH": 2,
-      "UNMAPPED_NON_FUSION_TOKEN": 95
+      "UNMAPPED_NON_FUSION_TOKEN": 93
     }
   },
   "filter_note": {
@@ -46,56 +45,6 @@
     }
   },
   "suspicious": [
-    {
-      "code": 5006762501,
-      "name": "기초공학수학1",
-      "department": "수학과",
-      "category": "MAJOR_BASIC",
-      "sub_category": "전기-AI융합/전기-IT융합/전기-건축공학/전기-건축학부/전기-기계/전기-산업·정보/전기-신소재/전기-전기/전기-전자공학/전기-컴퓨터/전기-화공",
-      "raw_target": "2학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전자정보공학부-IT융합, 전자정보공학부-전자공학, 컴퓨터\n3학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전자정보공학부-IT융합, 전자정보공학부-전자공학, 컴퓨터\n4학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전",
-      "issues": [
-        "TARGET_PARSE_MISMATCH",
-        "UNMAPPED_NON_FUSION_TOKEN"
-      ],
-      "details": {
-        "target_diff_missing_count": 0,
-        "target_diff_extra_count": 3,
-        "target_diff_missing_sample": [],
-        "target_diff_extra_sample": [
-          "('DEPARTMENT', None, '전자정보공학부 IT융합전공', (4,), 0, 0, 0)",
-          "('DEPARTMENT', None, '전자정보공학부 전자공학전공', (4,), 0, 0, 0)",
-          "('DEPARTMENT', None, '컴퓨터학부', (4,), 0, 0, 0)"
-        ],
-        "unmapped_non_fusion_tokens": [
-          "전"
-        ]
-      }
-    },
-    {
-      "code": 5006762502,
-      "name": "기초공학수학1",
-      "department": "수학과",
-      "category": "MAJOR_BASIC",
-      "sub_category": "전기-AI융합/전기-IT융합/전기-건축공학/전기-건축학부/전기-기계/전기-산업·정보/전기-신소재/전기-전기/전기-전자공학/전기-컴퓨터/전기-화공",
-      "raw_target": "2학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전자정보공학부-IT융합, 전자정보공학부-전자공학, 컴퓨터\n3학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전자정보공학부-IT융합, 전자정보공학부-전자공학, 컴퓨터\n4학년 신소재, 전기, 기계, 화공, 산업정보 ,건축학부, 건축공학, AI융합, 전",
-      "issues": [
-        "TARGET_PARSE_MISMATCH",
-        "UNMAPPED_NON_FUSION_TOKEN"
-      ],
-      "details": {
-        "target_diff_missing_count": 0,
-        "target_diff_extra_count": 3,
-        "target_diff_missing_sample": [],
-        "target_diff_extra_sample": [
-          "('DEPARTMENT', None, '전자정보공학부 IT융합전공', (4,), 0, 0, 0)",
-          "('DEPARTMENT', None, '전자정보공학부 전자공학전공', (4,), 0, 0, 0)",
-          "('DEPARTMENT', None, '컴퓨터학부', (4,), 0, 0, 0)"
-        ],
-        "unmapped_non_fusion_tokens": [
-          "전"
-        ]
-      }
-    },
     {
       "code": 2150040801,
       "name": "고분자물성",
@@ -1605,5 +1554,13 @@
     "removed_first_220": 220,
     "removed_same_case_after_220": 78,
     "total_removed_by_this_step": 298
+  },
+  "manual_fix_note": {
+    "rule": "5006762501/5006762502 기초공학수학1 원본 대상 텍스트 및 target 정합성 보정 완료로 보고서에서 제외",
+    "removed_count": 2,
+    "removed_codes": [
+      5006762501,
+      5006762502
+    ]
   }
 }
