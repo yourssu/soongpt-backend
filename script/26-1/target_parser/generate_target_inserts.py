@@ -38,10 +38,10 @@ except ImportError:
 # Configuration
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, "../../../"))
-DATA_YML_PATH = os.path.join(BASE_DIR, "data.yml")
+DATA_YML_PATH = os.path.join(BASE_DIR, "data", "data.yml")
 CSV_PATH = os.path.abspath(os.path.join(BASE_DIR, "../course/ssu26-1.csv"))
-PARSED_TARGETS_PATH = os.path.join(BASE_DIR, "parsed_unique_targets.json")
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+PARSED_TARGETS_PATH = os.path.join(BASE_DIR, "data", "parsed_unique_targets.json")
+OUTPUT_DIR = os.path.join(BASE_DIR, "output", "sql")
 OUTPUT_SQL_PATH = os.path.join(OUTPUT_DIR, "26-1-target-inserts.sql")
 
 # Load .env file from project root

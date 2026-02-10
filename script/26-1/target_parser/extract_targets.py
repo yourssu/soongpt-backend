@@ -7,7 +7,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # CSV 읽기
 input_file = os.path.abspath(os.path.join(BASE_DIR, "../course/ssu26-1.csv"))
-output_file = os.path.join(BASE_DIR, 'unique_targets.json')
+output_file = os.path.join(BASE_DIR, 'data', 'unique_targets.json')
 
 targets = []
 target_counts = Counter()

@@ -9,7 +9,7 @@ REVIEW_GUIDELINES.md에 따라 전체 검증 워크플로우를 실행합니다:
 4. convert_for_flashcard.py - Flashcard 변환
 
 Usage:
-    cd test
+    cd qa/tests
     python run_validation.py
 """
 
@@ -19,8 +19,8 @@ import os
 from datetime import datetime
 
 # Paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # test directory
-PARENT_DIR = os.path.dirname(BASE_DIR)  # target_parser directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # qa/tests directory
+PARENT_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", ".."))  # target_parser directory
 TEST_DIR = BASE_DIR  # We're in test directory
 VENV_PYTHON = os.path.join(PARENT_DIR, "venv", "bin", "python")
 
@@ -157,7 +157,7 @@ def main():
 
         print(f"\n📖 또는 수동 검토:")
         flashcard_path = os.path.join(result_dir, "suspicious_for_review.json")
-        print(f"   1. flashcard_review.html을 브라우저에서 열기")
+        print(f"   1. ../../assets/target_parser/flashcard_review.html 을 브라우저에서 열기")
         print(f"   2. '📂 열기' 버튼 클릭")
         print(f"   3. {flashcard_path} 파일 선택")
         print(f"   4. 항목별 수동 검토")
