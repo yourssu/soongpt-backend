@@ -108,6 +108,36 @@ class GeneralCourseRecommendService(
     }
 
     /**
+     * 교양선택 이수 과목의 분야별 이수 학점 계산
+     *
+     * @param takenSubjectCodes 기이수 과목 코드 리스트 (10자리)
+     * @param schoolId 학번 (22, 23 등)
+     * @return 분야명 → 이수 학점 Map
+     */
+    fun computeTakenFieldCredits(takenSubjectCodes: List<String>, schoolId: Int): Map<String, Int> {
+        val takenBaseCodes = toTakenBaseCodeSet(takenSubjectCodes)
+        if (takenBaseCodes.isEmpty()) return emptyMap()
+
+        // 1. 이수 과목 일괄 조회
+        val takenCourses = courseRepository.findCoursesWithTargetByBaseCodes(takenBaseCodes.toList())
+            .filter { it.course.category == Category.GENERAL_ELECTIVE }
+            .distinctBy { it.course.baseCode() } // baseCode 기준 중복 제거
+
+        // 2. 분야별 학점 합산
+        return takenCourses
+            .groupBy { cwt ->
+                cwt.course.field
+                    ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                    ?.takeIf { it.isNotBlank() }
+            }
+            .filterKeys { it != null }
+            .mapKeys { (fieldName, _) -> fieldName!! }
+            .mapValues { (_, courses) ->
+                courses.sumOf { it.course.credit?.toInt() ?: 0 }
+            }
+    }
+
+    /**
      * 교양선택 트랙(분야)별 미수강 과목 조회
      *
      * - 이수 필터: baseCode(8자리) 단위 제외 (분야 단위 제외 X — 전공과 동일)
