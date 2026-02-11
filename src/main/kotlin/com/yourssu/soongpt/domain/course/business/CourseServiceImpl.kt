@@ -6,6 +6,7 @@ import com.yourssu.soongpt.domain.course.business.query.*
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.course.implement.baseCode
+import com.yourssu.soongpt.domain.course.implement.toBaseCode
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.courseTime.business.dto.CourseTimeResponse
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
@@ -164,7 +165,12 @@ class CourseServiceImpl(
     }
 
     override fun getFieldByCourseCode(courseCode: Long, schoolId: Int): String? {
-        val courseField = courseFieldReader.findByCourseCode(courseCode) ?: return null
+        // 분반 코드(10자리)가 들어와도 동작하도록 8자리 기본코드로 한번 더 조회
+        val courseField =
+            courseFieldReader.findByCourseCode(courseCode)
+                ?: courseFieldReader.findByCourseCode(courseCode.toBaseCode())
+                ?: return null
+
         return FieldFinder.findFieldBySchoolId(courseField.field, schoolId)
     }
 
