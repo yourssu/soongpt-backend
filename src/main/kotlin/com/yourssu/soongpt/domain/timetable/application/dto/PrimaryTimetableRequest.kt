@@ -9,10 +9,10 @@ import org.hibernate.validator.constraints.Range
 
 data class PrimaryTimetableRequest(
         // 해당 정보를 받아올건지? 내부에서 긁어올건지.
-        @field:Range(min = 0, max = 24, message = "최대 학점은 0에서 24 사이여야 합니다.") val maxCredit: Int,
         @field:Valid val retakeCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val majorRequiredCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val majorElectiveCourses: List<SelectedCourseDto> = emptyList(),
+        @field:Valid val majorBasicCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val doubleMajorCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val minorCourses: List<SelectedCourseDto> = emptyList(),
         @field:Valid val teachingCourses: List<SelectedCourseDto> = emptyList(),
@@ -21,10 +21,10 @@ data class PrimaryTimetableRequest(
 ) {
     fun toCommand(): PrimaryTimetableCommand {
         return PrimaryTimetableCommand(
-                maxCredit = maxCredit,
                 retakeCourses = retakeCourses.map { it.toCommand() },
                 majorRequiredCourses = majorRequiredCourses.map { it.toCommand() },
                 majorElectiveCourses = majorElectiveCourses.map { it.toCommand() },
+                majorBasicCourses = majorBasicCourses.map { it.toCommand() },
                 doubleMajorCourses = doubleMajorCourses.map { it.toCommand() },
                 minorCourses = minorCourses.map { it.toCommand() },
                 teachingCourses = teachingCourses.map { it.toCommand() },
