@@ -23,9 +23,20 @@ enum class RecommendCategory(val displayName: String) {
 @Schema(description = "통합 과목 추천 요청")
 data class RecommendCoursesRequest(
     @field:Schema(
-        description = "추천할 이수구분 필터. 콤마 구분으로 여러 개 지정 가능",
-        example = "MAJOR_REQUIRED,MAJOR_ELECTIVE",
+        description = "추천할 이수구분 필터. 콤마 구분으로 여러 개 지정 가능. 허용값: MAJOR_BASIC, MAJOR_REQUIRED, MAJOR_ELECTIVE, GENERAL_REQUIRED, RETAKE, DOUBLE_MAJOR_REQUIRED, DOUBLE_MAJOR_ELECTIVE, MINOR, TEACHING",
+        example = "MAJOR_REQUIRED,MAJOR_ELECTIVE,TEACHING",
         required = true,
+        allowableValues = [
+            "MAJOR_BASIC",
+            "MAJOR_REQUIRED",
+            "MAJOR_ELECTIVE",
+            "GENERAL_REQUIRED",
+            "RETAKE",
+            "DOUBLE_MAJOR_REQUIRED",
+            "DOUBLE_MAJOR_ELECTIVE",
+            "MINOR",
+            "TEACHING"
+        ],
     )
     val category: String,
 ) {
