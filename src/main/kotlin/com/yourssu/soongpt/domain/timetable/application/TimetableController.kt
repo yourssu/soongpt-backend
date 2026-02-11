@@ -51,6 +51,12 @@ class TimetableController(
                 .body(Response(result = response))
         }
 
+        if (response.status == RecommendationStatus.SUCCESS) {
+            val slackAlarmRequest = timetableService.createTimetableAlarmRequest(
+                response.successResponse!![0].recommendations[0].timetable.timetableId
+            )
+            Notification.notifyTimetableCreated(slackAlarmRequest)
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(Response(result = response))
     }
 
