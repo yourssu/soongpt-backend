@@ -106,9 +106,10 @@ class TimetableService(
 
         // 5. 새로운 시간표에 모든 과목(기존+추가) 연결하여 저장
         val allCourses = baseCourses + coursesToAdd
-        allCourses.forEach { course ->
-            timetableCourseWriter.save(TimetableCourse(timetableId = newTimetable.id!!, courseId = course.id!!))
+        val timetableCourses = allCourses.map { course ->
+            TimetableCourse(timetableId = newTimetable.id!!, courseId = course.id!!)
         }
+        timetableCourseWriter.saveAll(timetableCourses)
 
         // 6. 새로 생성된 최종 시간표 정보 반환
         return getTimeTable(newTimetable.id!!)

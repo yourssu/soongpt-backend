@@ -4,7 +4,7 @@ import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
 import org.springframework.stereotype.Component
 
-private const val MAXIMUM_TIMETABLE_CANDIDATES = 2000
+private const val MAXIMUM_TIMETABLE_CANDIDATES = 50
 
 @Component
 class TimetableCombinationGenerator {
