@@ -5,6 +5,7 @@ import com.yourssu.soongpt.common.handler.UnauthorizedException
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.baseCode
+import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
@@ -117,10 +118,7 @@ class UntakenCourseCodeService(
     }
 
     private fun extractTakenBaseCodes(usaintData: RusaintUsaintDataResponse): Set<Long> {
-        return usaintData.takenCourses
-            .flatMap { it.subjectCodes }
-            .mapNotNull { it.toLongOrNull() }
-            .toSet()
+        return toTakenBaseCodeSet(usaintData.takenCourses.flatMap { it.subjectCodes })
     }
 
     companion object {

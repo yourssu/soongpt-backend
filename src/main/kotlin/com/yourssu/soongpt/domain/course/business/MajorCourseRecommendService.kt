@@ -1,13 +1,13 @@
 package com.yourssu.soongpt.domain.course.business
 
 import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
-import com.yourssu.soongpt.domain.course.business.dto.GradeGroupResponse
 import com.yourssu.soongpt.domain.course.business.dto.MajorCourseRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import com.yourssu.soongpt.domain.course.implement.baseCode
+import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import org.springframework.stereotype.Service
 
@@ -122,8 +122,6 @@ class MajorCourseRecommendService(
                 message = "전공선택 학점을 이미 모두 이수하셨습니다.",
                 userGrade = userGrade,
                 courses = emptyList(),
-                gradeGroups = null,
-                fieldGroups = null,
                 lateFields = null,
             )
         }
@@ -144,14 +142,11 @@ class MajorCourseRecommendService(
                 message = "이번 학기에 수강 가능한 전공선택 과목이 없습니다.",
                 userGrade = userGrade,
                 courses = emptyList(),
-                gradeGroups = null,
-                fieldGroups = null,
                 lateFields = null,
             )
         }
 
         val allCourses = buildRecommendedCourses(untakenCourses, userGrade)
-        val gradeGroups = buildGradeGroups(untakenCourses, userGrade)
 
         return CategoryRecommendResponse(
             category = category.name,
@@ -159,37 +154,8 @@ class MajorCourseRecommendService(
             message = null,
             userGrade = userGrade,
             courses = allCourses,
-            gradeGroups = gradeGroups,
-            fieldGroups = null,
             lateFields = null,
         )
-    }
-
-    /**
-     * 학년별 과목 그룹핑 (전선용)
-     */
-    private fun buildGradeGroups(
-        coursesWithTarget: List<CourseWithTarget>,
-        userGrade: Int,
-    ): List<GradeGroupResponse> {
-        return coursesWithTarget
-            .groupBy { it.course.baseCode() }
-            .entries
-            .groupBy { it.value.first().targetGrades.maxOrNull() ?: 1 }
-            .entries
-            .sortedBy { it.key }
-            .map { (grade, entries) ->
-                val courses = entries
-                    .sortedBy { it.value.first().course.name }
-                    .map { (_, sections) ->
-                        val representative = sections.first()
-                        RecommendedCourseResponse.from(
-                            coursesWithTarget = sections,
-                            isLate = representative.isLateFor(userGrade),
-                        )
-                    }
-                GradeGroupResponse(grade = grade, courses = courses)
-            }
     }
 
     /**
@@ -213,7 +179,7 @@ class MajorCourseRecommendService(
             return emptyList()
         }
 
-        val takenBaseCodes = takenSubjectCodes.mapNotNull { it.toLongOrNull() }.toSet()
+        val takenBaseCodes = toTakenBaseCodeSet(takenSubjectCodes)
         return coursesWithTarget.filter { it.course.baseCode() !in takenBaseCodes }
     }
 
