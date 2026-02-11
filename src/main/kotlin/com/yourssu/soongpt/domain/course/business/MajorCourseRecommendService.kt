@@ -6,6 +6,8 @@ import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
+import com.yourssu.soongpt.domain.course.implement.SecondaryMajorCompletionType
+import com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
@@ -126,6 +128,9 @@ class MajorCourseRecommendService(
         }
 
         val department = departmentReader.getByName(departmentName)
+        val takenBaseCodes = toTakenBaseCodeSet(takenSubjectCodes)
+
+        // 1) 전공선택 과목 조회 + 이수 과목 제외
         val untakenCourses = getUntakenCoursesWithTarget(
             category = category,
             departmentId = department.id!!,
@@ -134,7 +139,18 @@ class MajorCourseRecommendService(
             takenSubjectCodes = takenSubjectCodes,
         )
 
-        if (untakenCourses.isEmpty()) {
+        // 2) 타전공인정 과목 조회 + 이수 과목 제외 + 전선과 baseCode 중복 제거
+        val electiveBaseCodes = untakenCourses.map { it.course.baseCode() }.toSet()
+        val crossMajorCourses = courseRepository.findCoursesWithTargetBySecondaryMajor(
+            trackType = SecondaryMajorTrackType.CROSS_MAJOR,
+            completionType = SecondaryMajorCompletionType.RECOGNIZED,
+            departmentId = department.id,
+            collegeId = department.collegeId,
+            maxGrade = MAX_GRADE,
+        ).filter { it.course.baseCode() !in takenBaseCodes }
+            .filter { it.course.baseCode() !in electiveBaseCodes }
+
+        if (untakenCourses.isEmpty() && crossMajorCourses.isEmpty()) {
             return CategoryRecommendResponse(
                 category = category.name,
                 progress = progress,
@@ -145,7 +161,10 @@ class MajorCourseRecommendService(
             )
         }
 
-        val allCourses = buildRecommendedCourses(untakenCourses, userGrade)
+        // 3) 전선 먼저, 타전공인정 뒤에
+        val electiveCourses = buildRecommendedCourses(untakenCourses, userGrade)
+        val crossMajorRecommended = buildRecommendedCourses(crossMajorCourses, userGrade, isCrossMajor = true)
+        val allCourses = electiveCourses + crossMajorRecommended
 
         return CategoryRecommendResponse(
             category = category.name,
@@ -191,6 +210,7 @@ class MajorCourseRecommendService(
     private fun buildRecommendedCourses(
         coursesWithTarget: List<CourseWithTarget>,
         userGrade: Int,
+        isCrossMajor: Boolean = false,
     ): List<RecommendedCourseResponse> {
         return coursesWithTarget
             .groupBy { it.course.baseCode() }
@@ -207,6 +227,7 @@ class MajorCourseRecommendService(
                 RecommendedCourseResponse.from(
                     coursesWithTarget = sections,
                     isLate = representative.isLateFor(userGrade),
+                    isCrossMajor = isCrossMajor,
                 )
             }
     }
