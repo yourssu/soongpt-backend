@@ -152,7 +152,7 @@ class TimetableController(
         value = [
             ApiResponse(
                 responseCode = "200", description = "조회 성공", content = [
-                    Content(mediaType = "application/json", schema = Schema(implementation = TimetableCourseResponse::class))
+                    Content(mediaType = "application/json", schema = Schema(implementation = AvailableChapelsResponse::class))
                 ]
             ),
             ApiResponse(responseCode = "404", description = "존재하지 않는 시간표 ID", content = [])
@@ -165,6 +165,7 @@ class TimetableController(
     ): ResponseEntity<Response<AvailableChapelsResponse>> {
         val pseudonym = clientJwtProvider.extractPseudonymFromRequest(httpRequest)
             .getOrElse { throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.") }
+           
         CurrentPseudonymHolder.set(pseudonym)
         try {
             val response = timetableService.getAvailableChapels(id)
