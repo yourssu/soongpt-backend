@@ -131,3 +131,27 @@ export type SecondaryMajorCompletionType =
   | 'ELECTIVE'
   | 'RECOGNIZED';
 
+export interface Section {
+  courseCode: number;
+  professor: string | null;
+  division: string | null;
+  schedule: string;
+  isStrictRestriction: boolean;
+}
+
+export interface GroupedCourse {
+  baseCourseCode: number;
+  courseName: string;
+  credits: number;
+  professors: string[];
+  department: string;
+  sections: Section[];
+}
+
+export interface SearchCoursesResponse {
+  courses: GroupedCourse[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  page: number;
+}
