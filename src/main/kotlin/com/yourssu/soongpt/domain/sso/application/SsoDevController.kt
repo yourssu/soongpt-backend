@@ -1,6 +1,9 @@
 package com.yourssu.soongpt.domain.sso.application
 
+import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.common.config.ClientJwtProvider
+import com.yourssu.soongpt.domain.course.business.UntakenCourseCodeService
+import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.sso.implement.MockUsaintData
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.sso.implement.SyncStatus
@@ -15,8 +18,10 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Profile
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "SSO Dev", description = "로컬/개발 테스트용 (local, dev 프로필에서 활성화)")
@@ -26,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController
 class SsoDevController(
     private val clientJwtProvider: ClientJwtProvider,
     private val syncSessionStore: SyncSessionStore,
+    private val untakenCourseCodeService: UntakenCourseCodeService,
 ) {
     @Operation(
         summary = "테스트용 토큰 발급 + 쿠키 설정",
@@ -158,5 +164,62 @@ class SsoDevController(
                 "pseudonym" to pseudonym,
             )
         )
+    }
+
+    @Operation(
+        summary = "복수전공·부전공 테스트용 Mock 토큰 발급",
+        description = """
+            MockUsaintData.buildForDoubleMajorAndMinor() 로 만든 mock 데이터로 세션·쿠키를 설정합니다.
+            복필/복선/부전공 추천 API 테스트 시: MockUsaintData.kt 의 buildForDoubleMajorAndMinor() 에서
+            doubleMajorDepartment, minorDepartment, basicInfo.department, graduationSummary(복필/복선/부전공 학점) 등을
+            채운 뒤 이 API를 호출하고, 같은 쿠키로 GET /api/courses/recommend/all?category=DOUBLE_MAJOR_REQUIRED,DOUBLE_MAJOR_ELECTIVE,MINOR 호출하면 됩니다.
+        """,
+    )
+    @PostMapping("/mock-double-major-token")
+    fun issueMockDoubleMajorToken(response: HttpServletResponse): ResponseEntity<Map<String, String>> {
+        val pseudonym = MockUsaintData.MOCK_USER_PSEUDONYM
+        val mockData = MockUsaintData.buildForDoubleMajorAndMinor()
+
+        syncSessionStore.createSession(pseudonym)
+        syncSessionStore.updateStatus(
+            pseudonym = pseudonym,
+            status = SyncStatus.COMPLETED,
+            usaintData = mockData,
+        )
+
+        val token = clientJwtProvider.issueToken(pseudonym)
+        response.addHeader(
+            "Set-Cookie",
+            "soongpt_auth=$token; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600",
+        )
+
+        return ResponseEntity.ok(
+            mapOf(
+                "message" to "복수전공·부전공 테스트용 세션·쿠키가 설정되었습니다. MockUsaintData.buildForDoubleMajorAndMinor() 값을 채운 뒤 재호출하면 반영됩니다.",
+                "pseudonym" to pseudonym,
+            )
+        )
+    }
+
+    @Operation(
+        summary = "미수강 과목코드 조회 (UntakenCourseCodeService 테스트용)",
+        description = """
+            mock-user-token 으로 세션을 만든 뒤, category를 지정해서 호출하면
+            UntakenCourseCodeService의 raw 결과를 바로 볼 수 있습니다.
+            - 전기/전필/전선: List<Long> (10자리 과목코드)
+            - 교필/교선: Map<분야명, List<Long>>
+        """,
+    )
+    @GetMapping("/untaken-codes")
+    fun getUntakenCodes(
+        @RequestParam category: Category,
+    ): ResponseEntity<Response<Any>> {
+        val result: Any = when (category) {
+            Category.GENERAL_REQUIRED, Category.GENERAL_ELECTIVE ->
+                untakenCourseCodeService.getUntakenCourseCodesByField(category)
+            else ->
+                untakenCourseCodeService.getUntakenCourseCodes(category)
+        }
+        return ResponseEntity.ok(Response(result = result))
     }
 }

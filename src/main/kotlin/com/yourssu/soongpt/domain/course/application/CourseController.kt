@@ -128,12 +128,11 @@ class CourseController(
             SSO 인증된 사용자의 학적정보를 기반으로 모든 이수구분의 과목을 추천합니다.
 
             **파라미터 설명:**
-            - **category**: 추천할 이수구분 (필수). 콤마 구분으로 여러 개 지정 가능.
+            - **category**: 추천할 이수구분 (필수). 콤마 구분으로 여러 개 지정 가능. 교양선택은 지원하지 않음.
                 - `MAJOR_BASIC` (전공기초)
                 - `MAJOR_REQUIRED` (전공필수)
                 - `MAJOR_ELECTIVE` (전공선택)
                 - `GENERAL_REQUIRED` (교양필수)
-                - `GENERAL_ELECTIVE` (교양선택)
                 - `RETAKE` (재수강)
                 - `DOUBLE_MAJOR_REQUIRED` (복수전공필수) — progress만 제공
                 - `DOUBLE_MAJOR_ELECTIVE` (복수전공선택) — progress만 제공

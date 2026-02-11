@@ -2,9 +2,12 @@ package com.yourssu.soongpt.domain.course.implement.utils
 
 object FieldFinder {
     fun findFieldBySchoolId(field: String, schoolId: Int): String {
-        val allEntries = field.split("\n").mapNotNull { line -> parseFieldEntry(line) }
+        val allEntries = field.split("\n")
+            .mapNotNull { line -> parseFieldEntry(line) }
 
-        if (allEntries.isEmpty()) return field.trim()
+        if (allEntries.isEmpty()) {
+            return ""
+        }
 
         val matchingEntries = allEntries.filter { entry -> schoolId in entry.yearRange }
 
@@ -19,7 +22,11 @@ object FieldFinder {
         return normalizeFieldName(mostRecentEntry.fieldName)
     }
 
-    /** 접두어(실제분야명) 형태면 괄호 안만 반환. 예: 품격(글로벌시민의식) -> 글로벌시민의식 괄호가 없으면 원본 그대로 반환. */
+    /**
+     * 접두어(실제분야명) 형태면 괄호 안만 반환.
+     * 예: 품격(글로벌시민의식) → 글로벌시민의식, 창의(비판적사고와표현) → 비판적사고와표현
+     * 괄호가 없으면 원본 그대로 반환 (예: SW와AI).
+     */
     private fun normalizeFieldName(fieldName: String): String {
         if (fieldName.isBlank()) return fieldName
         val trimmed = fieldName.trim()
@@ -31,13 +38,12 @@ object FieldFinder {
         val yearRange = parseYearRange(line) ?: return null
         val fieldName = parseFieldName(line)
 
-        return if (fieldName.isNotBlank()) FieldEntry(yearRange, fieldName) else null
+        return if (fieldName.isNotBlank()) {
+            FieldEntry(yearRange, fieldName)
+        } else null
     }
 
-    private fun parseYearRange(rawLine: String): IntRange? {
-        // 실제 데이터에 공백/따옴표/리스트 prefix("- ")가 섞여있는 케이스 정규화
-        val line = rawLine.replace(" ", "")
-
+    private fun parseYearRange(line: String): IntRange? {
         return when {
             line.contains("이후") -> {
                 Regex("(\\d{2})(?=이후)").find(line)?.groupValues?.get(1)?.toIntOrNull()?.let {
@@ -66,12 +72,15 @@ object FieldFinder {
                 }
             }
             else -> {
-                Regex("(\\d{2})(?=\\])").find(line)?.groupValues?.get(1)?.toIntOrNull()?.let {
-                    it..it
+                val match = Regex("'{0,2}(\\d{2})\\]").find(line)
+                match?.let {
+                    val year = it.groupValues[1].toInt()
+                    year..year
                 }
             }
         }
     }
+
 
     private fun parseFieldName(line: String): String {
         val lastBracketIndex = line.lastIndexOf(']')

@@ -122,10 +122,11 @@ data class RecommendedCourseResponse(
                 .distinct()
                 .sorted()
 
-            // 전공과목(전기/전필/전선) 또는 타전공인정 과목일 경우 department 포함
+            // 전공과목(전기/전필/전선), 타전공인정, 복수전공/부전공(field=복필/복선/부필/부선)일 경우 department 포함
             val department = when {
                 isCrossMajor -> representative.course.department
                 representative.course.category in listOf(Category.MAJOR_BASIC, Category.MAJOR_REQUIRED, Category.MAJOR_ELECTIVE) -> representative.course.department
+                field in listOf("복필", "복선", "부필", "부선") -> representative.course.department
                 else -> null
             }
 
