@@ -1,22 +1,23 @@
 package com.yourssu.soongpt.domain.timetable.business
 
+import com.yourssu.soongpt.domain.course.application.RecommendContextResolver
+import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.course.business.UntakenCourseCodeService
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toBaseCode
-import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.timetable.business.dto.DeletableCourseDto
 import com.yourssu.soongpt.domain.timetable.business.dto.FinalTimetableRecommendationResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.GroupedTimetableResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.PrimaryTimetableCommand
 import com.yourssu.soongpt.domain.timetable.business.dto.RecommendationDto
 import com.yourssu.soongpt.domain.timetable.business.dto.SelectedCourseCommand
-import com.yourssu.soongpt.domain.timetable.business.dto.UserContext
 import com.yourssu.soongpt.domain.timetable.implement.CourseCandidateFactory
 import com.yourssu.soongpt.domain.timetable.implement.CourseCandidateProvider
 import com.yourssu.soongpt.domain.timetable.implement.Tag
 import com.yourssu.soongpt.domain.timetable.implement.TimetableCombinationGenerator
 import com.yourssu.soongpt.domain.timetable.implement.TimetablePersister
 import com.yourssu.soongpt.domain.timetable.implement.TimetableRanker
-import com.yourssu.soongpt.domain.timetable.implement.UserContextProvider
 import com.yourssu.soongpt.domain.timetable.implement.SwapCourseProvider
 import com.yourssu.soongpt.domain.timetable.implement.SwapTrack
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
@@ -37,17 +38,17 @@ class TimetableRecommendationFacade(
     private val timetableCombinationGenerator: TimetableCombinationGenerator,
     private val timetableRanker: TimetableRanker,
     private val timetablePersister: TimetablePersister,
-    private val userContextProvider: UserContextProvider,
     private val courseReader: CourseReader,
     private val courseCandidateFactory: CourseCandidateFactory,
     private val swapCourseProvider: SwapCourseProvider,
+    private val untakenCourseCodeService: UntakenCourseCodeService,
+    private val recommendContextResolver: RecommendContextResolver,
 ) {
     @Transactional
     fun recommend(command: PrimaryTimetableCommand): FinalTimetableRecommendationResponse {
-        val userContext = userContextProvider.getContext(command.userId)
-
+        val ctx = recommendContextResolver.resolve()
 //        System.err.println("TimetableRecommendationFacade.recommend called with command: $command and userContext: $userContext")
-        val mandatoryChapelCandidate = findMandatoryChapelForFreshman(userContext)
+        val mandatoryChapelCandidate = findMandatoryChapelForFreshman(ctx.userGrade, ctx.departmentName)
         val commandWithoutChapel = if (mandatoryChapelCandidate != null) {
             command.copyWithoutCourse(mandatoryChapelCandidate.codes.first())
         } else {
@@ -64,14 +65,14 @@ class TimetableRecommendationFacade(
 //                "Success path inputs: userId=${command.userId}, totalSelectedCourses=${command.getAllCourseCodes().size}, " +
 //                    "selectedCourseCodes=${command.getAllCourseCodes().map { it.courseCode }}"
 //            )
-            val successResponse = processSuccessCase(combinations, userContext, command, mandatoryChapelCandidate)
+            val successResponse = processSuccessCase(combinations, command, mandatoryChapelCandidate)
 
 //            System.err.println("Returning success response with ${successResponse.size} grouped recommendations")
             return FinalTimetableRecommendationResponse.success(successResponse)
         }
 
 //        System.err.println("No valid timetable combinations found, checking for single conflict courses")
-        val singleConflictCourseCodes = findSingleConflictCourses(commandWithoutChapel, mandatoryChapelCandidate, userContext)
+        val singleConflictCourseCodes = findSingleConflictCourses(commandWithoutChapel, mandatoryChapelCandidate)
         if (singleConflictCourseCodes.isNotEmpty()) {
             return FinalTimetableRecommendationResponse.singleConflict(singleConflictCourseCodes)
         }
@@ -80,29 +81,23 @@ class TimetableRecommendationFacade(
         return FinalTimetableRecommendationResponse.failure()
     }
 
-    private fun findMandatoryChapelForFreshman(userContext: UserContext): TimetableCandidate? {
-        if (userContext.grade == 1 && userContext.department.name !in EXCLUDED_DEPARTMENTS_FOR_CHAPEL) {
-            val chapelCourse = courseReader.findAllBy(
-                category = com.yourssu.soongpt.domain.course.implement.Category.CHAPEL,
-                department = userContext.department,
-                grade = userContext.grade
-            ).firstOrNull()
+    private fun findMandatoryChapelForFreshman(userGrade: Int, departmentName: String): TimetableCandidate? {
+        if (userGrade != 1 || departmentName in EXCLUDED_DEPARTMENTS_FOR_CHAPEL) return null
 
-            if (chapelCourse != null) {
-                val chapelCandidate = courseCandidateFactory.create(chapelCourse)
-                return TimetableCandidate(
-                    codes = listOf(chapelCandidate.code),
-                    timeSlot = chapelCandidate.timeSlot,
-                    validTags = emptyList()
-                )
-            }
-        }
-        return null
+        val chapelCode = untakenCourseCodeService.getUntakenCourseCodes(Category.CHAPEL).firstOrNull()
+            ?: return null
+        val chapelCourse = courseReader.findAllByCode(listOf(chapelCode)).firstOrNull()
+            ?: return null
+        val chapelCandidate = courseCandidateFactory.create(chapelCourse)
+        return TimetableCandidate(
+            codes = listOf(chapelCandidate.code),
+            timeSlot = chapelCandidate.timeSlot,
+            validTags = emptyList()
+        )
     }
 
     private fun processSuccessCase(
         baselineCombinations: List<TimetableCandidate>,
-        userContext: UserContext,
         command: PrimaryTimetableCommand,
         mandatoryChapelCandidate: TimetableCandidate?
     ): List<GroupedTimetableResponse> {
@@ -135,7 +130,7 @@ class TimetableRecommendationFacade(
                 val selectedPair = coursesForTrack.random()
                 val selectedCourse = selectedPair.first
                 val alternativeCourses = alternativesByTrack.getOrPut(track) {
-                    val fetched = swapCourseProvider.findAlternatives(track, userContext)
+                    val fetched = swapCourseProvider.findAlternatives(track)
                     fetched
                 }.filter { it.code.toBaseCode() != selectedCourse.courseCode }
 
@@ -211,7 +206,10 @@ class TimetableRecommendationFacade(
         val allSelectedCandidates = defaultCandidates + tagCandidates.flatMap { it.second }
         val allCodes = allSelectedCandidates.flatMap { it.codes }.distinct()
         val courseByCode = courseReader.findAllByCode(allCodes).associateBy { it.code }
-        val baseNameCache = mutableMapOf<Long, String?>()
+        val baseNameCache = (courseByCode.values + loadSelectedCourses(command, courseReader))
+            .associateBy({ it.baseCode() }, { it.name })
+            .mapValues { (_, name) -> name as String? }
+            .toMutableMap()
 
         if (defaultCandidates.isNotEmpty()) {
             val defaultRecommendations = defaultCandidates.map { candidate ->
@@ -234,8 +232,6 @@ class TimetableRecommendationFacade(
                         candidate,
                         tag,
                         command,
-                        userContext,
-                        courseReader,
                         courseByCode,
                         baseNameCache
                     ),
@@ -253,8 +249,7 @@ class TimetableRecommendationFacade(
 
     private fun findSingleConflictCourses(
         command: PrimaryTimetableCommand,
-        baseTimetable: TimetableCandidate?,
-        userContext: UserContext
+        baseTimetable: TimetableCandidate?
     ): List<DeletableCourseDto> {
         val allSelectedCourses = command.getAllCourseCodes()
         val conflictingCourses = mutableListOf<DeletableCourseDto>()
@@ -269,8 +264,16 @@ class TimetableRecommendationFacade(
                     val fullCode = (courseToExclude.courseCode * 100) + courseToExclude.selectedCourseIds.first()
                     courseReader.findAllByCode(listOf(fullCode)).firstOrNull()
                 } else {
-                    courseReader.findAllByClass(userContext.department, courseToExclude.courseCode, userContext.grade)
-                        .firstOrNull()
+                    val category = command.findCategoryFor(courseToExclude.courseCode)
+                    val candidates = when (category) {
+                        Category.GENERAL_REQUIRED, Category.GENERAL_ELECTIVE -> untakenCourseCodeService
+                            .getUntakenCourseCodesByField(category)
+                            .values
+                            .flatten()
+                        else -> untakenCourseCodeService.getUntakenCourseCodes(category)
+                    }
+                    val matched = candidates.filter { it.toBaseCode() == courseToExclude.courseCode }
+                    courseReader.findAllByCode(matched).firstOrNull()
                 }
 
                 if (resolvedCourse != null) {
@@ -293,6 +296,44 @@ private fun PrimaryTimetableCommand.getAllCourseCodes(): List<SelectedCourseComm
             this.teachingCourses +
             this.generalRequiredCourses +
             this.addedCourses
+}
+
+private fun PrimaryTimetableCommand.findCategoryFor(courseCode: Long): Category {
+    return when {
+        this.majorRequiredCourses.any { it.courseCode == courseCode } -> Category.MAJOR_REQUIRED
+        this.majorElectiveCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
+        this.majorBasicCourses.any { it.courseCode == courseCode } -> Category.MAJOR_BASIC
+        this.doubleMajorCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
+        this.minorCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
+        this.teachingCourses.any { it.courseCode == courseCode } -> Category.TEACHING
+        this.generalRequiredCourses.any { it.courseCode == courseCode } -> Category.GENERAL_REQUIRED
+        this.retakeCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
+        this.addedCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
+        else -> Category.MAJOR_ELECTIVE
+    }
+}
+
+private fun loadSelectedCourses(
+    command: PrimaryTimetableCommand,
+    courseReader: CourseReader
+): List<com.yourssu.soongpt.domain.course.implement.Course> {
+    val byFullCode = command.getAllCourseCodes()
+        .filter { it.selectedCourseIds.isNotEmpty() }
+        .flatMap { selected ->
+            selected.selectedCourseIds.map { division ->
+                (selected.courseCode * 100) + division
+            }
+        }
+        .distinct()
+
+    val byBaseCode = command.getAllCourseCodes()
+        .filter { it.selectedCourseIds.isEmpty() }
+        .map { (it.courseCode * 100) + 1 }
+        .distinct()
+
+    val allCodes = (byFullCode + byBaseCode).distinct()
+    if (allCodes.isEmpty()) return emptyList()
+    return allCodes.chunked(500).flatMap { courseReader.findAllByCode(it) }
 }
 
 private fun PrimaryTimetableCommand.getAllCourseCodesWithCategory(): List<Pair<SelectedCourseCommand, SwapTrack>> {
@@ -384,8 +425,6 @@ private fun buildRecommendationDescription(
     candidate: TimetableCandidate,
     tag: Tag,
     command: PrimaryTimetableCommand,
-    userContext: UserContext,
-    courseReader: CourseReader,
     courseByCode: Map<Long, com.yourssu.soongpt.domain.course.implement.Course>,
     baseNameCache: MutableMap<Long, String?>
 ): String {
@@ -409,11 +448,7 @@ private fun buildRecommendationDescription(
     if (removedBaseCodes.isNotEmpty() || addedBaseCodes.isNotEmpty()) {
 //        System.err.println("Removed base codes=$removedBaseCodes, added base codes=$addedBaseCodes")
         val removedNames = removedBaseCodes.mapNotNull { baseCode ->
-            baseNameCache.getOrPut(baseCode) {
-                courseReader.findAllByClass(userContext.department, baseCode, userContext.grade)
-                    .firstOrNull()
-                    ?.name
-            }
+            baseNameCache[baseCode]
         }
         val addedNames = addedBaseCodes.mapNotNull { baseCode ->
             candidateNameByBase[baseCode]
@@ -456,11 +491,7 @@ private fun buildRecommendationDescription(
         if (changedDivisionBaseCodes.isNotEmpty()) {
             val changedNames = changedDivisionBaseCodes.mapNotNull { baseCode ->
                 candidateNameByBase[baseCode]
-                    ?: baseNameCache.getOrPut(baseCode) {
-                        courseReader.findAllByClass(userContext.department, baseCode, userContext.grade)
-                            .firstOrNull()
-                            ?.name
-                    }
+                    ?: baseNameCache[baseCode]
             }
             val summary = changedNames.take(2).joinToString(", ")
             val suffix = if (changedNames.size > 2) " 외 ${changedNames.size - 2}건" else ""
