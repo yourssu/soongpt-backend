@@ -33,6 +33,7 @@ class TimetableService(
     }
 
     fun getAvailableGeneralElectives(timetableId: Long): AvailableGeneralElectivesResponse {
+        ensureTimetableExists(timetableId)
         // 기존 타임테이블 로직: courses 조회
         val courses = getAvailableGeneralElectiveCourses(timetableId)
 
@@ -83,6 +84,7 @@ class TimetableService(
 
     // NOTE: 피키가 만든거!!! 채플 이수현황을 조립할 때 사용합니다. 대충 예시코드..라고 생각해주세요 피키피키~야호~
     fun getAvailableChapels(timetableId: Long): AvailableChapelsResponse {
+        ensureTimetableExists(timetableId)
         // 기존 타임테이블 로직: courses 조회
         // 이수현황 조립: progress만 별도로 계산해서 응답에 추가
         val ctx = recommendContextResolver.resolveOptional()
@@ -115,6 +117,10 @@ class TimetableService(
             val courseTimes = CourseTimes.from(course.scheduleRoom).toList()
             TimetableCourseResponse.from(course, courseTimes)
         }
+    }
+
+    private fun ensureTimetableExists(timetableId: Long) {
+        timetableReader.get(timetableId)
     }
 
     @Transactional
