@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.course.business
 
-import com.yourssu.soongpt.domain.course.business.dto.MajorCourseRecommendResponse
+import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.baseCode
@@ -15,19 +15,19 @@ class RetakeCourseRecommendService(
     private val courseRepository: CourseRepository,
 ) {
 
-    fun recommend(lowGradeSubjectCodes: List<String>): MajorCourseRecommendResponse {
+    fun recommend(lowGradeSubjectCodes: List<String>): CategoryRecommendResponse {
         if (lowGradeSubjectCodes.isEmpty()) {
-            return MajorCourseRecommendResponse.retakeEmpty("재수강 가능한 C+ 이하 과목이 없습니다.")
+            return retakeEmpty("재수강 가능한 C+ 이하 과목이 없습니다.")
         }
 
         val baseCodes = lowGradeSubjectCodes.mapNotNull { it.toLongOrNull() }
         if (baseCodes.isEmpty()) {
-            return MajorCourseRecommendResponse.retakeEmpty("재수강 가능한 C+ 이하 과목이 없습니다.")
+            return retakeEmpty("재수강 가능한 C+ 이하 과목이 없습니다.")
         }
         val coursesWithTarget = courseRepository.findCoursesWithTargetByBaseCodes(baseCodes)
 
         if (coursesWithTarget.isEmpty()) {
-            return MajorCourseRecommendResponse.retakeEmpty(
+            return retakeEmpty(
                 "C+ 이하 과목은 있으나, 이번 학기에 개설되는 재수강 과목이 없습니다."
             )
         }
@@ -39,6 +39,26 @@ class RetakeCourseRecommendService(
             }
             .sortedBy { it.courseName }
 
-        return MajorCourseRecommendResponse.retake(recommendedCourses)
+        return CategoryRecommendResponse(
+            category = RETAKE_CATEGORY,
+            progress = null,
+            message = null,
+            userGrade = null,
+            courses = recommendedCourses,
+            lateFields = null,
+        )
+    }
+
+    private fun retakeEmpty(message: String) = CategoryRecommendResponse(
+        category = RETAKE_CATEGORY,
+        progress = null,
+        message = message,
+        userGrade = null,
+        courses = emptyList(),
+        lateFields = null,
+    )
+
+    companion object {
+        private const val RETAKE_CATEGORY = "RETAKE"
     }
 }

@@ -10,13 +10,27 @@ object FieldFinder {
 
         val matchingEntries = allEntries.filter { entry -> schoolId in entry.yearRange }
 
-        // 여러 엔트리가 매칭되면(예: '22이후', '23이후' 둘 다) 시작 연도가 더 큰 쪽을 우선
+        // 여러 엔트리가 매칭되면(예: '22이후', '23이후' 둘 다) 시작 연도가 더 큰 쪽 우선
         if (matchingEntries.isNotEmpty()) {
-            return matchingEntries.maxBy { it.yearRange.first }.fieldName
+            val entryWithHighestYear = matchingEntries.maxBy { entry -> entry.yearRange.first }
+            return normalizeFieldName(entryWithHighestYear.fieldName)
         }
 
         // 일치하는 연도가 없을 때 가장 최근 연도의 필드를 반환
-        return allEntries.maxBy { it.yearRange.last }.fieldName
+        val mostRecentEntry = allEntries.maxBy { entry -> entry.yearRange.last }
+        return normalizeFieldName(mostRecentEntry.fieldName)
+    }
+
+    /**
+     * 접두어(실제분야명) 형태면 괄호 안만 반환.
+     * 예: 품격(글로벌시민의식) -> 글로벌시민의식
+     * 괄호가 없으면 원본 그대로 반환.
+     */
+    private fun normalizeFieldName(fieldName: String): String {
+        if (fieldName.isBlank()) return fieldName
+        val trimmed = fieldName.trim()
+        val match = Regex(".*\\(([^)]+)\\)\\s*$").find(trimmed)
+        return match?.groupValues?.get(1)?.trim() ?: trimmed
     }
 
     private fun parseFieldEntry(line: String): FieldEntry? {
@@ -27,12 +41,11 @@ object FieldFinder {
     }
 
     private fun parseYearRange(rawLine: String): IntRange? {
-        // 실제 데이터에 공백/따옴표/리스트 prefix("- ")가 섞여있는 케이스가 있어 normalize 후 파싱
+        // 실제 데이터에 공백/따옴표/리스트 prefix("- ")가 섞여있는 케이스 정규화
         val line = rawLine.replace(" ", "")
 
         return when {
             line.contains("이후") -> {
-                // 예: ['23이후], [23이후]
                 Regex("(\\d{2})(?=이후)").find(line)
                     ?.groupValues?.get(1)
                     ?.toIntOrNull()
@@ -40,7 +53,6 @@ object FieldFinder {
             }
 
             line.contains("이전") -> {
-                // 예: ['22이전], [22이전]
                 Regex("(\\d{2})(?=이전)").find(line)
                     ?.groupValues?.get(1)
                     ?.toIntOrNull()
@@ -48,13 +60,14 @@ object FieldFinder {
             }
 
             line.contains("~") -> {
-                // 예: ['22~'23], [22~23]
-                val nums = Regex("(\\d{2})").findAll(line).mapNotNull { it.groupValues[1].toIntOrNull() }.toList()
+                val nums = Regex("(\\d{2})")
+                    .findAll(line)
+                    .mapNotNull { it.groupValues[1].toIntOrNull() }
+                    .toList()
                 if (nums.size >= 2) nums.min()..nums.max() else null
             }
 
             line.contains("-") -> {
-                // 예: ['22-'23]
                 val match = Regex("(\\d{2})-('?)(\\d{2})").find(line)
                 match?.let {
                     val a = it.groupValues[1].toIntOrNull()
@@ -64,7 +77,6 @@ object FieldFinder {
             }
 
             else -> {
-                // 예: ['23]
                 Regex("(\\d{2})(?=\\])").find(line)
                     ?.groupValues?.get(1)
                     ?.toIntOrNull()
@@ -74,7 +86,6 @@ object FieldFinder {
     }
 
     private fun parseFieldName(line: String): String {
-        // 마지막 ] 이후의 모든 텍스트를 필드명으로 추출
         val lastBracketIndex = line.lastIndexOf(']')
         if (lastBracketIndex != -1 && lastBracketIndex < line.length - 1) {
             return line.substring(lastBracketIndex + 1).trim()
@@ -91,4 +102,3 @@ object FieldFinder {
     private const val MIN_YEAR = 0
     private const val MAX_YEAR = 99
 }
-
