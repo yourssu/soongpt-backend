@@ -2,26 +2,21 @@ package com.yourssu.soongpt.domain.course.application.dto
 
 import com.yourssu.soongpt.common.validation.ValidSchoolId
 import com.yourssu.soongpt.domain.course.business.query.FilterTeachingCoursesQuery
-import com.yourssu.soongpt.domain.course.implement.TeachingArea
+import com.yourssu.soongpt.domain.course.implement.TeachingMajorArea
 import jakarta.validation.constraints.NotBlank
-import org.hibernate.validator.constraints.Range
 
 data class GetTeachingCoursesRequest(
-    @field:ValidSchoolId
-    val schoolId: Int,
-
-    @field:NotBlank
-    val department: String,
-
-    val teachingArea: String? = null,
+        @field:ValidSchoolId val schoolId: Int,
+        @field:NotBlank val department: String,
+        val majorArea: String? = null,
 ) {
     fun toQuery(): FilterTeachingCoursesQuery {
-        val teachingAreaEnum = teachingArea?.let { TeachingArea.from(it) }
+        val majorAreaEnum = majorArea?.let { TeachingMajorArea.from(it) }
 
         return FilterTeachingCoursesQuery(
-            schoolId = schoolId,
-            departmentName = department,
-            teachingArea = teachingAreaEnum,
+                schoolId = schoolId,
+                departmentName = department,
+                majorArea = majorAreaEnum,
         )
     }
 }
