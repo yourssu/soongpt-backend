@@ -69,7 +69,9 @@ class UntakenCourseCodeService(
         val department = departmentReader.getByName(usaintData.basicInfo.department)
         val departmentId = department.id
             ?: throw IllegalStateException("학과 ID가 없습니다: ${department.name}")
-        val schoolId = usaintData.basicInfo.year % 100
+        val studentSchoolId = usaintData.basicInfo.year % 100
+        // 교필은 23이후 분야명(인문적상상력과소통, SW와AI 등)으로 통일. 교선은 학번별 분야 사용.
+        val schoolId = if (category == Category.GENERAL_REQUIRED) GENERAL_REQUIRED_SCHOOL_ID else studentSchoolId
 
         val allCourses = courseRepository.findCoursesWithTargetByCategory(
             category = category,
@@ -123,5 +125,7 @@ class UntakenCourseCodeService(
 
     companion object {
         private const val MAX_GRADE = 5
+        /** 교필 분야명을 23이후 기준으로 통일하기 위한 고정 schoolId */
+        private const val GENERAL_REQUIRED_SCHOOL_ID = 23
     }
 }

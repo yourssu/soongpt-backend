@@ -105,14 +105,14 @@ class TimetableController(
         value = [
             ApiResponse(
                 responseCode = "200", description = "조회 성공", content = [
-                    Content(mediaType = "application/json", schema = Schema(implementation = GeneralElectiveDto::class))
+                    Content(mediaType = "application/json", schema = Schema(implementation = AvailableGeneralElectivesResponse::class))
                 ]
             ),
             ApiResponse(responseCode = "404", description = "존재하지 않는 시간표 ID", content = [])
         ]
     )
     @GetMapping("/{id}/available-general-electives")
-    fun getAvailableGeneralElectives(@PathVariable id: Long): ResponseEntity<Response<List<GeneralElectiveDto>>> {
+    fun getAvailableGeneralElectives(@PathVariable id: Long): ResponseEntity<Response<AvailableGeneralElectivesResponse>> {
         // TODO: 실제 userId는 토큰 등에서 가져와야 함
         val userId = "anonymous"
         val response = timetableService.getAvailableGeneralElectives(id, userId)
