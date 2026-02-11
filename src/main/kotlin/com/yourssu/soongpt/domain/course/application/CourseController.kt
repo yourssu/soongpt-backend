@@ -134,10 +134,10 @@ class CourseController(
                 - `MAJOR_ELECTIVE` (전공선택)
                 - `GENERAL_REQUIRED` (교양필수)
                 - `RETAKE` (재수강)
-                - `DOUBLE_MAJOR_REQUIRED` (복수전공필수) — progress만 제공
-                - `DOUBLE_MAJOR_ELECTIVE` (복수전공선택) — progress만 제공
-                - `MINOR` (부전공) — 준비 중
-                - `TEACHING` (교직이수) — 준비 중
+                - `DOUBLE_MAJOR_REQUIRED` (복수전공필수)
+                - `DOUBLE_MAJOR_ELECTIVE` (복수전공선택)
+                - `MINOR` (부전공)
+                - `TEACHING` (교직이수) — 교직이수 대상자에게 미이수 교직과목 영역별 추천
 
             **응답 구조:**
             - 각 이수구분별로 `CategoryRecommendResponse` 반환
