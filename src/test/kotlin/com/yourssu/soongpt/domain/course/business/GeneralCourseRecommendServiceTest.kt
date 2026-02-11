@@ -12,6 +12,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -39,6 +40,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 departmentName = departmentName,
                 userGrade = userGrade,
                 schoolId = schoolId,
+                admissionYear = 2023,
                 takenSubjectCodes = emptyList(),
                 progress = progress,
             )
@@ -48,7 +50,6 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 result.progress shouldBe progress
                 result.message shouldBe "교양필수 학점을 이미 모두 이수하셨습니다."
                 result.courses shouldHaveSize 0
-                result.fieldGroups.shouldBeNull()
                 result.lateFields.shouldBeNull()
             }
         }
@@ -74,6 +75,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 departmentName = departmentName,
                 userGrade = userGrade,
                 schoolId = schoolId,
+                admissionYear = 2023,
                 takenSubjectCodes = emptyList(),
                 progress = progress,
             )
@@ -170,6 +172,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 departmentName = departmentName,
                 userGrade = userGrade,
                 schoolId = schoolId,
+                admissionYear = 2023,
                 takenSubjectCodes = emptyList(),
                 progress = progress,
             )
@@ -180,21 +183,11 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 result.lateFields!![0] shouldBe "SW와AI"
             }
 
-            then("ON_TIME 분야는 fieldGroups에 과목과 함께 포함된다") {
-                result.fieldGroups.shouldNotBeNull()
-                result.fieldGroups!! shouldHaveSize 1
-                result.fieldGroups!![0].field shouldBe "글로벌시민의식"
-                result.fieldGroups!![0].courses shouldHaveSize 1
-                result.fieldGroups!![0].courses[0].courseName shouldBe "세계시민론"
-                result.fieldGroups!![0].courses[0].sections shouldHaveSize 2
-            }
-
-            then("courses는 빈 배열이다 (교양은 fieldGroups 사용)") {
-                result.courses shouldHaveSize 0
-            }
-
-            then("gradeGroups는 null이다") {
-                result.gradeGroups.shouldBeNull()
+            then("ON_TIME 분야는 courses에 field와 함께 포함된다") {
+                result.courses shouldHaveSize 1
+                result.courses[0].field shouldBe "글로벌시민의식"
+                result.courses[0].courseName shouldBe "세계시민론"
+                result.courses[0].sections shouldHaveSize 2
             }
         }
     }
@@ -233,6 +226,11 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                     maxGrade = userGrade,
                 )
             ).thenReturn(listOf(swCourse))
+
+            // takenFields DB lookup: baseCode 11100001 → SW와AI 분야의 swCourse 반환
+            whenever(
+                courseRepository.findCoursesWithTargetByBaseCodes(any())
+            ).thenReturn(listOf(swCourse))
         }
 
         `when`("해당 분야의 과목을 이미 수강했으면") {
@@ -241,14 +239,92 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 departmentName = departmentName,
                 userGrade = userGrade,
                 schoolId = schoolId,
+                admissionYear = 2023,
                 takenSubjectCodes = listOf("11100001"), // SW기초의 baseCode
                 progress = progress,
             )
 
             then("분야 전체가 제외되어 빈 결과를 반환한다") {
                 result.message shouldBe "이번 학기에 수강 가능한 교양필수 과목이 없습니다."
-                result.fieldGroups.shouldBeNull()
+                result.courses shouldHaveSize 0
                 result.lateFields.shouldBeNull()
+            }
+        }
+    }
+
+    given("교양필수 - 22학번 이하: lateFields 없음, 과목 단위만 제외") {
+        val progress = Progress(required = 12, completed = 3, satisfied = false)
+
+        val swCourse1 = CourseWithTarget(
+            course = Course(
+                id = 1L,
+                category = Category.GENERAL_REQUIRED,
+                code = 1110000101L,
+                name = "SW기초",
+                professor = "김교수",
+                department = "교양교육원",
+                division = "01분반",
+                time = "3.0",
+                point = "3",
+                personeel = 200,
+                scheduleRoom = "월 09:00-10:15",
+                target = "전체 1학년",
+                credit = 3.0,
+                field = "['23이후]SW와AI",
+            ),
+            targetGrades = listOf(1),
+            isStrict = false,
+        )
+        val swCourse2 = CourseWithTarget(
+            course = Course(
+                id = 2L,
+                category = Category.GENERAL_REQUIRED,
+                code = 1110000201L,
+                name = "AI기초",
+                professor = "이교수",
+                department = "교양교육원",
+                division = "01분반",
+                time = "3.0",
+                point = "3",
+                personeel = 200,
+                scheduleRoom = "수 09:00-10:15",
+                target = "전체 1학년",
+                credit = 3.0,
+                field = "['23이후]SW와AI",
+            ),
+            targetGrades = listOf(1),
+            isStrict = false,
+        )
+
+        beforeContainer {
+            whenever(
+                courseRepository.findCoursesWithTargetByCategory(
+                    category = Category.GENERAL_REQUIRED,
+                    departmentId = 1L,
+                    collegeId = 10L,
+                    maxGrade = userGrade,
+                )
+            ).thenReturn(listOf(swCourse1, swCourse2))
+        }
+
+        `when`("22학번이고 한 과목만 수강했으면") {
+            val result = service.recommend(
+                category = Category.GENERAL_REQUIRED,
+                departmentName = departmentName,
+                userGrade = userGrade,
+                schoolId = 22,
+                admissionYear = 2022,
+                takenSubjectCodes = listOf("11100001"), // SW기초만 이수
+                progress = progress,
+            )
+
+            then("lateFields는 null이다") {
+                result.lateFields.shouldBeNull()
+            }
+            then("수강한 과목만 제외하고 같은 분야 다른 과목은 포함된다") {
+                result.courses shouldHaveSize 1
+                result.courses[0].courseName shouldBe "AI기초"
+                result.courses[0].field shouldBe "SW와AI"
             }
         }
     }
@@ -315,22 +391,19 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 departmentName = departmentName,
                 userGrade = userGrade,
                 schoolId = schoolId,
+                admissionYear = 2023,
                 takenSubjectCodes = emptyList(),
                 progress = progress,
             )
 
-            then("분야별로 그룹핑된 fieldGroups를 반환한다") {
+            then("분야별 과목이 courses에 field와 함께 포함된다") {
                 result.category shouldBe "GENERAL_ELECTIVE"
-                result.fieldGroups.shouldNotBeNull()
-                result.fieldGroups!! shouldHaveSize 2
+                result.courses shouldHaveSize 2
+                result.courses.map { it.field }.toSet() shouldBe setOf("문화와예술", "사회와경제")
             }
 
             then("lateFields는 null이다 (교선은 LATE 구분 없음)") {
                 result.lateFields.shouldBeNull()
-            }
-
-            then("courses는 빈 배열이다") {
-                result.courses shouldHaveSize 0
             }
         }
     }
