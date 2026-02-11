@@ -34,7 +34,7 @@ GET /api/courses/recommend/all?category={categories}
 | `MINOR` | 부전공 |
 | `TEACHING` | 교직이수 |
 
-> 교양선택(`GENERAL_ELECTIVE`)은 별도 API로 제공 예정
+> 교양선택은 이 API에서 지원하지 않으며, `category`에 포함하면 400 Bad Request를 반환합니다.
 
 ### 요청 예시
 
@@ -121,11 +121,11 @@ Response<CourseRecommendationsResponse>
 
 | 그룹핑 기준 | 사용 필드 | 해당 카테고리 |
 |---|---|---|
-| 학년별 그룹 | `targetGrades` | MAJOR_ELECTIVE |
+| 학년별 그룹 | `targetGrades` | MAJOR_ELECTIVE, DOUBLE_MAJOR_ELECTIVE |
 | 타전공 구분 | `isCrossMajor` | MAJOR_ELECTIVE |
 | 하위 분류 그룹 | `field` | GENERAL_REQUIRED, DOUBLE_MAJOR_REQUIRED, DOUBLE_MAJOR_ELECTIVE, MINOR, TEACHING |
 | LATE/ON_TIME 구분 | `timing` | 전체 (재수강 제외) |
-| 현재 학년 | `userGrade` (category 레벨) | MAJOR_ELECTIVE |
+| 현재 학년 | `userGrade` (category 레벨) | MAJOR_ELECTIVE, DOUBLE_MAJOR_ELECTIVE |
 | LATE 분야 안내 | `lateFields` (category 레벨) | GENERAL_REQUIRED |
 
 ### `field` 값 매트릭스
