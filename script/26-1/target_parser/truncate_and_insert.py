@@ -44,7 +44,7 @@ DB_CONFIG = {
 }
 
 # SQL files to execute (in order)
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+OUTPUT_DIR = os.path.join(BASE_DIR, "output", "sql")
 SQL_FILES = [
     ("26-1-course-inserts.sql", "course"),
     ("26-1-course-field-inserts.sql", "course_field"),

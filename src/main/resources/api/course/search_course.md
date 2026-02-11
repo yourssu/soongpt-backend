@@ -21,23 +21,16 @@
 - **검색어(q) 허용 패턴**: `[가-힣a-zA-ZⅠ-Ⅹ0-9\s\n().,;:_-]` (이외 문자는 제거됨)
 - **검색어 최대 길이**: 50자
 
-### 검색 대상 필드 (FULLTEXT + code)
+### 검색 대상 필드 (FULLTEXT)
 
 - `name` (과목명)
 - `professor` (교수명)
-- `department` (학과)
-- `target` (수강 대상)
-- `schedule_room` (시간/장소)
-- `code` (과목 코드, 접두사 일치)
 
 ### 사용 예시
 
 ```
 GET /api/courses/search?q=김남미              # 교수명으로 검색
 GET /api/courses/search?q=물리1               # 과목명으로 검색
-GET /api/courses/search?q=Business+English    # 영문 과목명 검색
-GET /api/courses/search?q=&page=1&size=50     # 빈 검색어 + 페이지네이션
-GET /api/courses/search?page=0&size=20        # 전체 강의 목록 조회
 ```
 
 ---
@@ -138,7 +131,7 @@ GET /api/courses/search?page=0&size=20        # 전체 강의 목록 조회
 
 ## 구현 참고 (검색·정렬)
 
-- **검색**: MySQL FULLTEXT (`name`, `professor`, `department`, `target`, `schedule_room`) BOOLEAN MODE + `code` 접두사 일치.
-- **정렬 우선순위**: 과목 코드 정확 일치 → 코드 접두사 일치 → 과목명 접두사 → 교수명 접두사 → 학과명 접두사 → 과목명 길이 → 과목명 오름차순.
+- **검색**: MySQL FULLTEXT (`name`, `professor`) BOOLEAN MODE. 과목명·교수명으로만 검색.
+- **정렬 우선순위**: 과목명 접두사 → 교수명 접두사 → 과목명 길이 → 과목명 오름차순.
 - **채플**: `CHAPEL` 이수 구분 과목은 검색 결과에서 제외됨.
 - **그룹핑**: 동일 `baseCourseCode`(과목 기준 코드)의 분반들을 한 그룹으로 묶어 반환됨. `sections[].division`은 과목 코드(courseCode) 뒷 2자리로 내려감 (예: 2150533504 → "04").

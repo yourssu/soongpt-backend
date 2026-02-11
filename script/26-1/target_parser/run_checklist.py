@@ -13,7 +13,7 @@ import sys
 import os
 from pathlib import Path
 
-CHECKLIST_FILE = Path(__file__).parent / "TEST_CHECKLIST.md"
+CHECKLIST_FILE = Path(__file__).parent / "qa" / "checklists" / "TEST_CHECKLIST.md"
 QUERY_SCRIPT = Path(__file__).parent / "query_courses.py"
 
 def parse_checklist(content):

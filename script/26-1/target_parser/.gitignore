@@ -3,13 +3,9 @@ venv/
 __pycache__/
 *.pyc
 
-# Generated data files
-parsed_unique_targets.json
-unmapped_targets.json
-
 # Test results - timestamp folders
-test/[0-9]*_[0-9]*/
+qa/tests/[0-9]*_[0-9]*/
 
 # Analysis results (generated files, not scripts)
-test/suspicious_parsing_*.json
-test/analysis_report_*.html
+qa/tests/suspicious_parsing_*.json
+qa/tests/analysis_report_*.html

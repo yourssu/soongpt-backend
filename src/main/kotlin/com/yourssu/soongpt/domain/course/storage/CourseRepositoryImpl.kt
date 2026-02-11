@@ -318,14 +318,10 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
     @Query(
         value = """
             SELECT * FROM course
-            WHERE MATCH(name, professor, department, target, schedule_room) AGAINST(:query IN BOOLEAN MODE)
-                OR CAST(code AS CHAR) LIKE CONCAT(:query, '%')
+            WHERE MATCH(name, professor) AGAINST(:query IN BOOLEAN MODE)
             ORDER BY
-                CASE WHEN CAST(code AS CHAR) = :query THEN 0 ELSE 1 END,
-                CASE WHEN CAST(code AS CHAR) LIKE CONCAT(:query, '%') THEN 0 ELSE 1 END,
                 CASE WHEN LOWER(name) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
                 CASE WHEN professor IS NOT NULL AND LOWER(professor) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
-                CASE WHEN LOWER(department) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
                 CHAR_LENGTH(name),
                 LOWER(name)
             LIMIT :limit OFFSET :offset
@@ -337,8 +333,7 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
     @Query(
         value = """
             SELECT COUNT(*) FROM course
-            WHERE MATCH(name, professor, department, target, schedule_room) AGAINST(:query IN BOOLEAN MODE)
-                OR CAST(code AS CHAR) LIKE CONCAT(:query, '%')
+            WHERE MATCH(name, professor) AGAINST(:query IN BOOLEAN MODE)
         """,
         nativeQuery = true
     )

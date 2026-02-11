@@ -5,10 +5,10 @@ import os
 
 # Configuration Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_YML_PATH = os.path.abspath(os.path.join(BASE_DIR, "data.yml"))
-INPUT_JSON_PATH = os.path.join(BASE_DIR, "unique_targets.json")
-OUTPUT_JSON_PATH = os.path.join(BASE_DIR, "parsed_unique_targets.json")
-UNMAPPED_JSON_PATH = os.path.join(BASE_DIR, "unmapped_targets.json")
+DATA_YML_PATH = os.path.abspath(os.path.join(BASE_DIR, "data", "data.yml"))
+INPUT_JSON_PATH = os.path.join(BASE_DIR, "data", "unique_targets.json")
+OUTPUT_JSON_PATH = os.path.join(BASE_DIR, "data", "parsed_unique_targets.json")
+UNMAPPED_JSON_PATH = os.path.join(BASE_DIR, "data", "unmapped_targets.json")
 
 # Department Aliases (Based on PLAN.md)
 # Values can be string or list of strings
@@ -142,6 +142,8 @@ CATEGORY_MAPPING = {
     "인문사회계열만": ["인문대학", "사회과학대학"],  # "~만" 포함
     "자연과학계열": ["자연과학대학"],
     "인문사회자연계": ["인문대학", "사회과학대학", "자연과학대학"],
+    "이공계": ["공과대학", "IT대학"],
+    "이공계전체": ["공과대학", "IT대학"],
 }
 
 class IdManager:

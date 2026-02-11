@@ -5,7 +5,7 @@ import glob
 
 def merge_course_files():
     # Define the directory containing the Excel files
-    data_dir = os.path.join(os.path.dirname(__file__), 'general_elective')
+    data_dir = os.path.join(os.path.dirname(__file__), 'data', 'general_elective')
     
     # Pattern to match all Excel files
     file_pattern = os.path.join(data_dir, '*.xlsx')

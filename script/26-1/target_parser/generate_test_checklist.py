@@ -12,7 +12,7 @@ from datetime import datetime
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, "../../../"))
 DATA_YML_PATH = os.path.join(PROJECT_ROOT, "src/main/resources/data.yml")
-OUTPUT_PATH = os.path.join(BASE_DIR, "TEST_CHECKLIST.md")
+OUTPUT_PATH = os.path.join(BASE_DIR, "qa", "checklists", "TEST_CHECKLIST.md")
 
 # Test configurations
 GRADES = [1, 2, 3, 4, 5]

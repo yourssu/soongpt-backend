@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 import random
 
-CHECKLIST_FILE = Path(__file__).parent / "TEST_CHECKLIST.md"
+CHECKLIST_FILE = Path(__file__).parent / "qa" / "checklists" / "TEST_CHECKLIST.md"
 
 def parse_checklist(content):
     """Parse the checklist and extract test information"""
