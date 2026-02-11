@@ -16,6 +16,17 @@ class CourseReader(
     private val fieldListFinder: FieldListFinder,
 ) {
     fun findAllByClass(department: Department, code: Long, grade: Int): List<Course> {
+        val isBaseCode = code.toString().length <= 8
+        if (isBaseCode) {
+            val courses = courseRepository.findAllByClass(code)
+            if (courses.isEmpty()) return emptyList()
+            if (courses.first().category == Category.GENERAL_REQUIRED) {
+                val targets = targetRepository.findAllByClass(department.id!!, code, grade)
+                return courseRepository.findAllById(targets.map { it.courseCode })
+            }
+            return courses
+        }
+
         val course = courseRepository.get(code)
         if (course.category == Category.GENERAL_REQUIRED) {
             val targets = targetRepository.findAllByClass(department.id!!, code, grade)

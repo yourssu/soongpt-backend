@@ -30,6 +30,7 @@ class CourseCandidateProvider(
             // 분반 선택 안했을때: 8자리 과목 코드로 모든 분반을 후보로 가져옴
             // 교양필수 과목 등은 이 분기에서 department, grade에 따라 올바른 과목으로 변환됨
             courseReader.findAllByClass(userContext.department, command.courseCode, userContext.grade)
+                .take(2)
         } else {
             // 분반 선택 했을때: 8자리 과목 코드와 분반 번호를 조합하여 10자리 코드를 생성하고, 해당 분반들만 후보로 가져옴
             val fullCourseCodes = command.selectedCourseIds.map { division ->
@@ -54,4 +55,3 @@ private fun PrimaryTimetableCommand.getAllSelectedCourseCommands(): List<Selecte
             this.minorCourses +
             this.teachingCourses
 }
-

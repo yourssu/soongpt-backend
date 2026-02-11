@@ -18,6 +18,13 @@ class TimetableCourseRepositoryImpl(
             .toDomain()
     }
 
+    override fun saveAll(timetableCourses: List<TimetableCourse>): List<TimetableCourse> {
+        if (timetableCourses.isEmpty()) return emptyList()
+        return timetableCourseJpaRepository.saveAll(
+            timetableCourses.map { TimetableCourseEntity.from(it) }
+        ).map { it.toDomain() }
+    }
+
     override fun findAllCourseByTimetableId(timetableId: Long): List<TimetableCourse> {
         return jpaQueryFactory.selectFrom(timetableCourseEntity)
             .join(timetableEntity)

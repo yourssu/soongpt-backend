@@ -10,4 +10,8 @@ class TimetableCourseWriter (
         return timetableCourseRepository.save(timetableCourse)
     }
 
+    fun saveAll(timetableCourses: List<TimetableCourse>): List<TimetableCourse> {
+        return timetableCourseRepository.saveAll(timetableCourses)
+    }
+
 }
