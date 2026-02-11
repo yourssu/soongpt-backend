@@ -62,7 +62,7 @@ class TimetableService(
         // val requiredGeMap = pikiCourseProvider.getRequiredGeneralElectives(userContext)
         // 이게 code일지, Course일지는 모른다 아직.
         val requiredGeMap = mapOf(
-            "핵심역량-창의" to listOf(2150145301L, 2150081501L),
+            "핵심역량-창의" to listOf(2150081501L),
             "균형교양-인문" to listOf(2150152601L),
             "만족한트랙" to emptyList()
         )
