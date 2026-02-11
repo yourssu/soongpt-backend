@@ -131,11 +131,15 @@ class CourseController(
             **파라미터 설명:**
             - **schoolId**: 학번 (필수)
             - **department**: 학과명 (필수)
-            - **teachingArea**: 교직 영역 (선택, 없으면 모든 교직 과목 조회)
-                - `교직이론` 또는 `THEORY` - 교직이론 과목 (교육학개론, 교육철학, 교육과정 등)
-                - `교직소양` 또는 `LITERACY` - 교직소양 과목 (특수교육학개론, 교직실무, 학교폭력예방 등)
-                - `교육실습` 또는 `PRACTICE` - 교육실습 과목 (학교현장실습, 교육봉사활동 등)
-                - `교과교육` 또는 `SUBJECT_EDUCATION` - 교과교육 과목 (학과별 교과교육론, 논리및논술)
+            - **majorArea**: 교직 이수 관점 대분류 (선택, 없으면 모든 교직 과목 조회)
+                - `전공영역` 또는 `MAJOR`
+                - `교직영역` 또는 `TEACHING`
+                - `특성화` 또는 `SPECIALIZATION`
+            - **teachingArea**: (선택, 하위호환) 기존 교직 영역 필터
+                - `교직이론` 또는 `THEORY`
+                - `교직소양` 또는 `LITERACY`
+                - `교육실습` 또는 `PRACTICE`
+                - `교과교육` 또는 `SUBJECT_EDUCATION`
 
             **교과교육 과목 자동 필터링:**
             - 학과에 맞는 교과 계열의 과목만 반환

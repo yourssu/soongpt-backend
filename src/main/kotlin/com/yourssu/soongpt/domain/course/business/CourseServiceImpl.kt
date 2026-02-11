@@ -370,39 +370,48 @@ class CourseServiceImpl(
         val courses =
                 courseReader.findAllInCategory(Category.TEACHING, allCourseCodes, query.schoolId)
 
-        // teachingArea가 null이면 모든 교직 과목 반환
-        val filteredCourses =
-                if (query.teachingArea == null) {
+        // 1) 대분류(전공영역/교직영역/특성화) 필터
+        val majorAreaFilteredCourses =
+                if (query.majorArea == null) {
                     courses
                 } else {
-                    // 영역별 필터링
+                    courses.filter { course ->
+                        (course.field ?: "").startsWith(query.majorArea.fieldPrefix)
+                    }
+                }
+
+        // 2) (선택) teachingArea 하위 필터
+        val filteredCourses =
+                if (query.teachingArea == null) {
+                    majorAreaFilteredCourses
+                } else {
                     when (query.teachingArea) {
-                        com.yourssu.soongpt.domain.course.implement.TeachingArea
-                                .SUBJECT_EDUCATION -> {
+                        com.yourssu.soongpt.domain.course.implement.TeachingArea.SUBJECT_EDUCATION -> {
                             // 교과교육 영역: 학과에 맞는 교과만 필터링
                             val subjectCategory =
                                     com.yourssu.soongpt.domain.course.implement.SubjectCategory
                                             .findByDepartment(query.departmentName)
+
+                            val base = majorAreaFilteredCourses
                             if (subjectCategory != null) {
-                                courses.filter { course ->
-                                    course.name.contains(
-                                            subjectCategory.displayName.replace("교과", "")
-                                    ) ||
-                                            (course.name.contains("교과교육론") ||
-                                                    course.name.contains("논리및논술"))
+                                base.filter { course ->
+                                    course.name.contains(subjectCategory.displayName.replace("교과", "")) ||
+                                            course.name.contains("교과교육론") ||
+                                            course.name.contains("논리및논술")
                                 }
                             } else {
-                                // 학과 매칭 실패 시 모든 교과교육 과목 반환
-                                courses.filter { course ->
+                                // 학과 매칭 실패 시 키워드 기반으로 필터
+                                base.filter { course ->
                                     query.teachingArea.keywords.any { keyword ->
                                         course.name.contains(keyword)
                                     }
                                 }
                             }
                         }
+
                         else -> {
-                            // 다른 영역: 키워드로 필터링
-                            courses.filter { course ->
+                            val base = majorAreaFilteredCourses
+                            base.filter { course ->
                                 query.teachingArea.keywords.any { keyword ->
                                     course.name.contains(keyword)
                                 }
