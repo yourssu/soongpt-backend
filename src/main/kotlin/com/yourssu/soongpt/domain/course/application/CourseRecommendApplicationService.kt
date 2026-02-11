@@ -6,6 +6,7 @@ import com.yourssu.soongpt.domain.course.business.GeneralCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.MajorCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.RetakeCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.SecondaryMajorCourseRecommendService
+import com.yourssu.soongpt.domain.course.business.TeachingCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseRecommendationsResponse
 import com.yourssu.soongpt.domain.course.business.dto.Progress
@@ -26,6 +27,7 @@ class CourseRecommendApplicationService(
     private val generalCourseRecommendService: GeneralCourseRecommendService,
     private val retakeCourseRecommendService: RetakeCourseRecommendService,
     private val secondaryMajorCourseRecommendService: SecondaryMajorCourseRecommendService,
+    private val teachingCourseRecommendService: TeachingCourseRecommendService,
 ) {
 
     fun recommend(
@@ -118,9 +120,8 @@ class CourseRecommendApplicationService(
             RecommendCategory.MINOR ->
                 secondaryMajorCourseRecommendService.recommendMinor(ctx)
 
-            RecommendCategory.TEACHING -> {
-                throw IllegalArgumentException("${category.displayName} 추천은 준비 중입니다.")
-            }
+            RecommendCategory.TEACHING ->
+                teachingCourseRecommendService.recommend(ctx)
         }
     }
 
