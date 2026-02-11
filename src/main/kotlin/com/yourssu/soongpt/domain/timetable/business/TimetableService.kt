@@ -4,6 +4,7 @@ import com.yourssu.soongpt.common.infrastructure.dto.TimetableCreatedAlarmReques
 import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.domain.course.application.RecommendContextResolver
 import com.yourssu.soongpt.domain.course.business.GeneralCourseRecommendService
+import com.yourssu.soongpt.domain.course.business.UntakenCourseCodeService
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
@@ -20,21 +21,20 @@ class TimetableService(
     private val courseReader: CourseReader,
     private val timetableWriter: TimetableWriter,
     private val timetableCourseWriter: TimetableCourseWriter,
-    private val userContextProvider: UserContextProvider,
     private val finalizeTimetableValidator: FinalizeTimetableValidator,
-    private val takenCourseChecker: TakenCourseChecker,
     private val courseCandidateFactory: CourseCandidateFactory,
     private val timetableBitsetConverter: TimetableBitsetConverter,
     private val recommendContextResolver: RecommendContextResolver,
     private val generalCourseRecommendService: GeneralCourseRecommendService,
+    private val untakenCourseCodeService: UntakenCourseCodeService,
 ) {
     fun recommendTimetable(command: PrimaryTimetableCommand): FinalTimetableRecommendationResponse {
         return timetableRecommendationFacade.recommend(command)
     }
 
-    fun getAvailableGeneralElectives(timetableId: Long, userId: String): AvailableGeneralElectivesResponse {
+    fun getAvailableGeneralElectives(timetableId: Long): AvailableGeneralElectivesResponse {
         // 기존 타임테이블 로직: courses 조회
-        val courses = getAvailableGeneralElectiveCourses(timetableId, userId)
+        val courses = getAvailableGeneralElectiveCourses(timetableId)
 
         // 이수현황 조립: progress만 별도로 계산해서 응답에 추가
         val ctx = recommendContextResolver.resolveOptional()
@@ -55,21 +55,12 @@ class TimetableService(
         return AvailableGeneralElectivesResponse(progress = progress, courses = courses)
     }
 
-    private fun getAvailableGeneralElectiveCourses(timetableId: Long, userId: String): List<GeneralElectiveDto> {
+    private fun getAvailableGeneralElectiveCourses(timetableId: Long): List<GeneralElectiveDto> {
         val timetableBitSet = timetableBitsetConverter.convert(timetableId)
-
-        // 2. Piki의 컴포넌트로부터 트랙별 필수 교양 과목 목록을 가져옴 (현재는 Mock Provider로 대체)
-        // val requiredGeMap = pikiCourseProvider.getRequiredGeneralElectives(userContext)
-        // 이게 code일지, Course일지는 모른다 아직.
-        val requiredGeMap = mapOf(
-            "핵심역량-창의" to listOf(2150081501L),
-            "균형교양-인문" to listOf(2150152601L),
-            "만족한트랙" to emptyList()
-        )
-
+        val requiredGeMap = untakenCourseCodeService.getUntakenCourseCodesByField(Category.GENERAL_ELECTIVE)
         val result = mutableListOf<GeneralElectiveDto>()
 
-        // 3. 트랙별로 순회하며 시간 충돌 검사
+        // 트랙별로 순회하며 시간 충돌 검사
         for ((trackName, courseCodes) in requiredGeMap) {
             if (courseCodes.isEmpty()) {
                 result.add(GeneralElectiveDto(trackName, emptyList()))
@@ -91,9 +82,9 @@ class TimetableService(
     }
 
     // NOTE: 피키가 만든거!!! 채플 이수현황을 조립할 때 사용합니다. 대충 예시코드..라고 생각해주세요 피키피키~야호~
-    fun getAvailableChapels(timetableId: Long, userId: String): AvailableChapelsResponse {
+    fun getAvailableChapels(timetableId: Long): AvailableChapelsResponse {
         // 기존 타임테이블 로직: courses 조회
-        val courses = getAvailableChapelCourses(timetableId, userId)
+        val courses = getAvailableChapelCourses(timetableId)
 
         // 이수현황 조립: progress만 별도로 계산해서 응답에 추가
         val ctx = recommendContextResolver.resolveOptional()
@@ -104,17 +95,16 @@ class TimetableService(
     }
 
     // NOTE: 피키가 분리함!!! 기존에 있던 채플 과목 조회 로직을 분리함
-    private fun getAvailableChapelCourses(timetableId: Long, userId: String): List<TimetableCourseResponse> {
-        val userContext = userContextProvider.getContext(userId)
+    private fun getAvailableChapelCourses(timetableId: Long): List<TimetableCourseResponse> {
         val timetableBitSet = timetableBitsetConverter.convert(timetableId)
-        val chapels = courseReader.findAllBy(Category.CHAPEL, userContext.department, userContext.grade)
+        val chapelCodes = untakenCourseCodeService.getUntakenCourseCodes(Category.CHAPEL)
+        if (chapelCodes.isEmpty()) return emptyList()
+        val chapels = courseReader.findAllByCode(chapelCodes)
 
-        // 3. 필터링: 기수강 과목 제외, 시간 충돌 과목 제외
-        // 기수강 여부는 .. 나중에 바꿀예정
+        // 필터링: 시간 충돌 과목 제외
         val availableChapels = chapels.filter { course ->
             val courseCandidate = courseCandidateFactory.create(course)
-            !takenCourseChecker.isCourseTaken(userId, course.code) &&
-                    !timetableBitSet.intersects(courseCandidate.timeSlot)
+            !timetableBitSet.intersects(courseCandidate.timeSlot)
         }
 
         // 4. 최종 응답 DTO로 변환하여 반환
@@ -168,10 +158,12 @@ class TimetableService(
     }
 
     fun createTimetableAlarmRequest(timetableId: Long): TimetableCreatedAlarmRequest {
-        val userContext = userContextProvider.getContext("test")
+        val ctx = recommendContextResolver.resolveOptional()
+        val schoolId = ctx?.schoolId ?: 0
+        val departmentName = ctx?.departmentName ?: "UNKNOWN"
         return TimetableCreatedAlarmRequest(
-            schoolId = userContext.schoolId,
-            departmentName = userContext.department.name,
+            schoolId = schoolId,
+            departmentName = departmentName,
             times = timetableId
         )
     }

@@ -1,6 +1,9 @@
 package com.yourssu.soongpt.domain.timetable.application
 
+import com.yourssu.soongpt.common.auth.CurrentPseudonymHolder
 import com.yourssu.soongpt.common.business.dto.Response
+import com.yourssu.soongpt.common.config.ClientJwtProvider
+import com.yourssu.soongpt.common.handler.UnauthorizedException
 import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.domain.timetable.application.dto.FinalizeTimetableRequest
 import com.yourssu.soongpt.domain.timetable.application.dto.PrimaryTimetableRequest
@@ -12,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/timetables")
 class TimetableController(
+    private val clientJwtProvider: ClientJwtProvider,
     private val timetableService: TimetableService,
 ) {
     @Operation(
@@ -43,25 +48,26 @@ class TimetableController(
         ]
     )
     @PostMapping
-    fun createTimetable(@RequestBody request: PrimaryTimetableRequest): ResponseEntity<Response<FinalTimetableRecommendationResponse>> {
-        val response = timetableService.recommendTimetable(request.toCommand())
+    fun createTimetable(httpRequest: HttpServletRequest,
+                        @RequestBody request: PrimaryTimetableRequest): ResponseEntity<Response<FinalTimetableRecommendationResponse>> {
+        val pseudonym = clientJwtProvider.extractPseudonymFromRequest(httpRequest)
+            .getOrElse { throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.") }
 
-        if (response.status == RecommendationStatus.FAILURE) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Response(result = response))
-        }
-        if (response.status == RecommendationStatus.SINGLE_CONFLICT) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(Response(result = response))
+        CurrentPseudonymHolder.set(pseudonym)
+        try {
+            val response = timetableService.recommendTimetable(request.toCommand())
+            return when (response.status) {
+                RecommendationStatus.FAILURE -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Response(result = response))
+                RecommendationStatus.SINGLE_CONFLICT -> ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Response(result = response))
+                RecommendationStatus.SUCCESS -> ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Response(result = response))
+            }
+        } finally {
+            CurrentPseudonymHolder.clear()
         }
 
-        if (response.status == RecommendationStatus.SUCCESS) {
-            val slackAlarmRequest = timetableService.createTimetableAlarmRequest(
-                response.successResponse!![0].recommendations[0].timetable.timetableId
-            )
-            Notification.notifyTimetableCreated(slackAlarmRequest)
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(Response(result = response))
     }
 
     @Operation(summary = "최종 시간표 확정", description = "교양/채플 선택 후, 최종 시간표를 확정하여 새로운 시간표로 저장합니다.")
@@ -76,11 +82,23 @@ class TimetableController(
         ]
     )
     @PostMapping("/finalize")
-    fun finalizeTimetable(@RequestBody request: FinalizeTimetableRequest): ResponseEntity<Response<TimetableResponse>> {
-        val response = timetableService.finalizeTimetable(request.toCommand())
-        val slackAlarmRequest = timetableService.createTimetableAlarmRequest(response.timetableId)
-        Notification.notifyTimetableCreated(slackAlarmRequest)
-        return ResponseEntity.ok(Response(result = response))
+    fun finalizeTimetable(
+        httpRequest: HttpServletRequest,
+        @RequestBody request: FinalizeTimetableRequest
+    ): ResponseEntity<Response<TimetableResponse>> {
+        val pseudonym = clientJwtProvider
+            .extractPseudonymFromRequest(httpRequest)
+            .getOrElse { throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.") }
+
+        CurrentPseudonymHolder.set(pseudonym)
+        try {
+            val response = timetableService.finalizeTimetable(request.toCommand())
+            val slackAlarmRequest = timetableService.createTimetableAlarmRequest(response.timetableId)
+            Notification.notifyTimetableCreated(slackAlarmRequest)
+            return ResponseEntity.ok(Response(result = response))
+        } finally {
+            CurrentPseudonymHolder.clear()
+        }
     }
 
     @Operation(summary = "특정 시간표 조회", description = "시간표 ID로 특정 시간표의 상세 정보를 조회합니다.")
@@ -112,11 +130,21 @@ class TimetableController(
         ]
     )
     @GetMapping("/{id}/available-general-electives")
-    fun getAvailableGeneralElectives(@PathVariable id: Long): ResponseEntity<Response<AvailableGeneralElectivesResponse>> {
-        // TODO: 실제 userId는 토큰 등에서 가져와야 함
-        val userId = "anonymous"
-        val response = timetableService.getAvailableGeneralElectives(id, userId)
-        return ResponseEntity.ok(Response(result = response))
+    fun getAvailableGeneralElectives(
+        httpRequest: HttpServletRequest,
+        @PathVariable id: Long
+    ): ResponseEntity<Response<AvailableGeneralElectivesResponse>> {
+        val pseudonym = clientJwtProvider
+            .extractPseudonymFromRequest(httpRequest)
+            .getOrElse { throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.") }
+
+        CurrentPseudonymHolder.set(pseudonym)
+        try {
+            val response = timetableService.getAvailableGeneralElectives(id)
+            return ResponseEntity.ok(Response(result = response))
+        } finally {
+            CurrentPseudonymHolder.clear()
+        }
     }
 
     @Operation(summary = "수강 가능한 채플 과목 목록 조회", description = "특정 시간표를 기준으로, 시간이 겹치지 않는 채플 과목 목록을 반환합니다.")
@@ -131,10 +159,18 @@ class TimetableController(
         ]
     )
     @GetMapping("/{id}/available-chapels")
-    fun getAvailableChapels(@PathVariable id: Long): ResponseEntity<Response<List<TimetableCourseResponse>>> {
-        // TODO: 실제 userId는 토큰 등에서 가져와야 함
-        val userId = "anonymous"
-        val response = timetableService.getAvailableChapels(id, userId)
-        return ResponseEntity.ok(Response(result = response))
+    fun getAvailableChapels(
+        httpRequest: HttpServletRequest,
+        @PathVariable id: Long
+    ): ResponseEntity<Response<AvailableChapelsResponse>> {
+        val pseudonym = clientJwtProvider.extractPseudonymFromRequest(httpRequest)
+            .getOrElse { throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.") }
+        CurrentPseudonymHolder.set(pseudonym)
+        try {
+            val response = timetableService.getAvailableChapels(id)
+            return ResponseEntity.ok(Response(result = response))
+        } finally {
+            CurrentPseudonymHolder.clear()
+        }
     }
 }
