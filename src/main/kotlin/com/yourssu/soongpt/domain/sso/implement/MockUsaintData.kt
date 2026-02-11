@@ -31,7 +31,7 @@ object MockUsaintData {
         // ---------- flags: 복수전공/부전공/교직 여부 (복필/복선/부전공 추천 테스트 시 아래 채우기)
         flags = RusaintStudentFlagsDto(
             doubleMajorDepartment = "경영학부",  // 복수전공 테스트: DB에 있는 학과명
-            minorDepartment = "글로벌미디어학부",     // 부전공 테스트: DB에 있는 학과명
+            minorDepartment = "컴퓨터학부",     // 부전공 테스트: DB에 있는 학과명
             teaching = false,
         ),
         // ---------- basicInfo: 학적 기반. 추천 시 학과·학년·schoolId(학년도) 로 사용됨.
@@ -39,7 +39,7 @@ object MockUsaintData {
             year = 2023,       // 입학년도. schoolId = year % 100 (23학번 → 23)
             semester = 5,      // 현재까지 수강 학기 수 (참고용)
             grade = 3,         // 현재 학년. 전공선택 학년별 그룹·교필 LATE/ON_TIME 판단에 사용
-            department = "",   // 학과명. departmentReader.getByName(department) 에 사용 (DB에 있는 학과명으로)
+            department = "글로벌미디어학부",   // 학과명. departmentReader.getByName(department) 에 사용 (DB에 있는 학과명으로)
         ),
         graduationRequirements = null,
         // ---------- graduationSummary: 졸업사정표 요약. progress·이수충족 여부(satisfied) 판단에 사용
@@ -73,15 +73,15 @@ object MockUsaintData {
         ),
         lowGradeSubjectCodes = emptyList(),
         flags = RusaintStudentFlagsDto(
-            doubleMajorDepartment = "경영학부",   // 복수전공 학과명 (DB Department.name)
-            minorDepartment = "글로벌미디어학부",  // 부전공 학과명 (DB Department.name)
+            doubleMajorDepartment = "국어국문학과",    // 복수전공 학과명 (DB Department.name)
+            minorDepartment = "컴퓨터학부",  // 부전공 학과명 (DB Department.name)
             teaching = false,
         ),
         basicInfo = RusaintBasicInfoDto(
             year = 2023,
-            semester = 5,
-            grade = 3,
-            department = "컴퓨터학부", // TODO: 주전공 학과명 (DB에 있는 값으로)
+            semester = 3,
+            grade = 2,
+            department = "글로벌미디어학부", // TODO: 주전공 학과명 (DB에 있는 값으로)
         ),
         graduationRequirements = null,
         graduationSummary = RusaintGraduationSummaryDto(

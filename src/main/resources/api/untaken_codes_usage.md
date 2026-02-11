@@ -46,7 +46,8 @@ class MoruService(
 ### `getUntakenCourseCodesByField(category)` → `Map<String, List<Long>>`
 
 교필 / 교선용. **분야명 → 미수강 과목코드 리스트** 형태로 반환.
-분야 매핑은 사용자 학번(`basicInfo.year % 100`) 기준으로 `FieldFinder`가 결정.
+- **교필**: 분야명은 **23이후 기준으로 통일** (학번 무관). `schoolId = 23` 고정.
+- **교선**: 사용자 학번(`basicInfo.year % 100`) 기준으로 `FieldFinder`가 결정.
 
 | category             | 이수 판정                                                      | 반환 예시                                                         |
 | -------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- |
@@ -67,7 +68,7 @@ class MoruService(
 | 글로벌소통과언어   | 2학년     |
 | 창의적사고와혁신   | 3학년     |
 
-> 22학번 이하는 학번에 맞는 분야명으로 반환된다 (예: `생활속의SW`, `글로벌소통` 등).
+> 교필은 학번에 관계없이 위 분야명으로 통일 반환된다. (20학번이어도 `SW와AI`, `글로벌시민의식`)
 
 #### 교선 분야
 
@@ -123,6 +124,137 @@ val codes = untakenCourseCodeService.getUntakenCourseCodes(Category.MAJOR_REQUIR
 val fieldMap = untakenCourseCodeService.getUntakenCourseCodesByField(Category.GENERAL_ELECTIVE, pseudonym)
 ```
 
+---
+
+## 실제 데이터로 테스트하기 (dev 프로필)
+
+### 전제 조건
+
+- dev DB(MySQL)에 과목(course) + 대상(target) 데이터가 들어있어야 함
+- local(H2)은 과목 데이터가 비어있어서 빈 결과만 나옴 → **dev 프로필로 띄울 것**
+
+### Step 1: MockUsaintData 설정
+
+`MockUsaintData.kt`의 `build()`를 테스트 시나리오에 맞게 수정한다.
+
+```kotlin
+// MockUsaintData.kt → build()
+basicInfo = RusaintBasicInfoDto(
+    year = 2023,           // 23학번. 교선 분야 매핑에 사용됨 (schoolId = 23)
+    semester = 5,
+    grade = 3,             // 3학년. 전기/전필은 3학년까지 과목만, 교필은 3학년 분야까지 조회
+    department = "컴퓨터학부",  // ⚠️ 반드시 DB에 있는 학과명으로! 빈 문자열이면 에러남
+),
+takenCourses = listOf(
+    // 이수한 과목의 8자리 코드. 이 과목들이 결과에서 제외됨.
+    // 예: SW와AI 분야의 "SW기초" 과목 코드
+    RusaintTakenCourseDto(year = 2024, semester = "1", subjectCodes = listOf("21501021")),
+),
+```
+
+**주의: `department = ""`로 두면 `departmentReader.getByName("")`에서 에러난다. DB에 있는 학과명을 넣어야 한다.**
+
+#### 테스트 시나리오 예시
+
+| 시나리오 | 설정 |
+|---|---|
+| 20학번 1학년 (교선 분야명 차이 확인) | `year = 2020, grade = 1` |
+| 23학번 3학년 (교필 3학년 분야까지) | `year = 2023, grade = 3` |
+| 이수 과목 없음 (전체 미수강) | `takenCourses = emptyList()` |
+| 특정 교필 분야 이수 완료 | `takenCourses`에 해당 분야 과목 8자리 코드 추가 |
+
+### Step 2: dev 프로필로 서버 실행
+
+```bash
+./gradlew bootRun --args='--spring.profiles.active=dev'
+```
+
+### Step 3: Mock 세션 생성
+
+Swagger(`http://localhost:8080/swagger-ui`) 또는 curl로 mock 토큰 발급:
+
+```bash
+curl -X POST http://localhost:8080/api/dev/mock-user-token \
+  -c cookies.txt
+```
+
+응답의 `soongpt_auth` 쿠키가 세팅된다. 이후 요청에 이 쿠키를 같이 보내면 된다.
+
+### Step 4: UntakenCourseCodeService 결과 확인
+
+**현재 이 서비스를 직접 호출하는 API 엔드포인트는 없다.**
+테스트하려면 아래 중 하나를 선택:
+
+#### 방법 A: 추천 API로 간접 확인
+
+```bash
+# 전필 추천 결과 (내부적으로 유사한 조회 로직 사용)
+curl -b cookies.txt "http://localhost:8080/api/courses/recommend/all?category=MAJOR_REQUIRED"
+
+# 교필 추천 결과
+curl -b cookies.txt "http://localhost:8080/api/courses/recommend/all?category=GENERAL_REQUIRED"
+
+# 교선 추천 결과
+curl -b cookies.txt "http://localhost:8080/api/courses/recommend/all?category=GENERAL_ELECTIVE"
+```
+
+> 단, 추천 API는 `CourseRecommendApplicationService`를 거치며 결과를 가공하므로,
+> `UntakenCourseCodeService`의 raw 출력(과목코드 리스트)과는 형태가 다르다.
+
+#### 방법 B: dev 전용 테스트 엔드포인트 추가 (권장)
+
+`SsoDevController`에 아래 엔드포인트를 추가하면 raw 결과를 바로 볼 수 있다:
+
+```kotlin
+// SsoDevController에 추가
+@GetMapping("/untaken-codes")
+fun getUntakenCodes(
+    @RequestParam category: Category,
+): ResponseEntity<Response<Any>> {
+    val result = when (category) {
+        Category.GENERAL_REQUIRED, Category.GENERAL_ELECTIVE ->
+            untakenCourseCodeService.getUntakenCourseCodesByField(category)
+        else ->
+            untakenCourseCodeService.getUntakenCourseCodes(category)
+    }
+    return ResponseEntity.ok(Response(result = result))
+}
+```
+
+그러면 이렇게 호출:
+
+```bash
+# 전기 미수강 과목코드 (List<Long>)
+curl -b cookies.txt "http://localhost:8080/api/dev/untaken-codes?category=MAJOR_BASIC"
+
+# 전필 미수강 과목코드 (List<Long>)
+curl -b cookies.txt "http://localhost:8080/api/dev/untaken-codes?category=MAJOR_REQUIRED"
+
+# 전선 미수강 과목코드 (List<Long>)
+curl -b cookies.txt "http://localhost:8080/api/dev/untaken-codes?category=MAJOR_ELECTIVE"
+
+# 교필 미수강 과목코드 (Map<분야명, List<Long>>)
+curl -b cookies.txt "http://localhost:8080/api/dev/untaken-codes?category=GENERAL_REQUIRED"
+
+# 교선 미수강 과목코드 (Map<분야명, List<Long>>)
+curl -b cookies.txt "http://localhost:8080/api/dev/untaken-codes?category=GENERAL_ELECTIVE"
+```
+
+### Step 5: 결과 검증 체크리스트
+
+| 확인 항목 | 기대 결과 |
+|---|---|
+| 전기/전필: 이수한 과목 baseCode가 결과에 없는가 | `takenCourses`에 넣은 코드의 baseCode(8자리)와 일치하는 과목 제외 |
+| 전선: 전학년 과목이 나오는가 | grade에 관계없이 1~5학년 대상 과목 포함 |
+| 교필: 분야명이 23이후 기준인가 | 20학번이어도 `SW와AI`, `글로벌시민의식` 등으로 표시 |
+| 교필: 이수 분야가 빈 리스트인가 | `takenCourses`에 넣은 과목의 분야 → `[]` |
+| 교필: 미이수 분야에 과목코드가 있는가 | 해당 분야 과목 전부 리스트에 포함 |
+| 교선: 분야명이 학번 기준인가 | 20학번이면 20학번 분야명, 23학번이면 23학번 분야명 |
+| 교선: 이수 과목만 제외되었는가 | 같은 분야의 다른 과목은 남아있어야 함 |
+| 빈 department일 때 에러가 나는가 | `department = ""`이면 예외 발생 (정상 동작) |
+
+---
+
 ## 요청 흐름
 
 사용자 A가 GET /api/timetables/{id}/available-general-electives 호출
@@ -173,7 +305,6 @@ A. 네, 가능합니다. ThreadLocal은 스레드별로 격리되며, HTTP 요�
       )
   }
   ```
-
 * 필터 실행 전 호출: 필터보다 먼저 실행되는 코드에서 호출하면 null입니다.
 
 ## 요약
