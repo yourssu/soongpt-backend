@@ -1,7 +1,6 @@
 package com.yourssu.soongpt.domain.timetable.business.dto
 
 data class PrimaryTimetableCommand(
-    val userId: String = "anonymous", // TODO: userContext 가져오기 위한 key (sToken + ?)
     val retakeCourses: List<SelectedCourseCommand> = emptyList(),
     val majorRequiredCourses: List<SelectedCourseCommand> = emptyList(),
     val majorElectiveCourses: List<SelectedCourseCommand> = emptyList(),
