@@ -110,7 +110,7 @@ jobs:
           # Deploy environment file, compose file, and docker script to host machine
           scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
           scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem docker-compose.deploy.yml ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
-          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem script/26-1/ops/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
 
           # Make the script executable
           ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/docker-deploy.sh"
