@@ -2,11 +2,9 @@ package com.yourssu.soongpt.domain.course.implement.utils
 
 object FieldFinder {
     fun findFieldBySchoolId(field: String, schoolId: Int): String {
-        val allEntries = field
-            .split("\n")
-            .mapNotNull { line -> parseFieldEntry(line) }
+        val allEntries = field.split("\n").mapNotNull { line -> parseFieldEntry(line) }
 
-        if (allEntries.isEmpty()) return ""
+        if (allEntries.isEmpty()) return field.trim()
 
         val matchingEntries = allEntries.filter { entry -> schoolId in entry.yearRange }
 
@@ -21,11 +19,7 @@ object FieldFinder {
         return normalizeFieldName(mostRecentEntry.fieldName)
     }
 
-    /**
-     * 접두어(실제분야명) 형태면 괄호 안만 반환.
-     * 예: 품격(글로벌시민의식) -> 글로벌시민의식
-     * 괄호가 없으면 원본 그대로 반환.
-     */
+    /** 접두어(실제분야명) 형태면 괄호 안만 반환. 예: 품격(글로벌시민의식) -> 글로벌시민의식 괄호가 없으면 원본 그대로 반환. */
     private fun normalizeFieldName(fieldName: String): String {
         if (fieldName.isBlank()) return fieldName
         val trimmed = fieldName.trim()
@@ -46,27 +40,23 @@ object FieldFinder {
 
         return when {
             line.contains("이후") -> {
-                Regex("(\\d{2})(?=이후)").find(line)
-                    ?.groupValues?.get(1)
-                    ?.toIntOrNull()
-                    ?.let { it..MAX_YEAR }
+                Regex("(\\d{2})(?=이후)").find(line)?.groupValues?.get(1)?.toIntOrNull()?.let {
+                    it..MAX_YEAR
+                }
             }
-
             line.contains("이전") -> {
-                Regex("(\\d{2})(?=이전)").find(line)
-                    ?.groupValues?.get(1)
-                    ?.toIntOrNull()
-                    ?.let { MIN_YEAR..it }
+                Regex("(\\d{2})(?=이전)").find(line)?.groupValues?.get(1)?.toIntOrNull()?.let {
+                    MIN_YEAR..it
+                }
             }
-
             line.contains("~") -> {
-                val nums = Regex("(\\d{2})")
-                    .findAll(line)
-                    .mapNotNull { it.groupValues[1].toIntOrNull() }
-                    .toList()
+                val nums =
+                        Regex("(\\d{2})")
+                                .findAll(line)
+                                .mapNotNull { it.groupValues[1].toIntOrNull() }
+                                .toList()
                 if (nums.size >= 2) nums.min()..nums.max() else null
             }
-
             line.contains("-") -> {
                 val match = Regex("(\\d{2})-('?)(\\d{2})").find(line)
                 match?.let {
@@ -75,12 +65,10 @@ object FieldFinder {
                     if (a != null && b != null) a..b else null
                 }
             }
-
             else -> {
-                Regex("(\\d{2})(?=\\])").find(line)
-                    ?.groupValues?.get(1)
-                    ?.toIntOrNull()
-                    ?.let { it..it }
+                Regex("(\\d{2})(?=\\])").find(line)?.groupValues?.get(1)?.toIntOrNull()?.let {
+                    it..it
+                }
             }
         }
     }
@@ -95,8 +83,8 @@ object FieldFinder {
     }
 
     private data class FieldEntry(
-        val yearRange: IntRange,
-        val fieldName: String,
+            val yearRange: IntRange,
+            val fieldName: String,
     )
 
     private const val MIN_YEAR = 0
