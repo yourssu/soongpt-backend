@@ -10,6 +10,7 @@ import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 
 /**
@@ -31,6 +32,7 @@ class UntakenCourseCodeService(
     private val departmentReader: DepartmentReader,
     private val syncSessionStore: SyncSessionStore,
 ) {
+    private val logger = KotlinLogging.logger {}
 
     /**
      * 일반 이수구분용 미수강 과목코드 조회 (전기/전필/전선)
@@ -50,6 +52,7 @@ class UntakenCourseCodeService(
             collegeId = department.collegeId,
             maxGrade = maxGrade,
         )
+            .distinctBy { it.course.code }
 
         val takenBaseCodes = extractTakenBaseCodes(usaintData)
 
@@ -86,10 +89,18 @@ class UntakenCourseCodeService(
 
         val coursesByField = allCourses
             .mapNotNull { cwt ->
-                val fieldName = cwt.course.field
-                    ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
-                    ?.takeIf { it.isNotBlank() }
-                    ?: return@mapNotNull null
+                val rawField = cwt.course.field
+                if (rawField.isNullOrBlank()) {
+                    logger.warn { "분야 정보 없음: 과목=${cwt.course.name} (${cwt.course.code})" }
+                    return@mapNotNull null
+                }
+
+                val fieldName = FieldFinder.findFieldBySchoolId(rawField, schoolId)
+                if (fieldName.isBlank()) {
+                    logger.warn { "분야 매핑 실패: rawField=$rawField, schoolId=$schoolId, 과목=${cwt.course.name} (${cwt.course.code})" }
+                    return@mapNotNull null
+                }
+
                 Pair(fieldName, cwt)
             }
             .groupBy({ it.first }, { it.second })
