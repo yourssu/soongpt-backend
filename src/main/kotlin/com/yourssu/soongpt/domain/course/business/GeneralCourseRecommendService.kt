@@ -1,7 +1,6 @@
 package com.yourssu.soongpt.domain.course.business
 
 import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
-import com.yourssu.soongpt.domain.course.business.dto.FieldGroupResponse
 import com.yourssu.soongpt.domain.course.business.dto.Progress
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.Category
@@ -9,8 +8,10 @@ import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import com.yourssu.soongpt.domain.course.implement.baseCode
+import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 
 /**
@@ -25,6 +26,7 @@ class GeneralCourseRecommendService(
     private val courseRepository: CourseRepository,
     private val departmentReader: DepartmentReader,
 ) {
+    private val logger = KotlinLogging.logger {}
 
     fun recommend(
         category: Category,
@@ -54,7 +56,7 @@ class GeneralCourseRecommendService(
             return empty(category, progress)
         }
 
-        val takenBaseCodes = takenSubjectCodes.mapNotNull { it.toLongOrNull() }.toSet()
+        val takenBaseCodes = toTakenBaseCodeSet(takenSubjectCodes)
 
         // 과목별 field 파싱 후 (field → courses) 그룹핑
         val coursesByField = allCourses
@@ -69,10 +71,17 @@ class GeneralCourseRecommendService(
 
         return when (category) {
             Category.GENERAL_REQUIRED -> {
-                // 교필: 분야 단위 이수 필터링 — 분야 내 하나라도 이수 시 분야 전체 제외
-                val untakenFields = coursesByField.filter { (_, courses) ->
-                    courses.none { it.course.baseCode() in takenBaseCodes }
-                }
+                // 교필: 이수한 8자리를 DB에서 직접 조회해 분야(정규화)를 구함. allCourses에는 Target 필터로 안 뜨는 과목도 있으므로 분야만 DB 기준으로 제외.
+                val takenFieldsFromDb = courseRepository.findCoursesWithTargetByBaseCodes(takenBaseCodes.toList())
+                    .filter { it.course.category == Category.GENERAL_REQUIRED }
+                    .mapNotNull { cwt ->
+                        cwt.course.field
+                            ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                            ?.takeIf { it.isNotBlank() }
+                    }
+                    .toSet()
+                val untakenFields = coursesByField.filter { (fieldName, _) -> fieldName !in takenFieldsFromDb }
+                logger.info { "[교필] takenBaseCodes.size=${takenBaseCodes.size}, DB기준 이수분야=$takenFieldsFromDb, 미이수 분야=${untakenFields.keys}" }
                 if (untakenFields.isEmpty()) return empty(category, progress)
                 buildGeneralRequiredResponse(untakenFields, userGrade, progress)
             }
@@ -112,7 +121,7 @@ class GeneralCourseRecommendService(
 
         if (allCourses.isEmpty()) return emptyMap()
 
-        val takenBaseCodes = takenSubjectCodes.mapNotNull { it.toLongOrNull() }.toSet()
+        val takenBaseCodes = toTakenBaseCodeSet(takenSubjectCodes)
 
         val coursesByField = allCourses
             .mapNotNull { cwt ->
@@ -126,16 +135,12 @@ class GeneralCourseRecommendService(
 
         return coursesByField.mapValues { (_, courses) ->
             val completed = courses.any { it.course.baseCode() in takenBaseCodes }
-            if (completed) {
-                emptyList()
-            } else {
-                courses.map { it.course }
-            }
+            if (completed) emptyList() else courses.map { it.course }
         }
     }
 
     /**
-     * 교양필수: LATE 분야 → lateFields(텍스트), ON_TIME 분야 → fieldGroups(과목 포함)
+     * 교양필수: LATE 분야 → lateFields(텍스트), ON_TIME 분야 → courses(field 포함)
      */
     private fun buildGeneralRequiredResponse(
         untakenFields: Map<String, List<CourseWithTarget>>,
@@ -143,14 +148,14 @@ class GeneralCourseRecommendService(
         progress: Progress,
     ): CategoryRecommendResponse {
         val lateFields = mutableListOf<String>()
-        val onTimeFieldGroups = mutableListOf<FieldGroupResponse>()
+        val onTimeCourses = mutableListOf<RecommendedCourseResponse>()
 
         for ((fieldName, courses) in untakenFields) {
             val isFieldLate = courses.all { it.isLateFor(userGrade) }
             if (isFieldLate) {
                 lateFields.add(fieldName)
             } else {
-                onTimeFieldGroups.add(buildFieldGroup(fieldName, courses, userGrade))
+                onTimeCourses.addAll(buildCoursesWithField(fieldName, courses, userGrade))
             }
         }
 
@@ -159,15 +164,13 @@ class GeneralCourseRecommendService(
             progress = progress,
             message = null,
             userGrade = null,
-            courses = emptyList(),
-            gradeGroups = null,
-            fieldGroups = onTimeFieldGroups.ifEmpty { null },
+            courses = onTimeCourses,
             lateFields = lateFields.ifEmpty { null },
         )
     }
 
     /**
-     * 교양선택: 분야별 과목 그룹핑 (LATE/ON_TIME 구분 없이)
+     * 교양선택: 분야별 과목을 flat courses 리스트로 반환 (각 항목에 field 포함)
      */
     private fun buildGeneralElectiveResponse(
         untakenFields: Map<String, List<CourseWithTarget>>,
@@ -175,37 +178,35 @@ class GeneralCourseRecommendService(
         category: Category,
         progress: Progress,
     ): CategoryRecommendResponse {
-        val fieldGroups = untakenFields.entries
-            .map { (fieldName, courses) -> buildFieldGroup(fieldName, courses, userGrade) }
+        val courses = untakenFields.entries
+            .flatMap { (fieldName, courses) -> buildCoursesWithField(fieldName, courses, userGrade) }
 
         return CategoryRecommendResponse(
             category = category.name,
             progress = progress,
             message = null,
             userGrade = null,
-            courses = emptyList(),
-            gradeGroups = null,
-            fieldGroups = fieldGroups.ifEmpty { null },
+            courses = courses,
             lateFields = null,
         )
     }
 
-    private fun buildFieldGroup(
+    private fun buildCoursesWithField(
         fieldName: String,
         courses: List<CourseWithTarget>,
         userGrade: Int,
-    ): FieldGroupResponse {
+    ): List<RecommendedCourseResponse> {
         val grouped = courses.groupBy { it.course.baseCode() }
-        val recommended = grouped.entries
+        return grouped.entries
             .sortedBy { it.value.first().course.name }
             .map { (_, sections) ->
                 val representative = sections.first()
                 RecommendedCourseResponse.from(
                     coursesWithTarget = sections,
                     isLate = representative.isLateFor(userGrade),
+                    field = fieldName,
                 )
             }
-        return FieldGroupResponse(field = fieldName, courses = recommended)
     }
 
     private fun satisfied(category: Category, progress: Progress): CategoryRecommendResponse {
@@ -220,8 +221,6 @@ class GeneralCourseRecommendService(
             message = message,
             userGrade = null,
             courses = emptyList(),
-            gradeGroups = null,
-            fieldGroups = null,
             lateFields = null,
         )
     }
@@ -238,8 +237,6 @@ class GeneralCourseRecommendService(
             message = message,
             userGrade = null,
             courses = emptyList(),
-            gradeGroups = null,
-            fieldGroups = null,
             lateFields = null,
         )
     }
