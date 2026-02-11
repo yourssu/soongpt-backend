@@ -2,6 +2,8 @@ package com.yourssu.soongpt.domain.timetable.business
 
 import com.yourssu.soongpt.common.infrastructure.dto.TimetableCreatedAlarmRequest
 import com.yourssu.soongpt.common.infrastructure.notification.Notification
+import com.yourssu.soongpt.domain.course.application.RecommendContextResolver
+import com.yourssu.soongpt.domain.course.business.GeneralCourseRecommendService
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
@@ -23,12 +25,37 @@ class TimetableService(
     private val takenCourseChecker: TakenCourseChecker,
     private val courseCandidateFactory: CourseCandidateFactory,
     private val timetableBitsetConverter: TimetableBitsetConverter,
+    private val recommendContextResolver: RecommendContextResolver,
+    private val generalCourseRecommendService: GeneralCourseRecommendService,
 ) {
     fun recommendTimetable(command: PrimaryTimetableCommand): FinalTimetableRecommendationResponse {
         return timetableRecommendationFacade.recommend(command)
     }
 
-    fun getAvailableGeneralElectives(timetableId: Long, userId: String): List<GeneralElectiveDto> {
+    fun getAvailableGeneralElectives(timetableId: Long, userId: String): AvailableGeneralElectivesResponse {
+        // 기존 타임테이블 로직: courses 조회
+        val courses = getAvailableGeneralElectiveCourses(timetableId, userId)
+
+        // 이수현황 조립: progress만 별도로 계산해서 응답에 추가
+        val ctx = recommendContextResolver.resolveOptional()
+        val progress = if (ctx != null) {
+            val summary = ctx.graduationSummary?.generalElective
+            val fieldCredits = generalCourseRecommendService.computeTakenFieldCredits(
+                ctx.takenSubjectCodes,
+                ctx.schoolId
+            )
+            GeneralElectiveProgress(
+                required = summary?.required,
+                completed = summary?.completed,
+                satisfied = summary?.satisfied ?: false,
+                fieldCredits = fieldCredits
+            )
+        } else null
+
+        return AvailableGeneralElectivesResponse(progress = progress, courses = courses)
+    }
+
+    private fun getAvailableGeneralElectiveCourses(timetableId: Long, userId: String): List<GeneralElectiveDto> {
         val timetableBitSet = timetableBitsetConverter.convert(timetableId)
 
         // 2. Piki의 컴포넌트로부터 트랙별 필수 교양 과목 목록을 가져옴 (현재는 Mock Provider로 대체)
@@ -63,7 +90,21 @@ class TimetableService(
         return result
     }
 
-    fun getAvailableChapels(timetableId: Long, userId: String): List<TimetableCourseResponse> {
+    // NOTE: 피키가 만든거!!! 채플 이수현황을 조립할 때 사용합니다. 대충 예시코드..라고 생각해주세요 피키피키~야호~
+    fun getAvailableChapels(timetableId: Long, userId: String): AvailableChapelsResponse {
+        // 기존 타임테이블 로직: courses 조회
+        val courses = getAvailableChapelCourses(timetableId, userId)
+
+        // 이수현황 조립: progress만 별도로 계산해서 응답에 추가
+        val ctx = recommendContextResolver.resolveOptional()
+        val satisfied = ctx?.graduationSummary?.chapel?.satisfied
+        val progress = satisfied?.let { ChapelProgress(satisfied = it) }
+
+        return AvailableChapelsResponse(progress = progress, courses = courses)
+    }
+
+    // NOTE: 피키가 분리함!!! 기존에 있던 채플 과목 조회 로직을 분리함
+    private fun getAvailableChapelCourses(timetableId: Long, userId: String): List<TimetableCourseResponse> {
         val userContext = userContextProvider.getContext(userId)
         val timetableBitSet = timetableBitsetConverter.convert(timetableId)
         val chapels = courseReader.findAllBy(Category.CHAPEL, userContext.department, userContext.grade)
