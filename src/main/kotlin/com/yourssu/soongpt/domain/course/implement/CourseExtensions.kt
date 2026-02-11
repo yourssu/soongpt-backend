@@ -20,6 +20,16 @@ fun Course.baseCode(): Long = code / DIVISION_DIVISOR
 fun Long.toBaseCode(): Long = this / DIVISION_DIVISOR
 
 /**
+ * rusaint 수강 과목 코드 리스트 → 이수 판정용 Set (8자리 baseCode 비교 가능).
+ * rusaint가 10자리(분반 포함)로 줄 수 있어, 원본 + code/100 둘 다 넣어서
+ * course.baseCode() in takenSet 비교가 항상 매칭되도록 함.
+ */
+fun toTakenBaseCodeSet(takenSubjectCodes: List<String>): Set<Long> =
+    takenSubjectCodes.mapNotNull { it.toLongOrNull() }.flatMap { code ->
+        if (code >= DIVISION_DIVISOR) listOf(code, code / DIVISION_DIVISOR) else listOf(code)
+    }.toSet()
+
+/**
  * scheduleRoom에서 강의실 정보를 제외한 요일/시간만 추출
  * 예: "목 15:00-16:15 (정보과학관 21601-)" → "목 15:00-16:15"
  * 파싱 실패 시 scheduleRoom 원본 반환
