@@ -89,34 +89,8 @@ data class MajorCourseRecommendResponse(
             )
         }
 
-        private const val RETAKE_CATEGORY = "RETAKE"
-
-        fun retake(courses: List<RecommendedCourseResponse>): MajorCourseRecommendResponse {
-            return MajorCourseRecommendResponse(
-                category = RETAKE_CATEGORY,
-                progress = null,
-                courses = courses,
-            )
-        }
-
-        fun retakeEmpty(message: String): MajorCourseRecommendResponse {
-            return MajorCourseRecommendResponse(
-                category = RETAKE_CATEGORY,
-                progress = null,
-                courses = emptyList(),
-                message = message,
-            )
-        }
     }
 }
-
-/**
- * 학년별 그룹 (복수/부전공 선택용)
- */
-data class GradeGroupResponse(
-    val grade: Int,
-    val courses: List<RecommendedCourseResponse>,
-)
 
 /**
  * 추천 과목 (분반 그룹핑)
@@ -139,6 +113,7 @@ data class RecommendedCourseResponse(
         fun from(
             coursesWithTarget: List<com.yourssu.soongpt.domain.course.implement.CourseWithTarget>,
             isLate: Boolean,
+            field: String? = null,
         ): RecommendedCourseResponse {
             val representative = coursesWithTarget.first()
             val courses = coursesWithTarget.map { it.course }
@@ -161,6 +136,7 @@ data class RecommendedCourseResponse(
                 targetGrades = representative.targetGrades,
                 isStrictRestriction = representative.isStrict,
                 timing = if (isLate) CourseTiming.LATE else CourseTiming.ON_TIME,
+                field = field,
                 professors = professors,
                 department = department,
                 sections = coursesWithTarget.map { SectionResponse.from(it.course, it.isStrict) },

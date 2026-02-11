@@ -102,10 +102,9 @@ class MajorCourseRecommendService(
     }
 
     /**
-     * 전공선택 과목 추천 (학년별 그룹 포함)
-     * - 통합 엔드포인트용: CategoryRecommendResponse + gradeGroups 반환
+     * 전공선택 과목 추천
+     * - 통합 엔드포인트용: CategoryRecommendResponse 반환
      * - 학년 범위: 전체 (1~5학년)
-     * - gradeGroups: 대상학년별 과목 그룹핑
      */
     fun recommendMajorElectiveWithGroups(
         departmentName: String,

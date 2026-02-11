@@ -13,6 +13,8 @@ data class RecommendContext(
     val departmentName: String,
     val userGrade: Int,
     val schoolId: Int,
+    /** 입학년도 (e.g. 2022, 2023). 22학번 이하 구분용 (year <= 2022) */
+    val admissionYear: Int,
     val takenSubjectCodes: List<String>,
     val lowGradeSubjectCodes: List<String>,
     val graduationSummary: RusaintGraduationSummaryDto?,
@@ -48,6 +50,7 @@ class RecommendContextResolver(
             departmentName = basicInfo.department,
             userGrade = basicInfo.grade,
             schoolId = schoolId,
+            admissionYear = basicInfo.year,
             takenSubjectCodes = takenSubjectCodes,
             lowGradeSubjectCodes = usaintData.lowGradeSubjectCodes,
             graduationSummary = usaintData.graduationSummary,

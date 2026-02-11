@@ -33,6 +33,7 @@ class GeneralCourseRecommendService(
         departmentName: String,
         userGrade: Int,
         schoolId: Int,
+        admissionYear: Int,
         takenSubjectCodes: List<String>,
         progress: Progress,
     ): CategoryRecommendResponse {
@@ -71,19 +72,29 @@ class GeneralCourseRecommendService(
 
         return when (category) {
             Category.GENERAL_REQUIRED -> {
-                // 교필: 이수한 8자리를 DB에서 직접 조회해 분야(정규화)를 구함. allCourses에는 Target 필터로 안 뜨는 과목도 있으므로 분야만 DB 기준으로 제외.
-                val takenFieldsFromDb = courseRepository.findCoursesWithTargetByBaseCodes(takenBaseCodes.toList())
-                    .filter { it.course.category == Category.GENERAL_REQUIRED }
-                    .mapNotNull { cwt ->
-                        cwt.course.field
-                            ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
-                            ?.takeIf { it.isNotBlank() }
-                    }
-                    .toSet()
-                val untakenFields = coursesByField.filter { (fieldName, _) -> fieldName !in takenFieldsFromDb }
-                logger.info { "[교필] takenBaseCodes.size=${takenBaseCodes.size}, DB기준 이수분야=$takenFieldsFromDb, 미이수 분야=${untakenFields.keys}" }
-                if (untakenFields.isEmpty()) return empty(category, progress)
-                buildGeneralRequiredResponse(untakenFields, userGrade, progress)
+                val is22OrBelow = admissionYear <= 2022
+                if (is22OrBelow) {
+                    // 22학번 이하: 학점만 채움. 분야 단위 제외 없음, 과목 단위 제외만. lateFields 미제공.
+                    val filteredByField = coursesByField.mapValues { (_, courses) ->
+                        courses.filter { it.course.baseCode() !in takenBaseCodes }
+                    }.filter { (_, courses) -> courses.isNotEmpty() }
+                    if (filteredByField.isEmpty()) return empty(category, progress)
+                    buildGeneralRequiredResponseFor22(filteredByField, userGrade, progress)
+                } else {
+                    // 23학번 이상: 이수한 분야 제외, LATE 분야 lateFields, ON_TIME 분야 과목
+                    val takenFieldsFromDb = courseRepository.findCoursesWithTargetByBaseCodes(takenBaseCodes.toList())
+                        .filter { it.course.category == Category.GENERAL_REQUIRED }
+                        .mapNotNull { cwt ->
+                            cwt.course.field
+                                ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                                ?.takeIf { it.isNotBlank() }
+                        }
+                        .toSet()
+                    val untakenFields = coursesByField.filter { (fieldName, _) -> fieldName !in takenFieldsFromDb }
+                    logger.info { "[교필] takenBaseCodes.size=${takenBaseCodes.size}, DB기준 이수분야=$takenFieldsFromDb, 미이수 분야=${untakenFields.keys}" }
+                    if (untakenFields.isEmpty()) return empty(category, progress)
+                    buildGeneralRequiredResponse(untakenFields, userGrade, progress)
+                }
             }
             else -> {
                 // 교선: 과목 단위 이수 필터링 — baseCode(8자리) 일치 과목만 개별 제외
@@ -137,6 +148,26 @@ class GeneralCourseRecommendService(
             val completed = courses.any { it.course.baseCode() in takenBaseCodes }
             if (completed) emptyList() else courses.map { it.course }
         }
+    }
+
+    /**
+     * 교양필수 22학번 이하: 과목만 flat 반환, lateFields 없음 (분야 구분 없이 학점만 채움)
+     */
+    private fun buildGeneralRequiredResponseFor22(
+        filteredByField: Map<String, List<CourseWithTarget>>,
+        userGrade: Int,
+        progress: Progress,
+    ): CategoryRecommendResponse {
+        val courses = filteredByField.entries
+            .flatMap { (fieldName, courses) -> buildCoursesWithField(fieldName, courses, userGrade) }
+        return CategoryRecommendResponse(
+            category = Category.GENERAL_REQUIRED.name,
+            progress = progress,
+            message = null,
+            userGrade = null,
+            courses = courses,
+            lateFields = null,
+        )
     }
 
     /**

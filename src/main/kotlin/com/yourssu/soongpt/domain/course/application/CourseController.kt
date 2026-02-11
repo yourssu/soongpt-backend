@@ -130,9 +130,7 @@ class CourseController(
             - 각 이수구분별로 `CategoryRecommendResponse` 반환
             - `progress`: 졸업사정 현황 (required/completed/satisfied). 재수강은 null.
             - `message`: 엣지케이스 안내 메시지 (null이면 정상)
-            - `courses`: 추천 과목 flat list (교양은 빈 배열 — fieldGroups 사용)
-            - `gradeGroups`: 학년별 그룹 (전공선택 전용)
-            - `fieldGroups`: 분야별 그룹 (교양필수/교양선택 전용, ON_TIME만)
+            - `courses`: 추천 과목 flat list (교양은 각 항목에 field 포함, 프론트에서 그룹핑)
             - `lateFields`: 미수강 LATE 분야명 텍스트 (교양필수 전용)
 
             **인증:**

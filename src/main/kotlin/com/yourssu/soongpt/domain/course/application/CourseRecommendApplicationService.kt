@@ -95,6 +95,7 @@ class CourseRecommendApplicationService(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
                     schoolId = ctx.schoolId,
+                    admissionYear = ctx.admissionYear,
                     takenSubjectCodes = ctx.takenSubjectCodes,
                     progress = progress,
                 )
@@ -103,7 +104,7 @@ class CourseRecommendApplicationService(
             RecommendCategory.RETAKE -> {
                 retakeCourseRecommendService.recommend(
                     lowGradeSubjectCodes = ctx.lowGradeSubjectCodes,
-                ).toCategoryResponse()
+                )
             }
 
             RecommendCategory.GENERAL_ELECTIVE -> {
@@ -152,8 +153,6 @@ class CourseRecommendApplicationService(
             message = message,
             userGrade = null,
             courses = emptyList(),
-            gradeGroups = null,
-            fieldGroups = null,
             lateFields = null,
         )
     }
@@ -164,8 +163,6 @@ class CourseRecommendApplicationService(
         message = null,
         userGrade = null,
         courses = emptyList(),
-        gradeGroups = null,
-        fieldGroups = null,
         lateFields = null,
     )
 }
