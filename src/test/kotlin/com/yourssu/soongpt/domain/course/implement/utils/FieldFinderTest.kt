@@ -1,16 +1,16 @@
 package com.yourssu.soongpt.domain.course.implement.utils
 
-import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
-class FieldFinderTest : BehaviorSpec({
+class FieldFinderTest {
 
-    given("FieldFinder.findFieldBySchoolId") {
-        val sampleField = """['23이후]자기개발·진로탐색
-['20,'21~'22]공동체/리더십,숭실품성-자기계발과진로탐색
-['19]균형교양-사회과학(사회/역사)
-['16-'18]실용교양(자기개발과진로탐색)
-['15이전]학문과진로탐색(실용-생활)"""
+    @Test
+    fun `prefers higher start year when multiple after entries match`() {
+        val field = """
+            ['22이후] OLD
+            ['23이후] NEW
+        """.trimIndent()
 
         `when`("schoolId 23으로 호출할 때") {
             val result = FieldFinder.findFieldBySchoolId(sampleField, 23)
@@ -590,4 +590,4 @@ class FieldFinderTest : BehaviorSpec({
             }
         }
     }
-})
+}

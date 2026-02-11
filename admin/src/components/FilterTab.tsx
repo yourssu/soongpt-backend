@@ -24,10 +24,9 @@ const secondaryMajorTrackOptions: Array<{ value: SecondaryMajorTrackType; label:
 
 const teachingAreaOptions: Array<{ value: string; label: string }> = [
   { value: '', label: '전체' },
-  { value: 'THEORY', label: '교직이론' },
-  { value: 'LITERACY', label: '교직소양' },
-  { value: 'PRACTICE', label: '교육실습' },
-  { value: 'SUBJECT_EDUCATION', label: '교과교육' },
+  { value: 'MAJOR', label: '전공영역' },
+  { value: 'TEACHING', label: '교직영역' },
+  { value: 'SPECIAL', label: '특성화영역' },
 ];
 
 const secondaryMajorCompletionOptions: Record<
@@ -103,7 +102,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         const data = await courseApi.getTeachingCourses({
           schoolId,
           department: selectedDepartment,
-          teachingArea: selectedTeachingArea || undefined,
+          majorArea: selectedTeachingArea || undefined,
         });
         setFilteredCourses(data);
         onFilterResults(data);
@@ -304,7 +303,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                 </tr>
               </thead>
               <tbody>
-                {filteredCourses.map((course: Course, index: number) => (
+                {filteredCourses?.map((course: Course, index: number) => (
                   <tr
                     key={course.id || course.code}
                     onClick={() => onCourseClick(course, index)}

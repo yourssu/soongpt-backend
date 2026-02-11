@@ -9,6 +9,7 @@ data class SearchCourseGroupResponse(
     val credits: Double?,
     val professors: List<String>,
     val department: String,
+    val target: String,
     val sections: List<SectionResponse>,
 ) {
     companion object {
@@ -25,6 +26,7 @@ data class SearchCourseGroupResponse(
                 credits = first.credit,
                 professors = professors,
                 department = first.department,
+                target = first.target,
                 sections = sections,
             )
         }

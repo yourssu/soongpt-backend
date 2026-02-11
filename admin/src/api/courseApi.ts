@@ -3,6 +3,9 @@ import type {
   ApiResponse,
   CoursesResponse,
   CourseTargetResponse,
+  SearchCoursesResponse,
+  GroupedCourse,
+  Section,
   Course,
   SecondaryMajorTrackType,
   SecondaryMajorCompletionType,
@@ -63,12 +66,12 @@ export interface GetCoursesByTrackParams {
 export interface GetTeachingCoursesParams {
   schoolId: number;
   department: string;
-  teachingArea?: string;
+  majorArea?: string;
 }
 
 export const courseApi = {
   getAllCourses: async (params: GetCoursesParams = {}): Promise<CoursesResponse> => {
-    const response = await api.get<ApiResponse<CoursesResponse>>('/admin/courses', {
+    const response = await api.get<ApiResponse<SearchCoursesResponse>>('/admin/courses', {
       params: {
         q: params.q || '',
         page: params.page || 0,
@@ -76,7 +79,36 @@ export const courseApi = {
         sort: params.sort || 'ASC',
       },
     });
-    return response.data.result;
+
+    const data = response.data.result;
+
+    // Normalize grouped response to flat Course array
+    const flatContent: Course[] = data.courses.flatMap((group: GroupedCourse) =>
+      group.sections.map((section: Section) => ({
+        id: null, // Search results don't provide ID
+        category: 'OTHER', // Search results don't provide category
+        subCategory: null,
+        field: null,
+        code: section.courseCode,
+        name: group.courseName,
+        professor: section.professor,
+        department: group.department,
+        division: section.division,
+        time: '', // Search results don't provide duration text
+        point: group.credits ? `${group.credits}-${group.credits}-0` : '',
+        personeel: 0,
+        scheduleRoom: section.schedule,
+        target: group.target,
+      }))
+    );
+
+    return {
+      content: flatContent,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      size: data.size,
+      page: data.page,
+    };
   },
 
   getCourseTarget: async (code: number): Promise<CourseTargetResponse> => {

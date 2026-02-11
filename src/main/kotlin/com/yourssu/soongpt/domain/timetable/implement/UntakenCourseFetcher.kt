@@ -3,7 +3,6 @@ package com.yourssu.soongpt.domain.timetable.implement
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseReader
-import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.timetable.business.dto.UserContext
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
 import org.springframework.stereotype.Component

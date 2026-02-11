@@ -3,13 +3,12 @@ package com.yourssu.soongpt.domain.course.application
 import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.course.application.dto.FilterCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByCodeRequest
+import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByTrackRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldByCodeRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetFieldsRequest
-import com.yourssu.soongpt.domain.course.application.dto.GetCoursesByTrackRequest
 import com.yourssu.soongpt.domain.course.application.dto.GetTeachingCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.RecommendCoursesRequest
 import com.yourssu.soongpt.domain.course.application.dto.SearchCoursesRequest
-
 import com.yourssu.soongpt.domain.course.business.CourseService
 import com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseRecommendationsResponse
@@ -29,12 +28,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/courses")
 class CourseController(
-    private val courseService: CourseService,
-    private val courseRecommendApplicationService: CourseRecommendApplicationService,
+        private val courseService: CourseService,
+        private val courseRecommendApplicationService: CourseRecommendApplicationService,
 ) {
     @Operation(
-        summary = "강의 필터링 조회 (카테고리별)",
-        description = """
+            summary = "강의 필터링 조회 (카테고리별)",
+            description =
+                    """
             특정 조건에 맞는 강의 목록을 조회합니다.
 
             **파라미터 설명:**
@@ -55,21 +55,26 @@ class CourseController(
         """
     )
     @GetMapping("/by-category")
-    fun getCoursesByCategory(@Valid @ModelAttribute request: FilterCoursesRequest): ResponseEntity<Response<List<CourseResponse>>> {
+    fun getCoursesByCategory(
+            @Valid @ModelAttribute request: FilterCoursesRequest
+    ): ResponseEntity<Response<List<CourseResponse>>> {
         val response = courseService.findAll(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 
     @Operation(summary = "강의 코드로 조회", description = "강의 코드 리스트를 받아 해당하는 강의들의 상세 정보를 조회합니다.")
     @GetMapping
-    fun getCoursesByCode(@Valid @ModelAttribute request: GetCoursesByCodeRequest): ResponseEntity<Response<List<CourseDetailResponse>>> {
+    fun getCoursesByCode(
+            @Valid @ModelAttribute request: GetCoursesByCodeRequest
+    ): ResponseEntity<Response<List<CourseDetailResponse>>> {
         val response = courseService.findAllByCode(request.code)
         return ResponseEntity.ok().body(Response(result = response))
     }
 
     @Operation(
-        summary = "강의 검색",
-        description = """
+            summary = "강의 검색",
+            description =
+                    """
             키워드로 강의를 검색합니다.
 
             **파라미터 설명:**
@@ -80,7 +85,9 @@ class CourseController(
         """
     )
     @GetMapping("/search")
-    fun searchCourses(@Valid @ModelAttribute request: SearchCoursesRequest): ResponseEntity<Response<SearchCoursesResponse>> {
+    fun searchCourses(
+            @Valid @ModelAttribute request: SearchCoursesRequest
+    ): ResponseEntity<Response<SearchCoursesResponse>> {
         val response = courseService.search(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
@@ -93,8 +100,9 @@ class CourseController(
     }
 
     @Operation(
-        summary = "과목 코드로 필드 조회",
-        description = """
+            summary = "과목 코드로 필드 조회",
+            description =
+                    """
             과목 코드와 학번을 받아 해당 과목의 교과영역(필드)을 조회합니다.
 
             **파라미터 설명:**
@@ -103,14 +111,20 @@ class CourseController(
         """
     )
     @GetMapping("/field-by-code")
-    fun getFieldByCode(@Valid @ModelAttribute request: GetFieldByCodeRequest): ResponseEntity<Response<Map<Long, String?>>> {
-        val result = request.code.associateWith { courseService.getFieldByCourseCode(it, request.schoolId) }
+    fun getFieldByCode(
+            @Valid @ModelAttribute request: GetFieldByCodeRequest
+    ): ResponseEntity<Response<Map<Long, String?>>> {
+        val result =
+                request.code.associateWith {
+                    courseService.getFieldByCourseCode(it, request.schoolId)
+                }
         return ResponseEntity.ok().body(Response(result = result))
     }
 
     @Operation(
-        summary = "통합 과목 추천 조회",
-        description = """
+            summary = "통합 과목 추천 조회",
+            description =
+                    """
             SSO 인증된 사용자의 학적정보를 기반으로 모든 이수구분의 과목을 추천합니다.
 
             **파라미터 설명:**
@@ -136,20 +150,25 @@ class CourseController(
             - `soongpt_auth` 쿠키(JWT) 필수
             - SyncSessionStore에 캐시된 rusaint 데이터 사용 (동기화 완료된 상태여야 함)
         """,
-        security = [io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "cookieAuth")]
+            security =
+                    [
+                            io.swagger.v3.oas.annotations.security.SecurityRequirement(
+                                    name = "cookieAuth"
+                            )]
     )
     @GetMapping("/recommend/all")
     fun recommendCourses(
-        @Valid @ModelAttribute request: RecommendCoursesRequest,
-        httpRequest: HttpServletRequest,
+            @Valid @ModelAttribute request: RecommendCoursesRequest,
+            httpRequest: HttpServletRequest,
     ): ResponseEntity<Response<CourseRecommendationsResponse>> {
         val response = courseRecommendApplicationService.recommend(httpRequest, request)
         return ResponseEntity.ok().body(Response(result = response))
     }
 
     @Operation(
-        summary = "다전공/부전공 트랙 조회 (트랙별)",
-        description = """
+            summary = "다전공/부전공 트랙 조회 (트랙별)",
+            description =
+                    """
             특정 학과의 다전공/부전공 과목을 트랙 유형별로 조회합니다.
             전체 학년(1~5학년)의 과목을 조회합니다.
 
@@ -167,34 +186,33 @@ class CourseController(
         """
     )
     @GetMapping("/by-track")
-    fun getCoursesByTrack(@Valid @ModelAttribute request: GetCoursesByTrackRequest): ResponseEntity<Response<List<CourseResponse>>> {
+    fun getCoursesByTrack(
+            @Valid @ModelAttribute request: GetCoursesByTrackRequest
+    ): ResponseEntity<Response<List<CourseResponse>>> {
         val response = courseService.findAllByTrack(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
 
     @Operation(
-        summary = "교직 과목 조회 (영역별)",
-        description = """
+            summary = "교직 과목 조회 (영역별)",
+            description =
+                    """
             특정 학과의 교직 과목을 영역별로 조회합니다.
             전체 학년(1~5학년)의 과목을 조회합니다.
 
             **파라미터 설명:**
             - **schoolId**: 학번 (필수)
             - **department**: 학과명 (필수)
-            - **teachingArea**: 교직 영역 (선택, 없으면 모든 교직 과목 조회)
-                - `교직이론` 또는 `THEORY` - 교직이론 과목 (교육학개론, 교육철학, 교육과정 등)
-                - `교직소양` 또는 `LITERACY` - 교직소양 과목 (특수교육학개론, 교직실무, 학교폭력예방 등)
-                - `교육실습` 또는 `PRACTICE` - 교육실습 과목 (학교현장실습, 교육봉사활동 등)
-                - `교과교육` 또는 `SUBJECT_EDUCATION` - 교과교육 과목 (학과별 교과교육론, 논리및논술)
-
-            **교과교육 과목 자동 필터링:**
-            - 학과에 맞는 교과 계열의 과목만 반환
-            - 예: 컴퓨터학부 → 상업교과교육론, 상업교과논리및논술
-            - 예: 물리학과 → 과학교과교육론, 과학교과논리및논술
+            - **majorArea**: 교직 대분류 영역 (선택, 없으면 모든 교직 과목 조회)
+                - `전공영역` 또는 `MAJOR` - 전공영역 과목 (교과교육론, 논리및논술 등)
+                - `교직영역` 또는 `TEACHING` - 교직영역 과목 (교직이론, 교육실습 등)
+                - `특성화영역` 또는 `SPECIAL` - 특성화영역 과목
         """
     )
     @GetMapping("/teaching")
-    fun getTeachingCourses(@Valid @ModelAttribute request: GetTeachingCoursesRequest): ResponseEntity<Response<List<CourseResponse>>> {
+    fun getTeachingCourses(
+            @Valid @ModelAttribute request: GetTeachingCoursesRequest
+    ): ResponseEntity<Response<List<CourseResponse>>> {
         val response = courseService.findAllTeachingCourses(request.toQuery())
         return ResponseEntity.ok().body(Response(result = response))
     }
