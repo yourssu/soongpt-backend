@@ -145,6 +145,7 @@ export interface GroupedCourse {
   credits: number;
   professors: string[];
   department: string;
+  target: string;
   sections: Section[];
 }
 
