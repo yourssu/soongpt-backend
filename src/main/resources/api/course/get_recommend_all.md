@@ -95,7 +95,6 @@ Response<CourseRecommendationsResponse>
 | `credits` | Double | O | 학점 |
 | `target` | String | X | 수강대상 텍스트 |
 | `targetGrades` | Int[] | X | 대상 학년 (e.g., `[1, 2]`) |
-| `isStrictRestriction` | Boolean | X | 대상외수강제한 여부 |
 | `isCrossMajor` | Boolean | X | 타전공인정 과목 여부. 전공선택에서 타전공 그룹 분리용 |
 | `timing` | String | O | `"LATE"` / `"ON_TIME"`. 재수강은 null |
 | `field` | String | O | 카테고리 내 하위 그룹 키. 아래 표 참고 |
@@ -109,7 +108,7 @@ Response<CourseRecommendationsResponse>
 |------|------|----------|------|
 | `courseCode` | Long | X | 과목 코드 (10자리, 분반 포함) |
 | `professor` | String | O | 분반 교수 |
-| `division` | String | O | 분반명 (`"01"`, `"02"`, ...) |
+| `division` | String | O | 과목코드(10자리)의 마지막 2자리 (e.g. `"01"`, `"02"`) |
 | `schedule` | String | X | 강의시간 (e.g., `"월09:00-10:15, 수09:00-10:15"`) |
 | `isStrictRestriction` | Boolean | X | 대상외수강제한 여부 |
 
@@ -198,7 +197,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "소프트웨어학부 2학년",
       "targetGrades": [2],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "LATE",
       "field": null,
@@ -227,7 +225,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "소프트웨어학부 3학년",
       "targetGrades": [3],
-      "isStrictRestriction": true,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": null,
@@ -263,7 +260,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "소프트웨어학부 2학년",
       "targetGrades": [2],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "LATE",
       "field": null,
@@ -277,7 +273,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "소프트웨어학부 3학년",
       "targetGrades": [3],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": null,
@@ -291,7 +286,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "경영학부 전학년",
       "targetGrades": [1, 2, 3, 4],
-      "isStrictRestriction": false,
       "isCrossMajor": true,
       "timing": "ON_TIME",
       "field": null,
@@ -331,7 +325,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "전교생 3학년",
       "targetGrades": [3],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": "SW와AI",
@@ -353,7 +346,6 @@ Response<CourseRecommendationsResponse>
       "credits": 2.0,
       "target": "전교생 3학년",
       "targetGrades": [3],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": "창의적사고와혁신",
@@ -390,7 +382,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "경영학부 1학년",
       "targetGrades": [1],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "LATE",
       "field": "복필",
@@ -426,7 +417,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "경영학부 2학년",
       "targetGrades": [2],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": "복선",
@@ -454,7 +444,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "경영학부 1학년",
       "targetGrades": [1],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "LATE",
       "field": "부필",
@@ -468,7 +457,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "경영학부 3학년",
       "targetGrades": [3],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": "부선",
@@ -496,7 +484,6 @@ Response<CourseRecommendationsResponse>
       "credits": 2.0,
       "target": "교직이수자 2학년",
       "targetGrades": [2],
-      "isStrictRestriction": true,
       "isCrossMajor": false,
       "timing": "LATE",
       "field": "교직",
@@ -510,7 +497,6 @@ Response<CourseRecommendationsResponse>
       "credits": 2.0,
       "target": "교직이수자 4학년",
       "targetGrades": [4],
-      "isStrictRestriction": true,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": "교직",
@@ -524,7 +510,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "소프트웨어학부 3학년",
       "targetGrades": [3],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": "전공",
@@ -538,7 +523,6 @@ Response<CourseRecommendationsResponse>
       "credits": 2.0,
       "target": "교직이수자 3학년",
       "targetGrades": [3],
-      "isStrictRestriction": true,
       "isCrossMajor": false,
       "timing": "ON_TIME",
       "field": "특성화",
@@ -577,7 +561,6 @@ Response<CourseRecommendationsResponse>
       "credits": 3.0,
       "target": "공과대 1학년",
       "targetGrades": [1],
-      "isStrictRestriction": false,
       "isCrossMajor": false,
       "timing": null,
       "field": null,
@@ -629,7 +612,6 @@ interface RecommendedCourse {
   credits: number | null;
   target: string;
   targetGrades: number[];
-  isStrictRestriction: boolean;
   isCrossMajor: boolean;
   timing: 'LATE' | 'ON_TIME' | null;
   /** 하위 그룹 키. 교양필수=분야명, 복수전공=복필/복선, 부전공=부필/부선, 교직=전공/교직/특성화 */
@@ -642,6 +624,7 @@ interface RecommendedCourse {
 interface Section {
   courseCode: number;
   professor: string | null;
+  /** 과목코드(10자리)의 마지막 2자리 (e.g. "01", "02") */
   division: string | null;
   schedule: string;
   isStrictRestriction: boolean;

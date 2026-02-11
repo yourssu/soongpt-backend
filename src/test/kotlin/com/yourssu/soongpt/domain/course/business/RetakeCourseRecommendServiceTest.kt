@@ -155,9 +155,9 @@ class RetakeCourseRecommendServiceTest : BehaviorSpec({
                 result.courses[0].sections[0].schedule shouldBe "화 09:00-10:15"
             }
 
-            then("division이 포함된다") {
-                result.courses[0].sections[0].division shouldBe "01분반"
-                result.courses[0].sections[1].division shouldBe "02분반"
+            then("division은 과목코드 마지막 2자리이다") {
+                result.courses[0].sections[0].division shouldBe "01"
+                result.courses[0].sections[1].division shouldBe "02"
             }
         }
     }

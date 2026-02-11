@@ -145,7 +145,7 @@ Cookie: soongpt_auth={JWT}
 {
   "courseCode": 2150545501,
   "professor": "홍길동",
-  "division": "01분반",
+  "division": "01",
   "schedule": "화09:00-10:15, 수09:00-10:15",
   "isStrictRestriction": false
 }
@@ -153,9 +153,9 @@ Cookie: soongpt_auth={JWT}
 
 | Name                    | Type    | Nullable | Description                                                                                                            |
 | ----------------------- | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `courseCode`          | long    | No       | 분반별 과목 코드.                                                                                                      |
+| `courseCode`          | long    | No       | 분반별 과목 코드 (10자리).                                                                                             |
 | `professor`           | string  | Yes      | 담당 교수.                                                                                                             |
-| `division`            | string  | Yes      | 분반명 (예:`"01분반"`). 분반 모달 표시용.                                                                            |
+| `division`            | string  | Yes      | 과목코드(10자리)의 마지막 2자리 (예: `"01"`, `"02"`).                                                                  |
 | `schedule`            | string  | No       | 가공된 시간/요일 (예:`"화09:00-10:15, 수09:00-10:15"`). `CourseTime` 기반으로 파싱한 결과.                         |
 | `isStrictRestriction` | boolean | No       | 엄격한 수강 제한 여부.`Target.isStrict` 값. **반드시 포함되어야 하며**, `true`면 분반 모달에 제한 태그 표시. |
 
@@ -307,7 +307,7 @@ Cookie: soongpt_auth={JWT}
               {
                 "courseCode": 2150545501,
                 "professor": "홍길동",
-                "division": "01분반",
+                "division": "01",
                 "schedule": "화09:00-10:15, 수09:00-10:15",
                 "isStrictRestriction": false
               }
@@ -448,7 +448,7 @@ CategoryGroup[] 응답
 
 - `courseCode`: `Course.code`
 - `professor`: `Course.professor`
-- `division`: `Course.division` (분반명)
+- `division`: 과목코드(10자리)의 마지막 2자리 (e.g. `"01"`, `"02"`)
 - `schedule`: `Course.scheduleRoom`을 `CourseTimes`로 파싱 후 가공
 - `isStrictRestriction`: 해당 분반의 `Target.isStrict` 값 (분반별로 다를 수 있음)
 - 레거시 호환을 위해 `Course` 엔티티의 추가 필드가 포함될 수 있음

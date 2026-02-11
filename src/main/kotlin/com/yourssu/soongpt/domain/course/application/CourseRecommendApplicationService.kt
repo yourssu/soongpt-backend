@@ -157,12 +157,20 @@ class CourseRecommendApplicationService(
         )
     }
 
-    private fun noDataResponse(category: RecommendCategory) = CategoryRecommendResponse(
-        category = category.name,
-        progress = null,
-        message = null,
-        userGrade = null,
-        courses = emptyList(),
-        lateFields = null,
-    )
+    private fun noDataResponse(category: RecommendCategory): CategoryRecommendResponse {
+        val message = when (category) {
+            RecommendCategory.MAJOR_BASIC -> "졸업사정표에 전공기초 항목이 없습니다."
+            RecommendCategory.MAJOR_REQUIRED -> "졸업사정표에 전공필수 항목이 없습니다."
+            RecommendCategory.MAJOR_ELECTIVE -> "졸업사정표에 전공선택 항목이 없습니다."
+            else -> "졸업사정표에 해당 항목이 없습니다."
+        }
+        return CategoryRecommendResponse(
+            category = category.name,
+            progress = null,
+            message = message,
+            userGrade = null,
+            courses = emptyList(),
+            lateFields = null,
+        )
+    }
 }

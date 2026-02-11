@@ -101,7 +101,6 @@ data class RecommendedCourseResponse(
     val credits: Double?,
     val target: String,
     val targetGrades: List<Int> = emptyList(),
-    val isStrictRestriction: Boolean = false,
     val isCrossMajor: Boolean = false,
     val timing: CourseTiming?,
     val field: String? = null,
@@ -114,6 +113,7 @@ data class RecommendedCourseResponse(
             coursesWithTarget: List<com.yourssu.soongpt.domain.course.implement.CourseWithTarget>,
             isLate: Boolean,
             field: String? = null,
+            isCrossMajor: Boolean = false,
         ): RecommendedCourseResponse {
             val representative = coursesWithTarget.first()
             val courses = coursesWithTarget.map { it.course }
@@ -122,9 +122,10 @@ data class RecommendedCourseResponse(
                 .distinct()
                 .sorted()
 
-            // 전공과목(전기/전필/전선)일 경우에만 department 포함
-            val department = when (representative.course.category) {
-                Category.MAJOR_BASIC, Category.MAJOR_REQUIRED, Category.MAJOR_ELECTIVE -> representative.course.department
+            // 전공과목(전기/전필/전선) 또는 타전공인정 과목일 경우 department 포함
+            val department = when {
+                isCrossMajor -> representative.course.department
+                representative.course.category in listOf(Category.MAJOR_BASIC, Category.MAJOR_REQUIRED, Category.MAJOR_ELECTIVE) -> representative.course.department
                 else -> null
             }
 
@@ -134,12 +135,12 @@ data class RecommendedCourseResponse(
                 credits = representative.course.credit,
                 target = representative.course.target,
                 targetGrades = representative.targetGrades,
-                isStrictRestriction = representative.isStrict,
+                isCrossMajor = isCrossMajor,
                 timing = if (isLate) CourseTiming.LATE else CourseTiming.ON_TIME,
                 field = field,
                 professors = professors,
                 department = department,
-                sections = coursesWithTarget.map { SectionResponse.from(it.course, it.isStrict) },
+                sections = coursesWithTarget.map { SectionResponse.from(it.course, it.isStrict, divisionFromCourseCode = true) },
             )
         }
 
@@ -159,11 +160,10 @@ data class RecommendedCourseResponse(
                 credits = representative.course.credit,
                 target = representative.course.target,
                 targetGrades = representative.targetGrades,
-                isStrictRestriction = representative.isStrict,
                 timing = null,
                 professors = professors,
                 department = representative.course.department,
-                sections = coursesWithTarget.map { SectionResponse.from(it.course, it.isStrict) },
+                sections = coursesWithTarget.map { SectionResponse.from(it.course, it.isStrict, divisionFromCourseCode = true) },
             )
         }
     }
