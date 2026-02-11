@@ -24,10 +24,9 @@ const secondaryMajorTrackOptions: Array<{ value: SecondaryMajorTrackType; label:
 
 const teachingAreaOptions: Array<{ value: string; label: string }> = [
   { value: '', label: '전체' },
-  { value: 'THEORY', label: '교직이론' },
-  { value: 'LITERACY', label: '교직소양' },
-  { value: 'PRACTICE', label: '교육실습' },
-  { value: 'SUBJECT_EDUCATION', label: '교과교육' },
+  { value: 'MAJOR', label: '전공영역' },
+  { value: 'TEACHING', label: '교직영역' },
+  { value: 'SPECIAL', label: '특성화영역' },
 ];
 
 const secondaryMajorCompletionOptions: Record<
@@ -100,13 +99,26 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         setFilteredCourses(data);
         onFilterResults(data);
       } else if (filterMode === 'teaching') {
+        // Fetch all teaching courses first
         const data = await courseApi.getTeachingCourses({
           schoolId,
           department: selectedDepartment,
-          teachingArea: selectedTeachingArea || undefined,
+          teachingArea: undefined, // always fetch all, filter client-side
         });
-        setFilteredCourses(data);
-        onFilterResults(data);
+        // Filter client-side by major category
+        let filtered = data;
+        if (selectedTeachingArea === 'MAJOR') {
+          // 전공영역: subCategory contains '교직전공'
+          filtered = data.filter(c => c.subCategory?.includes('교직전공'));
+        } else if (selectedTeachingArea === 'TEACHING') {
+          // 교직영역: subCategory is exactly '교직' (excludes '교직전공-XXX' and '교직 특성화과목')
+          filtered = data.filter(c => c.subCategory === '교직');
+        } else if (selectedTeachingArea === 'SPECIAL') {
+          // 특성화영역: subCategory contains '특성화'
+          filtered = data.filter(c => c.subCategory?.includes('특성화'));
+        }
+        setFilteredCourses(filtered);
+        onFilterResults(filtered);
       }
     } catch (err) {
       setError('과목을 불러오는데 실패했습니다.');
