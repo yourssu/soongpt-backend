@@ -182,7 +182,7 @@ jobs:
           # Deploy environment file, compose file, and docker script to host machine
           scp -i yourssu.pem .env ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
           scp -i yourssu.pem docker-compose.deploy.yml ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
-          scp -i yourssu.pem script/26-1/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
+          scp -i yourssu.pem script/26-1/ops/docker-deploy.sh ubuntu@$HOST_URL:/home/ubuntu/$PROJECT_NAME-api/
 
           # Make the script executable
           ssh -i yourssu.pem ubuntu@$HOST_URL "chmod +x /home/ubuntu/$PROJECT_NAME-api/docker-deploy.sh"
