@@ -20,4 +20,28 @@ object CurrentPseudonymHolder {
     fun clear() {
         holder.remove()
     }
+
+    /**
+     * pseudonym을 설정하고 블록을 실행한 후 자동으로 clear하는 헬퍼 함수.
+     * ThreadLocal 메모리 누수를 방지하기 위해 finally 블록에서 항상 clear를 보장합니다.
+     *
+     * @param pseudonym 설정할 pseudonym 값
+     * @param block 실행할 블록
+     * @return 블록의 실행 결과
+     *
+     * @sample
+     * ```
+     * CurrentPseudonymHolder.withPseudonym(pseudonym) {
+     *     untakenCourseCodeService.getUntakenCourseCodes(Category.MAJOR_REQUIRED)
+     * }
+     * ```
+     */
+    inline fun <T> withPseudonym(pseudonym: String, block: () -> T): T {
+        set(pseudonym)
+        return try {
+            block()
+        } finally {
+            clear()
+        }
+    }
 }
