@@ -4,7 +4,7 @@ object FieldFinder {
     fun findFieldBySchoolId(field: String, schoolId: Int): String {
         val allEntries = field.split("\n")
             .mapNotNull { line -> parseFieldEntry(line) }
-        
+
         if (allEntries.isEmpty()) {
             return ""
         }
@@ -13,23 +13,35 @@ object FieldFinder {
 
         if (matchingEntries.isNotEmpty()) {
             val entryWithHighestYear = matchingEntries.maxBy { entry -> entry.yearRange.first }
-            return entryWithHighestYear.fieldName
+            return normalizeFieldName(entryWithHighestYear.fieldName)
         }
 
         // 일치하는 연도가 없을 때 가장 최근 연도의 필드를 반환
         val mostRecentEntry = allEntries.maxBy { entry -> entry.yearRange.last }
-        return mostRecentEntry.fieldName
+        return normalizeFieldName(mostRecentEntry.fieldName)
     }
-    
+
+    /**
+     * 접두어(실제분야명) 형태면 괄호 안만 반환.
+     * 예: 품격(글로벌시민의식) → 글로벌시민의식, 창의(비판적사고와표현) → 비판적사고와표현
+     * 괄호가 없으면 원본 그대로 반환 (예: SW와AI).
+     */
+    private fun normalizeFieldName(fieldName: String): String {
+        if (fieldName.isBlank()) return fieldName
+        val trimmed = fieldName.trim()
+        val match = Regex(".*\\(([^)]+)\\)\\s*$").find(trimmed)
+        return match?.groupValues?.get(1)?.trim() ?: trimmed
+    }
+
     private fun parseFieldEntry(line: String): FieldEntry? {
         val yearRange = parseYearRange(line) ?: return null
         val fieldName = parseFieldName(line)
-        
+
         return if (fieldName.isNotBlank()) {
             FieldEntry(yearRange, fieldName)
         } else null
     }
-    
+
     private fun parseYearRange(line: String): IntRange? {
         return when {
             line.contains("이후") -> {
@@ -54,13 +66,13 @@ object FieldFinder {
                 val match = Regex("'{0,2}(\\d{2})\\]").find(line)
                 match?.let {
                     val year = it.groupValues[1].toInt()
-                    year..year 
+                    year..year
                 }
             }
         }
     }
-    
-    
+
+
     private fun parseFieldName(line: String): String {
         // 마지막 ] 이후의 모든 텍스트를 필드명으로 추출
         val lastBracketIndex = line.lastIndexOf(']')
@@ -70,12 +82,12 @@ object FieldFinder {
 
         return ""
     }
-    
+
     private data class FieldEntry(
         val yearRange: IntRange,
         val fieldName: String
     )
-    
+
     private const val MIN_YEAR = 0
     private const val MAX_YEAR = 99
 }
