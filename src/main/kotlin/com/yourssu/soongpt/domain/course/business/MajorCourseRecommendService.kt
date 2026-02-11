@@ -1,7 +1,7 @@
 package com.yourssu.soongpt.domain.course.business
 
 import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
-import com.yourssu.soongpt.domain.course.business.dto.MajorCourseRecommendResponse
+import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResult
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
@@ -33,13 +33,13 @@ class MajorCourseRecommendService(
         category: Category,
         takenSubjectCodes: List<String>,
         progress: com.yourssu.soongpt.domain.course.business.dto.Progress,
-    ): MajorCourseRecommendResponse {
+    ): CategoryRecommendResult {
         require(category == Category.MAJOR_BASIC || category == Category.MAJOR_REQUIRED) {
             "Category must be MAJOR_BASIC or MAJOR_REQUIRED"
         }
 
         if (progress.satisfied) {
-            return MajorCourseRecommendResponse.satisfied(category, progress)
+            return CategoryRecommendResult.satisfied(category, progress)
         }
 
         val department = departmentReader.getByName(departmentName)
@@ -52,12 +52,12 @@ class MajorCourseRecommendService(
         )
 
         if (untakenCourses.isEmpty()) {
-            return MajorCourseRecommendResponse.empty(category, progress)
+            return CategoryRecommendResult.empty(category, progress)
         }
 
         val recommendedCourses = buildRecommendedCourses(untakenCourses, userGrade)
 
-        return MajorCourseRecommendResponse.of(
+        return CategoryRecommendResult.of(
             category = category,
             progress = progress,
             courses = recommendedCourses,
@@ -74,11 +74,11 @@ class MajorCourseRecommendService(
         userGrade: Int,
         takenSubjectCodes: List<String>,
         progress: com.yourssu.soongpt.domain.course.business.dto.Progress,
-    ): MajorCourseRecommendResponse {
+    ): CategoryRecommendResult {
         val category = Category.MAJOR_ELECTIVE
 
         if (progress.satisfied) {
-            return MajorCourseRecommendResponse.satisfied(category, progress)
+            return CategoryRecommendResult.satisfied(category, progress)
         }
 
         val department = departmentReader.getByName(departmentName)
@@ -91,12 +91,12 @@ class MajorCourseRecommendService(
         )
 
         if (untakenCourses.isEmpty()) {
-            return MajorCourseRecommendResponse.empty(category, progress)
+            return CategoryRecommendResult.empty(category, progress)
         }
 
         val recommendedCourses = buildRecommendedCourses(untakenCourses, userGrade)
 
-        return MajorCourseRecommendResponse.of(
+        return CategoryRecommendResult.of(
             category = category,
             progress = progress,
             courses = recommendedCourses,
