@@ -123,21 +123,23 @@ class CourseServiceImpl(
 
         val codes = courses.map { it.code }.distinct()
         val targetsByCode = targetReader.findAllByCodes(codes)
-        val isStrictByCode = codes.associateWith { code ->
-            (targetsByCode[code] ?: emptyList()).any { it.isStrict }
-        }
+        val isStrictByCode =
+                codes.associateWith { code ->
+                    (targetsByCode[code] ?: emptyList()).any { it.isStrict }
+                }
 
         val grouped = courses.groupBy { it.baseCode() }
-        val coursesList = grouped.map { (_, groupCourses) ->
-            SearchCourseGroupResponse.from(groupCourses, isStrictByCode)
-        }
+        val coursesList =
+                grouped.map { (_, groupCourses) ->
+                    SearchCourseGroupResponse.from(groupCourses, isStrictByCode)
+                }
 
         return SearchCoursesResponse(
-            courses = coursesList,
-            totalElements = page.totalElements,
-            totalPages = page.totalPages,
-            size = page.size,
-            page = page.number,
+                courses = coursesList,
+                totalElements = page.totalElements,
+                totalPages = page.totalPages,
+                size = page.size,
+                page = page.number,
         )
     }
 
@@ -167,9 +169,9 @@ class CourseServiceImpl(
     override fun getFieldByCourseCode(courseCode: Long, schoolId: Int): String? {
         // 분반 코드(10자리)가 들어와도 동작하도록 8자리 기본코드로 한번 더 조회
         val courseField =
-            courseFieldReader.findByCourseCode(courseCode)
-                ?: courseFieldReader.findByCourseCode(courseCode.toBaseCode())
-                ?: return null
+                courseFieldReader.findByCourseCode(courseCode)
+                        ?: courseFieldReader.findByCourseCode(courseCode.toBaseCode())
+                                ?: return null
 
         return FieldFinder.findFieldBySchoolId(courseField.field, schoolId)
     }
@@ -383,12 +385,16 @@ class CourseServiceImpl(
     override fun findAllTeachingCourses(query: FilterTeachingCoursesQuery): List<CourseResponse> {
         val department = departmentReader.getByName(query.departmentName)
 
-        // 전체 학년(1-5) 조회 - 일반 학생(GENERAL) 타입으로 조회
+        // 전체 학년(1-5) 조회 - GENERAL + TEACHING_CERT 타입 모두 조회
         val allGrades = (1..5)
         val allCourseCodes =
                 allGrades
                         .flatMap { grade ->
-                            targetReader.findAllByDepartmentGrade(department, grade)
+                            targetReader.findAllByDepartmentGrade(department, grade) +
+                                    targetReader.findAllByDepartmentGradeForTeaching(
+                                            department,
+                                            grade
+                                    )
                         }
                         .distinct()
 
@@ -396,45 +402,17 @@ class CourseServiceImpl(
         val courses =
                 courseReader.findAllInCategory(Category.TEACHING, allCourseCodes, query.schoolId)
 
-        // teachingArea가 null이면 모든 교직 과목 반환
+        // majorArea로 필터링 (field 기반)
         val filteredCourses =
-                if (query.teachingArea == null) {
-                    courses
-                } else {
-                    // 영역별 필터링
-                    when (query.teachingArea) {
-                        com.yourssu.soongpt.domain.course.implement.TeachingArea
-                                .SUBJECT_EDUCATION -> {
-                            // 교과교육 영역: 학과에 맞는 교과만 필터링
-                            val subjectCategory =
-                                    com.yourssu.soongpt.domain.course.implement.SubjectCategory
-                                            .findByDepartment(query.departmentName)
-                            if (subjectCategory != null) {
-                                courses.filter { course ->
-                                    course.name.contains(
-                                            subjectCategory.displayName.replace("교과", "")
-                                    ) ||
-                                            (course.name.contains("교과교육론") ||
-                                                    course.name.contains("논리및논술"))
-                                }
-                            } else {
-                                // 학과 매칭 실패 시 모든 교과교육 과목 반환
-                                courses.filter { course ->
-                                    query.teachingArea.keywords.any { keyword ->
-                                        course.name.contains(keyword)
-                                    }
-                                }
-                            }
-                        }
-                        else -> {
-                            // 다른 영역: 키워드로 필터링
-                            courses.filter { course ->
-                                query.teachingArea.keywords.any { keyword ->
-                                    course.name.contains(keyword)
-                                }
-                            }
+                if (query.majorArea != null) {
+                    val targetFields = query.majorArea.fieldValues
+                    courses.filter { course ->
+                        targetFields.any { fieldValue ->
+                            course.field?.contains(fieldValue) == true
                         }
                     }
+                } else {
+                    courses
                 }
 
         return filteredCourses.map { course ->

@@ -66,7 +66,7 @@ export interface GetCoursesByTrackParams {
 export interface GetTeachingCoursesParams {
   schoolId: number;
   department: string;
-  teachingArea?: string;
+  majorArea?: string;
 }
 
 export const courseApi = {

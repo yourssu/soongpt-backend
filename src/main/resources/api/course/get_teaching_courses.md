@@ -15,13 +15,12 @@
   - 학번 앞 2자리 (예: `26`)
 - `department` (string, required)
   - 학과명 (예: `컴퓨터학부`)
-- `teachingArea` (string, optional)
-  - 교직 영역 (없으면 전체 교직 과목 반환)
+- `majorArea` (string, optional)
+  - 교직 대분류 영역 (없으면 전체 교직 과목 반환)
   - 허용값
-    - `교직이론` 또는 `THEORY`
-    - `교직소양` 또는 `LITERACY`
-    - `교육실습` 또는 `PRACTICE`
-    - `교과교육` 또는 `SUBJECT_EDUCATION`
+    - `전공영역` 또는 `MAJOR` — 전공영역 과목 (교과교육론, 논리및논술 등)
+    - `교직영역` 또는 `TEACHING` — 교직영역 과목 (교직이론, 교육실습 등)
+    - `특성화영역` 또는 `SPECIAL` — 특성화영역 과목
 
 ---
 
@@ -33,10 +32,16 @@
 GET /api/courses/teaching?schoolId=26&department=컴퓨터학부
 ```
 
-### 2) 교직소양만 조회
+### 2) 전공영역만 조회
 
 ```http
-GET /api/courses/teaching?schoolId=26&department=컴퓨터학부&teachingArea=교직소양
+GET /api/courses/teaching?schoolId=26&department=컴퓨터학부&majorArea=MAJOR
+```
+
+### 3) 교직영역만 조회
+
+```http
+GET /api/courses/teaching?schoolId=26&department=컴퓨터학부&majorArea=TEACHING
 ```
 
 ---

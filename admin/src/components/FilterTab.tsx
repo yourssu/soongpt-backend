@@ -99,26 +99,13 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
         setFilteredCourses(data);
         onFilterResults(data);
       } else if (filterMode === 'teaching') {
-        // Fetch all teaching courses first
         const data = await courseApi.getTeachingCourses({
           schoolId,
           department: selectedDepartment,
-          teachingArea: undefined, // always fetch all, filter client-side
+          majorArea: selectedTeachingArea || undefined,
         });
-        // Filter client-side by major category
-        let filtered = data;
-        if (selectedTeachingArea === 'MAJOR') {
-          // 전공영역: subCategory contains '교직전공'
-          filtered = data.filter(c => c.subCategory?.includes('교직전공'));
-        } else if (selectedTeachingArea === 'TEACHING') {
-          // 교직영역: subCategory is exactly '교직' (excludes '교직전공-XXX' and '교직 특성화과목')
-          filtered = data.filter(c => c.subCategory === '교직');
-        } else if (selectedTeachingArea === 'SPECIAL') {
-          // 특성화영역: subCategory contains '특성화'
-          filtered = data.filter(c => c.subCategory?.includes('특성화'));
-        }
-        setFilteredCourses(filtered);
-        onFilterResults(filtered);
+        setFilteredCourses(data);
+        onFilterResults(data);
       }
     } catch (err) {
       setError('과목을 불러오는데 실패했습니다.');
