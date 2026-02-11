@@ -304,7 +304,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                 </tr>
               </thead>
               <tbody>
-                {filteredCourses.map((course: Course, index: number) => (
+                {filteredCourses?.map((course: Course, index: number) => (
                   <tr
                     key={course.id || course.code}
                     onClick={() => onCourseClick(course, index)}

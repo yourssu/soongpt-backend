@@ -808,7 +808,7 @@ export const CourseList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {courses.content.map((course: Course, index: number) => (
+                    {courses.content?.map((course: Course, index: number) => (
                       <tr
                         key={course.id || course.code}
                         onClick={() => handleCourseClick(course, index)}
@@ -1132,7 +1132,7 @@ export const CourseList = () => {
                             </div>
                           ) : (
                             <div className="course-times-edit-grid">
-                              {editedCourse?.courseTimes.map((courseTime, index) => (
+                              {editedCourse?.courseTimes?.map((courseTime, index) => (
                                 <div key={index} className="course-time-edit-card">
                                   <div className="course-time-edit-row">
                                     <label>요일:</label>
@@ -1191,7 +1191,7 @@ export const CourseList = () => {
                           </div>
                         ) : (
                           <div className="course-times-grid">
-                            {selectedCourse.courseTimes.map((courseTime, index) => (
+                            {selectedCourse.courseTimes?.map((courseTime, index) => (
                               <div key={index} className="course-time-card">
                                 <div className={`time-week-badge ${getWeekColor(courseTime.week)}`}>
                                   {courseTime.week}
@@ -1280,7 +1280,7 @@ export const CourseList = () => {
                         <tbody>
                           {editMode ? (
                             // Edit Mode: Show all targets with inputs
-                            editedCourse?.targets.map((target, index) => (
+                            editedCourse?.targets?.map((target, index) => (
                               <tr key={index} className={target.isDenied ? 'denied-row' : 'allowed-row'}>
                                 {editMode && <td>{target.id || '-'}</td>}
                                 <td>
@@ -1383,7 +1383,7 @@ export const CourseList = () => {
                             ))
                           ) : (
                             // View Mode: Existing logic (Sorted by Deny)
-                            selectedCourse.targets
+                            (selectedCourse.targets || [])
                               .sort((a, b) => (Number(b.isDenied) - Number(a.isDenied)))
                               .map((target: TargetInfo, index: number) => (
                                 <tr key={index} className={target.isDenied ? 'denied-row' : 'allowed-row'}>
