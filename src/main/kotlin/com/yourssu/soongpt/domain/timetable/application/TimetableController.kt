@@ -120,14 +120,14 @@ class TimetableController(
         value = [
             ApiResponse(
                 responseCode = "200", description = "조회 성공", content = [
-                    Content(mediaType = "application/json", schema = Schema(implementation = TimetableCourseResponse::class))
+                    Content(mediaType = "application/json", schema = Schema(implementation = AvailableChapelsResponse::class))
                 ]
             ),
             ApiResponse(responseCode = "404", description = "존재하지 않는 시간표 ID", content = [])
         ]
     )
     @GetMapping("/{id}/available-chapels")
-    fun getAvailableChapels(@PathVariable id: Long): ResponseEntity<Response<List<TimetableCourseResponse>>> {
+    fun getAvailableChapels(@PathVariable id: Long): ResponseEntity<Response<AvailableChapelsResponse>> {
         // TODO: 실제 userId는 토큰 등에서 가져와야 함
         val userId = "anonymous"
         val response = timetableService.getAvailableChapels(id, userId)
