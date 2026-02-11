@@ -152,7 +152,7 @@ class CourseRecommendApplicationService(
         }
         return CategoryRecommendResponse(
             category = category.name,
-            progress = null,
+            progress = Progress(required = 0, completed = 0, satisfied = true),
             message = message,
             userGrade = null,
             courses = emptyList(),

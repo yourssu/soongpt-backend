@@ -23,15 +23,15 @@ object MockUsaintData {
         // ---------- takenCourses: 이수한 과목 목록. 교필 분야 제외·전공 이수 제외 등에 사용됨.
         // subjectCodes: rusaint 기준 8자리 과목코드 문자열. 예: "21501021" (글로벌시민의식)
         takenCourses = listOf(
-            // RusaintTakenCourseDto(year = 이수 연도, semester = "1"|"2", subjectCodes = listOf("8자리코드"))
-            // RusaintTakenCourseDto(year = 2024, semester = "1", subjectCodes = listOf("21501021")),
+            RusaintTakenCourseDto(year = 2024, semester = "1", subjectCodes = listOf("21501021")),
         ),
         // ---------- lowGradeSubjectCodes: D등급 이하 과목 코드 (재수강 추천용)
         lowGradeSubjectCodes = emptyList(),
-        // ---------- flags: 복수전공/부전공/교직 여부
+
+        // ---------- flags: 복수전공/부전공/교직 여부 (복필/복선/부전공 추천 테스트 시 아래 채우기)
         flags = RusaintStudentFlagsDto(
-            doubleMajorDepartment = null,
-            minorDepartment = null,
+            doubleMajorDepartment = "경영학부",  // 복수전공 테스트: DB에 있는 학과명
+            minorDepartment = "글로벌미디어학부",     // 부전공 테스트: DB에 있는 학과명
             teaching = false,
         ),
         // ---------- basicInfo: 학적 기반. 추천 시 학과·학년·schoolId(학년도) 로 사용됨.
@@ -49,9 +49,50 @@ object MockUsaintData {
             majorFoundation = RusaintCreditSummaryItemDto(required = 15, completed = 0, satisfied = false),
             majorRequired = RusaintCreditSummaryItemDto(required = 21, completed = 0, satisfied = false),
             majorElective = RusaintCreditSummaryItemDto(required = 30, completed = 0, satisfied = false),
-            minor = RusaintCreditSummaryItemDto(required = 0, completed = 0, satisfied = true),
+            // ---------- 복수전공/부전공 테스트 시 required > 0, satisfied = false 로 설정하면 과목 조회됨
+            minor = RusaintCreditSummaryItemDto(required = 10, completed = 0, satisfied = true),
             doubleMajorRequired = RusaintCreditSummaryItemDto(required = 0, completed = 0, satisfied = true),
             doubleMajorElective = RusaintCreditSummaryItemDto(required = 0, completed = 0, satisfied = true),
+            christianCourses = RusaintCreditSummaryItemDto(required = 6, completed = 0, satisfied = false),
+            chapel = RusaintChapelSummaryItemDto(satisfied = false),
+        ),
+        warnings = emptyList(),
+    )
+
+    /**
+     * 복수전공·부전공 추천 API 테스트용 mock 데이터.
+     * - flags.doubleMajorDepartment / minorDepartment: DB에 있는 학과명으로 채우기 (아래 예시는 플레이스홀더)
+     * - graduationSummary: 복필/복선/부전공 required > 0, satisfied = false 이면 과목 조회됨
+     * POST /api/dev/mock-double-major-token 호출 시 이 데이터로 세션이 생성됨.
+     * 세션에 넣을 학과명·학점 등은 필요에 따라 아래 값 수정 후 사용.
+     */
+    fun buildForDoubleMajorAndMinor(): RusaintUsaintDataResponse = RusaintUsaintDataResponse(
+        pseudonym = MOCK_USER_PSEUDONYM,
+        takenCourses = listOf(
+            // 이수한 과목 있으면 제외됨. 예: RusaintTakenCourseDto(year = 2024, semester = "1", subjectCodes = listOf("8자리코드")),
+        ),
+        lowGradeSubjectCodes = emptyList(),
+        flags = RusaintStudentFlagsDto(
+            doubleMajorDepartment = "경영학부",   // 복수전공 학과명 (DB Department.name)
+            minorDepartment = "글로벌미디어학부",  // 부전공 학과명 (DB Department.name)
+            teaching = false,
+        ),
+        basicInfo = RusaintBasicInfoDto(
+            year = 2023,
+            semester = 5,
+            grade = 3,
+            department = "컴퓨터학부", // TODO: 주전공 학과명 (DB에 있는 값으로)
+        ),
+        graduationRequirements = null,
+        graduationSummary = RusaintGraduationSummaryDto(
+            generalRequired = RusaintCreditSummaryItemDto(required = 12, completed = 0, satisfied = false),
+            generalElective = RusaintCreditSummaryItemDto(required = 12, completed = 10, satisfied = false),
+            majorFoundation = RusaintCreditSummaryItemDto(required = 15, completed = 12, satisfied = false),
+            majorRequired = RusaintCreditSummaryItemDto(required = 21, completed = 18, satisfied = false),
+            majorElective = RusaintCreditSummaryItemDto(required = 30, completed = 18, satisfied = false),
+            minor = RusaintCreditSummaryItemDto(required = 21, completed = 18, satisfied = false),           // TODO: 부전공 학점
+            doubleMajorRequired = RusaintCreditSummaryItemDto(required = 21, completed = 18, satisfied = false), // TODO: 복필 학점
+            doubleMajorElective = RusaintCreditSummaryItemDto(required = 21, completed = 18, satisfied = false), // TODO: 복선 학점
             christianCourses = RusaintCreditSummaryItemDto(required = 6, completed = 0, satisfied = false),
             chapel = RusaintChapelSummaryItemDto(satisfied = false),
         ),

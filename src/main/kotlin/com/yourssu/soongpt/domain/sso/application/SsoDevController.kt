@@ -159,4 +159,39 @@ class SsoDevController(
             )
         )
     }
+
+    @Operation(
+        summary = "복수전공·부전공 테스트용 Mock 토큰 발급",
+        description = """
+            MockUsaintData.buildForDoubleMajorAndMinor() 로 만든 mock 데이터로 세션·쿠키를 설정합니다.
+            복필/복선/부전공 추천 API 테스트 시: MockUsaintData.kt 의 buildForDoubleMajorAndMinor() 에서
+            doubleMajorDepartment, minorDepartment, basicInfo.department, graduationSummary(복필/복선/부전공 학점) 등을
+            채운 뒤 이 API를 호출하고, 같은 쿠키로 GET /api/courses/recommend/all?category=DOUBLE_MAJOR_REQUIRED,DOUBLE_MAJOR_ELECTIVE,MINOR 호출하면 됩니다.
+        """,
+    )
+    @PostMapping("/mock-double-major-token")
+    fun issueMockDoubleMajorToken(response: HttpServletResponse): ResponseEntity<Map<String, String>> {
+        val pseudonym = MockUsaintData.MOCK_USER_PSEUDONYM
+        val mockData = MockUsaintData.buildForDoubleMajorAndMinor()
+
+        syncSessionStore.createSession(pseudonym)
+        syncSessionStore.updateStatus(
+            pseudonym = pseudonym,
+            status = SyncStatus.COMPLETED,
+            usaintData = mockData,
+        )
+
+        val token = clientJwtProvider.issueToken(pseudonym)
+        response.addHeader(
+            "Set-Cookie",
+            "soongpt_auth=$token; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600",
+        )
+
+        return ResponseEntity.ok(
+            mapOf(
+                "message" to "복수전공·부전공 테스트용 세션·쿠키가 설정되었습니다. MockUsaintData.buildForDoubleMajorAndMinor() 값을 채운 뒤 재호출하면 반영됩니다.",
+                "pseudonym" to pseudonym,
+            )
+        )
+    }
 }
