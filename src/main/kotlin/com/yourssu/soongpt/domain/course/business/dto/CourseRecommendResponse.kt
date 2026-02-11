@@ -48,9 +48,9 @@ data class CategoryRecommendResponse(
 )
 
 /**
- * MajorCourseRecommendResponse → CategoryRecommendResponse 변환
+ * CategoryRecommendResult → CategoryRecommendResponse 변환
  */
-fun MajorCourseRecommendResponse.toCategoryResponse(
+fun CategoryRecommendResult.toCategoryResponse(
     userGrade: Int? = null,
 ): CategoryRecommendResponse = CategoryRecommendResponse(
     category = category,
