@@ -84,12 +84,15 @@ class TimetableService(
     // NOTE: 피키가 만든거!!! 채플 이수현황을 조립할 때 사용합니다. 대충 예시코드..라고 생각해주세요 피키피키~야호~
     fun getAvailableChapels(timetableId: Long): AvailableChapelsResponse {
         // 기존 타임테이블 로직: courses 조회
-        val courses = getAvailableChapelCourses(timetableId)
-
         // 이수현황 조립: progress만 별도로 계산해서 응답에 추가
         val ctx = recommendContextResolver.resolveOptional()
         val satisfied = ctx?.graduationSummary?.chapel?.satisfied
         val progress = satisfied?.let { ChapelProgress(satisfied = it) }
+        val courses = if (satisfied == true) {
+            emptyList()
+        } else {
+            getAvailableChapelCourses(timetableId)
+        }
 
         return AvailableChapelsResponse(progress = progress, courses = courses)
     }
