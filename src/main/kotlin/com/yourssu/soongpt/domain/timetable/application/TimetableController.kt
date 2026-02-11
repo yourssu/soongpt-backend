@@ -50,6 +50,10 @@ class TimetableController(
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Response(result = response))
         }
+        if (response.status == RecommendationStatus.SINGLE_CONFLICT) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Response(result = response))
+        }
 
         if (response.status == RecommendationStatus.SUCCESS) {
             val slackAlarmRequest = timetableService.createTimetableAlarmRequest(
