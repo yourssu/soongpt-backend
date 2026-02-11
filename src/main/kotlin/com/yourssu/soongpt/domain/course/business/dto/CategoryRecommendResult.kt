@@ -37,10 +37,11 @@ data class Progress(
 }
 
 /**
- * 전공 과목 추천 응답
+ * 이수구분별 단일 카테고리 추천 결과 (비즈니스 레이어)
+ * - 전기/전필/전선, 재수강, 교직 등 모든 이수구분에서 공통 구조로 사용
  */
-data class MajorCourseRecommendResponse(
-    val category: String, // MAJOR_BASIC, MAJOR_REQUIRED, MAJOR_ELECTIVE, RETAKE
+data class CategoryRecommendResult(
+    val category: String, // MAJOR_BASIC, MAJOR_REQUIRED, MAJOR_ELECTIVE, RETAKE, TEACHING 등
     val progress: Progress?,
     val courses: List<RecommendedCourseResponse>,
     val message: String? = null,
@@ -51,8 +52,8 @@ data class MajorCourseRecommendResponse(
             progress: Progress,
             courses: List<RecommendedCourseResponse>,
             message: String? = null,
-        ): MajorCourseRecommendResponse {
-            return MajorCourseRecommendResponse(
+        ): CategoryRecommendResult {
+            return CategoryRecommendResult(
                 category = category.name,
                 progress = progress,
                 courses = courses,
@@ -60,14 +61,14 @@ data class MajorCourseRecommendResponse(
             )
         }
 
-        fun satisfied(category: Category, progress: Progress): MajorCourseRecommendResponse {
+        fun satisfied(category: Category, progress: Progress): CategoryRecommendResult {
             val message = when (category) {
                 Category.MAJOR_BASIC -> "전공기초 학점을 이미 모두 이수하셨습니다."
                 Category.MAJOR_REQUIRED -> "전공필수 학점을 이미 모두 이수하셨습니다."
                 Category.MAJOR_ELECTIVE -> "전공선택 학점을 이미 모두 이수하셨습니다."
                 else -> "이미 모두 이수하셨습니다."
             }
-            return MajorCourseRecommendResponse(
+            return CategoryRecommendResult(
                 category = category.name,
                 progress = progress,
                 courses = emptyList(),
@@ -75,14 +76,14 @@ data class MajorCourseRecommendResponse(
             )
         }
 
-        fun empty(category: Category, progress: Progress): MajorCourseRecommendResponse {
+        fun empty(category: Category, progress: Progress): CategoryRecommendResult {
             val message = when (category) {
                 Category.MAJOR_BASIC -> "이번 학기에 수강 가능한 전공기초 과목이 없습니다."
                 Category.MAJOR_REQUIRED -> "이번 학기에 수강 가능한 전공필수 과목이 없습니다."
                 Category.MAJOR_ELECTIVE -> "이번 학기에 수강 가능한 전공선택 과목이 없습니다."
                 else -> "이번 학기에 수강 가능한 과목이 없습니다."
             }
-            return MajorCourseRecommendResponse(
+            return CategoryRecommendResult(
                 category = category.name,
                 progress = progress,
                 courses = emptyList(),
