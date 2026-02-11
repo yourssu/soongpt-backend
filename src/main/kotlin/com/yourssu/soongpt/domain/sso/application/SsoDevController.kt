@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.sso.application
 
 import com.yourssu.soongpt.common.config.ClientJwtProvider
+import com.yourssu.soongpt.domain.sso.implement.MockUsaintData
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.sso.implement.SyncStatus
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@Tag(name = "SSO Dev", description = "로컬 테스트용 (local 프로필에서만 활성화)")
-@Profile("local")
+@Tag(name = "SSO Dev", description = "로컬/개발 테스트용 (local, dev 프로필에서 활성화)")
+@Profile("local", "dev")
 @RestController
 @RequestMapping("/api/dev")
 class SsoDevController(
@@ -121,6 +122,40 @@ class SsoDevController(
             mapOf(
                 "message" to "쿠키가 설정되었습니다. 이제 Swagger에서 다른 API를 테스트하세요.",
                 "soongpt_auth" to token,
+            )
+        )
+    }
+
+    @Operation(
+        summary = "Mock 사용자 토큰 발급 (테스트용)",
+        description = """
+            MockUsaintData.build() 로 만든 mock usaint 데이터로 세션을 만들고, 해당 사용자용 JWT를 발급해 쿠키에 넣습니다.
+            MockUsaintData.kt 에서 필드(학과·학년·이수과목·졸업사정표 등)를 채운 뒤 이 API를 호출하면,
+            추천 API(GET /api/courses/recommend/all 등)를 같은 쿠키로 테스트할 수 있습니다.
+        """,
+    )
+    @PostMapping("/mock-user-token")
+    fun issueMockUserToken(response: HttpServletResponse): ResponseEntity<Map<String, String>> {
+        val pseudonym = MockUsaintData.MOCK_USER_PSEUDONYM
+        val mockData = MockUsaintData.build()
+
+        syncSessionStore.createSession(pseudonym)
+        syncSessionStore.updateStatus(
+            pseudonym = pseudonym,
+            status = SyncStatus.COMPLETED,
+            usaintData = mockData,
+        )
+
+        val token = clientJwtProvider.issueToken(pseudonym)
+        response.addHeader(
+            "Set-Cookie",
+            "soongpt_auth=$token; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600",
+        )
+
+        return ResponseEntity.ok(
+            mapOf(
+                "message" to "Mock 사용자 세션·쿠키가 설정되었습니다. MockUsaintData.kt 값을 수정한 뒤 재호출하면 반영됩니다.",
+                "pseudonym" to pseudonym,
             )
         )
     }
