@@ -10,12 +10,12 @@ class UserContextProvider(
 ) {
     fun getContext(userId: String): UserContext {
         // TODO: 추후 userId를 기반으로 실제 사용자 정보를 조회하는 로직으로 변경 필요
-        val department = departmentReader.getByName("컴퓨터학부")
+        val department = departmentReader.getByName("화학공학과")
         return UserContext(
             userId = userId,
             department = department,
             grade = 3,
-            schoolId = 20,
+            schoolId = 21,
             division = "A",
         )
     }
