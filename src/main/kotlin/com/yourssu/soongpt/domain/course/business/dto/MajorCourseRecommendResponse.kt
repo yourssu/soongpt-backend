@@ -2,6 +2,7 @@ package com.yourssu.soongpt.domain.course.business.dto
 
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
+import com.yourssu.soongpt.domain.course.implement.TeachingMajorArea
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.scheduleWithoutRoom
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto
@@ -165,6 +166,29 @@ data class RecommendedCourseResponse(
                 professors = professors,
                 department = representative.course.department,
                 sections = coursesWithTarget.map { SectionResponse.from(it.course, it.isStrict, divisionFromCourseCode = true) },
+            )
+        }
+
+        fun forTeaching(
+            courses: List<Course>,
+            area: TeachingMajorArea?,
+        ): RecommendedCourseResponse {
+            val representative = courses.first()
+            val professors = courses
+                .mapNotNull { it.professor }
+                .distinct()
+                .sorted()
+
+            return RecommendedCourseResponse(
+                baseCourseCode = representative.baseCode(),
+                courseName = representative.name,
+                credits = representative.credit,
+                target = representative.target,
+                timing = null,
+                field = area?.displayName,
+                professors = professors,
+                department = null,
+                sections = courses.map { SectionResponse.from(it, divisionFromCourseCode = true) },
             )
         }
     }
