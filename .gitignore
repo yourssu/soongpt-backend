@@ -109,3 +109,5 @@ dmypy.json
 ### Node.js ###
 node_modules/
 .vite/
+
+cookies.txt
