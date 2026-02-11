@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.application.dto.RecommendCoursesRequest
 import com.yourssu.soongpt.domain.course.business.GeneralCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.MajorCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.RetakeCourseRecommendService
+import com.yourssu.soongpt.domain.course.business.SecondaryMajorCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
 import com.yourssu.soongpt.domain.course.business.dto.CourseRecommendationsResponse
 import com.yourssu.soongpt.domain.course.business.dto.Progress
@@ -24,6 +25,7 @@ class CourseRecommendApplicationService(
     private val majorCourseRecommendService: MajorCourseRecommendService,
     private val generalCourseRecommendService: GeneralCourseRecommendService,
     private val retakeCourseRecommendService: RetakeCourseRecommendService,
+    private val secondaryMajorCourseRecommendService: SecondaryMajorCourseRecommendService,
 ) {
 
     fun recommend(
@@ -107,30 +109,14 @@ class CourseRecommendApplicationService(
                 )
             }
 
-            RecommendCategory.GENERAL_ELECTIVE -> {
-                throw IllegalArgumentException("교양선택은 별도 API로 제공 예정입니다.")
-            }
+            RecommendCategory.DOUBLE_MAJOR_REQUIRED ->
+                secondaryMajorCourseRecommendService.recommendDoubleMajorRequired(ctx)
 
-            RecommendCategory.DOUBLE_MAJOR_REQUIRED -> {
-                val summaryItem = ctx.graduationSummary?.doubleMajorRequired
-                    ?: return noDataResponse(category)
-                val progress = Progress.from(summaryItem)
-                progressOnlyResponse(category, progress)
-            }
+            RecommendCategory.DOUBLE_MAJOR_ELECTIVE ->
+                secondaryMajorCourseRecommendService.recommendDoubleMajorElective(ctx)
 
-            RecommendCategory.DOUBLE_MAJOR_ELECTIVE -> {
-                val summaryItem = ctx.graduationSummary?.doubleMajorElective
-                    ?: return noDataResponse(category)
-                val progress = Progress.from(summaryItem)
-                progressOnlyResponse(category, progress)
-            }
-
-            RecommendCategory.MINOR -> {
-                val summaryItem = ctx.graduationSummary?.minor
-                    ?: return noDataResponse(category)
-                val progress = Progress.from(summaryItem)
-                progressOnlyResponse(category, progress)
-            }
+            RecommendCategory.MINOR ->
+                secondaryMajorCourseRecommendService.recommendMinor(ctx)
 
             RecommendCategory.TEACHING -> {
                 throw IllegalArgumentException("${category.displayName} 추천은 준비 중입니다.")
@@ -166,7 +152,7 @@ class CourseRecommendApplicationService(
         }
         return CategoryRecommendResponse(
             category = category.name,
-            progress = null,
+            progress = Progress(required = 0, completed = 0, satisfied = true),
             message = message,
             userGrade = null,
             courses = emptyList(),

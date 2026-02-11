@@ -138,8 +138,22 @@ class CourseRepositoryImpl(
             return emptyList()
         }
 
-        // CourseWithTarget 변환
+        // Deny 과목 코드 조회 (같은 scope/grade 조건에서 Deny된 과목 제외)
+        val denyCodes = jpaQueryFactory
+            .select(targetEntity.courseCode)
+            .from(targetEntity)
+            .where(
+                targetEntity.studentType.eq(StudentType.GENERAL),
+                targetEntity.isDenied.isTrue,
+                gradeCondition,
+                scopeCondition,
+            )
+            .fetch()
+            .toSet()
+
+        // CourseWithTarget 변환 (Deny 과목 제외, 같은 과목코드의 targetGrades 병합)
         return allowResults
+            .filter { it.get(courseEntity)!!.code !in denyCodes }
             .map { tuple ->
                 CourseWithTarget(
                     course = tuple.get(courseEntity)!!.toDomain(),
@@ -151,6 +165,13 @@ class CourseRepositoryImpl(
                         grade5 = tuple.get(targetEntity.grade5) ?: false,
                     ),
                     isStrict = tuple.get(targetEntity.isStrict) ?: false,
+                )
+            }
+            .groupBy { it.course.code }
+            .map { (_, targets) ->
+                targets.first().copy(
+                    targetGrades = targets.flatMap { it.targetGrades }.distinct().sorted(),
+                    isStrict = targets.any { it.isStrict },
                 )
             }
     }

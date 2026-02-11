@@ -1,16 +1,18 @@
 package com.yourssu.soongpt.domain.course.application.dto
 
+import com.yourssu.soongpt.common.handler.BadRequestException
 import io.swagger.v3.oas.annotations.media.Schema
+import org.springframework.http.HttpStatus
 
 /**
- * 통합 과목 추천에서 사용하는 이수구분 카테고리
+ * 통합 과목 추천(/recommend/all)에서 사용하는 이수구분 카테고리.
+ * 교양선택은 이 API에서 지원하지 않으며, 별도 API로 제공 예정.
  */
 enum class RecommendCategory(val displayName: String) {
     MAJOR_BASIC("전공기초"),
     MAJOR_REQUIRED("전공필수"),
     MAJOR_ELECTIVE("전공선택"),
     GENERAL_REQUIRED("교양필수"),
-    GENERAL_ELECTIVE("교양선택"),
     RETAKE("재수강"),
     DOUBLE_MAJOR_REQUIRED("복수전공필수"),
     DOUBLE_MAJOR_ELECTIVE("복수전공선택"),
@@ -35,7 +37,10 @@ data class RecommendCoursesRequest(
                 try {
                     RecommendCategory.valueOf(categoryStr)
                 } catch (e: IllegalArgumentException) {
-                    throw IllegalArgumentException("Invalid recommend category: $categoryStr")
+                    throw BadRequestException(
+                        status = HttpStatus.BAD_REQUEST,
+                        message = "지원하지 않는 이수구분입니다: $categoryStr (교양선택은 이 API에서 사용할 수 없습니다.)",
+                    )
                 }
             }
     }

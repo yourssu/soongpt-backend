@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.application
 
+import com.yourssu.soongpt.common.auth.CurrentPseudonymHolder
 import com.yourssu.soongpt.common.config.ClientJwtProvider
 import com.yourssu.soongpt.common.handler.UnauthorizedException
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
@@ -29,15 +30,50 @@ class RecommendContextResolver(
 ) {
     private val logger = KotlinLogging.logger {}
 
+    /**
+     * HttpServletRequest에서 직접 JWT를 추출하여 컨텍스트를 생성합니다.
+     * 기존 코드와의 호환성을 위해 유지됩니다.
+     */
     fun resolve(request: HttpServletRequest): RecommendContext {
         val pseudonym = clientJwtProvider.extractPseudonymFromRequest(request)
             .getOrElse {
                 logger.warn { "JWT 추출 실패: ${it.message}" }
                 throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.")
             }
+        return resolveFromPseudonym(pseudonym)
+    }
 
-        val usaintData = syncSessionStore.getUsaintData(pseudonym)
+    /**
+     * CurrentPseudonymHolder에서 pseudonym을 가져와 컨텍스트를 생성합니다.
+     * CurrentPseudonymFilter가 세팅한 값을 사용합니다.
+     *
+     * @throws UnauthorizedException pseudonym이 없거나 세션이 만료된 경우
+     */
+    fun resolve(): RecommendContext {
+        val pseudonym = CurrentPseudonymHolder.get()
             ?: throw UnauthorizedException(message = "재인증이 필요합니다. SSO 로그인을 다시 진행해 주세요.")
+        return resolveFromPseudonym(pseudonym)
+    }
+
+    /**
+     * CurrentPseudonymHolder에서 pseudonym을 가져와 컨텍스트를 생성합니다.
+     * pseudonym이 없거나 세션이 만료된 경우 null을 반환합니다.
+     *
+     * @return RecommendContext 또는 null (인증되지 않은 경우)
+     */
+    fun resolveOptional(): RecommendContext? {
+        val pseudonym = CurrentPseudonymHolder.get() ?: return null
+        return try {
+            resolveFromPseudonym(pseudonym)
+        } catch (e: UnauthorizedException) {
+            logger.debug(e) { "컨텍스트 생성 실패: ${e.message}" }
+            null
+        }
+    }
+
+    private fun resolveFromPseudonym(pseudonym: String): RecommendContext {
+        val usaintData = syncSessionStore.getUsaintData(pseudonym)
+            ?: throw UnauthorizedException(message = "세션이 만료되었습니다. SSO 로그인을 다시 진행해 주세요.")
 
         val takenSubjectCodes = usaintData.takenCourses
             .flatMap { it.subjectCodes }
