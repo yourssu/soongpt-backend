@@ -110,4 +110,10 @@ allOpen {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	// 통합 테스트(MySQL 필요)는 기본 제외. 실행 시: ./gradlew test -Pintegration
+	if (!project.hasProperty("integration")) {
+		filter {
+			excludeTestsMatching("*Integration*")
+		}
+	}
 }
