@@ -7,6 +7,7 @@ import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
+import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
@@ -31,6 +32,7 @@ class UntakenCourseCodeService(
     private val courseRepository: CourseRepository,
     private val departmentReader: DepartmentReader,
     private val syncSessionStore: SyncSessionStore,
+    private val courseFieldReader: CourseFieldReader,
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -87,9 +89,12 @@ class UntakenCourseCodeService(
 
         val takenBaseCodes = extractTakenBaseCodes(usaintData)
 
+        // 분야 매핑은 /api/courses/field-by-code와 동일하게 course_field 테이블 사용 (학번별 분야 반영)
         val coursesByField = allCourses
             .mapNotNull { cwt ->
-                val rawField = cwt.course.field
+                val rawField = courseFieldReader.findByCourseCode(cwt.course.code)?.field
+                    ?: courseFieldReader.findByCourseCode(cwt.course.baseCode())?.field
+                    ?: cwt.course.field
                 if (rawField.isNullOrBlank()) {
                     logger.warn { "분야 정보 없음: 과목=${cwt.course.name} (${cwt.course.code})" }
                     return@mapNotNull null
