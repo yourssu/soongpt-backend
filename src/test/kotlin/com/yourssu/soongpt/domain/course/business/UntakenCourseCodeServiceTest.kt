@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
+import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
@@ -26,7 +27,8 @@ class UntakenCourseCodeServiceTest : BehaviorSpec({
     val courseRepository = mock<CourseRepository>()
     val departmentReader = mock<DepartmentReader>()
     val syncSessionStore = mock<SyncSessionStore>()
-    val service = UntakenCourseCodeService(courseRepository, departmentReader, syncSessionStore)
+    val courseFieldReader = mock<CourseFieldReader>()
+    val service = UntakenCourseCodeService(courseRepository, departmentReader, syncSessionStore, courseFieldReader)
 
     val department = Department(id = 1L, name = "컴퓨터학부", collegeId = 10L)
     val pseudonym = "test-pseudonym"
