@@ -125,10 +125,10 @@ class CourseRecommendIntegrationTest {
 
         val response = parseResponse(responseBody)
 
-        // 전기: PARTIAL_LATE 시나리오 — 과목이 있으면 아직 미충족 (progress nullable 호환)
+        // 전기: PARTIAL_LATE 시나리오 — 과목이 있으면 아직 미충족
         response.categories.find { it.category == "MAJOR_BASIC" }?.let { majorBasic ->
             if (majorBasic.courses.isNotEmpty()) {
-                majorBasic.progress?.satisfied shouldBe false
+                majorBasic.progress.satisfied shouldBe false
                 // LATE 포함 여부는 DB/학번별 데이터 의존적이므로 선택 검증
                 if (majorBasic.courses.any { it.timing == CourseTiming.LATE }) {
                     majorBasic.message shouldBe null
@@ -138,7 +138,7 @@ class CourseRecommendIntegrationTest {
 
         // 복선: 데이터 있을 때 satisfied면 "이미 모두 이수" 메시지·과목 없음
         response.categories.find { it.category == "DOUBLE_MAJOR_ELECTIVE" }?.let { dme ->
-            if (dme.progress?.satisfied == true) {
+            if (dme.progress.satisfied) {
                 dme.message.shouldNotBeNull()
                 dme.message!! shouldContain "이수하셨습니다"
                 dme.courses.size shouldBe 0
@@ -182,8 +182,8 @@ class CourseRecommendIntegrationTest {
 
         // 전기: 해당 없음 (0/0/true) → satisfied 메시지
         response.categories.find { it.category == "MAJOR_BASIC" }?.let { majorBasic ->
-            majorBasic.progress?.required shouldBe 0
-            majorBasic.progress?.satisfied shouldBe true
+            majorBasic.progress.required shouldBe 0
+            majorBasic.progress.satisfied shouldBe true
         }
 
         // 교직: 비대상
@@ -226,13 +226,13 @@ class CourseRecommendIntegrationTest {
 
         // 전필: 해당 없음
         response.categories.find { it.category == "MAJOR_REQUIRED" }?.let { mr ->
-            mr.progress?.required shouldBe 0
-            mr.progress?.satisfied shouldBe true
+            mr.progress.required shouldBe 0
+            mr.progress.satisfied shouldBe true
         }
 
         // 복선: LATE 있을 수 있음
         response.categories.find { it.category == "DOUBLE_MAJOR_ELECTIVE" }?.let { dme ->
-            dme.progress?.satisfied shouldBe false
+            dme.progress.satisfied shouldBe false
         }
     }
 
@@ -267,8 +267,8 @@ class CourseRecommendIntegrationTest {
 
         // 전기: 해당 없음
         response.categories.find { it.category == "MAJOR_BASIC" }?.let { majorBasic ->
-            majorBasic.progress?.required shouldBe 0
-            majorBasic.progress?.satisfied shouldBe true
+            majorBasic.progress.required shouldBe 0
+            majorBasic.progress.satisfied shouldBe true
         }
 
         // 복전/부전공: 미등록 메시지

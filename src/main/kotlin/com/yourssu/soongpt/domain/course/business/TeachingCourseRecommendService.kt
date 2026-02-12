@@ -2,6 +2,7 @@ package com.yourssu.soongpt.domain.course.business
 
 import com.yourssu.soongpt.domain.course.application.RecommendContext
 import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
+import com.yourssu.soongpt.domain.course.business.dto.Progress
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
@@ -64,7 +65,7 @@ class TeachingCourseRecommendService(
 
         return CategoryRecommendResponse(
             category = TEACHING_CATEGORY,
-            progress = null,
+            progress = Progress.notApplicable(),
             message = null,
             userGrade = null,
             courses = recommendedCourses,
@@ -74,7 +75,7 @@ class TeachingCourseRecommendService(
 
     private fun messageResponse(message: String) = CategoryRecommendResponse(
         category = TEACHING_CATEGORY,
-        progress = null,
+        progress = Progress.notApplicable(),
         message = message,
         userGrade = null,
         courses = emptyList(),

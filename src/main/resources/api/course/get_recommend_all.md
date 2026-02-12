@@ -72,7 +72,7 @@ Response<CourseRecommendationsResponse>
 | 필드 | 타입 | nullable | 설명 |
 |------|------|----------|------|
 | `category` | String | X | 이수구분 (`RecommendCategory` enum name) |
-| `progress` | Progress | O | 졸업사정 이수 현황. **재수강은 null, 졸업사정표 없으면 null** |
+| `progress` | Progress | X | 졸업사정 이수 현황. 항상 non-null. 센티널 값은 아래 Progress 참고 |
 | `message` | String | O | 안내 메시지. **null이면 정상 (과목 존재)** |
 | `userGrade` | Int | O | 사용자 학년 |
 | `courses` | RecommendedCourseResponse[] | X | 추천 과목 flat list |
@@ -82,9 +82,16 @@ Response<CourseRecommendationsResponse>
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `required` | Int | 졸업 요구 학점 |
-| `completed` | Int | 현재 이수 학점 |
+| `required` | Int | 졸업 요구 학점. 센티널: `-1`=재수강/교직(bar 미표시), `-2`=졸업사정표 없음 |
+| `completed` | Int | 현재 이수 학점. 센티널: `-1`=재수강/교직, `-2`=졸업사정표 없음 |
 | `satisfied` | Boolean | 충족 여부 |
+
+**센티널 값:**
+| required | completed | satisfied | 의미 |
+|:---:|:---:|:---:|---|
+| `0` | `0` | `true` | 해당 없는 이수구분 (FE에서 숨김) |
+| `-1` | `-1` | `false` | 재수강/교직 — progress bar 표시 불필요 |
+| `-2` | `-2` | `false` | 졸업사정표 로딩 불가 — `warnings`에 `"NO_GRADUATION_REPORT"` 포함 |
 
 ### RecommendedCourseResponse (과목 카드)
 
@@ -144,11 +151,12 @@ Response<CourseRecommendationsResponse>
 ## 엣지케이스 처리
 
 **프론트 분기 로직:**
-1. `warnings` 비어있지 않음 → 경고 배너 표시
-2. `progress == null` (재수강 제외) → 졸업사정표 없어서 판단 불가
-3. `progress.required == 0 && satisfied == true` → 해당 없는 이수구분 → 스킵
-4. `message != null` → 안내 배너 표시 (이미 이수 / 개설 없음)
-5. `message == null` → 과목 카드 렌더링
+1. `warnings`에 `"NO_GRADUATION_REPORT"` 포함 → 졸업사정표 로딩 불가 경고 표시
+2. `progress.required == 0 && satisfied == true` → 해당 없는 이수구분 → 숨김
+3. `progress.required == -1` → 재수강/교직 → progress bar 미표시, courses/message만 렌더링
+4. `progress.required == -2` → 졸업사정표 없음 → 이수현황 로딩 불가 안내
+5. `message != null` → 안내 배너 표시 (이미 이수 / 개설 없음)
+6. `message == null` → 과목 카드 렌더링
 
 상세: `recommend_edge_cases.md` 참고
 
@@ -551,7 +559,7 @@ Response<CourseRecommendationsResponse>
 ```json
 {
   "category": "RETAKE",
-  "progress": null,
+  "progress": { "required": -1, "completed": -1, "satisfied": false },
   "message": null,
   "userGrade": null,
   "courses": [
@@ -593,7 +601,8 @@ interface CourseRecommendationsResponse {
 
 interface CategoryRecommendResponse {
   category: RecommendCategory;
-  progress: Progress | null;
+  /** 센티널: required=-1 → 재수강/교직(bar 미표시), -2 → 졸업사정표 없음 */
+  progress: Progress;
   message: string | null;
   userGrade: number | null;
   courses: RecommendedCourse[];

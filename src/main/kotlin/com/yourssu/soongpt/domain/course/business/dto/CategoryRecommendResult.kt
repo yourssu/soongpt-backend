@@ -18,21 +18,24 @@ enum class CourseTiming {
 }
 
 /**
- * 졸업사정표 학점 이수 현황
+ * 졸업사정표 학점 이수 현황.
+ * required/completed는 항상 non-null. 센티널: -1=재수강/교직(progress bar 미표시), -2=졸업사정표 로딩 불가.
  */
 data class Progress(
-    val required: Int?,
-    val completed: Int?,
+    val required: Int,
+    val completed: Int,
     val satisfied: Boolean,
 ) {
     companion object {
-        fun from(summary: RusaintCreditSummaryItemDto): Progress {
-            return Progress(
+        fun from(summary: RusaintCreditSummaryItemDto): Progress =
+            Progress(
                 required = summary.required,
                 completed = summary.completed,
                 satisfied = summary.satisfied,
             )
-        }
+
+        /** 재수강/교직 등 졸업사정 이수현황이 없는 카테고리 (progress bar 미표시) */
+        fun notApplicable(): Progress = Progress(required = -1, completed = -1, satisfied = false)
     }
 }
 
@@ -42,7 +45,7 @@ data class Progress(
  */
 data class CategoryRecommendResult(
     val category: String, // MAJOR_BASIC, MAJOR_REQUIRED, MAJOR_ELECTIVE, RETAKE, TEACHING 등
-    val progress: Progress?,
+    val progress: Progress,
     val courses: List<RecommendedCourseResponse>,
     val message: String? = null,
 ) {

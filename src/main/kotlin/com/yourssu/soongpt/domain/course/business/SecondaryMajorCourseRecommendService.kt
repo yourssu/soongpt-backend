@@ -173,7 +173,7 @@ class SecondaryMajorCourseRecommendService(
 
     private fun notRegisteredResponse(category: String, message: String) = CategoryRecommendResponse(
         category = category,
-        progress = null,
+        progress = Progress(required = 0, completed = 0, satisfied = true),
         message = message,
         userGrade = null,
         courses = emptyList(),

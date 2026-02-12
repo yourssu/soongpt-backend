@@ -19,7 +19,7 @@ data class CourseRecommendationsResponse(
  * ### 이수구분별 사용 필드 매트릭스
  * | 필드           | 전기/전필 | 전선 | 교필 | 교선 | 재수강 |
  * |---------------|----------|------|------|------|--------|
- * | progress      | O        | O    | O    | O    | X      |
+ * | progress      | O        | O    | O    | O    | O(-1)  |
  * | message       | O        | O    | O    | O    | O      |
  * | userGrade     | X        | O    | X    | X    | X      |
  * | courses       | O        | O    | O    | O    | O      |
@@ -31,8 +31,8 @@ data class CategoryRecommendResponse(
     /** 이수구분 (RecommendCategory enum name) */
     val category: String,
 
-    /** 졸업사정 이수 현황 (재수강은 null) */
-    val progress: Progress?,
+    /** 졸업사정 이수 현황. 항상 non-null. 센티널: required=-1 → 재수강/교직(bar 미표시), -2 → 졸업사정표 없음 */
+    val progress: Progress,
 
     /** 엣지케이스 안내 메시지 (null이면 정상 — 과목이 존재) */
     val message: String?,
