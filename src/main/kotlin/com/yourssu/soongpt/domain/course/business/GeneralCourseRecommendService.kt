@@ -10,6 +10,8 @@ import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
+import com.yourssu.soongpt.domain.course.implement.utils.GeneralElectiveFieldDisplayMapper
+import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
@@ -20,13 +22,38 @@ import org.springframework.stereotype.Service
  * - 분야(field)별 그룹핑
  * - 교필: LATE 분야는 텍스트만, ON_TIME 분야는 과목 포함
  * - 교선: 분야별 과목 그룹핑
+ *
+ * 교필 LATE/ON_TIME 판단: target 테이블의 grade1~5는 학과별 "수강 허용 학년"을 나타내며,
+ * 교필 분야별 "권장 수강 학년"과 다를 수 있음. (예: 인문적상상력과소통은 1학년 권장이지만
+ * target이 전체학년이면 targetGrades=[1,2,3,4,5]가 됨). 따라서 교필은 분야별 고정 매핑 사용.
  */
 @Service
 class GeneralCourseRecommendService(
     private val courseRepository: CourseRepository,
     private val departmentReader: DepartmentReader,
+    private val courseFieldReader: CourseFieldReader,
 ) {
     private val logger = KotlinLogging.logger {}
+
+    /**
+     * 교필 분야별 권장 수강 학년 (23학번 이상 기준). userGrade가 이 학년보다 크면 LATE.
+     * @see src/main/resources/api/requirements/교양필수.md
+     * @see src/main/resources/guide/untaken_codes_usage.md
+     */
+    private val generalRequiredFieldTargetGrade: Map<String, Int> = mapOf(
+        "인문적상상력과소통" to 1,
+        "비판적사고와표현" to 1,
+        "인간과성서" to 1,
+        "한반도평화와통일" to 1,
+        "컴퓨팅적사고" to 1,
+        "SW와AI" to 1,
+        "글로벌시민의식" to 2,
+        "글로벌소통과언어" to 2,
+        "창의적사고와혁신" to 3,
+    )
+
+    /** 교필 분야 파싱 시 23학번 기준 사용 (23이후 분야명으로 통일) */
+    private val generalRequiredSchoolId = 23
 
     fun recommend(
         category: Category,
@@ -59,11 +86,14 @@ class GeneralCourseRecommendService(
 
         val takenBaseCodes = toTakenBaseCodeSet(takenSubjectCodes)
 
+        // 교필: 23이후 분야명으로 통일. 교선: 사용자 학번 기준.
+        val fieldSchoolId = if (category == Category.GENERAL_REQUIRED) generalRequiredSchoolId else schoolId
+
         // 과목별 field 파싱 후 (field → courses) 그룹핑
         val coursesByField = allCourses
             .mapNotNull { cwt ->
                 val fieldName = cwt.course.field
-                    ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                    ?.let { FieldFinder.findFieldBySchoolId(it, fieldSchoolId) }
                     ?.takeIf { it.isNotBlank() }
                     ?: return@mapNotNull null
                 Pair(fieldName, cwt)
@@ -86,7 +116,7 @@ class GeneralCourseRecommendService(
                         .filter { it.course.category == Category.GENERAL_REQUIRED }
                         .mapNotNull { cwt ->
                             cwt.course.field
-                                ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                                ?.let { FieldFinder.findFieldBySchoolId(it, fieldSchoolId) }
                                 ?.takeIf { it.isNotBlank() }
                         }
                         .toSet()
@@ -102,13 +132,16 @@ class GeneralCourseRecommendService(
                     courses.filter { it.course.baseCode() !in takenBaseCodes }
                 }.filter { (_, courses) -> courses.isNotEmpty() }
                 if (filteredByField.isEmpty()) return empty(category, progress)
-                buildGeneralElectiveResponse(filteredByField, userGrade, category, progress)
+                buildGeneralElectiveResponse(filteredByField, userGrade, category, progress, admissionYear)
             }
         }
     }
 
     /**
      * 교양선택 이수 과목의 분야별 이수 학점 계산
+     *
+     * 분야 매핑은 /api/courses/field-by-code와 동일하게 course_field 테이블을 사용하여
+     * 학번별로 올바른 분야명이 적용되도록 한다. (course 테이블 field는 20-22 등 고정 기준일 수 있음)
      *
      * @param takenSubjectCodes 기이수 과목 코드 리스트 (10자리)
      * @param schoolId 학번 (22, 23 등)
@@ -123,10 +156,13 @@ class GeneralCourseRecommendService(
             .filter { it.course.category == Category.GENERAL_ELECTIVE }
             .distinctBy { it.course.baseCode() } // baseCode 기준 중복 제거
 
-        // 2. 분야별 학점 합산
+        // 2. 분야별 학점 합산 — 분야는 course_field(학번별 매핑) 우선, 없으면 course.field 폴백
         return takenCourses
             .groupBy { cwt ->
-                cwt.course.field
+                val rawField = courseFieldReader.findByCourseCode(cwt.course.code)?.field
+                    ?: courseFieldReader.findByCourseCode(cwt.course.baseCode())?.field
+                    ?: cwt.course.field
+                rawField
                     ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
                     ?.takeIf { it.isNotBlank() }
             }
@@ -202,6 +238,7 @@ class GeneralCourseRecommendService(
 
     /**
      * 교양필수: LATE 분야 → lateFields(텍스트), ON_TIME 분야 → courses(field 포함)
+     * LATE 판단: 분야별 권장 학년(generalRequiredFieldTargetGrade) 기준. userGrade > 권장학년 이면 LATE.
      */
     private fun buildGeneralRequiredResponse(
         untakenFields: Map<String, List<CourseWithTarget>>,
@@ -212,11 +249,12 @@ class GeneralCourseRecommendService(
         val onTimeCourses = mutableListOf<RecommendedCourseResponse>()
 
         for ((fieldName, courses) in untakenFields) {
-            val isFieldLate = courses.all { it.isLateFor(userGrade) }
+            val targetGrade = generalRequiredFieldTargetGrade[fieldName] ?: 1
+            val isFieldLate = userGrade > targetGrade
             if (isFieldLate) {
                 lateFields.add(fieldName)
             } else {
-                onTimeCourses.addAll(buildCoursesWithField(fieldName, courses, userGrade))
+                onTimeCourses.addAll(buildCoursesWithFieldForGeneralRequired(fieldName, courses, userGrade))
             }
         }
 
@@ -231,16 +269,43 @@ class GeneralCourseRecommendService(
     }
 
     /**
-     * 교양선택: 분야별 과목을 flat courses 리스트로 반환 (각 항목에 field 포함)
+     * 교필 ON_TIME 분야용: isLate는 분야별 권장 학년 기준으로 판단 (target 테이블 무시)
+     */
+    private fun buildCoursesWithFieldForGeneralRequired(
+        fieldName: String,
+        courses: List<CourseWithTarget>,
+        userGrade: Int,
+    ): List<RecommendedCourseResponse> {
+        val targetGrade = generalRequiredFieldTargetGrade[fieldName] ?: 1
+        val isLate = userGrade > targetGrade
+        val grouped = courses.groupBy { it.course.baseCode() }
+        return grouped.entries
+            .sortedBy { it.value.first().course.name }
+            .map { (_, sections) ->
+                RecommendedCourseResponse.from(
+                    coursesWithTarget = sections,
+                    isLate = isLate,
+                    field = fieldName,
+                )
+            }
+    }
+
+    /**
+     * 교양선택: 분야별 과목을 flat courses 리스트로 반환 (각 항목에 field 포함).
+     * field는 학번별 표시용(B)으로 매핑하여 전달.
      */
     private fun buildGeneralElectiveResponse(
         untakenFields: Map<String, List<CourseWithTarget>>,
         userGrade: Int,
         category: Category,
         progress: Progress,
+        admissionYear: Int,
     ): CategoryRecommendResponse {
         val courses = untakenFields.entries
-            .flatMap { (fieldName, courses) -> buildCoursesWithField(fieldName, courses, userGrade) }
+            .flatMap { (rawFieldName, courses) ->
+                val displayField = GeneralElectiveFieldDisplayMapper.mapForCourseField(rawFieldName, admissionYear)
+                buildCoursesWithField(displayField, courses, userGrade)
+            }
 
         return CategoryRecommendResponse(
             category = category.name,

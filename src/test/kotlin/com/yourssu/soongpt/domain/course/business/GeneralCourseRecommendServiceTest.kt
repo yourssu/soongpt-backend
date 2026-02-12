@@ -5,6 +5,7 @@ import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
+import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import io.kotest.core.spec.style.BehaviorSpec
@@ -20,7 +21,8 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
 
     val courseRepository = mock<CourseRepository>()
     val departmentReader = mock<DepartmentReader>()
-    val service = GeneralCourseRecommendService(courseRepository, departmentReader)
+    val courseFieldReader = mock<CourseFieldReader>()
+    val service = GeneralCourseRecommendService(courseRepository, departmentReader, courseFieldReader)
 
     val department = Department(id = 1L, name = "컴퓨터학부", collegeId = 10L)
     val departmentName = "컴퓨터학부"
@@ -113,13 +115,13 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
             isStrict = false,
         )
 
-        // 글로벌시민의식 (3학년 대상) → ON_TIME
-        val globalCourse1 = CourseWithTarget(
+        // 창의적사고와혁신 (3학년 권장 분야) → 3학년 사용자에게 ON_TIME
+        val creativeCourse1 = CourseWithTarget(
             course = Course(
                 id = 2L,
                 category = Category.GENERAL_REQUIRED,
                 code = 1110000201L,
-                name = "세계시민론",
+                name = "창의혁신프로젝트",
                 professor = "박교수",
                 department = "교양교육원",
                 division = "01분반",
@@ -129,17 +131,17 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 scheduleRoom = "화 13:30-14:45 (인문관 201)",
                 target = "전체 3학년",
                 credit = 3.0,
-                field = "['23이후]글로벌시민의식\n['20~'22]글로벌소통",
+                field = "['23이후]창의적사고와혁신\n['20~'22]창의융합",
             ),
             targetGrades = listOf(3),
             isStrict = false,
         )
-        val globalCourse2 = CourseWithTarget(
+        val creativeCourse2 = CourseWithTarget(
             course = Course(
                 id = 3L,
                 category = Category.GENERAL_REQUIRED,
                 code = 1110000202L,
-                name = "세계시민론",
+                name = "창의혁신프로젝트",
                 professor = "최교수",
                 department = "교양교육원",
                 division = "02분반",
@@ -149,7 +151,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                 scheduleRoom = "수 10:00-11:15 (인문관 202)",
                 target = "전체 3학년",
                 credit = 3.0,
-                field = "['23이후]글로벌시민의식\n['20~'22]글로벌소통",
+                field = "['23이후]창의적사고와혁신\n['20~'22]창의융합",
             ),
             targetGrades = listOf(3),
             isStrict = false,
@@ -163,7 +165,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                     collegeId = 10L,
                     maxGrade = userGrade,
                 )
-            ).thenReturn(listOf(swCourse1, globalCourse1, globalCourse2))
+            ).thenReturn(listOf(swCourse1, creativeCourse1, creativeCourse2))
         }
 
         `when`("recommend를 호출하면") {
@@ -185,8 +187,8 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
 
             then("ON_TIME 분야는 courses에 field와 함께 포함된다") {
                 result.courses shouldHaveSize 1
-                result.courses[0].field shouldBe "글로벌시민의식"
-                result.courses[0].courseName shouldBe "세계시민론"
+                result.courses[0].field shouldBe "창의적사고와혁신"
+                result.courses[0].courseName shouldBe "창의혁신프로젝트"
                 result.courses[0].sections shouldHaveSize 2
             }
         }

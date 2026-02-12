@@ -6,6 +6,7 @@ import com.yourssu.soongpt.domain.course.application.RecommendContextResolver
 import com.yourssu.soongpt.domain.course.business.GeneralCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.UntakenCourseCodeService
 import com.yourssu.soongpt.domain.course.implement.Category
+import com.yourssu.soongpt.domain.course.implement.utils.GeneralElectiveFieldDisplayMapper
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
 import com.yourssu.soongpt.domain.timetable.business.dto.*
@@ -41,10 +42,14 @@ class TimetableService(
         val ctx = recommendContextResolver.resolveOptional()
         val progress = if (ctx != null) {
             val summary = ctx.graduationSummary?.generalElective
-            val fieldCredits = generalCourseRecommendService.computeTakenFieldCredits(
+            val rawFieldCredits = generalCourseRecommendService.computeTakenFieldCredits(
                 ctx.takenSubjectCodes,
                 ctx.schoolId
             )
+            // 분야 키를 학번별 표시용(A)으로 매핑하고, 동일 A로 묶인 학점 합산
+            val fieldCredits = rawFieldCredits.entries
+                .groupBy { GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits(it.key, ctx.admissionYear, ctx.schoolId) }
+                .mapValues { it.value.sumOf { it.value } }
             GeneralElectiveProgress(
                 required = summary?.required,
                 completed = summary?.completed,
