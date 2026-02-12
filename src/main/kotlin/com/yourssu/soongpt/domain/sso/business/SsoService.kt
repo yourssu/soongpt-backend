@@ -3,6 +3,7 @@ package com.yourssu.soongpt.domain.sso.business
 import com.yourssu.soongpt.common.config.ClientJwtProvider
 import com.yourssu.soongpt.common.config.SsoProperties
 import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
+import com.yourssu.soongpt.common.util.DepartmentNameNormalizer
 import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoResponse
 import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoUpdateRequest
 import com.yourssu.soongpt.domain.sso.implement.SyncSession
@@ -148,16 +149,22 @@ class SsoService(
         val session = syncSessionStore.getSession(pseudonym) ?: return null
         val data = session.usaintData ?: return null
 
+        val normalizedDepartment = DepartmentNameNormalizer.normalize(request.department)
+        val normalizedDoubleMajorDepartment =
+            DepartmentNameNormalizer.normalizeNullable(request.doubleMajorDepartment)
+        val normalizedMinorDepartment =
+            DepartmentNameNormalizer.normalizeNullable(request.minorDepartment)
+
         val updatedData = data.copy(
             basicInfo = RusaintBasicInfoDto(
                 grade = request.grade,
                 semester = request.semester,
                 year = request.year,
-                department = request.department,
+                department = normalizedDepartment,
             ),
             flags = RusaintStudentFlagsDto(
-                doubleMajorDepartment = request.doubleMajorDepartment,
-                minorDepartment = request.minorDepartment,
+                doubleMajorDepartment = normalizedDoubleMajorDepartment,
+                minorDepartment = normalizedMinorDepartment,
                 teaching = request.teaching,
             ),
         )
@@ -168,9 +175,9 @@ class SsoService(
             grade = request.grade,
             semester = request.semester,
             year = request.year,
-            department = request.department,
-            doubleMajorDepartment = request.doubleMajorDepartment,
-            minorDepartment = request.minorDepartment,
+            department = normalizedDepartment,
+            doubleMajorDepartment = normalizedDoubleMajorDepartment,
+            minorDepartment = normalizedMinorDepartment,
             teaching = request.teaching,
         )
     }
