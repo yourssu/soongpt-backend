@@ -1,0 +1,41 @@
+# 과목 추천 통합 테스트 전용 — dev DB(MySQL) 사용, read만 하므로 ddl-auto: validate
+# 프로젝트 루트 .env 의 DB_URL, DB_USERNAME, DB_PASSWORD 사용 (optional: 없으면 환경변수만 사용)
+spring:
+  config:
+    activate:
+      on-profile: recommend-integration
+    import:
+      - optional:file:.env[.properties]
+      - data.yml
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+  cors:
+    allowed-origins: [ http://localhost:3000 ]
+
+rusaint:
+  base-url: https://rusaint-service.test
+  pseudonym-secret: test-secret-at-least-48-bytes-for-validation-ok!!!!!!!!
+  internal-jwt-secret: test-secret-at-least-48-bytes-for-validation-ok!!!!!!!!
+
+admin:
+  password: test-admin-password
+
+sso:
+  frontend-url: http://localhost:3000
+  client-jwt-secret: test-secret-at-least-48-bytes-for-validation-ok!!!!!!!!
+  session-ttl-minutes: 60
+  jwt-validity-minutes: 60
+
+logging:
+  level:
+    org.springframework: DEBUG
