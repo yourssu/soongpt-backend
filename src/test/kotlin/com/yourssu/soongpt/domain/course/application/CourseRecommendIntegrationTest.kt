@@ -9,6 +9,10 @@ import com.yourssu.soongpt.domain.course.business.dto.CourseTiming
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
+import com.yourssu.soongpt.domain.timetable.business.dto.AvailableChapelsResponse
+import com.yourssu.soongpt.domain.timetable.business.dto.AvailableGeneralElectivesResponse
+import com.yourssu.soongpt.domain.timetable.implement.Timetable
+import com.yourssu.soongpt.domain.timetable.implement.TimetableWriter
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.sso.implement.SyncStatus
 import io.kotest.matchers.collections.shouldContain
@@ -67,6 +71,9 @@ class CourseRecommendIntegrationTest {
     @Autowired
     private lateinit var departmentReader: DepartmentReader
 
+    @Autowired
+    private lateinit var timetableWriter: TimetableWriter
+
     @MockBean
     private lateinit var clientJwtProvider: ClientJwtProvider
 
@@ -99,6 +106,29 @@ class CourseRecommendIntegrationTest {
             objectMapper.readTree(json).path("result").toString(),
             CourseRecommendationsResponse::class.java,
         )
+
+    /** Case 1~5 공통: 같은 케이스에서 available-general-electives / available-chapels progress만 검증. progress는 항상 non-null(센티널 포함) */
+    private fun verifyAvailableCoursesProgress() {
+        val timetableId = timetableWriter.save(Timetable(tag = com.yourssu.soongpt.domain.timetable.implement.Tag.DEFAULT)).id!!
+        val generalBody = mockMvc.perform(
+            get("/api/timetables/$timetableId/available-general-electives").accept(MediaType.APPLICATION_JSON),
+        ).andExpect(status().isOk).andReturn().response.contentAsString
+        val generalResponse = objectMapper.readValue(
+            objectMapper.readTree(generalBody).path("result").toString(),
+            AvailableGeneralElectivesResponse::class.java,
+        )
+        generalResponse.progress.shouldNotBeNull()
+        generalResponse.progress!!.fieldCredits.shouldNotBeNull()
+
+        val chapelBody = mockMvc.perform(
+            get("/api/timetables/$timetableId/available-chapels").accept(MediaType.APPLICATION_JSON),
+        ).andExpect(status().isOk).andReturn().response.contentAsString
+        val chapelResponse = objectMapper.readValue(
+            objectMapper.readTree(chapelBody).path("result").toString(),
+            AvailableChapelsResponse::class.java,
+        )
+        chapelResponse.progress.shouldNotBeNull()
+    }
 
     /**
      * 기이수 과목을 "과목코드: 과목명" 형태로 출력 (테스트케이스설계.md 요청: 무슨 과목인지 주석/설명).
@@ -189,6 +219,8 @@ class CourseRecommendIntegrationTest {
         response.categories.find { it.category == "RETAKE" }?.let { retake ->
             retake.message shouldBe "재수강 가능한 C+ 이하 과목이 없습니다."
         }
+
+        verifyAvailableCoursesProgress()
     }
 
     @Test
@@ -243,6 +275,8 @@ class CourseRecommendIntegrationTest {
         response.categories.find { it.category == "GENERAL_REQUIRED" }?.let { gr ->
             gr.courses.isNotEmpty() || gr.lateFields.isNullOrEmpty().not() shouldBe true
         }
+
+        verifyAvailableCoursesProgress()
     }
 
     @Test
@@ -299,6 +333,8 @@ class CourseRecommendIntegrationTest {
         response.categories.find { it.category == "TEACHING" }?.let { t ->
             (t.courses.isNotEmpty() || t.message != null) shouldBe true
         }
+
+        verifyAvailableCoursesProgress()
     }
 
     @Test
@@ -363,6 +399,8 @@ class CourseRecommendIntegrationTest {
         response.categories.find { it.category == "RETAKE" }?.let { retake ->
             retake.message shouldBe "재수강 가능한 C+ 이하 과목이 없습니다."
         }
+
+        verifyAvailableCoursesProgress()
     }
 
     @Test
@@ -448,5 +486,7 @@ class CourseRecommendIntegrationTest {
             teaching.message!! shouldContain "졸업사정표가 없어"
             teaching.courses.size shouldBe 0
         }
+
+        verifyAvailableCoursesProgress()
     }
 }

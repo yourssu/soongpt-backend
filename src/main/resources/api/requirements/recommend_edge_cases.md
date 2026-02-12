@@ -10,8 +10,9 @@
 | **4** 재수강/교직 |  `-1`  |  `-1`  | `false` |     `null`/메시지     | `[]`/`[...]` | progress bar 미표시           |
 | **6** 사정표없음  |  `-2`  |  `-2`  | `false` |         메시지         |      `[]`      | warn 확인, 이수현황 로딩 불가 |
 
-- progress는 항상 non-null (센티널 값 사용)
+- progress는 항상 non-null (센티널 값 사용). `GET /api/timetables/{id}/available-general-electives`, `available-chapels`에서도 progress는 non-null.
 - Case 6만 top-level `warnings`에 `"NO_GRADUATION_REPORT"` 추가
+- 세 API의 progress 규약 통합: [progress 프론트 가이드](progress_프론트_가이드.md)
 
 ## 각 케이스 상세
 

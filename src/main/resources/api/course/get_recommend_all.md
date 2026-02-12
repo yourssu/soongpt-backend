@@ -105,6 +105,8 @@ Response<CourseRecommendationsResponse>
 
 **프론트 해석 우선순위:** `-2`(제공 불가) → `-1`(bar 미표시) → `0,0,true`(해당 없음) → 그 외(정상 bar 표시).
 
+**progress 공통 규약:** `progress`는 이 API뿐 아니라 `GET /api/timetables/{id}/available-general-electives`, `GET /api/timetables/{id}/available-chapels`에서도 **항상 non-null**로 사용됩니다. API마다 필드 구조는 다르나 의미는 "이수현황"으로 동일합니다. → [progress 프론트 가이드](../requirements/progress_프론트_가이드.md)
+
 ### RecommendedCourseResponse (과목 카드)
 
 | 필드 | 타입 | nullable | 설명 |

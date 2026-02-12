@@ -98,7 +98,7 @@ RecommendContext
 ```
 
 - `warnings` — rusaint 동기화 경고 메시지 (top-level)
-- `progress == null` — 졸업사정표 없어서 판단 불가 (재수강은 원래 null)
+- `progress` — 항상 non-null. 졸업사정표 없으면 `required/completed = -2`, `satisfied = false` (제공 불가)
 - `message == null` → 정상 (과목 있음)
 - `message != null` → 에지케이스 (이미 이수 / 개설 없음)
 
@@ -114,7 +114,7 @@ RecommendContext
 
 **입력**: `lowGradeSubjectCodes` (C+ 이하 과목 코드)
 
-**progress**: 없음 (null)
+**progress**: `-1,-1,false`(bar 미표시) 또는 졸업사정 없으면 `-2,-2,false`(제공 불가). null 아님.
 
 **비즈니스 로직**:
 
@@ -344,7 +344,7 @@ RecommendContext
 
 ```
 1. warnings에 값 있음 → 경고 배너 표시
-2. progress == null && category != RETAKE → 졸업사정표 없어서 판단 불가
+2. progress.required === -2 → 졸업사정표 없어서 제공 불가 (progress는 항상 non-null)
 3. progress.required == 0 && satisfied == true → 해당 없는 이수구분 → 스킵
 4. progress.satisfied == true && required > 0 → 이미 이수 완료
 5. courses/fieldGroups 비어있음 → 이번 학기 개설 없음
