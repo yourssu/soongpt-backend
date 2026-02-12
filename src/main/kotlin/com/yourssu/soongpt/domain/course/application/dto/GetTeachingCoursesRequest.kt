@@ -32,15 +32,8 @@ data class GetTeachingCoursesRequest(
 
         return FilterTeachingCoursesQuery(
                 schoolId = schoolId,
-                departmentName = normalizeDepartmentName(department),
+                departmentName = department,
                 majorArea = majorAreaEnum,
         )
-    }
-
-    private fun normalizeDepartmentName(name: String): String {
-        return when (name.trim()) {
-            "IT융합전공" -> "전자정보공학부 IT융합전공"
-            else -> name
-        }
     }
 }
