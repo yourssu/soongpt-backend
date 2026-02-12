@@ -8,7 +8,6 @@ import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryD
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

@@ -36,6 +36,9 @@ data class Progress(
 
         /** 재수강/교직 등 졸업사정 이수현황이 없는 카테고리 (progress bar 미표시) */
         fun notApplicable(): Progress = Progress(required = -1, completed = -1, satisfied = false)
+
+        /** 졸업사정표 로딩 불가 (Case 6. warnings에 NO_GRADUATION_REPORT 포함) */
+        fun unavailable(): Progress = Progress(required = -2, completed = -2, satisfied = false)
     }
 }
 
