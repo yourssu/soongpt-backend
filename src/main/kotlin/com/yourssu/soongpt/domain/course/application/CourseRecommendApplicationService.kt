@@ -111,6 +111,9 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.RETAKE -> {
+                if (ctx.graduationSummary == null) {
+                    return noGraduationUnavailableResponse(RecommendCategory.RETAKE)
+                }
                 retakeCourseRecommendService.recommend(
                     lowGradeSubjectCodes = ctx.lowGradeSubjectCodes,
                 )
@@ -125,9 +128,30 @@ class CourseRecommendApplicationService(
             RecommendCategory.MINOR ->
                 secondaryMajorCourseRecommendService.recommendMinor(ctx)
 
-            RecommendCategory.TEACHING ->
+            RecommendCategory.TEACHING -> {
+                if (ctx.graduationSummary == null) {
+                    return noGraduationUnavailableResponse(RecommendCategory.TEACHING)
+                }
                 teachingCourseRecommendService.recommend(ctx)
+            }
         }
+    }
+
+    /** 졸업사정표가 없을 때 재수강/교직 등도 "제공 불가"로 통일 (progress -2) */
+    private fun noGraduationUnavailableResponse(category: RecommendCategory): CategoryRecommendResponse {
+        val message = when (category) {
+            RecommendCategory.RETAKE -> "졸업사정표가 없어 재수강 추천을 제공할 수 없습니다."
+            RecommendCategory.TEACHING -> "졸업사정표가 없어 교직이수 추천을 제공할 수 없습니다."
+            else -> "졸업사정표가 없어 해당 추천을 제공할 수 없습니다."
+        }
+        return CategoryRecommendResponse(
+            category = category.name,
+            progress = Progress.unavailable(),
+            message = message,
+            userGrade = null,
+            courses = emptyList(),
+            lateFields = null,
+        )
     }
 
     private fun progressOnlyResponse(

@@ -140,9 +140,9 @@ class CourseController(
                 - `TEACHING` (교직이수) — 교직이수 대상자에게 미이수 교직과목 영역별 추천
 
             **응답 구조:**
+            - `warnings`: 경고 코드. NO_GRADUATION_DATA(세션·동기화 시 졸업사정표 미제공), NO_GRADUATION_REPORT(이 API에서 전기/전필/교필 등 미제공).
             - 각 이수구분별로 `CategoryRecommendResponse` 반환
-            - `progress`: 졸업사정 현황 (required/completed/satisfied). 항상 non-null.
-              센티널: required/completed=-1이면 재수강/교직(어차피 이수현황 미표시), -2이면 졸업사정표 로딩 불가.
+            - `progress`: 졸업사정 현황. 센티널 해석 우선순위: -2(제공 불가) > -1(bar 미표시) > 0,0,true(해당 없음) > 정상.
             - `message`: 엣지케이스 안내 메시지 (null이면 정상)
             - `courses`: 추천 과목 flat list (교양은 각 항목에 field 포함, 프론트에서 그룹핑)
             - `lateFields`: 미수강 LATE 분야명 텍스트 (교양필수 전용)

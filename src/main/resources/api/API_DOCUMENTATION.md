@@ -32,3 +32,7 @@
 ## Contact
 
 - [연락처 생성 (POST /api/contacts)](contact/create_contact.md)
+
+## 참고 문서 (기획·프론트)
+
+- [졸업사정표 경고 가이드 (NO_GRADUATION_DATA / NO_GRADUATION_REPORT)](requirements/졸업사정표_경고_가이드.md)

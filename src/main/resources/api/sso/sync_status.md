@@ -119,11 +119,11 @@ Cookie: soongpt_auth={JWT}
 
 #### warnings 필드
 
-| Code                 | 의미                                    |
-|----------------------|-----------------------------------------|
-| `NO_COURSE_HISTORY`  | 수강 이력 없음 (빈 학기 목록)           |
-| `NO_SEMESTER_INFO`   | 학기 정보 없어 기본값(1학기) 사용       |
-| `NO_GRADUATION_DATA` | 졸업사정표 조회 불가                    |
+| Code                 | 의미                                    | 비고 |
+|----------------------|-----------------------------------------|------|
+| `NO_COURSE_HISTORY`  | 수강 이력 없음 (빈 학기 목록)           | - |
+| `NO_SEMESTER_INFO`   | 학기 정보 없어 기본값(1학기) 사용       | - |
+| `NO_GRADUATION_DATA` | 졸업사정표 조회 불가 (1-1·미제공 등)   | 동기화 단계에서 세션에 저장됨. 과목 추천 API 호출 시 `NO_GRADUATION_REPORT`도 함께 올 수 있음 → [졸업사정표 경고 가이드](../requirements/졸업사정표_경고_가이드.md) 참고 |
 
 `warnings`는 COMPLETED 시에만 포함되며, 경고가 없으면 `null`이다. 동기화 자체는 정상 완료이므로 기존 COMPLETED 플로우 그대로 진행하면 된다.
 

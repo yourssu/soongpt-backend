@@ -1,12 +1,20 @@
 package com.yourssu.soongpt.domain.course.business.dto
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * 통합 과목 추천 응답 (최상위)
  *
- * result = { categories: CategoryRecommendResponse[] }
+ * result = { warnings: String[], categories: CategoryRecommendResponse[] }
  */
+@Schema(description = "통합 과목 추천 응답")
 data class CourseRecommendationsResponse(
+    @Schema(
+        description = "경고 코드 목록. NO_GRADUATION_DATA: 동기화 시 졸업사정표 미제공(세션). NO_GRADUATION_REPORT: 추천 API에서 졸업사정표 없어 전기/전필/교필 등 미제공.",
+        example = "[\"NO_GRADUATION_DATA\", \"NO_GRADUATION_REPORT\"]",
+    )
     val warnings: List<String>,
+    @Schema(description = "이수구분별 추천 결과")
     val categories: List<CategoryRecommendResponse>,
 )
 

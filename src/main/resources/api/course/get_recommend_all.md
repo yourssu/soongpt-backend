@@ -64,8 +64,18 @@ Response<CourseRecommendationsResponse>
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `warnings` | String[] | rusaint 동기화 경고 메시지. 빈 배열이면 경고 없음 |
+| `warnings` | String[] | 경고 코드 목록. 빈 배열이면 경고 없음. 코드별 의미는 아래 [warnings 코드](#warnings-코드) 참고 |
 | `categories` | CategoryRecommendResponse[] | 이수구분별 추천 결과 |
+
+#### warnings 코드
+
+| Code | 의미 | 출처 |
+|------|------|------|
+| `NO_GRADUATION_DATA` | 졸업사정표를 유세인트에서 가져오지 못함 (1-1·미제공 등). 동기화 시 세션에 저장된 값이 그대로 전달됨 | 세션(동기화 단계) |
+| `NO_GRADUATION_REPORT` | 졸업사정표가 없어 전기/전필/교필 등 추천을 제공하지 못함. 이 API 호출 시 추가됨 | 추천 API |
+
+- 두 코드 모두 **에러가 아닌 경고**이며, 재수강·교직 등 졸업사정표와 무관한 추천은 이용 가능하다.
+- 기획·프론트용 상세 설명: [졸업사정표 경고 가이드](../requirements/졸업사정표_경고_가이드.md)
 
 ### CategoryRecommendResponse
 
@@ -90,8 +100,10 @@ Response<CourseRecommendationsResponse>
 | required | completed | satisfied | 의미 |
 |:---:|:---:|:---:|---|
 | `0` | `0` | `true` | 해당 없는 이수구분 (FE에서 숨김) |
-| `-1` | `-1` | `false` | 재수강/교직 — progress bar 표시 불필요 |
-| `-2` | `-2` | `false` | 졸업사정표 로딩 불가 — `warnings`에 `"NO_GRADUATION_REPORT"` 포함 |
+| `-1` | `-1` | `false` | 재수강/교직 — progress bar 미표시, 과목은 있을 수 있음 |
+| `-2` | `-2` | `false` | 졸업사정표 없음 — 제공 불가, bar 미표시 |
+
+**프론트 해석 우선순위:** `-2`(제공 불가) → `-1`(bar 미표시) → `0,0,true`(해당 없음) → 그 외(정상 bar 표시).
 
 ### RecommendedCourseResponse (과목 카드)
 
