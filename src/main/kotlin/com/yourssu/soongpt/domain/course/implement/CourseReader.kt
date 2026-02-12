@@ -46,6 +46,12 @@ class CourseReader(
             return findAllByCodes(courseCodes, schoolId)
         }
         val courses = courseRepository.findAllInCategory(category, courseCodes)
+
+        // 교직 과목 field는 "전공영역/교과교육영역"처럼 이미 최종값이므로 FieldFinder(학번 파싱) 적용 대상이 아님
+        if (category == Category.TEACHING) {
+            return courses
+        }
+
         return courses.map { it -> it.copy(field = FieldFinder.findFieldBySchoolId(it.field?: throw FieldNullPointException(), schoolId)) }
     }
 
