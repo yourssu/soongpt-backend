@@ -95,7 +95,10 @@ class GeneralCourseRecommendService(
                 val fieldName = cwt.course.field
                     ?.let { FieldFinder.findFieldBySchoolId(it, fieldSchoolId) }
                     ?.takeIf { it.isNotBlank() }
-                    ?: return@mapNotNull null
+                    ?: run {
+                        logger.warn { "분야 정보 없음: 과목=${cwt.course.name} (${cwt.course.code})" }
+                        return@mapNotNull null
+                    }
                 Pair(fieldName, cwt)
             }
             .groupBy({ it.first }, { it.second })
@@ -158,16 +161,20 @@ class GeneralCourseRecommendService(
 
         // 2. 분야별 학점 합산 — 분야는 course_field(학번별 매핑) 우선, 없으면 course.field 폴백
         return takenCourses
-            .groupBy { cwt ->
+            .mapNotNull { cwt ->
                 val rawField = courseFieldReader.findByCourseCode(cwt.course.code)?.field
                     ?: courseFieldReader.findByCourseCode(cwt.course.baseCode())?.field
                     ?: cwt.course.field
-                rawField
+                val fieldName = rawField
                     ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
                     ?.takeIf { it.isNotBlank() }
+                if (fieldName == null || fieldName.isBlank()) {
+                    logger.warn { "분야 매핑 실패: rawField=$rawField, schoolId=$schoolId, 과목=${cwt.course.name}" }
+                    return@mapNotNull null
+                }
+                Pair(fieldName, cwt)
             }
-            .filterKeys { it != null }
-            .mapKeys { (fieldName, _) -> fieldName!! }
+            .groupBy({ it.first }, { it.second })
             .mapValues { (_, courses) ->
                 courses.sumOf { it.course.credit?.toInt() ?: 0 }
             }
@@ -205,7 +212,10 @@ class GeneralCourseRecommendService(
                 val fieldName = cwt.course.field
                     ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
                     ?.takeIf { it.isNotBlank() }
-                    ?: return@mapNotNull null
+                    ?: run {
+                        logger.warn { "분야 정보 없음: 과목=${cwt.course.name} (${cwt.course.code})" }
+                        return@mapNotNull null
+                    }
                 Pair(fieldName, cwt)
             }
             .groupBy({ it.first }, { it.second })
