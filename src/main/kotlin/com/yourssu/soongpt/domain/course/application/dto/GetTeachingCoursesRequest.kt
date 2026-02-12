@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.application.dto
 
+import com.yourssu.soongpt.common.handler.BadRequestException
 import com.yourssu.soongpt.common.validation.ValidSchoolId
 import com.yourssu.soongpt.domain.course.business.query.FilterTeachingCoursesQuery
 import com.yourssu.soongpt.domain.course.implement.TeachingMajorArea
@@ -21,7 +22,13 @@ data class GetTeachingCoursesRequest(
         val majorArea: String? = null,
 ) {
     fun toQuery(): FilterTeachingCoursesQuery {
-        val majorAreaEnum = majorArea?.let { TeachingMajorArea.from(it) }
+        val majorAreaEnum = majorArea?.let {
+            try {
+                TeachingMajorArea.from(it)
+            } catch (e: IllegalArgumentException) {
+                throw BadRequestException(message = "잘못된 majorArea 값입니다: $it")
+            }
+        }
 
         return FilterTeachingCoursesQuery(
                 schoolId = schoolId,
