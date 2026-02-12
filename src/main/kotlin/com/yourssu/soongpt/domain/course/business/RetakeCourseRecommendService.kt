@@ -32,10 +32,11 @@ class RetakeCourseRecommendService(
             )
         }
 
+        // target 조인으로 같은 분반(10자리)이 학과별로 여러 행 나올 수 있음 → 분반 단위로 한 번만 사용
         val recommendedCourses = coursesWithTarget
             .groupBy { it.course.baseCode() }
             .map { (_, sections) ->
-                RecommendedCourseResponse.forRetake(sections)
+                RecommendedCourseResponse.forRetake(sections.distinctBy { it.course.code })
             }
             .sortedBy { it.courseName }
 
