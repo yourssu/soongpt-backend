@@ -4,6 +4,7 @@ import com.yourssu.soongpt.common.auth.CurrentPseudonymHolder
 import com.yourssu.soongpt.common.handler.UnauthorizedException
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
+import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
@@ -13,6 +14,7 @@ import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * 이수구분별 미수강 과목코드(10자리) 조회 서비스
@@ -35,6 +37,7 @@ class UntakenCourseCodeService(
     private val courseFieldReader: CourseFieldReader,
 ) {
     private val logger = KotlinLogging.logger {}
+    private val coursesWithTargetCache = ConcurrentHashMap<CoursesWithTargetKey, List<CourseWithTarget>>()
 
     /**
      * 일반 이수구분용 미수강 과목코드 조회 (전기/전필/전선)
@@ -48,13 +51,7 @@ class UntakenCourseCodeService(
             ?: throw IllegalStateException("학과 ID가 없습니다: ${department.name}")
         val maxGrade = if (category == Category.MAJOR_ELECTIVE) MAX_GRADE else usaintData.basicInfo.grade
 
-        val coursesWithTarget = courseRepository.findCoursesWithTargetByCategory(
-            category = category,
-            departmentId = departmentId,
-            collegeId = department.collegeId,
-            maxGrade = maxGrade,
-        )
-            .distinctBy { it.course.code }
+        val coursesWithTarget = getCoursesWithTarget(category, departmentId, department.collegeId, maxGrade)
 
         val takenBaseCodes = extractTakenBaseCodes(usaintData)
 
@@ -78,22 +75,23 @@ class UntakenCourseCodeService(
         // 교필은 23이후 분야명(인문적상상력과소통, SW와AI 등)으로 통일. 교선은 학번별 분야 사용.
         val schoolId = if (category == Category.GENERAL_REQUIRED) GENERAL_REQUIRED_SCHOOL_ID else studentSchoolId
 
-        val allCourses = courseRepository.findCoursesWithTargetByCategory(
+        val allCourses = getCoursesWithTarget(
             category = category,
             departmentId = departmentId,
             collegeId = department.collegeId,
             maxGrade = usaintData.basicInfo.grade,
-        ).distinctBy { it.course.code }
+        )
 
         if (allCourses.isEmpty()) return emptyMap()
 
         val takenBaseCodes = extractTakenBaseCodes(usaintData)
+        val courseFieldMap = courseFieldReader.findAll().associateBy { it.courseCode }
 
         // 분야 매핑은 /api/courses/field-by-code와 동일하게 course_field 테이블 사용 (학번별 분야 반영)
         val coursesByField = allCourses
             .mapNotNull { cwt ->
-                val rawField = courseFieldReader.findByCourseCode(cwt.course.code)?.field
-                    ?: courseFieldReader.findByCourseCode(cwt.course.baseCode())?.field
+                val rawField = courseFieldMap[cwt.course.code]?.field
+                    ?: courseFieldMap[cwt.course.baseCode()]?.field
                     ?: cwt.course.field
                 if (rawField.isNullOrBlank()) {
                     logger.warn { "분야 정보 없음: 과목=${cwt.course.name} (${cwt.course.code})" }
@@ -138,6 +136,30 @@ class UntakenCourseCodeService(
     private fun extractTakenBaseCodes(usaintData: RusaintUsaintDataResponse): Set<Long> {
         return toTakenBaseCodeSet(usaintData.takenCourses.flatMap { it.subjectCodes })
     }
+
+    private fun getCoursesWithTarget(
+        category: Category,
+        departmentId: Long,
+        collegeId: Long,
+        maxGrade: Int,
+    ): List<CourseWithTarget> {
+        val key = CoursesWithTargetKey(category, departmentId, collegeId, maxGrade)
+        return coursesWithTargetCache.getOrPut(key) {
+            courseRepository.findCoursesWithTargetByCategory(
+                category = category,
+                departmentId = departmentId,
+                collegeId = collegeId,
+                maxGrade = maxGrade,
+            ).distinctBy { it.course.code }
+        }
+    }
+
+    private data class CoursesWithTargetKey(
+        val category: Category,
+        val departmentId: Long,
+        val collegeId: Long,
+        val maxGrade: Int,
+    )
 
     companion object {
         private const val MAX_GRADE = 5
