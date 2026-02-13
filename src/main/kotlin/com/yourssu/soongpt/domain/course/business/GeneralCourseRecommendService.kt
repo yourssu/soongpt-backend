@@ -8,6 +8,7 @@ import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import com.yourssu.soongpt.domain.course.implement.baseCode
+import com.yourssu.soongpt.domain.course.implement.toBaseCode
 import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
 import com.yourssu.soongpt.domain.course.implement.utils.GeneralElectiveFieldDisplayMapper
@@ -32,6 +33,7 @@ class GeneralCourseRecommendService(
     private val courseRepository: CourseRepository,
     private val departmentReader: DepartmentReader,
     private val courseFieldReader: CourseFieldReader,
+    private val courseService: CourseService,
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -143,41 +145,55 @@ class GeneralCourseRecommendService(
     /**
      * 교양선택 이수 과목의 분야별 이수 학점 계산
      *
-     * 분야 매핑은 /api/courses/field-by-code와 동일하게 course_field 테이블을 사용하여
-     * 학번별로 올바른 분야명이 적용되도록 한다. (course 테이블 field는 20-22 등 고정 기준일 수 있음)
+     * 분야 매핑은 field-by-code(CourseService.getFieldByCourseCode)와 동일하게 활용.
+     * 학점은 Course 테이블에 있을 때만 합산, 미개설 과목은 해당 분야에 0학점으로 반영.
      *
-     * @param takenSubjectCodes 기이수 과목 코드 리스트 (10자리)
+     * @param takenSubjectCodes 기이수 과목 코드 리스트 (10자리 또는 8자리)
      * @param schoolId 학번 (22, 23 등)
      * @return 분야명 → 이수 학점 Map
      */
     fun computeTakenFieldCredits(takenSubjectCodes: List<String>, schoolId: Int): Map<String, Int> {
-        val takenBaseCodes = toTakenBaseCodeSet(takenSubjectCodes)
-        if (takenBaseCodes.isEmpty()) return emptyMap()
+        val uniqueBaseCodes = takenSubjectCodes
+            .mapNotNull { it.toLongOrNull() }
+            .map { it.toBaseCode() }
+            .distinct()
+        if (uniqueBaseCodes.isEmpty()) return emptyMap()
 
-        // 1. 이수 과목 일괄 조회
-        val takenCourses = courseRepository.findCoursesWithTargetByBaseCodes(takenBaseCodes.toList())
+        val takenCoursesByBase = courseRepository.findCoursesWithTargetByBaseCodes(uniqueBaseCodes.toList())
             .filter { it.course.category == Category.GENERAL_ELECTIVE }
-            .distinctBy { it.course.baseCode() } // baseCode 기준 중복 제거
+            .distinctBy { it.course.baseCode() }
+            .associateBy { it.course.baseCode() }
 
-        // 2. 분야별 학점 합산 — 분야는 course_field(학번별 매핑) 우선, 없으면 course.field 폴백
-        return takenCourses
-            .mapNotNull { cwt ->
-                val rawField = courseFieldReader.findByCourseCode(cwt.course.code)?.field
-                    ?: courseFieldReader.findByCourseCode(cwt.course.baseCode())?.field
-                    ?: cwt.course.field
-                val fieldName = rawField
-                    ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
-                    ?.takeIf { it.isNotBlank() }
-                if (fieldName == null || fieldName.isBlank()) {
-                    logger.warn { "분야 매핑 실패: rawField=$rawField, schoolId=$schoolId, 과목=${cwt.course.name}" }
-                    return@mapNotNull null
-                }
-                Pair(fieldName, cwt)
-            }
-            .groupBy({ it.first }, { it.second })
-            .mapValues { (_, courses) ->
-                courses.sumOf { it.course.credit?.toInt() ?: 0 }
-            }
+        val result = mutableMapOf<String, Int>()
+        for (baseCode in uniqueBaseCodes) {
+            val fieldName = courseService.getFieldByCourseCode(baseCode, schoolId)?.takeIf { it.isNotBlank() }
+                ?: continue
+            val credit = takenCoursesByBase[baseCode]?.course?.credit?.toInt() ?: 0
+            result[fieldName] = result.getOrDefault(fieldName, 0) + credit
+        }
+        return result
+    }
+
+    /**
+     * 교양선택 이수 과목의 분야별 이수 과목 수 계산
+     *
+     * /api/courses/field-by-code와 동일한 로직을 활용: 학번 + 기이수과목코드로 코드→필드 조회 후
+     * 분야별로 몇 과목 들었는지 집계. 이번 학기 개설과목뿐 아니라 예전 데이터(course_field)까지 모두 조회.
+     *
+     * @param takenSubjectCodes 기이수 과목 코드 리스트 (user session, 10자리 또는 8자리)
+     * @param schoolId 학번 (22, 23 등)
+     * @return 분야명(raw) → 이수 과목 수 Map
+     */
+    fun computeTakenFieldCourseCounts(takenSubjectCodes: List<String>, schoolId: Int): Map<String, Int> {
+        val fieldToBaseCodes = mutableMapOf<String, MutableSet<Long>>()
+        for (codeStr in takenSubjectCodes) {
+            val codeLong = codeStr.toLongOrNull() ?: continue
+            val baseCode = codeLong.toBaseCode()
+            val fieldName = courseService.getFieldByCourseCode(codeLong, schoolId)?.takeIf { it.isNotBlank() }
+                ?: continue
+            fieldToBaseCodes.getOrPut(fieldName) { mutableSetOf() }.add(baseCode)
+        }
+        return fieldToBaseCodes.mapValues { it.value.size }
     }
 
     /**

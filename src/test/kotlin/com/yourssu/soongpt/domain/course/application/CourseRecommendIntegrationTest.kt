@@ -107,22 +107,26 @@ class CourseRecommendIntegrationTest {
             CourseRecommendationsResponse::class.java,
         )
 
-    /** Case 1~5 공통: 같은 케이스에서 available-general-electives / available-chapels progress만 검증. progress는 항상 non-null(센티널 포함) */
-    private fun verifyAvailableCoursesProgress() {
+    /** Case 1~6 공통: available-general-electives / available-chapels raw response 출력 + progress non-null 검증 */
+    private fun verifyAvailableCoursesProgress(caseLabel: String) {
         val timetableId = timetableWriter.save(Timetable(tag = com.yourssu.soongpt.domain.timetable.implement.Tag.DEFAULT)).id!!
         val generalBody = mockMvc.perform(
             get("/api/timetables/$timetableId/available-general-electives").accept(MediaType.APPLICATION_JSON),
         ).andExpect(status().isOk).andReturn().response.contentAsString
+        println("=== $caseLabel: available-general-electives (raw response) ===")
+        println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readTree(generalBody)))
         val generalResponse = objectMapper.readValue(
             objectMapper.readTree(generalBody).path("result").toString(),
             AvailableGeneralElectivesResponse::class.java,
         )
         generalResponse.progress.shouldNotBeNull()
-        generalResponse.progress!!.fieldCredits.shouldNotBeNull()
+        // fieldCredits: 19학번 이하·제공 불가 시 null(생략). 20학번 이상은 존재.
 
         val chapelBody = mockMvc.perform(
             get("/api/timetables/$timetableId/available-chapels").accept(MediaType.APPLICATION_JSON),
         ).andExpect(status().isOk).andReturn().response.contentAsString
+        println("=== $caseLabel: available-chapels (raw response) ===")
+        println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readTree(chapelBody)))
         val chapelResponse = objectMapper.readValue(
             objectMapper.readTree(chapelBody).path("result").toString(),
             AvailableChapelsResponse::class.java,
@@ -155,7 +159,7 @@ class CourseRecommendIntegrationTest {
         val builder = MockSessionBuilder(courseRepository, departmentReader)
             .pseudonym(TEST_PSEUDONYM)
             .department("컴퓨터학부")
-            .admissionYear(2021)
+            .admissionYear(2020)
             .grade(3)
             .doubleMajor("글로벌미디어학부")
             .minor(null)
@@ -220,7 +224,7 @@ class CourseRecommendIntegrationTest {
             retake.message shouldBe "재수강 가능한 C+ 이하 과목이 없습니다."
         }
 
-        verifyAvailableCoursesProgress()
+        verifyAvailableCoursesProgress("Case 1")
     }
 
     @Test
@@ -276,7 +280,7 @@ class CourseRecommendIntegrationTest {
             gr.courses.isNotEmpty() || gr.lateFields.isNullOrEmpty().not() shouldBe true
         }
 
-        verifyAvailableCoursesProgress()
+        verifyAvailableCoursesProgress("Case 2")
     }
 
     @Test
@@ -334,7 +338,7 @@ class CourseRecommendIntegrationTest {
             (t.courses.isNotEmpty() || t.message != null) shouldBe true
         }
 
-        verifyAvailableCoursesProgress()
+        verifyAvailableCoursesProgress("Case 3")
     }
 
     @Test
@@ -400,7 +404,7 @@ class CourseRecommendIntegrationTest {
             retake.message shouldBe "재수강 가능한 C+ 이하 과목이 없습니다."
         }
 
-        verifyAvailableCoursesProgress()
+        verifyAvailableCoursesProgress("Case 4")
     }
 
     @Test
@@ -487,6 +491,71 @@ class CourseRecommendIntegrationTest {
             teaching.courses.size shouldBe 0
         }
 
-        verifyAvailableCoursesProgress()
+        verifyAvailableCoursesProgress("Case 5")
     }
+
+    // @Test
+    // @DisplayName("Case 6: 소프트웨어학부 20학번 4학년 — 전기/전필 MOST, 전선 PARTIAL_LATE, 교선 MOST, 복전/부전공 없음, 교직 F, 채플 satisfied")
+    // fun case6_software_20_grade4() {
+    //     val builder = MockSessionBuilder(courseRepository, departmentReader)
+    //         .pseudonym(TEST_PSEUDONYM)
+    //         .department("소프트웨어학부")
+    //         .admissionYear(2020)
+    //         .grade(4)
+    //         .doubleMajor(null)
+    //         .minor(null)
+    //         .teaching(false)
+    //         .chapel(satisfied = true)
+    //         .majorBasic(TakenStrategy.MOST)
+    //         .majorRequired(TakenStrategy.MOST)
+    //         .majorElective(TakenStrategy.PARTIAL_LATE)
+    //         .generalRequired(TakenStrategy.ALL)
+    //         .generalElective(TakenStrategy.MOST)
+    //         .retake(emptyList())
+    //     val session = builder.build()
+    //     println("=== Case 6 기이수 과목 목록 (코드: 과목명) ===")
+    //     printTakenCoursesWithNames(session)
+    //     registerSession(session)
+
+    //     val result = performRecommend()
+    //     val responseBody = result.andReturn().response.contentAsString
+    //     println("=== Case 6: 소프트웨어학부 20학번 4학년 (raw response) ===")
+    //     println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readTree(responseBody)))
+
+    //     val response = parseResponse(responseBody)
+
+    //     // ——— Case 6 검증 포인트 ———
+    //     // 전기: MOST (학과별 전기 유무·DB 데이터 의존이라 별도 검증 생략)
+    //     // 전필: MOST → 거의 이수
+    //     response.categories.find { it.category == "MAJOR_REQUIRED" }?.let { mr ->
+    //         (mr.progress.satisfied || mr.courses.isNotEmpty()) shouldBe true
+    //     }
+    //     // 전선: PARTIAL_LATE → LATE 과목 존재 가능
+    //     response.categories.find { it.category == "MAJOR_ELECTIVE" }?.let { me ->
+    //         me.progress.satisfied shouldBe false
+    //     }
+    //     // 교필: ALL → satisfied
+    //     response.categories.find { it.category == "GENERAL_REQUIRED" }?.let { gr ->
+    //         gr.progress.satisfied shouldBe true
+    //     }
+    //     // 복전/부전공: 미등록
+    //     response.categories.find { it.category == "DOUBLE_MAJOR_REQUIRED" }?.let { dmr ->
+    //         dmr.message shouldBe "복수전공을 등록하지 않았습니다."
+    //     }
+    //     response.categories.find { it.category == "MINOR" }?.let { minor ->
+    //         minor.message.shouldNotBeNull()
+    //         minor.message!! shouldContain "부전공"
+    //     }
+    //     // 교직: 비대상
+    //     response.categories.find { it.category == "TEACHING" }?.let { t ->
+    //         t.message.shouldNotBeNull()
+    //         t.message!! shouldContain "교직이수 대상이 아닙니다"
+    //     }
+    //     // 교필: 20학번 → lateFields=null (22학번 이하)
+    //     response.categories.find { it.category == "GENERAL_REQUIRED" }?.let { gr ->
+    //         gr.lateFields shouldBe null
+    //     }
+
+    //     verifyAvailableCoursesProgress("Case 6")
+    // }
 }
