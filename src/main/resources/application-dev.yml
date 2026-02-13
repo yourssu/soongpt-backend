@@ -42,6 +42,8 @@ sso:
   client-jwt-secret: ${SSO_CLIENT_JWT_SECRET}
   session-ttl-minutes: ${SSO_SESSION_TTL_MINUTES:60}
   jwt-validity-minutes: ${SSO_JWT_VALIDITY_MINUTES:60}
+  cookie-same-site: ${SSO_COOKIE_SAME_SITE:Lax}
+  cookie-secure: ${SSO_COOKIE_SECURE:true}
   allowed-redirect-urls: ${SSO_ALLOWED_REDIRECT_URLS:}
 
 logging:

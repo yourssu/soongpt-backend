@@ -9,6 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  * - clientJwtSecret: 클라이언트용 JWT 서명/검증 시크릿 (최소 32바이트)
  * - sessionTtlMinutes: 동기화 세션 TTL (분). 기본 60분.
  * - jwtValidityMinutes: 클라이언트 JWT 유효기간 (분). 기본 60분.
+ * - cookieSameSite: 인증 쿠키 SameSite 속성 (Lax/None/Strict)
+ * - cookieSecure: 인증 쿠키 Secure 속성 (true 권장)
  */
 @ConfigurationProperties(prefix = "sso")
 data class SsoProperties(
@@ -17,4 +19,6 @@ data class SsoProperties(
     val allowedRedirectUrls: List<String> = emptyList(),
     val sessionTtlMinutes: Long = 60L,
     val jwtValidityMinutes: Long = 60L,
+    val cookieSameSite: String = "Lax",
+    val cookieSecure: Boolean = true,
 )
