@@ -51,7 +51,9 @@ class ClientJwtProviderTest : BehaviorSpec({
             then("InvalidTokenException으로 실패한다") {
                 val provider = ClientJwtProvider(props())
                 val token = provider.issueToken("test-pseudonym")
-                val tampered = token.dropLast(1) + if (token.last() != 'a') 'a' else 'b'
+                val parts = token.split(".")
+                val tamperedPayload = parts[1].reversed()
+                val tampered = "${parts[0]}.$tamperedPayload.${parts[2]}"
 
                 val result = provider.validateAndGetPseudonym(tampered)
 
