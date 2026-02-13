@@ -90,6 +90,10 @@ class CourseReader(
         return courseRepository.findAllByCode(codes)
     }
 
+    fun findAllByBaseCode(baseCode: Long): List<Course> {
+        return courseRepository.findAllByClass(baseCode)
+    }
+
     fun getFieldsBySchoolId(schoolId: Int): List<String> {
         return fieldListFinder.getFieldsBySchoolId(schoolId)
     }
