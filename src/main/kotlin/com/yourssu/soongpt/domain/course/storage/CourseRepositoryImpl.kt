@@ -63,14 +63,6 @@ class CourseRepositoryImpl(
             .map { it.toDomain() }
     }
 
-    override fun findAllByCategory(category: Category): List<Course> {
-        return jpaQueryFactory
-            .selectFrom(courseEntity)
-            .where(courseEntity.category.eq(category))
-            .fetch()
-            .map { it.toDomain() }
-    }
-
     override fun groupByCategory(codes: List<Long>): GroupedCoursesByCategoryDto {
         val groupedCourses = findAllByCode(codes).groupBy { it.category }
         return GroupedCoursesByCategoryDto.from(groupedCourses)
