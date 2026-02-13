@@ -192,9 +192,20 @@ class TimetableRecommendationFacade(
             // 2. 점수 계산 및 랭킹: 필터링된 후보 내에서 점수 계산 후 정렬
             val rankedCandidates = timetableRanker.rankByPreference(filteredCandidates, tag)
 
+            val allowDuplicateByTag = tag in setOf(
+                Tag.FREE_MONDAY,
+                Tag.FREE_TUESDAY,
+                Tag.FREE_WEDNESDAY,
+                Tag.FREE_THURSDAY,
+                Tag.FREE_FRIDAY
+            )
+
             val candidatesForTag = rankedCandidates
                 .asSequence()
-                .filter { candidate -> usedTimeSlots.add(candidate.timeSlotKey()) }
+                .filter { candidate ->
+                    val key = candidate.timeSlotKey()
+                    allowDuplicateByTag || usedTimeSlots.add(key)
+                }
                 .take(MAX_RECOMMENDATIONS_PER_TAG)
                 .toList()
 
@@ -216,11 +227,11 @@ class TimetableRecommendationFacade(
                 val score = timetableRanker.totalScore(candidate)
                 val timetableResponse = timetablePersister.persist(candidate, Tag.DEFAULT, score, courseByCode)
                 RecommendationDto(
-                    description = "선택하신 과목으로 만들 수 있는 시간표입니다.",
+                    description = formatDescription("지금까지 고른 과목으로 만들 수 있는 시간표예요"),
                     timetable = timetableResponse
                 )
             }
-            resultGroups.add(GroupedTimetableResponse(Tag.DEFAULT.name, defaultRecommendations))
+            resultGroups.add(GroupedTimetableResponse(Tag.DEFAULT.description, defaultRecommendations))
         }
 
         for ((tag, candidates) in tagCandidates) {
@@ -228,18 +239,21 @@ class TimetableRecommendationFacade(
                 val score = timetableRanker.totalScore(candidate)
                 val timetableResponse = timetablePersister.persist(candidate, tag, score, courseByCode)
                 RecommendationDto(
-                    description = buildRecommendationDescription(
+                    description = formatDescription(
+                        buildRecommendationDescription(
                         candidate,
                         tag,
                         command,
+                        courseReader,
                         courseByCode,
                         baseNameCache
+                    )
                     ),
                     timetable = timetableResponse
                 )
             }
             if (recommendationsForTag.isNotEmpty()) {
-                resultGroups.add(GroupedTimetableResponse(tag.name, recommendationsForTag))
+                resultGroups.add(GroupedTimetableResponse(tag.description, recommendationsForTag))
             }
         }
 
@@ -264,16 +278,8 @@ class TimetableRecommendationFacade(
                     val fullCode = (courseToExclude.courseCode * 100) + courseToExclude.selectedCourseIds.first()
                     courseReader.findAllByCode(listOf(fullCode)).firstOrNull()
                 } else {
-                    val category = command.findCategoryFor(courseToExclude.courseCode)
-                    val candidates = when (category) {
-                        Category.GENERAL_REQUIRED, Category.GENERAL_ELECTIVE -> untakenCourseCodeService
-                            .getUntakenCourseCodesByField(category)
-                            .values
-                            .flatten()
-                        else -> untakenCourseCodeService.getUntakenCourseCodes(category)
-                    }
-                    val matched = candidates.filter { it.toBaseCode() == courseToExclude.courseCode }
-                    courseReader.findAllByCode(matched).firstOrNull()
+                    val fullCode = (courseToExclude.courseCode * 100) + 1
+                    courseReader.findAllByCode(listOf(fullCode)).firstOrNull()
                 }
 
                 if (resolvedCourse != null) {
@@ -296,21 +302,6 @@ private fun PrimaryTimetableCommand.getAllCourseCodes(): List<SelectedCourseComm
             this.teachingCourses +
             this.generalRequiredCourses +
             this.addedCourses
-}
-
-private fun PrimaryTimetableCommand.findCategoryFor(courseCode: Long): Category {
-    return when {
-        this.majorRequiredCourses.any { it.courseCode == courseCode } -> Category.MAJOR_REQUIRED
-        this.majorElectiveCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
-        this.majorBasicCourses.any { it.courseCode == courseCode } -> Category.MAJOR_BASIC
-        this.doubleMajorCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
-        this.minorCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
-        this.teachingCourses.any { it.courseCode == courseCode } -> Category.TEACHING
-        this.generalRequiredCourses.any { it.courseCode == courseCode } -> Category.GENERAL_REQUIRED
-        this.retakeCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
-        this.addedCourses.any { it.courseCode == courseCode } -> Category.MAJOR_ELECTIVE
-        else -> Category.MAJOR_ELECTIVE
-    }
 }
 
 private fun loadSelectedCourses(
@@ -362,7 +353,7 @@ private fun PrimaryTimetableCommand.copyAndSwap(
     track: SwapTrack,
     newCourseCode: Long
 ): PrimaryTimetableCommand {
-    val newSelection = SelectedCourseCommand(courseCode = newCourseCode, selectedCourseIds = emptyList())
+    val newSelection = SelectedCourseCommand(courseCode = newCourseCode.toBaseCode(), selectedCourseIds = emptyList())
     return when (track) {
         SwapTrack.MAJOR_ELECTIVE -> this.copy(
             majorElectiveCourses = this.majorElectiveCourses.replaceCourse(codeToRemove, newSelection)
@@ -425,6 +416,7 @@ private fun buildRecommendationDescription(
     candidate: TimetableCandidate,
     tag: Tag,
     command: PrimaryTimetableCommand,
+    courseReader: CourseReader,
     courseByCode: Map<Long, com.yourssu.soongpt.domain.course.implement.Course>,
     baseNameCache: MutableMap<Long, String?>
 ): String {
@@ -433,7 +425,7 @@ private fun buildRecommendationDescription(
 //            "selectedCourseCodes=${command.getAllCourseCodes().map { it.courseCode }}"
 //    )
     val selectedCommands = command.getAllCourseCodes()
-    val selectedBaseCodes = selectedCommands.map { it.courseCode }.toSet()
+    val selectedBaseCodes = selectedCommands.map { it.courseCode.toBaseCode() }.toSet()
     val candidateBaseCodes = candidate.codes
         .filter { code -> courseByCode[code]?.category != com.yourssu.soongpt.domain.course.implement.Category.CHAPEL }
         .map { it.toBaseCode() }
@@ -444,24 +436,42 @@ private fun buildRecommendationDescription(
 
     val candidateCourses = candidate.codes.mapNotNull { code -> courseByCode[code] }
     val candidateNameByBase = candidateCourses.associateBy({ it.baseCode() }, { it.name })
+    val selectedNameByBase = selectedCommands.associate { commandItem ->
+        val baseCode = commandItem.courseCode.toBaseCode()
+        val name = if (commandItem.selectedCourseIds.isNotEmpty()) {
+            val fullCode = (baseCode * 100) + commandItem.selectedCourseIds.first()
+            courseReader.findAllByCode(listOf(fullCode)).firstOrNull()?.name
+        } else {
+            courseReader.findAllByCode(listOf((baseCode * 100) + 1)).firstOrNull()?.name
+        }
+        baseCode to name
+    }
 
     if (removedBaseCodes.isNotEmpty() || addedBaseCodes.isNotEmpty()) {
 //        System.err.println("Removed base codes=$removedBaseCodes, added base codes=$addedBaseCodes")
-        val removedNames = removedBaseCodes.mapNotNull { baseCode ->
-            baseNameCache[baseCode]
-        }
-        val addedNames = addedBaseCodes.mapNotNull { baseCode ->
-            candidateNameByBase[baseCode]
+        fun nameForBase(baseCode: Long): String {
+            return selectedNameByBase[baseCode]
+                ?: baseNameCache[baseCode]
+                ?: candidateNameByBase[baseCode]
+                ?: courseReader.findAllByCode(listOf((baseCode * 100) + 1)).firstOrNull()?.name
+                ?: "미상"
         }
 
-        val pairs = removedNames.zip(addedNames)
-        val summary = pairs.take(2).joinToString(", ") { (removed, added) -> "$removed -> $added" }
-        val suffix = if (pairs.size > 2) " 외 ${pairs.size - 2}건" else ""
+        val removedNames = removedBaseCodes.map { baseCode -> nameForBase(baseCode) }
+        val addedNames = addedBaseCodes.map { baseCode -> nameForBase(baseCode) }
 
-        return if (summary.isNotBlank()) {
-            "전공선택 과목 교체로 ${tag.description}를 만족한 시간표입니다. ($summary$suffix)"
-        } else {
-            "전공선택 과목 교체로 ${tag.description}를 만족한 시간표입니다."
+        val benefit = tag.toBenefitMessage()
+        val removed = removedNames.firstOrNull()
+        val added = addedNames.firstOrNull()
+
+        return when {
+            removed != null && added != null ->
+                "${removed}${objParticle(removed)} 빼고 ${added}${objParticle(added)} 넣으면 $benefit"
+            removed != null ->
+                "${removed}${objParticle(removed)} 빼면 $benefit"
+            added != null ->
+                "${added}${objParticle(added)} 넣으면 $benefit"
+            else -> "과목을 바꾸면 $benefit"
         }
     }
 
@@ -489,23 +499,131 @@ private fun buildRecommendationDescription(
         }
 
         if (changedDivisionBaseCodes.isNotEmpty()) {
-            val changedNames = changedDivisionBaseCodes.mapNotNull { baseCode ->
-                candidateNameByBase[baseCode]
-                    ?: baseNameCache[baseCode]
-            }
-            val summary = changedNames.take(2).joinToString(", ")
-            val suffix = if (changedNames.size > 2) " 외 ${changedNames.size - 2}건" else ""
-            return if (summary.isNotBlank()) {
-                "분반 변경으로 ${tag.description}를 만족한 시간표입니다. ($summary$suffix)"
-            } else {
-                "분반 변경으로 ${tag.description}를 만족한 시간표입니다."
-            }
+            val candidateCodes = candidate.codes.toSet()
+            val benefit = tag.toBenefitMessage()
+            return "분반을 변경하면 $benefit"
         }
     }
 
-    return tag.description
+    return defaultDescription(tag)
+}
+
+private fun Tag.toBenefitMessage(): String {
+    return when (this) {
+        Tag.FREE_MONDAY -> "월요일 공강이 생겨요"
+        Tag.FREE_TUESDAY -> "화요일 공강이 생겨요"
+        Tag.FREE_WEDNESDAY -> "수요일 공강이 생겨요"
+        Tag.FREE_THURSDAY -> "목요일 공강이 생겨요"
+        Tag.FREE_FRIDAY -> "금요일 공강이 생겨요"
+        Tag.NO_MORNING_CLASSES -> "아침 수업이 없어져요"
+        Tag.NO_EVENING_CLASSES -> "저녁 수업이 없어져요"
+        Tag.NO_LONG_BREAKS -> "우주 공강이 없어져요"
+        Tag.GUARANTEED_LUNCH_TIME -> "점심 시간이 보장돼요"
+        else -> "${this.description}을(를) 만족해요"
+    }
+}
+
+private fun defaultDescription(tag: Tag): String {
+    val desc = tag.description
+    return if (desc.endsWith("시간표")) {
+        "현재 고른 과목으로 ${desc}를 만들 수 있어요"
+    } else {
+        "현재 고른 과목으로 ${desc}을(를) 만족하는 시간표를 만들 수 있어요"
+    }
+}
+
+private fun PrimaryTimetableCommand.findCategoryLabel(courseCode: Long): String? {
+    return when {
+        this.majorRequiredCourses.any { it.courseCode == courseCode } -> "전공필수"
+        this.majorElectiveCourses.any { it.courseCode == courseCode } -> "전공선택"
+        this.majorBasicCourses.any { it.courseCode == courseCode } -> "전공기초"
+        this.doubleMajorCourses.any { it.courseCode == courseCode } -> "복수전공"
+        this.minorCourses.any { it.courseCode == courseCode } -> "부전공"
+        this.teachingCourses.any { it.courseCode == courseCode } -> "교직"
+        this.generalRequiredCourses.any { it.courseCode == courseCode } -> "교양필수"
+        this.retakeCourses.any { it.courseCode == courseCode } -> "재수강"
+        this.addedCourses.any { it.courseCode == courseCode } -> "추가"
+        else -> null
+    }
 }
 
 private fun TimetableCandidate.timeSlotKey(): String {
     return this.timeSlot.toLongArray().joinToString(",")
+}
+
+private fun objParticle(word: String): String {
+    if (word.isBlank()) return "를"
+    val trimmed = word.trimEnd { it.isWhitespace() }
+    if (trimmed.isEmpty()) return "를"
+
+    val lastMeaningful = trimmed.trimEnd { isPunctuationChar(it) || it == ')' || it == ']' || it == '}' }
+    if (lastMeaningful.isEmpty()) return "를"
+
+    val last = lastMeaningful.last()
+    val code = last.code
+
+    // 가-힣 처리해서 종성만 따로..
+    if (code in 0xAC00..0xD7A3) {
+        val hasFinal = (code - 0xAC00) % 28 != 0
+        return if (hasFinal) "을" else "를"
+    }
+
+    if (last.isDigit()) {
+        return when (last) {
+            '0', '1', '3', '6', '7', '8' -> "을"
+            '2', '4', '5', '9' -> "를"
+            else -> "를"
+        }
+    }
+
+    // English letter
+    if (last.isLetter()) {
+        val lower = last.lowercaseChar()
+        val isVowel = lower in setOf('a', 'e', 'i', 'o', 'u', 'y')
+        return if (isVowel) "를" else "을"
+    }
+
+    return "를"
+}
+
+private fun formatDescription(raw: String): String = wrapToTwoLines(raw, 25)
+
+private fun wrapToTwoLines(text: String, maxPerLine: Int): String {
+    if (text.length <= maxPerLine) return text
+
+    val keywordIndex = text.indexOf("시간표")
+    if (keywordIndex > 0 && keywordIndex <= maxPerLine) {
+        val before = text.substring(0, keywordIndex).trimEnd()
+        val after = text.substring(keywordIndex).trimStart()
+        return if (before.isNotEmpty() && after.isNotEmpty()) {
+            "$before\n$after"
+        } else {
+            text
+        }
+    }
+
+    val breakAt = text.lastIndexOf(' ', maxPerLine)
+    if (breakAt <= 0) {
+        val first = text.substring(0, maxPerLine)
+        val second = text.substring(maxPerLine)
+        return "$first\n$second"
+    }
+
+    val first = text.substring(0, breakAt).trimEnd()
+    val second = text.substring(breakAt + 1).trimStart()
+    if (second.isEmpty()) return text
+    return "$first\n$second"
+}
+
+private fun isPunctuationChar(ch: Char): Boolean {
+    return when (Character.getType(ch)) {
+        Character.CONNECTOR_PUNCTUATION.toInt(),
+        Character.DASH_PUNCTUATION.toInt(),
+        Character.START_PUNCTUATION.toInt(),
+        Character.END_PUNCTUATION.toInt(),
+        Character.INITIAL_QUOTE_PUNCTUATION.toInt(),
+        Character.FINAL_QUOTE_PUNCTUATION.toInt(),
+        Character.OTHER_PUNCTUATION.toInt() -> true
+        else -> false
+    }
 }
