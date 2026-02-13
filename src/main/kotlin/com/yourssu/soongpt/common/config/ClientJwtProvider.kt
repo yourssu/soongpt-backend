@@ -48,20 +48,20 @@ class ClientJwtProvider(
     fun createAuthCookie(token: String): Cookie {
         return Cookie(COOKIE_NAME, token).apply {
             isHttpOnly = true
-            secure = true
+            secure = ssoProperties.cookieSecure
             path = "/"
             maxAge = (ssoProperties.jwtValidityMinutes * 60).toInt()
-            setAttribute("SameSite", "Lax")
+            setAttribute("SameSite", ssoProperties.cookieSameSite)
         }
     }
 
     fun createLogoutCookie(): Cookie {
         return Cookie(COOKIE_NAME, "").apply {
             isHttpOnly = true
-            secure = true
+            secure = ssoProperties.cookieSecure
             path = "/"
             maxAge = 0
-            setAttribute("SameSite", "Lax")
+            setAttribute("SameSite", ssoProperties.cookieSameSite)
         }
     }
 

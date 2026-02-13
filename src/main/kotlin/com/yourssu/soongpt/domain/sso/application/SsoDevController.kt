@@ -118,11 +118,8 @@ class SsoDevController(
 
         val token = clientJwtProvider.issueToken(pseudonym)
 
-        // Swagger에서 바로 사용 가능하도록 쿠키를 직접 설정 (local에서는 Secure 제거)
-        response.addHeader(
-            "Set-Cookie",
-            "soongpt_auth=$token; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600",
-        )
+        // 운영 쿠키 설정과 동일한 속성 적용
+        response.addCookie(clientJwtProvider.createAuthCookie(token))
 
         return ResponseEntity.ok(
             mapOf(
@@ -153,10 +150,7 @@ class SsoDevController(
         )
 
         val token = clientJwtProvider.issueToken(pseudonym)
-        response.addHeader(
-            "Set-Cookie",
-            "soongpt_auth=$token; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600",
-        )
+        response.addCookie(clientJwtProvider.createAuthCookie(token))
 
         return ResponseEntity.ok(
             mapOf(
@@ -188,10 +182,7 @@ class SsoDevController(
         )
 
         val token = clientJwtProvider.issueToken(pseudonym)
-        response.addHeader(
-            "Set-Cookie",
-            "soongpt_auth=$token; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600",
-        )
+        response.addCookie(clientJwtProvider.createAuthCookie(token))
 
         return ResponseEntity.ok(
             mapOf(
