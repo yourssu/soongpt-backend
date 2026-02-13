@@ -22,7 +22,8 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
     val courseRepository = mock<CourseRepository>()
     val departmentReader = mock<DepartmentReader>()
     val courseFieldReader = mock<CourseFieldReader>()
-    val service = GeneralCourseRecommendService(courseRepository, departmentReader, courseFieldReader)
+    val courseService = mock<CourseService>()
+    val service = GeneralCourseRecommendService(courseRepository, departmentReader, courseFieldReader, courseService)
 
     val department = Department(id = 1L, name = "컴퓨터학부", collegeId = 10L)
     val departmentName = "컴퓨터학부"
