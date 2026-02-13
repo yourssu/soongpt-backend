@@ -42,6 +42,23 @@ class DepartmentNameNormalizerTest {
     }
 
     @Test
+    fun `lowercase it alias is normalized to canonical department name`() {
+        DepartmentNameNormalizer.initialize(
+            canonicalDepartments = setOf("전자정보공학부 IT융합전공"),
+            aliases = mapOf(
+                "it융합전공" to "전자정보공학부 IT융합전공",
+                "전자정보공학부(it융합전공)" to "전자정보공학부 IT융합전공",
+            ),
+        )
+
+        val normalized1 = DepartmentNameNormalizer.normalize("it융합전공")
+        val normalized2 = DepartmentNameNormalizer.normalize("전자정보공학부 ( it융합전공 )")
+
+        assertEquals("전자정보공학부 IT융합전공", normalized1)
+        assertEquals("전자정보공학부 IT융합전공", normalized2)
+    }
+
+    @Test
     fun `initializer fails when alias target is not in canonical departments`() {
         assertThrows(IllegalStateException::class.java) {
             DepartmentNameNormalizer.initialize(
