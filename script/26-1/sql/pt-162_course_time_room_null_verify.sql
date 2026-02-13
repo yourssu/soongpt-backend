@@ -1,4 +1,4 @@
--- [PT-162] course_time.room NULL -> '' 적용 확인
+-- [PT-162] course_time.room '' -> NULL 적용 확인
 
 SELECT
   SUM(room IS NULL) AS room_is_null,

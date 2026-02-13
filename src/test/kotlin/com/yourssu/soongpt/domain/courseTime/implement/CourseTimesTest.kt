@@ -8,7 +8,7 @@ class CourseTimesTest : BehaviorSpec({
     given("CourseTimes.from") {
 
         `when`("강의실이 없고 교수명만 남아있는 경우: (-교수)") {
-            then("classroom은 빈 문자열(\"\")로 파싱된다") {
+            then("classroom은 null로 파싱된다") {
                 val schedule = "토 20:00-21:00 (-전삼현)"
 
                 val times = CourseTimes.from(schedule).toList()
@@ -17,7 +17,7 @@ class CourseTimesTest : BehaviorSpec({
                 times[0].week.displayName shouldBe "토"
                 times[0].startTime.toTimeFormat() shouldBe "20:00"
                 times[0].endTime.toTimeFormat() shouldBe "21:00"
-                times[0].classroom shouldBe ""
+                times[0].classroom shouldBe null
             }
         }
 
