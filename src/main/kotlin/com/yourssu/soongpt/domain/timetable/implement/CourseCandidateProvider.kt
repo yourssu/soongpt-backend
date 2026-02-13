@@ -32,21 +32,30 @@ class CourseCandidateProvider(
 
         // 2. 각 과목 카테고리별로 분반 후보 그룹을 가져와 하나의 리스트로 합침
         return command.getAllSelectedCourseCommands()
-            .map { (selectedCommand, category) ->
-                getCourseCandidates(selectedCommand, getUntakenCodes(category))
+            .map { (selectedCommand, category, allowAllDivisions) ->
+                getCourseCandidates(selectedCommand, getUntakenCodes(category), allowAllDivisions)
             }
     }
 
     private fun getCourseCandidates(
         command: SelectedCourseCommand,
-        untakenCodes: List<Long>
+        untakenCodes: List<Long>,
+        allowAllDivisions: Boolean
     ): List<CourseCandidate> {
         val coursesToProcess = if (command.selectedCourseIds.isEmpty()) {
             val matchedCodes = untakenCodes.filter { it.toBaseCode() == command.courseCode }
             val resolvedCourses = courseReader.findAllByCode(matchedCodes)
-                .take(2)
-            if (resolvedCourses.isNotEmpty()) {
-                resolvedCourses
+            if (allowAllDivisions) {
+                val allDivisions = courseReader.findAllByBaseCode(command.courseCode)
+                if (allDivisions.isNotEmpty()) {
+                    allDivisions
+                } else if (resolvedCourses.isNotEmpty()) {
+                    resolvedCourses
+                } else {
+                    courseReader.findAllByCode(listOf((command.courseCode * 100) + 1))
+                }
+            } else if (resolvedCourses.isNotEmpty()) {
+                resolvedCourses.take(2)
             } else {
                 // 선택한 과목이 기수강 등으로 untaken 목록에 없더라도, 최소 1개 분반은 후보로 넣어야 함
                 courseReader.findAllByCode(listOf((command.courseCode * 100) + 1))
@@ -65,13 +74,13 @@ class CourseCandidateProvider(
     }
 }
 
-private fun PrimaryTimetableCommand.getAllSelectedCourseCommands(): List<Pair<SelectedCourseCommand, Category>> {
-    return this.retakeCourses.map { it to Category.MAJOR_ELECTIVE } +
-            this.addedCourses.map { it to Category.MAJOR_ELECTIVE } +
-            this.majorRequiredCourses.map { it to Category.MAJOR_REQUIRED } +
-            this.generalRequiredCourses.map { it to Category.GENERAL_REQUIRED } +
-            this.majorElectiveCourses.map { it to Category.MAJOR_ELECTIVE } +
-            this.doubleMajorCourses.map { it to Category.MAJOR_ELECTIVE } +
-            this.minorCourses.map { it to Category.MAJOR_ELECTIVE } +
-            this.teachingCourses.map { it to Category.TEACHING }
+private fun PrimaryTimetableCommand.getAllSelectedCourseCommands(): List<Triple<SelectedCourseCommand, Category, Boolean>> {
+    return this.retakeCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
+            this.addedCourses.map { Triple(it, Category.MAJOR_ELECTIVE, true) } +
+            this.majorRequiredCourses.map { Triple(it, Category.MAJOR_REQUIRED, false) } +
+            this.generalRequiredCourses.map { Triple(it, Category.GENERAL_REQUIRED, false) } +
+            this.majorElectiveCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
+            this.doubleMajorCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
+            this.minorCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
+            this.teachingCourses.map { Triple(it, Category.TEACHING, false) }
 }
