@@ -3,6 +3,7 @@ HELP.md
 build/
 .gitattributes
 
+result.md
 !**/src/main/**/build/
 !**/src/test/**/build/
 
