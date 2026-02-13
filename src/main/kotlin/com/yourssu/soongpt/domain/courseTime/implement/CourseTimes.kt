@@ -36,7 +36,17 @@ class CourseTimes(
 
                 val startTime = Time.of(startTimeStr)
                 val endTime = Time.of(endTimeStr)
-                val classroom = classroomStr.trim()
+
+                // 괄호 안 문자열은 대개 "강의실-교수" 형식이다.
+                // - 강의실이 없는 케이스: "(-교수)" -> 빈 문자열("")로 파싱
+                // - 교수명은 마지막 '-' 이후로 간주하고 제거
+                val classroom = classroomStr
+                    .trim()
+                    .substringBeforeLast("-", classroomStr.trim())
+                    .trim()
+                    .let { room ->
+                        if (room.isBlank() || room == "-") "" else room
+                    }
 
                 return weeks.map { week ->
                     CourseTime(

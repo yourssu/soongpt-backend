@@ -76,7 +76,8 @@ def parse_schedule_line(line: str):
     room_info = match.group(4) if match.group(4) else None
 
     # Parse room (remove professor name after -)
-    room = None
+    # - 강의실이 없는 케이스: "(-교수)" -> 빈 문자열("")로 저장
+    room = ""
     if room_info:
         # Remove professor name (after last -)
         if '-' in room_info:
@@ -84,9 +85,9 @@ def parse_schedule_line(line: str):
         else:
             room = room_info.strip()
 
-        # If room is empty or just "-", set to None
+        # If room is empty or just "-", set to empty string
         if not room or room == '-':
-            room = None
+            room = ""
 
     # Extract all days (월, 화, 수, etc.)
     days = re.findall(r'[월화수목금토일]', days_str)
