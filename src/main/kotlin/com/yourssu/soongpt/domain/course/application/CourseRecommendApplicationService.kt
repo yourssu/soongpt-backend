@@ -119,14 +119,26 @@ class CourseRecommendApplicationService(
                 )
             }
 
-            RecommendCategory.DOUBLE_MAJOR_REQUIRED ->
+            RecommendCategory.DOUBLE_MAJOR_REQUIRED -> {
+                if (ctx.graduationSummary == null) {
+                    return noGraduationUnavailableResponse(RecommendCategory.DOUBLE_MAJOR_REQUIRED)
+                }
                 secondaryMajorCourseRecommendService.recommendDoubleMajorRequired(ctx)
+            }
 
-            RecommendCategory.DOUBLE_MAJOR_ELECTIVE ->
+            RecommendCategory.DOUBLE_MAJOR_ELECTIVE -> {
+                if (ctx.graduationSummary == null) {
+                    return noGraduationUnavailableResponse(RecommendCategory.DOUBLE_MAJOR_ELECTIVE)
+                }
                 secondaryMajorCourseRecommendService.recommendDoubleMajorElective(ctx)
+            }
 
-            RecommendCategory.MINOR ->
+            RecommendCategory.MINOR -> {
+                if (ctx.graduationSummary == null) {
+                    return noGraduationUnavailableResponse(RecommendCategory.MINOR)
+                }
                 secondaryMajorCourseRecommendService.recommendMinor(ctx)
+            }
 
             RecommendCategory.TEACHING -> {
                 if (ctx.graduationSummary == null) {
@@ -142,6 +154,9 @@ class CourseRecommendApplicationService(
         val message = when (category) {
             RecommendCategory.RETAKE -> "졸업사정표가 없어 재수강 추천을 제공할 수 없습니다."
             RecommendCategory.TEACHING -> "졸업사정표가 없어 교직이수 추천을 제공할 수 없습니다."
+            RecommendCategory.DOUBLE_MAJOR_REQUIRED -> "졸업사정표가 없어 복수전공필수 추천을 제공할 수 없습니다."
+            RecommendCategory.DOUBLE_MAJOR_ELECTIVE -> "졸업사정표가 없어 복수전공선택 추천을 제공할 수 없습니다."
+            RecommendCategory.MINOR -> "졸업사정표가 없어 부전공 추천을 제공할 수 없습니다."
             else -> "졸업사정표가 없어 해당 추천을 제공할 수 없습니다."
         }
         return CategoryRecommendResponse(

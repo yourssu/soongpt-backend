@@ -95,11 +95,11 @@ class RusaintDtoDeserializationTest : DescribeSpec({
             dto.graduationRequirements.requirements[0].result shouldBe false
 
             dto.graduationSummary shouldNotBe null
-            dto.graduationSummary.generalRequired.required shouldBe 19
-            dto.graduationSummary.generalRequired.completed shouldBe 17
-            dto.graduationSummary.generalRequired.satisfied shouldBe false
-            dto.graduationSummary.majorElective.satisfied shouldBe false
-            dto.graduationSummary.chapel.satisfied shouldBe true
+            dto.graduationSummary.generalRequired!!.required shouldBe 19
+            dto.graduationSummary.generalRequired!!.completed shouldBe 17
+            dto.graduationSummary.generalRequired!!.satisfied shouldBe false
+            dto.graduationSummary.majorElective!!.satisfied shouldBe false
+            dto.graduationSummary.chapel!!.satisfied shouldBe true
         }
 
         it("requirement/calculation/difference가 null인 경우도 역직렬화할 수 있다") {
@@ -138,6 +138,35 @@ class RusaintDtoDeserializationTest : DescribeSpec({
             dto.graduationRequirements.requirements[0].requirement shouldBe null
             dto.graduationRequirements.requirements[0].calculation shouldBe null
             dto.graduationRequirements.requirements[0].difference shouldBe null
+        }
+
+        it("graduationSummary 필드가 null인 경우도 역직렬화할 수 있다 (매칭 안 된 항목)") {
+            val json = """
+                {
+                    "pseudonym": "test-pseudonym",
+                    "graduationRequirements": {
+                        "requirements": []
+                    },
+                    "graduationSummary": {
+                        "generalRequired": {"required": 19, "completed": 17, "satisfied": false},
+                        "majorRequired": {"required": 12, "completed": 12, "satisfied": true},
+                        "chapel": {"satisfied": true}
+                    }
+                }
+            """.trimIndent()
+
+            val dto = objectMapper.readValue<RusaintGraduationResponseDto>(json)
+
+            dto.graduationSummary.generalRequired!!.required shouldBe 19
+            dto.graduationSummary.majorRequired!!.satisfied shouldBe true
+            dto.graduationSummary.chapel!!.satisfied shouldBe true
+            dto.graduationSummary.generalElective shouldBe null
+            dto.graduationSummary.majorFoundation shouldBe null
+            dto.graduationSummary.majorElective shouldBe null
+            dto.graduationSummary.minor shouldBe null
+            dto.graduationSummary.doubleMajorRequired shouldBe null
+            dto.graduationSummary.doubleMajorElective shouldBe null
+            dto.graduationSummary.christianCourses shouldBe null
         }
     }
 })

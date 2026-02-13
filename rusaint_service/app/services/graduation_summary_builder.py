@@ -47,7 +47,7 @@ def _is_major_required_only(name: str) -> bool:
 
 def _is_major_elective_only(name: str) -> bool:
     """전공선택 단독 여부 (전필 미포함)"""
-    has_elective = "전선" in name or "진선" in name
+    has_elective = "전선" in name or "진선" in name or "전공선택" in name
     return has_elective and "전필" not in name
 
 
@@ -276,14 +276,14 @@ def build_graduation_summary(
             )
 
     return GraduationSummary(
-        generalRequired=general_required or CreditSummaryItem(),
-        generalElective=general_elective or CreditSummaryItem(),
-        majorFoundation=major_foundation or CreditSummaryItem(),
-        majorRequired=major_required or CreditSummaryItem(),
-        majorElective=major_elective or CreditSummaryItem(),
-        minor=minor or CreditSummaryItem(),
-        doubleMajorRequired=double_major_required or CreditSummaryItem(),
-        doubleMajorElective=double_major_elective or CreditSummaryItem(),
-        christianCourses=christian or CreditSummaryItem(),
-        chapel=chapel or ChapelSummaryItem(),
+        generalRequired=general_required,
+        generalElective=general_elective,
+        majorFoundation=major_foundation,
+        majorRequired=major_required,
+        majorElective=major_elective,
+        minor=minor,
+        doubleMajorRequired=double_major_required,
+        doubleMajorElective=double_major_elective,
+        christianCourses=christian,
+        chapel=chapel,
     )
