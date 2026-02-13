@@ -16,26 +16,41 @@ class CourseCandidateProvider(
     private val untakenCourseCodeService: UntakenCourseCodeService,
 ) {
     fun createCourseCandidateGroups(command: PrimaryTimetableCommand): List<List<CourseCandidate>> {
+        val untakenCodesByCategory = mutableMapOf<Category, List<Long>>()
+
+        fun getUntakenCodes(category: Category): List<Long> {
+            return untakenCodesByCategory.getOrPut(category) {
+                when (category) {
+                    Category.GENERAL_REQUIRED, Category.GENERAL_ELECTIVE -> untakenCourseCodeService
+                        .getUntakenCourseCodesByField(category)
+                        .values
+                        .flatten()
+                    else -> untakenCourseCodeService.getUntakenCourseCodes(category)
+                }
+            }
+        }
+
         // 2. 각 과목 카테고리별로 분반 후보 그룹을 가져와 하나의 리스트로 합침
         return command.getAllSelectedCourseCommands()
-            .map { (selectedCommand, category) -> getCourseCandidates(selectedCommand, category) }
+            .map { (selectedCommand, category) ->
+                getCourseCandidates(selectedCommand, getUntakenCodes(category))
+            }
     }
 
     private fun getCourseCandidates(
         command: SelectedCourseCommand,
-        category: Category
+        untakenCodes: List<Long>
     ): List<CourseCandidate> {
         val coursesToProcess = if (command.selectedCourseIds.isEmpty()) {
-            val availableCodes = when (category) {
-                Category.GENERAL_REQUIRED, Category.GENERAL_ELECTIVE -> untakenCourseCodeService
-                    .getUntakenCourseCodesByField(category)
-                    .values
-                    .flatten()
-                else -> untakenCourseCodeService.getUntakenCourseCodes(category)
-            }
-            val matchedCodes = availableCodes.filter { it.toBaseCode() == command.courseCode }
-            courseReader.findAllByCode(matchedCodes)
+            val matchedCodes = untakenCodes.filter { it.toBaseCode() == command.courseCode }
+            val resolvedCourses = courseReader.findAllByCode(matchedCodes)
                 .take(2)
+            if (resolvedCourses.isNotEmpty()) {
+                resolvedCourses
+            } else {
+                // 선택한 과목이 기수강 등으로 untaken 목록에 없더라도, 최소 1개 분반은 후보로 넣어야 함
+                courseReader.findAllByCode(listOf((command.courseCode * 100) + 1))
+            }
         } else {
             // 분반 선택 했을때: 8자리 과목 코드와 분반 번호를 조합하여 10자리 코드를 생성하고, 해당 분반들만 후보로 가져옴
             val fullCourseCodes = command.selectedCourseIds.map { division ->
