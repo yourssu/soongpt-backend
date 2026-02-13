@@ -3,7 +3,7 @@ package com.yourssu.soongpt.domain.admin.application
 import com.yourssu.soongpt.common.auth.AdminPasswordValidator
 import com.yourssu.soongpt.common.business.dto.Response
 import com.yourssu.soongpt.domain.admin.application.exception.UnauthorizedAdminException
-import com.yourssu.soongpt.domain.course.business.CourseService
+import com.yourssu.soongpt.domain.admin.business.AdminCourseService
 import com.yourssu.soongpt.domain.course.business.dto.CourseTargetResponse
 import com.yourssu.soongpt.domain.course.business.dto.SearchCoursesResponse
 import com.yourssu.soongpt.domain.course.business.query.SearchCoursesQuery
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/admin/courses")
 class AdminController(
-    private val courseService: CourseService,
+    private val adminCourseService: AdminCourseService,
     private val adminPasswordValidator: AdminPasswordValidator,
 ) {
 
@@ -50,7 +50,7 @@ class AdminController(
             size = size,
             sort = sort.uppercase(),
         )
-        val response = courseService.search(query)
+        val response = adminCourseService.search(query)
         return ResponseEntity.ok().body(Response(result = response))
     }
 
@@ -67,7 +67,7 @@ class AdminController(
     fun getCourseTarget(
         @PathVariable code: Long
     ): ResponseEntity<Response<CourseTargetResponse>> {
-        val response = courseService.getTargetsByCode(code)
+        val response = adminCourseService.getTargetsByCode(code)
         return ResponseEntity.ok().body(Response(result = response))
     }
 
@@ -85,7 +85,7 @@ class AdminController(
         @RequestHeader("X-Admin-Password", required = false) password: String?
     ): ResponseEntity<Response<com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse>> {
         requireAdminAuth(password)
-        val response = courseService.updateCourse(code, command)
+        val response = adminCourseService.updateCourse(code, command)
         return ResponseEntity.ok().body(Response(result = response))
     }
 
@@ -103,7 +103,7 @@ class AdminController(
         @RequestHeader("X-Admin-Password", required = false) password: String?
     ): ResponseEntity<Response<CourseTargetResponse>> {
         requireAdminAuth(password)
-        val response = courseService.updateTargets(code, command)
+        val response = adminCourseService.updateTargets(code, command)
         return ResponseEntity.ok().body(Response(result = response))
     }
 
@@ -120,7 +120,7 @@ class AdminController(
         @RequestHeader("X-Admin-Password", required = false) password: String?
     ): ResponseEntity<Response<com.yourssu.soongpt.domain.course.business.dto.CourseDetailResponse>> {
         requireAdminAuth(password)
-        val response = courseService.createCourse(command)
+        val response = adminCourseService.createCourse(command)
         return ResponseEntity.ok().body(Response(result = response))
     }
 
@@ -137,7 +137,7 @@ class AdminController(
         @RequestHeader("X-Admin-Password", required = false) password: String?
     ): ResponseEntity<Response<Unit>> {
         requireAdminAuth(password)
-        courseService.deleteCourse(code)
+        adminCourseService.deleteCourse(code)
         return ResponseEntity.ok().body(Response(result = Unit))
     }
 }
