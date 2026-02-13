@@ -14,6 +14,7 @@ import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.TargetReader
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
@@ -96,6 +97,41 @@ class CourseServiceImplByTrackTest : BehaviorSpec({
                     completionType = SecondaryMajorCompletionType.RECOGNIZED,
                     departmentId = 8L,
                 )
+                verify(courseReader, never()).findCoursesWithTargetBySecondaryMajor(
+                    trackType = eq(SecondaryMajorTrackType.CROSS_MAJOR),
+                    completionType = any(),
+                    departmentId = any(),
+                    collegeId = any(),
+                    maxGrade = any(),
+                )
+            }
+        }
+
+        `when`("컴퓨터학부 타전공인정 과목이 target 조건과 무관하게 분류에만 존재해도 반환한다") {
+            then("컴퓨터학부(8) 기준 분류 결과를 그대로 반환한다") {
+                whenever(
+                    courseReader.findCoursesBySecondaryMajorClassification(
+                        trackType = SecondaryMajorTrackType.CROSS_MAJOR,
+                        completionType = SecondaryMajorCompletionType.RECOGNIZED,
+                        departmentId = 8L,
+                    )
+                ).thenReturn(
+                    listOf(
+                        sampleCourse(2150014701, "디지털신호처리"),
+                        sampleCourse(2150123401, "확률과통계"),
+                    )
+                )
+
+                val result = service.findAllByTrack(
+                    FilterCoursesByTrackQuery(
+                        schoolId = 26,
+                        departmentName = "컴퓨터학부",
+                        trackType = SecondaryMajorTrackType.CROSS_MAJOR,
+                        completionType = SecondaryMajorCompletionType.RECOGNIZED,
+                    )
+                )
+
+                result.map { it.code } shouldContainExactly listOf(2150014701L, 2150123401L)
                 verify(courseReader, never()).findCoursesWithTargetBySecondaryMajor(
                     trackType = eq(SecondaryMajorTrackType.CROSS_MAJOR),
                     completionType = any(),
