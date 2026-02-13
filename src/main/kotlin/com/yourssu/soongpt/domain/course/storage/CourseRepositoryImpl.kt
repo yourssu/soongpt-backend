@@ -71,6 +71,44 @@ class CourseRepositoryImpl(
         pageable: Pageable
     ): Page<Course> {
         val fetchLimit = pageable.pageSize + 1
+        val sanitizedQuery = query.trim()
+
+        val normalizedCodeRangeStart =
+            sanitizedQuery
+                .takeIf { it.length >= 8 && it.all { char -> char.isDigit() } }
+                ?.toLongOrNull()
+                ?.let { (it / DIVISION_DIVISOR) * DIVISION_DIVISOR }
+
+        if (normalizedCodeRangeStart != null) {
+            val codeRangeStart = normalizedCodeRangeStart
+            val codeRangeEnd = codeRangeStart + DIVISION_DIVISOR - 1
+
+            val results =
+                courseJpaRepository
+                    .searchCoursesWithFulltextByCodeRange(
+                        sanitizedQuery,
+                        codeRangeStart,
+                        codeRangeEnd,
+                        fetchLimit,
+                        pageable.offset,
+                    ).map { it.toDomain() }
+
+            val hasNext = results.size > pageable.pageSize
+            val content = if (hasNext) results.dropLast(1) else results
+
+            val total =
+                if (hasNext || pageable.offset > 0) {
+                    courseJpaRepository.countCoursesWithFulltextByCodeRange(
+                        sanitizedQuery,
+                        codeRangeStart,
+                        codeRangeEnd,
+                    )
+                } else {
+                    content.size.toLong()
+                }
+
+            return PageImpl(content, pageable, total)
+        }
 
         val results = courseJpaRepository
             .searchCoursesWithFulltext(query, fetchLimit, pageable.offset)
@@ -354,6 +392,39 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
 
     @Query("select c from CourseEntity c where c.code in :codes")
     fun getAllByCode(codes: List<Long>): List<CourseEntity>
+
+    @Query(
+        value = """
+            SELECT * FROM course
+            WHERE (code BETWEEN :codeRangeStart AND :codeRangeEnd)
+                OR MATCH(name, professor) AGAINST(:query IN BOOLEAN MODE)
+            ORDER BY
+                CASE WHEN code BETWEEN :codeRangeStart AND :codeRangeEnd THEN 0 ELSE 1 END,
+                CASE WHEN LOWER(name) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
+                CASE WHEN professor IS NOT NULL AND LOWER(professor) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
+                CHAR_LENGTH(name),
+                LOWER(name)
+            LIMIT :limit OFFSET :offset
+        """,
+        nativeQuery = true
+    )
+    fun searchCoursesWithFulltextByCodeRange(
+        query: String,
+        codeRangeStart: Long,
+        codeRangeEnd: Long,
+        limit: Int,
+        offset: Long,
+    ): List<CourseEntity>
+
+    @Query(
+        value = """
+            SELECT COUNT(*) FROM course
+            WHERE (code BETWEEN :codeRangeStart AND :codeRangeEnd)
+                OR MATCH(name, professor) AGAINST(:query IN BOOLEAN MODE)
+        """,
+        nativeQuery = true
+    )
+    fun countCoursesWithFulltextByCodeRange(query: String, codeRangeStart: Long, codeRangeEnd: Long): Long
 
     @Query(
         value = """
