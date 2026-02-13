@@ -32,3 +32,8 @@
 ## Contact
 
 - [연락처 생성 (POST /api/contacts)](contact/create_contact.md)
+
+## 참고 문서 (기획·프론트)
+
+- [progress 필드 공통 규약 (recommend / available-general-electives / available-chapels)](requirements/progress_프론트_가이드.md)
+- [졸업사정표 경고 가이드 (NO_GRADUATION_DATA / NO_GRADUATION_REPORT)](requirements/졸업사정표_경고_가이드.md)

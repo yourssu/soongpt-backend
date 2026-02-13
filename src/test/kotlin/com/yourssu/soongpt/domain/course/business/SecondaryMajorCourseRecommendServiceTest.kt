@@ -8,7 +8,6 @@ import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryD
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -65,7 +64,9 @@ class SecondaryMajorCourseRecommendServiceTest : BehaviorSpec({
 
             then("등록 안내 메시지와 빈 courses를 반환한다") {
                 result.category shouldBe "DOUBLE_MAJOR_REQUIRED"
-                result.progress.shouldBeNull()
+                result.progress.required shouldBe 0
+                result.progress.completed shouldBe 0
+                result.progress.satisfied shouldBe true
                 result.message shouldBe "복수전공을 등록하지 않았습니다."
                 result.courses shouldHaveSize 0
             }
@@ -79,9 +80,9 @@ class SecondaryMajorCourseRecommendServiceTest : BehaviorSpec({
 
             then("noData 메시지를 반환한다") {
                 result.message shouldBe "졸업사정표에 복수전공필수 항목이 없습니다."
-                result.progress!!.required shouldBe 0
-                result.progress!!.completed shouldBe 0
-                result.progress!!.satisfied shouldBe true
+                result.progress.required shouldBe 0
+                result.progress.completed shouldBe 0
+                result.progress.satisfied shouldBe true
                 result.courses shouldHaveSize 0
             }
         }

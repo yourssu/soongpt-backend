@@ -38,26 +38,26 @@ class TimetableService(
         // 기존 타임테이블 로직: courses 조회
         val courses = getAvailableGeneralElectiveCourses(timetableId)
 
-        // 이수현황 조립: progress만 별도로 계산해서 응답에 추가
+        // 이수현황 조립: progress는 항상 반환. rusaint/졸업사정 없으면 -2/-2/false/빈 맵(recommend/all과 동일 센티널)
         val ctx = recommendContextResolver.resolveOptional()
-        val progress = if (ctx != null) {
-            val summary = ctx.graduationSummary?.generalElective
+        val summary = ctx?.graduationSummary?.generalElective
+        val progress = if (ctx != null && summary != null) {
             val rawFieldCredits = generalCourseRecommendService.computeTakenFieldCredits(
                 ctx.takenSubjectCodes,
                 ctx.schoolId
             )
-            // 분야 키를 학번별 표시용(A)으로 매핑하고, 동일 A로 묶인 학점 합산
             val fieldCredits = rawFieldCredits.entries
                 .groupBy { GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits(it.key, ctx.admissionYear, ctx.schoolId) }
                 .mapValues { it.value.sumOf { it.value } }
             GeneralElectiveProgress(
-                required = summary?.required,
-                completed = summary?.completed,
-                satisfied = summary?.satisfied ?: false,
+                required = summary.required,
+                completed = summary.completed,
+                satisfied = summary.satisfied,
                 fieldCredits = fieldCredits
             )
-        } else null
-
+        } else {
+            GeneralElectiveProgress(required = -2, completed = -2, satisfied = false, fieldCredits = emptyMap())
+        }
         return AvailableGeneralElectivesResponse(progress = progress, courses = courses)
     }
 
@@ -87,15 +87,15 @@ class TimetableService(
         return result
     }
 
-    // NOTE: 피키가 만든거!!! 채플 이수현황을 조립할 때 사용합니다. 대충 예시코드..라고 생각해주세요 피키피키~야호~
+    // NOTE: 채플 이수현황 조립. available-chapels API에서 사용.
     fun getAvailableChapels(timetableId: Long): AvailableChapelsResponse {
         ensureTimetableExists(timetableId)
         // 기존 타임테이블 로직: courses 조회
-        // 이수현황 조립: progress만 별도로 계산해서 응답에 추가
+        // 이수현황 조립: progress는 항상 반환. rusaint/졸업사정 없으면 satisfied=false
         val ctx = recommendContextResolver.resolveOptional()
-        val satisfied = ctx?.graduationSummary?.chapel?.satisfied
-        val progress = satisfied?.let { ChapelProgress(satisfied = it) }
-        val courses = if (satisfied == true) {
+        val satisfied = ctx?.graduationSummary?.chapel?.satisfied ?: false
+        val progress = ChapelProgress(satisfied = satisfied)
+        val courses = if (satisfied) {
             emptyList()
         } else {
             getAvailableChapelCourses(timetableId)

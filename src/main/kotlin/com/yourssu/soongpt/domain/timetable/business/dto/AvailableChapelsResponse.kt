@@ -10,8 +10,8 @@ data class ChapelProgress(
 
 @Schema(description = "수강 가능한 채플 과목 목록 응답")
 data class AvailableChapelsResponse(
-    @Schema(description = "채플 이수 진행 상황 (rusaint 없으면 null)")
-    val progress: ChapelProgress?,
+    @Schema(description = "채플 이수 진행 상황. 항상 존재. rusaint 없으면 satisfied=false")
+    val progress: ChapelProgress,
 
     @Schema(description = "수강 가능한 채플 과목 목록")
     val courses: List<TimetableCourseResponse>,

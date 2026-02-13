@@ -3,6 +3,7 @@ package com.yourssu.soongpt.domain.course.business
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
+import com.yourssu.soongpt.domain.course.business.dto.Progress
 import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
@@ -22,7 +23,9 @@ class RetakeCourseRecommendServiceTest : BehaviorSpec({
 
             then("RETAKE 카테고리와 빈 과목 목록, 안내 메시지를 반환한다") {
                 result.category shouldBe "RETAKE"
-                result.progress.shouldBeNull()
+                result.progress.required shouldBe -1
+                result.progress.completed shouldBe -1
+                result.progress.satisfied shouldBe false
                 result.courses shouldHaveSize 0
                 result.message shouldBe "재수강 가능한 C+ 이하 과목이 없습니다."
             }
@@ -37,7 +40,8 @@ class RetakeCourseRecommendServiceTest : BehaviorSpec({
 
             then("RETAKE 카테고리와 빈 과목 목록, 개설 없음 메시지를 반환한다") {
                 result.category shouldBe "RETAKE"
-                result.progress.shouldBeNull()
+                result.progress.required shouldBe -1
+                result.progress.completed shouldBe -1
                 result.courses shouldHaveSize 0
                 result.message shouldBe "C+ 이하 과목은 있으나, 이번 학기에 개설되는 재수강 과목이 없습니다."
             }
@@ -110,9 +114,11 @@ class RetakeCourseRecommendServiceTest : BehaviorSpec({
         `when`("recommend를 호출하면") {
             val result = service.recommend(listOf("21505455", "21505456"))
 
-            then("RETAKE 카테고리, null progress, 과목 목록을 반환한다") {
+            then("RETAKE 카테고리, notApplicable progress, 과목 목록을 반환한다") {
                 result.category shouldBe "RETAKE"
-                result.progress.shouldBeNull()
+                result.progress.required shouldBe -1
+                result.progress.completed shouldBe -1
+                result.progress.satisfied shouldBe false
                 result.message.shouldBeNull()
             }
 

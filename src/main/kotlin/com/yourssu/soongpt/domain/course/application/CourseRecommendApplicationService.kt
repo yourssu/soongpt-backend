@@ -36,13 +36,18 @@ class CourseRecommendApplicationService(
     ): CourseRecommendationsResponse {
         val ctx = contextResolver.resolve(request)
         val categories = query.toCategories()
+        val warnings = ctx.warnings.toMutableList()
+
+        if (ctx.graduationSummary == null) {
+            warnings.add("NO_GRADUATION_REPORT")
+        }
 
         val results = categories.map { category ->
             dispatch(category, ctx)
         }
 
         return CourseRecommendationsResponse(
-            warnings = ctx.warnings,
+            warnings = warnings,
             categories = results,
         )
     }
@@ -54,7 +59,7 @@ class CourseRecommendApplicationService(
         return when (category) {
             RecommendCategory.MAJOR_BASIC -> {
                 val summaryItem = ctx.graduationSummary?.majorFoundation
-                    ?: return noDataResponse(category)
+                    ?: return noDataResponse(category, ctx.graduationSummary != null)
                 val progress = Progress.from(summaryItem)
                 majorCourseRecommendService.recommendMajorBasicOrRequired(
                     departmentName = ctx.departmentName,
@@ -67,7 +72,7 @@ class CourseRecommendApplicationService(
 
             RecommendCategory.MAJOR_REQUIRED -> {
                 val summaryItem = ctx.graduationSummary?.majorRequired
-                    ?: return noDataResponse(category)
+                    ?: return noDataResponse(category, ctx.graduationSummary != null)
                 val progress = Progress.from(summaryItem)
                 majorCourseRecommendService.recommendMajorBasicOrRequired(
                     departmentName = ctx.departmentName,
@@ -80,7 +85,7 @@ class CourseRecommendApplicationService(
 
             RecommendCategory.MAJOR_ELECTIVE -> {
                 val summaryItem = ctx.graduationSummary?.majorElective
-                    ?: return noDataResponse(category)
+                    ?: return noDataResponse(category, ctx.graduationSummary != null)
                 val progress = Progress.from(summaryItem)
                 majorCourseRecommendService.recommendMajorElectiveWithGroups(
                     departmentName = ctx.departmentName,
@@ -92,7 +97,7 @@ class CourseRecommendApplicationService(
 
             RecommendCategory.GENERAL_REQUIRED -> {
                 val summaryItem = ctx.graduationSummary?.generalRequired
-                    ?: return noDataResponse(category)
+                    ?: return noDataResponse(category, ctx.graduationSummary != null)
                 val progress = Progress.from(summaryItem)
                 generalCourseRecommendService.recommend(
                     category = Category.GENERAL_REQUIRED,
@@ -106,6 +111,9 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.RETAKE -> {
+                if (ctx.graduationSummary == null) {
+                    return noGraduationUnavailableResponse(RecommendCategory.RETAKE)
+                }
                 retakeCourseRecommendService.recommend(
                     lowGradeSubjectCodes = ctx.lowGradeSubjectCodes,
                 )
@@ -120,9 +128,30 @@ class CourseRecommendApplicationService(
             RecommendCategory.MINOR ->
                 secondaryMajorCourseRecommendService.recommendMinor(ctx)
 
-            RecommendCategory.TEACHING ->
+            RecommendCategory.TEACHING -> {
+                if (ctx.graduationSummary == null) {
+                    return noGraduationUnavailableResponse(RecommendCategory.TEACHING)
+                }
                 teachingCourseRecommendService.recommend(ctx)
+            }
         }
+    }
+
+    /** 졸업사정표가 없을 때 재수강/교직 등도 "제공 불가"로 통일 (progress -2) */
+    private fun noGraduationUnavailableResponse(category: RecommendCategory): CategoryRecommendResponse {
+        val message = when (category) {
+            RecommendCategory.RETAKE -> "졸업사정표가 없어 재수강 추천을 제공할 수 없습니다."
+            RecommendCategory.TEACHING -> "졸업사정표가 없어 교직이수 추천을 제공할 수 없습니다."
+            else -> "졸업사정표가 없어 해당 추천을 제공할 수 없습니다."
+        }
+        return CategoryRecommendResponse(
+            category = category.name,
+            progress = Progress.unavailable(),
+            message = message,
+            userGrade = null,
+            courses = emptyList(),
+            lateFields = null,
+        )
     }
 
     private fun progressOnlyResponse(
@@ -144,16 +173,24 @@ class CourseRecommendApplicationService(
         )
     }
 
-    private fun noDataResponse(category: RecommendCategory): CategoryRecommendResponse {
+    private fun noDataResponse(
+        category: RecommendCategory,
+        graduationSummaryExists: Boolean = true,
+    ): CategoryRecommendResponse {
         val message = when (category) {
             RecommendCategory.MAJOR_BASIC -> "졸업사정표에 전공기초 항목이 없습니다."
             RecommendCategory.MAJOR_REQUIRED -> "졸업사정표에 전공필수 항목이 없습니다."
             RecommendCategory.MAJOR_ELECTIVE -> "졸업사정표에 전공선택 항목이 없습니다."
             else -> "졸업사정표에 해당 항목이 없습니다."
         }
+        val progress = if (graduationSummaryExists) {
+            Progress(required = 0, completed = 0, satisfied = true)
+        } else {
+            Progress.unavailable()
+        }
         return CategoryRecommendResponse(
             category = category.name,
-            progress = Progress(required = 0, completed = 0, satisfied = true),
+            progress = progress,
             message = message,
             userGrade = null,
             courses = emptyList(),

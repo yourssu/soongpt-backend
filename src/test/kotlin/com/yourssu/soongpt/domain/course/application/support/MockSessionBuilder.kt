@@ -46,6 +46,9 @@ class MockSessionBuilder(
 
     private var lowGradeSubjectCodes: List<String> = emptyList()
 
+    /** rusaint 1-1 또는 졸업사정표 미제공 시: graduationSummary = null, 경고(NO_GRADUATION_REPORT) 처리용 */
+    private var noGraduationReport: Boolean = false
+
     // 졸업요건 학점 (지정하지 않으면 completed 기반으로 자동 설정)
     private var majorFoundationRequired: Int? = null
     private var majorRequiredRequired: Int? = null
@@ -75,6 +78,9 @@ class MockSessionBuilder(
     fun doubleMajorElective(s: TakenStrategy) = apply { doubleMajorElectiveStrategy = s }
 
     fun retake(baseCodes: List<String>) = apply { lowGradeSubjectCodes = baseCodes }
+
+    /** 졸업사정표 없음(1-1 또는 rusaint 미제공). graduationSummary = null → 경고 NO_GRADUATION_REPORT, 카테고리별 noDataResponse */
+    fun noGraduationReport(value: Boolean = true) = apply { noGraduationReport = value }
 
     /** 해당 이수구분 없음(0/0/true) — 경영 전기, 글통 전필, 회계 전기 등 */
     fun majorFoundationRequiredCredits(value: Int?) = apply { majorFoundationRequired = value }
@@ -157,7 +163,10 @@ class MockSessionBuilder(
         val distinctTaken = allTakenCodes.distinct()
         val takenCourses = distributeBySemester(distinctTaken, admissionYear, currentYear, currentSemester)
 
-        val summary = buildGraduationSummary(completedCredits)
+        val summary = if (noGraduationReport) null else buildGraduationSummary(completedCredits)
+        // rusaint 실제 흐름: RusaintSnapshotMerger가 graduation null 시 warnings에 "NO_GRADUATION_DATA" 추가 후
+        // 이 DTO가 그대로 syncSessionStore.updateStatus(..., usaintData)로 세션에 저장됨
+        val warnings = if (noGraduationReport) listOf("NO_GRADUATION_DATA") else emptyList()
 
         return RusaintUsaintDataResponse(
             pseudonym = pseudonym,
@@ -176,7 +185,7 @@ class MockSessionBuilder(
             ),
             graduationRequirements = null,
             graduationSummary = summary,
-            warnings = emptyList(),
+            warnings = warnings,
         )
     }
 

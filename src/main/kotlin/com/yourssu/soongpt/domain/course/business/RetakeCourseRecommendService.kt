@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.business
 
 import com.yourssu.soongpt.domain.course.business.dto.CategoryRecommendResponse
+import com.yourssu.soongpt.domain.course.business.dto.Progress
 import com.yourssu.soongpt.domain.course.business.dto.RecommendedCourseResponse
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.baseCode
@@ -42,7 +43,7 @@ class RetakeCourseRecommendService(
 
         return CategoryRecommendResponse(
             category = RETAKE_CATEGORY,
-            progress = null,
+            progress = Progress.notApplicable(),
             message = null,
             userGrade = null,
             courses = recommendedCourses,
@@ -52,7 +53,7 @@ class RetakeCourseRecommendService(
 
     private fun retakeEmpty(message: String) = CategoryRecommendResponse(
         category = RETAKE_CATEGORY,
-        progress = null,
+        progress = Progress.notApplicable(),
         message = message,
         userGrade = null,
         courses = emptyList(),
