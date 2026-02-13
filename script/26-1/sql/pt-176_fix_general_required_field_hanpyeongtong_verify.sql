@@ -2,7 +2,12 @@
 
 SET NAMES utf8mb4;
 
-SELECT code, name, category, sub_category, field
+SELECT
+  code,
+  name,
+  category,
+  sub_category,
+  REPLACE(field, '\n', '\\n') AS field
 FROM course
 WHERE name = '한반도평화와통일'
 ORDER BY code;

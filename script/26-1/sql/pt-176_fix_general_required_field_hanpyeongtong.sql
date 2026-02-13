@@ -10,7 +10,15 @@
 -- - 기존 교필 field 포맷(예: "교필-['23이후]품격(글로벌시민의식)")과 동일하게 품격 영역으로 매핑.
 
 UPDATE course
-SET field = '교필-[''23이후]품격(한반도평화와통일)'
+SET field = CONCAT(
+    '교필-[''23이후]품격(한반도평화와통일)',
+    '\n',
+    '교필-[''19-''22]품격(한반도평화와통일)'
+)
 WHERE category = 'GENERAL_REQUIRED'
   AND name = '한반도평화와통일'
-  AND (field IS NULL OR TRIM(field) = '');
+  AND (
+      field IS NULL
+      OR TRIM(field) = ''
+      OR field NOT LIKE '%19-''22%'
+  );
