@@ -5,6 +5,8 @@ import com.yourssu.soongpt.domain.course.business.dto.*
 import com.yourssu.soongpt.domain.course.business.query.*
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.course.implement.SecondaryMajorCompletionType
+import com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toBaseCode
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
@@ -48,6 +50,29 @@ class CourseServiceImpl(
 
     override fun findAllByTrack(query: FilterCoursesByTrackQuery): List<CourseResponse> {
         val department = departmentReader.getByName(query.departmentName)
+
+        // 타전공인정은 원본 분류(course_secondary_major_classification) 기준으로만 조회
+        // - target allow/deny/scope/grade 필터를 적용하지 않아 원본 인정 목록과 동일하게 노출
+        if (query.trackType == SecondaryMajorTrackType.CROSS_MAJOR) {
+            val completionTypes = query.completionType?.let { listOf(it) }
+                ?: listOf(SecondaryMajorCompletionType.RECOGNIZED)
+
+            val courses = completionTypes
+                .flatMap { completionType ->
+                    courseReader.findCoursesBySecondaryMajorClassification(
+                        trackType = query.trackType,
+                        completionType = completionType,
+                        departmentId = department.id!!,
+                    )
+                }
+                .distinctBy { it.code }
+
+            return courses.map { course ->
+                val courseTimes = CourseTimes.from(course.scheduleRoom)
+                CourseResponse.from(course, courseTimes.toList())
+            }
+        }
+
         val college = collegeReader.get(department.collegeId)
 
         // 전체 학년(1-5) 조회
@@ -78,21 +103,14 @@ class CourseServiceImpl(
         // completionType이 없으면 해당 trackType의 모든 이수구분 조회
         val allCompletionTypes =
                 when (query.trackType) {
-                    com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType
-                            .DOUBLE_MAJOR,
-                    com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType.MINOR ->
+                    SecondaryMajorTrackType.DOUBLE_MAJOR,
+                    SecondaryMajorTrackType.MINOR ->
                             listOf(
-                                    com.yourssu.soongpt.domain.course.implement
-                                            .SecondaryMajorCompletionType.REQUIRED,
-                                    com.yourssu.soongpt.domain.course.implement
-                                            .SecondaryMajorCompletionType.ELECTIVE
+                                    SecondaryMajorCompletionType.REQUIRED,
+                                    SecondaryMajorCompletionType.ELECTIVE
                             )
-                    com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType
-                            .CROSS_MAJOR ->
-                            listOf(
-                                    com.yourssu.soongpt.domain.course.implement
-                                            .SecondaryMajorCompletionType.RECOGNIZED
-                            )
+                    SecondaryMajorTrackType.CROSS_MAJOR ->
+                            listOf(SecondaryMajorCompletionType.RECOGNIZED)
                 }
 
         val allCourses =
