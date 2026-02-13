@@ -183,6 +183,10 @@ class CourseController(
                 - `REQUIRED` 또는 `필수` - 필수 과목만
                 - `ELECTIVE` 또는 `선택` - 선택 과목만
                 - `RECOGNIZED` 또는 `타전공인정` - 타전공인정 과목만
+
+            **조회 기준:**
+            - `DOUBLE_MAJOR`, `MINOR`: `target`(Allow-Deny / scope / grade) 기준으로 조회
+            - `CROSS_MAJOR`: `course_secondary_major_classification` 원본 분류 기준으로 조회 (`target` 필터 미적용)
         """
     )
     @GetMapping("/by-track")
