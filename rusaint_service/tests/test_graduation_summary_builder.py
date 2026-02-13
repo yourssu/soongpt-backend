@@ -238,3 +238,56 @@ class TestCase8_채플:
     def test_채플_없으면_null(self):
         summary = build_graduation_summary([])
         assert summary.chapel is None
+
+
+# ======================================================================
+# Case 9: 복수전공 복합 → 복선 역산
+# 복필 단독 + "복수전공" 복합 → 복선 = 복수전공 - 복필
+# ======================================================================
+class TestCase9_복수전공_복합:
+    def test_복필_복수전공_복합에서_복선_역산(self):
+        """복필 12, 복수전공 21 → 복선 = 21-12 = 9"""
+        reqs = [
+            _req("학부-복필 12", 12, 9, False),
+            _req("학부-복수전공 21", 21, 24, True),
+        ]
+        summary = build_graduation_summary(reqs)
+
+        assert summary.doubleMajorRequired is not None
+        assert summary.doubleMajorRequired.required == 12
+        assert summary.doubleMajorRequired.completed == 9
+        assert summary.doubleMajorRequired.satisfied is False  # 9 < 12
+
+        assert summary.doubleMajorElective is not None
+        assert summary.doubleMajorElective.required == 9   # 21 - 12
+        assert summary.doubleMajorElective.completed == 15  # 24 - 9
+        assert summary.doubleMajorElective.satisfied is True  # 15 >= 9
+
+    def test_복필_없으면_복수전공_전체가_복선(self):
+        """복필 없이 복수전공 21 → 복선 = 21"""
+        reqs = [
+            _req("학부-복수전공 21", 21, 15, False),
+        ]
+        summary = build_graduation_summary(reqs)
+
+        assert summary.doubleMajorRequired is None
+        assert summary.doubleMajorElective is not None
+        assert summary.doubleMajorElective.required == 21
+        assert summary.doubleMajorElective.completed == 15
+        assert summary.doubleMajorElective.satisfied is False  # 15 < 21
+
+    def test_복선_satisfied_복합_충족이어도_독립계산(self):
+        """복합 충족이지만 복필 초과이수 → 복선 미충족"""
+        reqs = [
+            _req("학부-복필 6", 6, 18, True),   # 복필 대폭 초과
+            _req("학부-복수전공 24", 24, 24, True),  # 복합 충족
+        ]
+        summary = build_graduation_summary(reqs)
+
+        assert summary.doubleMajorRequired is not None
+        assert summary.doubleMajorRequired.satisfied is True
+
+        assert summary.doubleMajorElective is not None
+        assert summary.doubleMajorElective.required == 18  # 24 - 6
+        assert summary.doubleMajorElective.completed == 6  # 24 - 18
+        assert summary.doubleMajorElective.satisfied is False  # 6 < 18

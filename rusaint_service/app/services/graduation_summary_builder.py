@@ -251,43 +251,25 @@ def build_graduation_summary(
         )
 
     # 복합 항목 후처리: 복수전공
+    # 복필 단독 필드가 있으면 복합에서 빼서 복선 역산.
+    # 복필/복선 satisfied는 각각 자체 required/completed로 계산.
     double_major_elective: Optional[CreditSummaryItem] = None
     if double_major_combined is not None:
         combined_req = _safe_int(double_major_combined.requirement)
         combined_calc = _safe_int(double_major_combined.calculation)
-        combined_result = _safe_bool(double_major_combined.result)
 
         if double_major_required is not None:
             elective_req = max(0, combined_req - double_major_required.required)
             elective_calc = max(0, combined_calc - double_major_required.completed)
-            if combined_result:
-                double_major_required = CreditSummaryItem(
-                    required=double_major_required.required,
-                    completed=double_major_required.completed,
-                    satisfied=True,
-                )
-                double_major_elective = CreditSummaryItem(
-                    required=elective_req,
-                    completed=elective_calc,
-                    satisfied=True,
-                )
-            else:
-                double_major_required = CreditSummaryItem(
-                    required=double_major_required.required,
-                    completed=double_major_required.completed,
-                    satisfied=double_major_required.completed >= double_major_required.required,
-                )
-                double_major_elective = CreditSummaryItem(
-                    required=elective_req,
-                    completed=elective_calc,
-                    satisfied=elective_calc >= elective_req,
-                )
         else:
-            double_major_elective = CreditSummaryItem(
-                required=combined_req,
-                completed=combined_calc,
-                satisfied=combined_result,
-            )
+            elective_req = combined_req
+            elective_calc = combined_calc
+
+        double_major_elective = CreditSummaryItem(
+            required=elective_req,
+            completed=elective_calc,
+            satisfied=elective_calc >= elective_req,
+        )
 
     return GraduationSummary(
         generalRequired=general_required,
