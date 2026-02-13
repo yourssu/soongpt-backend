@@ -46,7 +46,7 @@ class TimetableRanker {
     private fun getTagScore(candidate: TimetableCandidate): Int {
         return candidate.validTags.sumOf { tag ->
             when (tag) {
-                Tag.HAS_FREE_DAY -> 30
+                Tag.FREE_MONDAY, Tag.FREE_TUESDAY, Tag.FREE_WEDNESDAY, Tag.FREE_THURSDAY, Tag.FREE_FRIDAY -> 30
                 Tag.GUARANTEED_LUNCH_TIME -> 20
                 Tag.NO_MORNING_CLASSES -> 15
                 Tag.NO_LONG_BREAKS -> 15
