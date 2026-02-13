@@ -10,6 +10,10 @@ import com.yourssu.soongpt.domain.course.implement.SecondaryMajorCompletionType
 import com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType
 import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
+import com.yourssu.soongpt.domain.target.implement.ScopeType
+import com.yourssu.soongpt.domain.target.implement.StudentType
+import com.yourssu.soongpt.domain.target.implement.Target
+import com.yourssu.soongpt.domain.target.implement.TargetReader
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
@@ -27,10 +31,12 @@ class MajorCourseRecommendServiceTest : BehaviorSpec({
 
     val courseRepository = mock<CourseRepository>()
     val departmentReader = mock<DepartmentReader>()
+    val targetReader = mock<TargetReader>()
 
     val service = MajorCourseRecommendService(
         courseRepository = courseRepository,
         departmentReader = departmentReader,
+        targetReader = targetReader,
     )
 
     val department = Department(id = 1L, name = "컴퓨터학부", collegeId = 10L)
@@ -64,7 +70,7 @@ class MajorCourseRecommendServiceTest : BehaviorSpec({
     }
 
     beforeTest {
-        reset(courseRepository, departmentReader)
+        reset(courseRepository, departmentReader, targetReader)
         stubDepartment()
     }
 
@@ -168,15 +174,12 @@ class MajorCourseRecommendServiceTest : BehaviorSpec({
                     targetGrades = listOf(3),
                 )
 
-                val crossMajor = CourseWithTarget(
-                    course = course(
-                        code = 2150200201L,
-                        name = "디지털신호처리",
-                        category = Category.MAJOR_ELECTIVE,
-                        professor = "B",
-                        target = "2학년",
-                    ),
-                    targetGrades = listOf(2),
+                val crossMajorCourse = course(
+                    code = 2150200201L,
+                    name = "디지털신호처리",
+                    category = Category.MAJOR_ELECTIVE,
+                    professor = "B",
+                    target = "2학년",
                 )
 
                 whenever(
@@ -189,14 +192,27 @@ class MajorCourseRecommendServiceTest : BehaviorSpec({
                 ).thenReturn(listOf(elective))
 
                 whenever(
-                    courseRepository.findCoursesWithTargetBySecondaryMajor(
+                    courseRepository.findCoursesBySecondaryMajorClassification(
                         trackType = SecondaryMajorTrackType.CROSS_MAJOR,
                         completionType = SecondaryMajorCompletionType.RECOGNIZED,
                         departmentId = 1L,
-                        collegeId = 10L,
-                        maxGrade = 5,
                     )
-                ).thenReturn(listOf(crossMajor))
+                ).thenReturn(listOf(crossMajorCourse))
+
+                whenever(
+                    targetReader.findAllByCodes(listOf(2150200201L))
+                ).thenReturn(
+                    mapOf(
+                        2150200201L to listOf(
+                            Target(
+                                courseCode = 2150200201L,
+                                scopeType = ScopeType.UNIVERSITY,
+                                grade2 = true,
+                                studentType = StudentType.GENERAL,
+                            )
+                        )
+                    )
+                )
 
                 val result = service.recommendMajorElectiveWithGroups(
                     departmentName = "컴퓨터학부",
@@ -214,12 +230,10 @@ class MajorCourseRecommendServiceTest : BehaviorSpec({
                 result.courses[0].isCrossMajor shouldBe false
                 result.courses[1].isCrossMajor shouldBe true
 
-                verify(courseRepository, times(1)).findCoursesWithTargetBySecondaryMajor(
+                verify(courseRepository, times(1)).findCoursesBySecondaryMajorClassification(
                     trackType = eq(SecondaryMajorTrackType.CROSS_MAJOR),
                     completionType = eq(SecondaryMajorCompletionType.RECOGNIZED),
                     departmentId = eq(1L),
-                    collegeId = eq(10L),
-                    maxGrade = eq(5),
                 )
             }
         }

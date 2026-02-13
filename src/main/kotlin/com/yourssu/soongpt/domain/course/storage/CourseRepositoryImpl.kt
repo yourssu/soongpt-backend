@@ -10,6 +10,7 @@ import com.yourssu.soongpt.domain.course.storage.QCourseSecondaryMajorClassifica
 import com.yourssu.soongpt.domain.target.implement.ScopeType
 import com.yourssu.soongpt.domain.target.implement.StudentType
 import com.yourssu.soongpt.domain.target.storage.QTargetEntity.targetEntity
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -22,6 +23,7 @@ class CourseRepositoryImpl(
     private val courseJpaRepository: CourseJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
     ): CourseRepository {
+    private val logger = KotlinLogging.logger {}
     private val totalCount: Long = courseJpaRepository.count()
 
     override fun get(code: Long): Course {
@@ -206,7 +208,15 @@ class CourseRepositoryImpl(
                 )
             }
             .groupBy { it.course.code }
-            .map { (_, targets) ->
+            .map { (courseCode, targets) ->
+                // 같은 course.code인데 course 정보가 다른 경우 경고 로그
+                val uniqueCourses = targets.map { it.course }.distinctBy { "${it.name}|${it.department}" }
+                if (uniqueCourses.size > 1) {
+                    logger.warn {
+                        "같은 과목코드($courseCode)인데 course 정보가 다릅니다. " +
+                            "과목들: ${uniqueCourses.joinToString(", ") { "${it.name}(${it.department})" }}"
+                    }
+                }
                 targets.first().copy(
                     targetGrades = targets.flatMap { it.targetGrades }.distinct().sorted(),
                     isStrict = targets.any { it.isStrict },
@@ -221,7 +231,13 @@ class CourseRepositoryImpl(
         collegeId: Long,
         maxGrade: Int,
     ): List<CourseWithTarget> {
-        val scopeCondition = buildScopeCondition(departmentId, collegeId)
+        // 타전공인정과목의 경우 다른 학과의 과목이므로 scopeCondition을 완화
+        // UNIVERSITY 또는 COLLEGE 범위만 확인하고, DEPARTMENT 범위는 확인하지 않음
+        val scopeCondition = if (trackType == SecondaryMajorTrackType.CROSS_MAJOR) {
+            buildScopeConditionForCrossMajor(collegeId)
+        } else {
+            buildScopeCondition(departmentId, collegeId)
+        }
         val gradeCondition = buildGradeRangeCondition(maxGrade)
 
         val allowResults = jpaQueryFactory
@@ -233,6 +249,7 @@ class CourseRepositoryImpl(
                     targetEntity.grade3,
                     targetEntity.grade4,
                     targetEntity.grade5,
+                    targetEntity.isStrict,
                 )
             )
             .from(courseEntity)
@@ -254,6 +271,7 @@ class CourseRepositoryImpl(
             return emptyList()
         }
 
+        // Deny 조건: scopeCondition 재사용 (중복 계산 방지)
         val denyCodes = jpaQueryFactory
             .select(targetEntity.courseCode)
             .from(targetEntity)
@@ -266,6 +284,7 @@ class CourseRepositoryImpl(
             .fetch()
             .toSet()
 
+        // CourseWithTarget 변환 (Deny 과목 제외, 같은 과목코드의 targetGrades 병합)
         return allowResults
             .filter { it.get(courseEntity)!!.code !in denyCodes }
             .map { tuple ->
@@ -278,6 +297,22 @@ class CourseRepositoryImpl(
                         grade4 = tuple.get(targetEntity.grade4) ?: false,
                         grade5 = tuple.get(targetEntity.grade5) ?: false,
                     ),
+                    isStrict = tuple.get(targetEntity.isStrict) ?: false,
+                )
+            }
+            .groupBy { it.course.code }
+            .map { (courseCode, targets) ->
+                // 같은 course.code인데 course 정보가 다른 경우 경고 로그
+                val uniqueCourses = targets.map { it.course }.distinctBy { "${it.name}|${it.department}" }
+                if (uniqueCourses.size > 1) {
+                    logger.warn {
+                        "같은 과목코드($courseCode)인데 course 정보가 다릅니다. " +
+                            "과목들: ${uniqueCourses.joinToString(", ") { "${it.name}(${it.department})" }}"
+                    }
+                }
+                targets.first().copy(
+                    targetGrades = targets.flatMap { it.targetGrades }.distinct().sorted(),
+                    isStrict = targets.any { it.isStrict },
                 )
             }
     }
@@ -310,6 +345,19 @@ class CourseRepositoryImpl(
             .or(
                 targetEntity.scopeType.eq(ScopeType.DEPARTMENT)
                     .and(targetEntity.departmentId.eq(departmentId))
+            )
+    }
+
+    /**
+     * 타전공인정과목용 scope 조건
+     * - 타전공인정과목은 다른 학과의 과목이므로 DEPARTMENT 범위는 확인하지 않음
+     * - UNIVERSITY 또는 COLLEGE 범위만 확인
+     */
+    private fun buildScopeConditionForCrossMajor(collegeId: Long): BooleanExpression {
+        return targetEntity.scopeType.eq(ScopeType.UNIVERSITY)
+            .or(
+                targetEntity.scopeType.eq(ScopeType.COLLEGE)
+                    .and(targetEntity.collegeId.eq(collegeId))
             )
     }
 
