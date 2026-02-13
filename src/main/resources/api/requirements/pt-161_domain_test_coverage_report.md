@@ -26,15 +26,15 @@
 - `usaint`: **55.00%** (88/160)
 - `courseTime`: **51.61%** (32/62)
 - `course`: **35.41%** (705/1991)
-- `common`: **34.96%** (136/389)
+- `common`: **44.22%** (172/389)
 - `coursefield`: **30.56%** (11/36)
 - `equivalence`: **28.12%** (9/32)
 - `contact`: **25.00%** (9/36)
 - `rating`: **22.73%** (10/44)
-- `sso`: **21.07%** (83/394)
+- `sso`: **44.92%** (177/394)
 - `admin`: **12.90%** (4/31)
 - `timetable`: **9.24%** (91/985)
-- `target`: **8.51%** (16/188)
+- `target`: **12.77%** (24/188)
 
 ## 4) course 도메인 하위 패키지별 관찰
 추천 로직(DCI)과 직결되는 `course.application` / `course.business` / `course.implement`의 커버리지는 상승했지만,
@@ -58,6 +58,16 @@ Querydsl 기반 조회(`course.storage`)는 격리 단위 테스트로 커버하
   - 교직이수 대상 여부
   - targetReader(일반/교직용) 학년 루프 호출
   - field 기반 영역(전공/교직/특성화) 분류 및 정렬, 분반(baseCode) 그룹핑
+- `TargetReaderTest`
+  - 전기/전필(1~userGrade), 전선(1~5) 과목코드 조회 범위 + distinct 검증
+- `ClientJwtProviderTest`
+  - JWT 발급/검증/만료/위변조, auth/logout 쿠키 속성 검증
+- `CurrentPseudonymFilterTest`
+  - FilterChain 실행 중 pseudonym set, 종료 후 clear 검증
+- `SyncSessionStoreTest`
+  - 세션 생성/상태 업데이트/데이터 저장 동작 검증
+- `SsoControllerTest`
+  - `/sync/status`, `/sync/student-info` 주요 분기(쿠키 없음/무효/세션 만료/정상) 검증
 
 ### 기존 테스트 형식 정리 (Kotest 기준 통일)
 - `GetTeachingCoursesRequestTest` (JUnit → Kotest)
