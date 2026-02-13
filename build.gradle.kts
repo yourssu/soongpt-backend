@@ -6,6 +6,7 @@ plugins {
 	kotlin("plugin.jpa") version "1.9.25"
 	kotlin("kapt") version "1.9.25"
 	kotlin("plugin.serialization") version "1.5.0"
+	jacoco
 }
 
 group = "com.yourssu"
@@ -108,6 +109,11 @@ allOpen {
 	annotation("jakarta.persistence.Embeddable")
 }
 
+jacoco {
+	// Java 21 지원을 위해 0.8.11 이상 권장
+	toolVersion = "0.8.11"
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 	// 통합 테스트(MySQL 필요)는 기본 제외. 실행 시: ./gradlew test -Pintegration
@@ -116,4 +122,28 @@ tasks.withType<Test> {
 			excludeTestsMatching("*Integration*")
 		}
 	}
+	finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test)
+	reports {
+		xml.required.set(true)
+		html.required.set(true)
+		csv.required.set(false)
+	}
+
+	// Querydsl Q-class 등 커버리지 의미가 없는 파일은 제외
+	classDirectories.setFrom(
+		files(
+			classDirectories.files.map { dir ->
+				fileTree(dir) {
+					exclude(
+						"**/Q*.class",
+						"**/*\$*" // synthetic
+					)
+				}
+			}
+		)
+	)
 }

@@ -1,21 +1,27 @@
 package com.yourssu.soongpt.domain.course.application.dto
 
 import com.yourssu.soongpt.common.handler.BadRequestException
-import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Test
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.string.shouldContain
 
-class GetTeachingCoursesRequestTest {
+class GetTeachingCoursesRequestTest : BehaviorSpec({
 
-    @Test
-    fun `invalid majorArea throws BadRequestException`() {
-        val request = GetTeachingCoursesRequest(
-            schoolId = 26,
-            department = "컴퓨터학부",
-            majorArea = "INVALID",
-        )
+    given("GetTeachingCoursesRequest.toQuery") {
+        `when`("majorArea가 유효하지 않으면") {
+            then("BadRequestException을 던진다") {
+                val request = GetTeachingCoursesRequest(
+                    schoolId = 26,
+                    department = "컴퓨터학부",
+                    majorArea = "INVALID",
+                )
 
-        assertThrows(BadRequestException::class.java) {
-            request.toQuery()
+                val exception = shouldThrow<BadRequestException> {
+                    request.toQuery()
+                }
+
+                exception.message shouldContain "majorArea"
+            }
         }
     }
-}
+})
