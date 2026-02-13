@@ -51,12 +51,12 @@ class UntakenCourseCodeService(
         // 2학년 이상은 "수강 불가(10채플)"만 제외하고 비전채플 전체를 추천하도록 정책을 별도로 적용한다.
         // (1학년은 소그룹/비전 분배 및 예외학과 등 기존 target 기반 정책을 유지)
         if (category == Category.CHAPEL && usaintData.basicInfo.grade >= 2) {
-            val takenBaseCodes = extractTakenBaseCodes(usaintData)
+            // 채플은 총 이수 횟수 기반(예: 1~4학년 총 6회)으로 관리되므로
+            // "이미 들었던 채플"을 baseCode로 제외하지 않는다.
             return courseRepository.findAllByCategory(Category.CHAPEL)
                 .asSequence()
                 .filter { it.division == VISION_CHAPEL_DIVISION }
                 .filter { it.code != UNTAKABLE_VISION_CHAPEL_CODE }
-                .filter { it.baseCode() !in takenBaseCodes }
                 .map { it.code }
                 .distinct()
                 .toList()
@@ -68,6 +68,11 @@ class UntakenCourseCodeService(
         val maxGrade = if (category == Category.MAJOR_ELECTIVE) MAX_GRADE else usaintData.basicInfo.grade
 
         val coursesWithTarget = getCoursesWithTarget(category, departmentId, department.collegeId, maxGrade)
+
+        // NOTE: 채플은 이수횟수 기반이라 "이미 이수한 과목" 개념으로 제외하지 않는다.
+        if (category == Category.CHAPEL) {
+            return coursesWithTarget.map { it.course.code }
+        }
 
         val takenBaseCodes = extractTakenBaseCodes(usaintData)
 
