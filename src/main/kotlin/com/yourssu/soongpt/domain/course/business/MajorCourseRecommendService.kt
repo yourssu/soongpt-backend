@@ -13,6 +13,7 @@ import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.target.implement.StudentType
 import com.yourssu.soongpt.domain.target.implement.TargetReader
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 
 /**
@@ -25,6 +26,7 @@ class MajorCourseRecommendService(
     private val departmentReader: DepartmentReader,
     private val targetReader: TargetReader,
 ) {
+    private val logger = KotlinLogging.logger {}
 
     /**
      * 전공기초/전공필수 과목 추천
@@ -46,9 +48,12 @@ class MajorCourseRecommendService(
         }
 
         val department = departmentReader.getByName(departmentName)
+        val departmentId = requireNotNull(department.id) {
+            "Department ID must not be null for department: ${department.name}"
+        }
         val untakenCourses = getUntakenCoursesWithTarget(
             category = category,
-            departmentId = department.id!!,
+            departmentId = departmentId,
             collegeId = department.collegeId,
             maxGrade = userGrade,
             takenSubjectCodes = takenSubjectCodes,
@@ -85,9 +90,12 @@ class MajorCourseRecommendService(
         }
 
         val department = departmentReader.getByName(departmentName)
+        val departmentId = requireNotNull(department.id) {
+            "Department ID must not be null for department: ${department.name}"
+        }
         val untakenCourses = getUntakenCoursesWithTarget(
             category = category,
-            departmentId = department.id!!,
+            departmentId = departmentId,
             collegeId = department.collegeId,
             maxGrade = MAX_GRADE,
             takenSubjectCodes = takenSubjectCodes,
@@ -131,12 +139,15 @@ class MajorCourseRecommendService(
         }
 
         val department = departmentReader.getByName(departmentName)
+        val departmentId = requireNotNull(department.id) {
+            "Department ID must not be null for department: ${department.name}"
+        }
         val takenBaseCodes = toTakenBaseCodeSet(takenSubjectCodes)
 
         // 1) 전공선택 과목 조회 + 이수 과목 제외
         val untakenCourses = getUntakenCoursesWithTarget(
             category = category,
-            departmentId = department.id!!,
+            departmentId = departmentId,
             collegeId = department.collegeId,
             maxGrade = MAX_GRADE,
             takenSubjectCodes = takenSubjectCodes,
@@ -148,7 +159,7 @@ class MajorCourseRecommendService(
         val crossMajorCoursesRaw = courseRepository.findCoursesBySecondaryMajorClassification(
             trackType = SecondaryMajorTrackType.CROSS_MAJOR,
             completionType = SecondaryMajorCompletionType.RECOGNIZED,
-            departmentId = department.id!!,
+            departmentId = departmentId,
         )
             .filter { it.baseCode() !in takenBaseCodes }
             .filter { it.baseCode() !in electiveBaseCodes }
@@ -175,6 +186,7 @@ class MajorCourseRecommendService(
                 }.distinct().sorted()
             } else {
                 // target 정보가 없는 경우 전체 학년으로 처리
+                logger.warn { "타전공인정 과목(${course.code}: ${course.name})의 target 정보가 없습니다." }
                 listOf(1, 2, 3, 4, 5)
             }
 
