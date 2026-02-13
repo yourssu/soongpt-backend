@@ -4,6 +4,8 @@
 name 기반 분류 결과를 담는 스키마입니다.
 """
 
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -18,49 +20,49 @@ class CreditSummaryItem(BaseModel):
 class ChapelSummaryItem(BaseModel):
     """채플 요건 요약 (학점 없이 충족 여부만)"""
 
-    satisfied: bool = Field(True, description="충족 여부")
+    satisfied: bool = Field(False, description="충족 여부")
 
 
 class GraduationSummary(BaseModel):
-    """졸업사정표 핵심 요약 (name 기반 분류 결과)"""
+    """졸업사정표 핵심 요약 (name 기반 분류 결과). 매칭되지 않은 항목은 null."""
 
-    generalRequired: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    generalRequired: Optional[CreditSummaryItem] = Field(
+        None,
         description="교양필수",
     )
-    generalElective: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    generalElective: Optional[CreditSummaryItem] = Field(
+        None,
         description="교양선택",
     )
-    majorFoundation: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    majorFoundation: Optional[CreditSummaryItem] = Field(
+        None,
         description="전공기초",
     )
-    majorRequired: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    majorRequired: Optional[CreditSummaryItem] = Field(
+        None,
         description="전공필수",
     )
-    majorElective: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    majorElective: Optional[CreditSummaryItem] = Field(
+        None,
         description="전공선택",
     )
-    minor: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    minor: Optional[CreditSummaryItem] = Field(
+        None,
         description="부전공",
     )
-    doubleMajorRequired: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    doubleMajorRequired: Optional[CreditSummaryItem] = Field(
+        None,
         description="복수전공필수",
     )
-    doubleMajorElective: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    doubleMajorElective: Optional[CreditSummaryItem] = Field(
+        None,
         description="복수전공선택",
     )
-    christianCourses: CreditSummaryItem = Field(
-        default_factory=CreditSummaryItem,
+    christianCourses: Optional[CreditSummaryItem] = Field(
+        None,
         description="기독교과목",
     )
-    chapel: ChapelSummaryItem = Field(
-        default_factory=ChapelSummaryItem,
+    chapel: Optional[ChapelSummaryItem] = Field(
+        None,
         description="채플",
     )
