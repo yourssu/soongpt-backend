@@ -46,22 +46,6 @@ class UntakenCourseCodeService(
      */
     fun getUntakenCourseCodes(category: Category, pseudonym: String? = null): List<Long> {
         val usaintData = resolveUsaintData(pseudonym)
-
-        // NOTE: 채플은 실제 수강 정책(학년/대상)과 target allow/deny 데이터가 완전히 일치하지 않아
-        // 2학년 이상은 "수강 불가(10채플)"만 제외하고 비전채플 전체를 추천하도록 정책을 별도로 적용한다.
-        // (1학년은 소그룹/비전 분배 및 예외학과 등 기존 target 기반 정책을 유지)
-        if (category == Category.CHAPEL && usaintData.basicInfo.grade >= 2) {
-            val takenBaseCodes = extractTakenBaseCodes(usaintData)
-            return courseRepository.findAllByCategory(Category.CHAPEL)
-                .asSequence()
-                .filter { it.division == VISION_CHAPEL_DIVISION }
-                .filter { it.code != UNTAKABLE_VISION_CHAPEL_CODE }
-                .filter { it.baseCode() !in takenBaseCodes }
-                .map { it.code }
-                .distinct()
-                .toList()
-        }
-
         val department = departmentReader.getByName(usaintData.basicInfo.department)
         val departmentId = department.id
             ?: throw IllegalStateException("학과 ID가 없습니다: ${department.name}")
@@ -181,15 +165,5 @@ class UntakenCourseCodeService(
         private const val MAX_GRADE = 5
         /** 교필 분야명을 23이후 기준으로 통일하기 위한 고정 schoolId */
         private const val GENERAL_REQUIRED_SCHOOL_ID = 23
-
-        private const val VISION_CHAPEL_DIVISION = "비전채플"
-
-        /**
-         * "10채플"(수강 불가 대상이 많아 추천에서 제외해야 하는 비전채플)
-         *
-         * - 코드: 2150101510
-         * - 출처(예시): 2025-2학기 교목실 채플 일정/안내에서 별도 수강제한 안내가 존재
-         */
-        private const val UNTAKABLE_VISION_CHAPEL_CODE = 2150101510L
     }
 }
