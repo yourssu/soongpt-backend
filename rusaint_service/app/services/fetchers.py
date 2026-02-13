@@ -80,11 +80,10 @@ async def fetch_basic_info(student_info_app) -> tuple[BasicInfo, list[str]]:
             semester = min(8, semester + 1)
         grade = min(4, (semester - 1) // 2 + 1)
 
+        # rusaint StudentInformation: department=학과, major=세부전공(Optional)
         department = getattr(student_info, "major", None) or getattr(
             student_info, "department", None
         )
-        if hasattr(student_info, "majors") and student_info.majors:
-            department = student_info.majors[0]
         if not department:
             logger.error("학과 정보를 찾을 수 없습니다")
             raise ValueError("필수 학적 정보(학과)를 조회할 수 없습니다")
@@ -241,14 +240,15 @@ async def fetch_flags(student_info_app) -> Flags:
         double_major = None
         minor = None
 
-        for attr in ["second_major", "double_major", "dual_major", "major_double"]:
+        # rusaint StudentInformation: plural_major(복수전공), sub_major(부전공)
+        for attr in ["plural_major", "second_major", "double_major", "dual_major", "major_double"]:
             if hasattr(student_info, attr):
                 value = getattr(student_info, attr)
                 if value and str(value).strip():
                     double_major = value
                     break
 
-        for attr in ["minor", "minor_major", "submajor"]:
+        for attr in ["sub_major", "minor", "minor_major", "submajor"]:
             if hasattr(student_info, attr):
                 value = getattr(student_info, attr)
                 if value and str(value).strip():
