@@ -41,6 +41,17 @@ interface CourseRepository {
     ): List<CourseWithTarget>
 
     /**
+     * 이수구분 분류 테이블 기준 과목 조회 (Target 미적용)
+     * - course_secondary_major_classification + course join
+     * - CROSS_MAJOR 조회용 (원본 인정 목록 노출)
+     */
+    fun findCoursesBySecondaryMajorClassification(
+        trackType: SecondaryMajorTrackType,
+        completionType: SecondaryMajorCompletionType,
+        departmentId: Long,
+    ): List<Course>
+
+    /**
      * baseCode 목록으로 과목을 Target 정보와 함께 조회 (재수강용)
      * - code / 100 IN baseCodes 조건으로 분반 포함 조회
      * - Allow - Deny 로직 적용

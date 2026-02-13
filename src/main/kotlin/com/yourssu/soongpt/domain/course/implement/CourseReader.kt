@@ -125,4 +125,16 @@ class CourseReader(
             maxGrade = maxGrade,
         )
     }
+
+    fun findCoursesBySecondaryMajorClassification(
+        trackType: SecondaryMajorTrackType,
+        completionType: SecondaryMajorCompletionType,
+        departmentId: Long,
+    ): List<Course> {
+        return courseRepository.findCoursesBySecondaryMajorClassification(
+            trackType = trackType,
+            completionType = completionType,
+            departmentId = departmentId,
+        )
+    }
 }

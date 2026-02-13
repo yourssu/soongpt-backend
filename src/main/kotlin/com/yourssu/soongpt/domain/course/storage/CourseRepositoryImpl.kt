@@ -244,6 +244,25 @@ class CourseRepositoryImpl(
             }
     }
 
+    override fun findCoursesBySecondaryMajorClassification(
+        trackType: SecondaryMajorTrackType,
+        completionType: SecondaryMajorCompletionType,
+        departmentId: Long,
+    ): List<Course> {
+        return jpaQueryFactory
+            .selectDistinct(courseEntity)
+            .from(courseEntity)
+            .innerJoin(courseSecondaryMajorClassificationEntity)
+            .on(courseEntity.code.eq(courseSecondaryMajorClassificationEntity.courseCode))
+            .where(
+                courseSecondaryMajorClassificationEntity.trackType.eq(trackType),
+                courseSecondaryMajorClassificationEntity.completionType.eq(completionType),
+                courseSecondaryMajorClassificationEntity.departmentId.eq(departmentId),
+            )
+            .fetch()
+            .map { it.toDomain() }
+    }
+
     private fun buildScopeCondition(departmentId: Long, collegeId: Long): BooleanExpression {
         return targetEntity.scopeType.eq(ScopeType.UNIVERSITY)
             .or(
