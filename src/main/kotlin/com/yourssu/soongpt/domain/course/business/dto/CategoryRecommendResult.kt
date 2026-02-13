@@ -18,21 +18,31 @@ enum class CourseTiming {
 }
 
 /**
- * 졸업사정표 학점 이수 현황
+ * 졸업사정표 학점 이수 현황.
+ * required/completed는 항상 non-null. 센티널: -1=재수강/교직(bar 미표시), -2=졸업사정표 없음(제공 불가).
+ * 프론트 해석 우선순위: -2 → -1 → 0,0,true → 정상.
  */
+@io.swagger.v3.oas.annotations.media.Schema(
+    description = "required/completed 센티널: -2=제공 불가, -1=bar 미표시(재수강/교직), 0=해당 없음. 해석 우선순위: -2 > -1 > 0,0,true > 정상.",
+)
 data class Progress(
-    val required: Int?,
-    val completed: Int?,
+    val required: Int,
+    val completed: Int,
     val satisfied: Boolean,
 ) {
     companion object {
-        fun from(summary: RusaintCreditSummaryItemDto): Progress {
-            return Progress(
+        fun from(summary: RusaintCreditSummaryItemDto): Progress =
+            Progress(
                 required = summary.required,
                 completed = summary.completed,
                 satisfied = summary.satisfied,
             )
-        }
+
+        /** 재수강/교직 등 졸업사정 이수현황이 없는 카테고리 (progress bar 미표시) */
+        fun notApplicable(): Progress = Progress(required = -1, completed = -1, satisfied = false)
+
+        /** 졸업사정표 로딩 불가 (Case 6. warnings에 NO_GRADUATION_REPORT 포함) */
+        fun unavailable(): Progress = Progress(required = -2, completed = -2, satisfied = false)
     }
 }
 
@@ -42,7 +52,7 @@ data class Progress(
  */
 data class CategoryRecommendResult(
     val category: String, // MAJOR_BASIC, MAJOR_REQUIRED, MAJOR_ELECTIVE, RETAKE, TEACHING 등
-    val progress: Progress?,
+    val progress: Progress,
     val courses: List<RecommendedCourseResponse>,
     val message: String? = null,
 ) {

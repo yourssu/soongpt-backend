@@ -1,12 +1,20 @@
 package com.yourssu.soongpt.domain.course.business.dto
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * 통합 과목 추천 응답 (최상위)
  *
- * result = { categories: CategoryRecommendResponse[] }
+ * result = { warnings: String[], categories: CategoryRecommendResponse[] }
  */
+@Schema(description = "통합 과목 추천 응답")
 data class CourseRecommendationsResponse(
+    @Schema(
+        description = "경고 코드 목록. NO_GRADUATION_DATA: 동기화 시 졸업사정표 미제공(세션). NO_GRADUATION_REPORT: 추천 API에서 졸업사정표 없어 전기/전필/교필 등 미제공.",
+        example = "[\"NO_GRADUATION_DATA\", \"NO_GRADUATION_REPORT\"]",
+    )
     val warnings: List<String>,
+    @Schema(description = "이수구분별 추천 결과")
     val categories: List<CategoryRecommendResponse>,
 )
 
@@ -19,7 +27,7 @@ data class CourseRecommendationsResponse(
  * ### 이수구분별 사용 필드 매트릭스
  * | 필드           | 전기/전필 | 전선 | 교필 | 교선 | 재수강 |
  * |---------------|----------|------|------|------|--------|
- * | progress      | O        | O    | O    | O    | X      |
+ * | progress      | O        | O    | O    | O    | O(-1)  |
  * | message       | O        | O    | O    | O    | O      |
  * | userGrade     | X        | O    | X    | X    | X      |
  * | courses       | O        | O    | O    | O    | O      |
@@ -31,8 +39,8 @@ data class CategoryRecommendResponse(
     /** 이수구분 (RecommendCategory enum name) */
     val category: String,
 
-    /** 졸업사정 이수 현황 (재수강은 null) */
-    val progress: Progress?,
+    /** 졸업사정 이수 현황. 항상 non-null. 센티널: required=-1 → 재수강/교직(bar 미표시), -2 → 졸업사정표 없음 */
+    val progress: Progress,
 
     /** 엣지케이스 안내 메시지 (null이면 정상 — 과목이 존재) */
     val message: String?,

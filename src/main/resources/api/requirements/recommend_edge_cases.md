@@ -1,126 +1,81 @@
 # 과목 추천 엣지케이스 응답 매핑
 
-## 원칙
+## 센티널 값 기반 Progress 매핑
 
-- 서버는 action/status를 결정하지 않음
-- 프론트가 `warnings`, `progress`, `courses`/`fieldGroups` 조합으로 화면 표시/스킵/경고를 판단
-- `progress` 값 자체로 "해당 없음(0,0,true)" / "다 들음" / "아직" 구분 가능
-- `progress == null`이면 "판단 불가" (졸업사정표 없음)
-- `courses`/`fieldGroups` 비었으면 → 이번 학기 개설 없음
+| Case                    | required | completed | satisfied |         message         |     courses     | FE 동작                       |
+| ----------------------- | :------: | :-------: | :-------: | :---------------------: | :--------------: | ----------------------------- |
+| **1** 해당없음    |  `0`  |   `0`   | `true` |        있음/없음        |      `[]`      | `required==0` → 숨김       |
+| **2** 안열림      |  `>0`  |     N     | `false` |    `"...없습니다"`    |      `[]`      | 메시지+progress bar           |
+| **3** 다들음      |  `>0`  |     N     | `true` | `"...이수하셨습니다"` |      `[]`      | 메시지+progress bar           |
+| **4** 재수강/교직 |  `-1`  |  `-1`  | `false` |     `null`/메시지     | `[]`/`[...]` | progress bar 미표시           |
+| **6** 사정표없음  |  `-2`  |  `-2`  | `false` |         메시지         |      `[]`      | warn 확인, 이수현황 로딩 불가 |
 
-## top-level `warnings` 필드
+- progress는 항상 non-null (센티널 값 사용). `GET /api/timetables/{id}/available-general-electives`, `available-chapels`에서도 progress는 non-null.
+- Case 6만 top-level `warnings`에 `"NO_GRADUATION_REPORT"` 추가
+- 세 API의 progress 규약 통합: [progress 프론트 가이드](progress_프론트_가이드.md)
 
-rusaint 동기화 과정에서 발생한 경고를 그대로 전달합니다.
+## 각 케이스 상세
 
-```json
-{
-  "warnings": ["NO_GRADUATION_DATA", "PARTIAL_SYNC"],
-  "categories": [...]
+### Case 1: 해당없음
+
+- 졸업사정표를 불러올 수 있으나 해당 이수구분이 커리큘럼 자체에 없음
+- ex) 24학번 경영학부는 전공기초 자체가 없음, 복수전공/부전공 미등록자
+- `progress = { required: 0, completed: 0, satisfied: true }`
+- FE: `required == 0` → 해당 카테고리 숨김
+
+### Case 2: 안열림
+
+- 이수해야 할 학점이 남아있지만 이번 학기에 개설된 과목이 없음
+- `progress = { required: >0, completed: N, satisfied: false }`
+- `message = "이번 학기에 수강 가능한 ... 과목이 없습니다."`
+- FE: progress bar + message 표시
+
+### Case 3: 다들음
+
+- 졸업사정표 상 해당 이수구분을 모두 충족
+- `progress = { required: >0, completed: N, satisfied: true }`
+- `message = "... 학점을 이미 모두 이수하셨습니다."`
+- FE: progress bar + message 표시
+
+### Case 4: 재수강/교직
+
+- 졸업사정표에 이수현황이 없는 카테고리 (재수강, 교직)
+- `progress = { required: -1, completed: -1, satisfied: false }`
+- FE: `required == -1` → progress bar 미표시, courses/message만 렌더링
+
+### Case 6: 졸업사정표 없음
+
+- 졸업사정표 자체를 불러올 수 없음 (rusaint 오류 등)
+- `progress = { required: -2, completed: -2, satisfied: false }`
+- `warnings`에 `"NO_GRADUATION_REPORT"` 포함
+- FE: `required == -2` → 이수현황 로딩 불가 안내
+
+## FE 분기 pseudocode
+
+```typescript
+// top-level
+if (warnings.includes('NO_GRADUATION_REPORT')) {
+  showWarningBanner('졸업사정표를 불러올 수 없습니다.');
+}
+
+// per category
+for (const cat of categories) {
+  if (cat.progress.required === 0 && cat.progress.satisfied) {
+    continue; // 해당 없음 → 숨김
+  }
+  if (cat.progress.required === -2) {
+    renderUnavailable(cat); // 졸업사정표 없음
+    continue;
+  }
+  if (cat.progress.required === -1) {
+    renderWithoutProgressBar(cat); // 재수강/교직
+  } else {
+    renderWithProgressBar(cat); // 정상 progress
+  }
+  if (cat.message) {
+    showMessage(cat.message);
+  } else {
+    renderCourseCards(cat.courses);
+  }
 }
 ```
-
-- 빈 배열이면 경고 없음
-- 프론트는 warnings 내용에 따라 경고 배너를 표시
-
-## 프론트 판단 로직
-
-```
-1. warnings에 값 있음 → 경고 배너 표시
-2. progress == null && category != RETAKE → 졸업사정표 없어서 판단 불가
-3. progress.required == 0 && satisfied == true → 해당 없는 이수구분 → 스킵
-4. progress.satisfied == true && required > 0 → 이미 이수 완료
-5. courses/fieldGroups 비어있음 → 이번 학기 개설 없음
-6. courses/fieldGroups 있음 → 정상 렌더링
-```
-
-## 엣지케이스별 응답 예시
-
-### 1. 졸업사정표 없음 (progress == null)
-
-졸업사정표 데이터를 받아오지 못한 경우. 재수강은 졸업사정표 불필요하므로 영향 없음.
-
-```json
-{
-  "warnings": ["NO_GRADUATION_DATA"],
-  "categories": [
-    {
-      "category": "MAJOR_BASIC",
-      "progress": null,
-      "message": null,
-      "userGrade": null,
-      "courses": [],
-      "gradeGroups": null,
-      "fieldGroups": null,
-      "lateFields": null
-    },
-    {
-      "category": "RETAKE",
-      "progress": null,
-      "message": null,
-      "userGrade": null,
-      "courses": [...],
-      "gradeGroups": null,
-      "fieldGroups": null,
-      "lateFields": null
-    }
-  ]
-}
-```
-
-프론트 동작:
-- MAJOR_BASIC: `progress == null` → "졸업사정 정보를 확인할 수 없습니다" 안내
-- RETAKE: 재수강은 원래 `progress == null` → 정상 렌더링
-
-### 2. 해당 없는 이수구분 (required=0, satisfied=true)
-
-rusaint 졸업사정표에서 해당 이수구분의 요구 학점이 0인 경우.
-
-```json
-{
-  "category": "MAJOR_BASIC",
-  "progress": { "required": 0, "completed": 0, "satisfied": true },
-  "message": "전공기초 학점을 이미 모두 이수하셨습니다.",
-  "courses": []
-}
-```
-
-프론트 동작: `required == 0 && satisfied == true` → 해당 이수구분 섹션 스킵
-
-### 3. 이미 이수 완료 (satisfied=true, required > 0)
-
-```json
-{
-  "category": "MAJOR_REQUIRED",
-  "progress": { "required": 18, "completed": 18, "satisfied": true },
-  "message": "전공필수 학점을 이미 모두 이수하셨습니다.",
-  "courses": []
-}
-```
-
-프론트 동작: `message` 표시 ("이미 모두 이수하셨습니다")
-
-### 4. 미충족이나 이번 학기 개설 없음
-
-```json
-{
-  "category": "MAJOR_REQUIRED",
-  "progress": { "required": 18, "completed": 12, "satisfied": false },
-  "message": "이번 학기에 수강 가능한 전공필수 과목이 없습니다.",
-  "courses": []
-}
-```
-
-프론트 동작: `message` 표시 ("이번 학기에 수강 가능한 과목이 없습니다")
-
-### 5. 정상 — 추천 과목 있음
-
-```json
-{
-  "category": "MAJOR_REQUIRED",
-  "progress": { "required": 18, "completed": 12, "satisfied": false },
-  "message": null,
-  "courses": [...]
-}
-```
-
-프론트 동작: `message == null` → 과목 카드 렌더링

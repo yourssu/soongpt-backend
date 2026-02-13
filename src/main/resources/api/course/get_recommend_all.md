@@ -64,15 +64,25 @@ Response<CourseRecommendationsResponse>
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `warnings` | String[] | rusaint 동기화 경고 메시지. 빈 배열이면 경고 없음 |
+| `warnings` | String[] | 경고 코드 목록. 빈 배열이면 경고 없음. 코드별 의미는 아래 [warnings 코드](#warnings-코드) 참고 |
 | `categories` | CategoryRecommendResponse[] | 이수구분별 추천 결과 |
+
+#### warnings 코드
+
+| Code | 의미 | 출처 |
+|------|------|------|
+| `NO_GRADUATION_DATA` | 졸업사정표를 유세인트에서 가져오지 못함 (1-1·미제공 등). 동기화 시 세션에 저장된 값이 그대로 전달됨 | 세션(동기화 단계) |
+| `NO_GRADUATION_REPORT` | 졸업사정표가 없어 전기/전필/교필 등 추천을 제공하지 못함. 이 API 호출 시 추가됨 | 추천 API |
+
+- 두 코드 모두 **에러가 아닌 경고**이며, 재수강·교직 등 졸업사정표와 무관한 추천은 이용 가능하다.
+- 기획·프론트용 상세 설명: [졸업사정표 경고 가이드](../requirements/졸업사정표_경고_가이드.md)
 
 ### CategoryRecommendResponse
 
 | 필드 | 타입 | nullable | 설명 |
 |------|------|----------|------|
 | `category` | String | X | 이수구분 (`RecommendCategory` enum name) |
-| `progress` | Progress | O | 졸업사정 이수 현황. **재수강은 null, 졸업사정표 없으면 null** |
+| `progress` | Progress | X | 졸업사정 이수 현황. 항상 non-null. 센티널 값은 아래 Progress 참고 |
 | `message` | String | O | 안내 메시지. **null이면 정상 (과목 존재)** |
 | `userGrade` | Int | O | 사용자 학년 |
 | `courses` | RecommendedCourseResponse[] | X | 추천 과목 flat list |
@@ -82,9 +92,20 @@ Response<CourseRecommendationsResponse>
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `required` | Int | 졸업 요구 학점 |
-| `completed` | Int | 현재 이수 학점 |
+| `required` | Int | 졸업 요구 학점. 센티널: `-1`=재수강/교직(bar 미표시), `-2`=졸업사정표 없음 |
+| `completed` | Int | 현재 이수 학점. 센티널: `-1`=재수강/교직, `-2`=졸업사정표 없음 |
 | `satisfied` | Boolean | 충족 여부 |
+
+**센티널 값:**
+| required | completed | satisfied | 의미 |
+|:---:|:---:|:---:|---|
+| `0` | `0` | `true` | 해당 없는 이수구분 (FE에서 숨김) |
+| `-1` | `-1` | `false` | 재수강/교직 — progress bar 미표시, 과목은 있을 수 있음 |
+| `-2` | `-2` | `false` | 졸업사정표 없음 — 제공 불가, bar 미표시 |
+
+**프론트 해석 우선순위:** `-2`(제공 불가) → `-1`(bar 미표시) → `0,0,true`(해당 없음) → 그 외(정상 bar 표시).
+
+**progress 공통 규약:** `progress`는 이 API뿐 아니라 `GET /api/timetables/{id}/available-general-electives`, `GET /api/timetables/{id}/available-chapels`에서도 **항상 non-null**로 사용됩니다. API마다 필드 구조는 다르나 의미는 "이수현황"으로 동일합니다. → [progress 프론트 가이드](../requirements/progress_프론트_가이드.md)
 
 ### RecommendedCourseResponse (과목 카드)
 
@@ -144,11 +165,12 @@ Response<CourseRecommendationsResponse>
 ## 엣지케이스 처리
 
 **프론트 분기 로직:**
-1. `warnings` 비어있지 않음 → 경고 배너 표시
-2. `progress == null` (재수강 제외) → 졸업사정표 없어서 판단 불가
-3. `progress.required == 0 && satisfied == true` → 해당 없는 이수구분 → 스킵
-4. `message != null` → 안내 배너 표시 (이미 이수 / 개설 없음)
-5. `message == null` → 과목 카드 렌더링
+1. `warnings`에 `"NO_GRADUATION_REPORT"` 포함 → 졸업사정표 로딩 불가 경고 표시
+2. `progress.required == 0 && satisfied == true` → 해당 없는 이수구분 → 숨김
+3. `progress.required == -1` → 재수강/교직 → progress bar 미표시, courses/message만 렌더링
+4. `progress.required == -2` → 졸업사정표 없음 → 이수현황 로딩 불가 안내
+5. `message != null` → 안내 배너 표시 (이미 이수 / 개설 없음)
+6. `message == null` → 과목 카드 렌더링
 
 상세: `recommend_edge_cases.md` 참고
 
@@ -551,7 +573,7 @@ Response<CourseRecommendationsResponse>
 ```json
 {
   "category": "RETAKE",
-  "progress": null,
+  "progress": { "required": -1, "completed": -1, "satisfied": false },
   "message": null,
   "userGrade": null,
   "courses": [
@@ -593,7 +615,8 @@ interface CourseRecommendationsResponse {
 
 interface CategoryRecommendResponse {
   category: RecommendCategory;
-  progress: Progress | null;
+  /** 센티널: required=-1 → 재수강/교직(bar 미표시), -2 → 졸업사정표 없음 */
+  progress: Progress;
   message: string | null;
   userGrade: number | null;
   courses: RecommendedCourse[];
