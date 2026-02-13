@@ -105,9 +105,15 @@ class CourseRecommendApplicationServiceTest : BehaviorSpec({
         progress: Progress? = null,
         message: String? = null,
     ): CategoryRecommendResponse {
+        val safeProgress = progress ?: when (category) {
+            // 재수강/교직은 졸업사정표 기반 progress bar가 없으므로 센티널(-1) 사용
+            "RETAKE", "TEACHING" -> Progress.notApplicable()
+            // 테스트에서 progress를 명시하지 않은 경우를 위한 더미 값
+            else -> Progress.from(credit())
+        }
         return CategoryRecommendResponse(
             category = category,
-            progress = progress,
+            progress = safeProgress,
             message = message,
             userGrade = null,
             courses = emptyList(),
@@ -201,7 +207,7 @@ class CourseRecommendApplicationServiceTest : BehaviorSpec({
                 result.categories shouldHaveSize 1
                 result.categories.first() shouldBe categoryResponse(
                     category = "MAJOR_REQUIRED",
-                    progress = Progress(required = 0, completed = 0, satisfied = true),
+                    progress = Progress.unavailable(),
                     message = "졸업사정표에 전공필수 항목이 없습니다.",
                 )
 
@@ -210,7 +216,7 @@ class CourseRecommendApplicationServiceTest : BehaviorSpec({
                     userGrade = 3,
                     category = Category.MAJOR_REQUIRED,
                     takenSubjectCodes = listOf("21500118", "21500234"),
-                    progress = Progress(required = 0, completed = 0, satisfied = true),
+                    progress = Progress.unavailable(),
                 )
             }
         }
