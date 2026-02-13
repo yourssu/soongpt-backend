@@ -150,6 +150,8 @@ jobs:
           SSO_FRONTEND_URL: ${{ vars.SSO_FRONTEND_URL }}
           SSO_CLIENT_JWT_SECRET: ${{ secrets.SSO_CLIENT_JWT_SECRET }}
           SSO_ALLOWED_REDIRECT_URLS: ${{ vars.SSO_ALLOWED_REDIRECT_URLS }}
+          SSO_COOKIE_SAME_SITE: ${{ vars.SSO_COOKIE_SAME_SITE }}
+          SSO_COOKIE_SECURE: ${{ vars.SSO_COOKIE_SECURE }}
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H $HOST_URL >> ~/.ssh/known_hosts
@@ -175,6 +177,8 @@ jobs:
           echo "SSO_FRONTEND_URL=$SSO_FRONTEND_URL" >> .env
           echo "SSO_CLIENT_JWT_SECRET=$SSO_CLIENT_JWT_SECRET" >> .env
           echo "SSO_ALLOWED_REDIRECT_URLS=${SSO_ALLOWED_REDIRECT_URLS:-}" >> .env
+          echo "SSO_COOKIE_SAME_SITE=${SSO_COOKIE_SAME_SITE:-Lax}" >> .env
+          echo "SSO_COOKIE_SECURE=${SSO_COOKIE_SECURE:-true}" >> .env
 
           # Create deployment directory structure
           ssh -i yourssu.pem ubuntu@$HOST_URL "mkdir -p /home/ubuntu/$PROJECT_NAME-api/logs"
