@@ -1,0 +1,17 @@
+course_code,category,department,issue_type,target_text,detail
+2160652601,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+2160653901,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+2160655701,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+2160668801,OTHER,교육대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+2160668901,OTHER,교육대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5029251701,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5029252301,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5029252601,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5029253001,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5029393801,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5032744501,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5048444801,OTHER,교육대학원 교학팀,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5049120401,OTHER,교육대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5050286501,OTHER,사회복지대학원,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
+5055184601,OTHER,사회복지전공,T1_SCOPE_MISMATCH,전체,"expected=1, actual=1, missing=1, extra=1"
+5055270001,OTHER,서비스경영학과,T0_NO_TARGET_ROWS,전체,target text exists but no target rows
