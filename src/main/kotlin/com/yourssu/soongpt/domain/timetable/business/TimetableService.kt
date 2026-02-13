@@ -87,7 +87,7 @@ class TimetableService(
         return result
     }
 
-    // NOTE: 피키가 만든거!!! 채플 이수현황을 조립할 때 사용합니다. 대충 예시코드..라고 생각해주세요 피키피키~야호~
+    // NOTE: 채플 이수현황 조립. available-chapels API에서 사용.
     fun getAvailableChapels(timetableId: Long): AvailableChapelsResponse {
         ensureTimetableExists(timetableId)
         // 기존 타임테이블 로직: courses 조회

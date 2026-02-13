@@ -23,7 +23,7 @@ enum class CourseTiming {
  * 프론트 해석 우선순위: -2 → -1 → 0,0,true → 정상.
  */
 @io.swagger.v3.oas.annotations.media.Schema(
-    description = "required/completed 센티널: -2=제공 불가, -1=bar 미표시(재수강/교직). 해석 우선순위: -2 > -1 > 0,0,true > 정상.",
+    description = "required/completed 센티널: -2=제공 불가, -1=bar 미표시(재수강/교직), 0=해당 없음. 해석 우선순위: -2 > -1 > 0,0,true > 정상.",
 )
 data class Progress(
     val required: Int,
