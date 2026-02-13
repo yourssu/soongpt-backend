@@ -16,8 +16,12 @@ fun List<Course>.preferWeekday(): List<Course> {
 /** 10자리 과목코드에서 8자리 기본코드 추출 (분반 제거) */
 fun Course.baseCode(): Long = code / DIVISION_DIVISOR
 
-/** Long 코드에서 8자리 기본코드 추출 */
-fun Long.toBaseCode(): Long = this / DIVISION_DIVISOR
+/**
+ * Long 코드에서 8자리 기본코드 추출.
+ * 10자리(분반 포함)면 /100, 이미 8자리면 그대로 반환.
+ */
+fun Long.toBaseCode(): Long =
+    if (this >= 1_000_000_000L) this / DIVISION_DIVISOR else this
 
 /**
  * rusaint 수강 과목 코드 리스트 → 이수 판정용 Set (8자리 baseCode 비교 가능).
