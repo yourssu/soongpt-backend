@@ -52,10 +52,27 @@ def _is_major_elective_only(name: str) -> bool:
 
 
 def _is_major_combined(name: str) -> bool:
-    """전필+전선 복합 여부"""
+    """전필+전선 복합 여부 (예: "전필·전선", "전필전선")"""
     has_required = "전필" in name
     has_elective = "전선" in name or "진선" in name
     return has_required and has_elective
+
+
+def _is_major_total(name: str) -> bool:
+    """전공 복합 총합 여부 (예: "전공 42").
+
+    학과별로 의미가 다름:
+    - 전기+전필+전선 학과 → 전필+전선 합계
+    - 전기+전선 학과 (전필 없음) → 전기+전선 합계
+    - 전필+전선 학과 (전기 없음) → 전필+전선 합계
+    후처리에서 단독 필드(전필/전기) 존재 여부로 전선을 역산한다.
+    """
+    if "전공" not in name:
+        return False
+    # 더 구체적인 매처에서 이미 처리된 패턴 제외
+    if any(x in name for x in ["전공기초", "전공선택", "복수전공", "부전공"]):
+        return False
+    return True
 
 
 def _is_double_major_required_only(name: str) -> bool:
@@ -161,6 +178,11 @@ def build_graduation_summary(
             )
             continue
 
+        # 6-1. "전공" 복합 총합 (전기+전선 또는 전필+전선, 학과별 상이)
+        if _is_major_total(name):
+            major_combined = req
+            continue
+
         # 7. 복수전공 복합 (복필+복선 합계)
         if _is_double_major_combined(name):
             double_major_combined = req
@@ -198,43 +220,35 @@ def build_graduation_summary(
             chapel = ChapelSummaryItem(satisfied=_safe_bool(req.result))
             continue
 
-    # 복합 항목 후처리: 전필+전선
+    # 복합 항목 후처리: 전공 복합 → 전선 역산
+    #
+    # "전공" 또는 "전필·전선" 복합 필드에서 단독 필드를 빼서 전선을 구한다.
+    # - 전필 존재 → 복합 = 전필+전선, 전필을 빼서 전선
+    # - 전필 없고 전기 존재 → 복합 = 전기+전선, 전기를 빼서 전선
+    # - 둘 다 없음 → 복합 전체가 전선
+    # 전선 satisfied는 항상 completed >= required 로 계산
     if major_combined is not None:
         combined_req = _safe_int(major_combined.requirement)
         combined_calc = _safe_int(major_combined.calculation)
-        combined_result = _safe_bool(major_combined.result)
 
         if major_required is not None:
+            # 전필 존재 → 전필+전선 복합, 전필을 빼서 전선
             elective_req = max(0, combined_req - major_required.required)
             elective_calc = max(0, combined_calc - major_required.completed)
-            if combined_result:
-                major_required = CreditSummaryItem(
-                    required=major_required.required,
-                    completed=major_required.completed,
-                    satisfied=True,
-                )
-                major_elective = CreditSummaryItem(
-                    required=elective_req,
-                    completed=elective_calc,
-                    satisfied=True,
-                )
-            else:
-                major_required = CreditSummaryItem(
-                    required=major_required.required,
-                    completed=major_required.completed,
-                    satisfied=major_required.completed >= major_required.required,
-                )
-                major_elective = CreditSummaryItem(
-                    required=elective_req,
-                    completed=elective_calc,
-                    satisfied=elective_calc >= elective_req,
-                )
+        elif major_foundation is not None:
+            # 전기만 존재 (전필 없음) → 전기+전선 복합, 전기를 빼서 전선
+            elective_req = max(0, combined_req - major_foundation.required)
+            elective_calc = max(0, combined_calc - major_foundation.completed)
         else:
-            major_elective = CreditSummaryItem(
-                required=combined_req,
-                completed=combined_calc,
-                satisfied=combined_result,
-            )
+            # 단독 필드 없음 → 복합 전체가 전선
+            elective_req = combined_req
+            elective_calc = combined_calc
+
+        major_elective = CreditSummaryItem(
+            required=elective_req,
+            completed=elective_calc,
+            satisfied=elective_calc >= elective_req,
+        )
 
     # 복합 항목 후처리: 복수전공
     double_major_elective: Optional[CreditSummaryItem] = None
