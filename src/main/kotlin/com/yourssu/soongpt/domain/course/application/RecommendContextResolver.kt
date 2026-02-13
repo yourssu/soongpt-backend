@@ -73,7 +73,14 @@ class RecommendContextResolver(
 
     private fun resolveFromPseudonym(pseudonym: String): RecommendContext {
         val usaintData = syncSessionStore.getUsaintData(pseudonym)
-            ?: throw UnauthorizedException(message = "세션이 만료되었습니다. SSO 로그인을 다시 진행해 주세요.")
+        if (usaintData == null) {
+            logger.warn {
+                "캐시 미스: pseudonym=${pseudonym.take(8)}..., " +
+                    "캐시 크기=${syncSessionStore.size()}, " +
+                    "세션존재=${syncSessionStore.hasSession(pseudonym)}"
+            }
+            throw UnauthorizedException(message = "세션이 만료되었습니다. SSO 로그인을 다시 진행해 주세요.")
+        }
 
         val takenSubjectCodes = usaintData.takenCourses
             .flatMap { it.subjectCodes }
