@@ -189,8 +189,15 @@ class GeneralCourseRecommendService(
         for (codeStr in takenSubjectCodes) {
             val codeLong = codeStr.toLongOrNull() ?: continue
             val baseCode = codeLong.toBaseCode()
-            val fieldName = courseService.getFieldByCourseCode(codeLong, schoolId)?.takeIf { it.isNotBlank() }
-                ?: continue
+            // 하드코딩 과목(2150180801): DB field(Bridge교과/수리) 대신 올바른 분야로 override
+            val fieldName = if (codeStr == GeneralElectiveFieldDisplayMapper.SCIENCE_HARDCODED_COURSE_CODE) {
+                GeneralElectiveFieldDisplayMapper.scienceFieldRawOverride(schoolId)
+                    ?: courseService.getFieldByCourseCode(codeLong, schoolId)?.takeIf { it.isNotBlank() }
+                    ?: continue
+            } else {
+                courseService.getFieldByCourseCode(codeLong, schoolId)?.takeIf { it.isNotBlank() }
+                    ?: continue
+            }
             fieldToBaseCodes.getOrPut(fieldName) { mutableSetOf() }.add(baseCode)
         }
         return fieldToBaseCodes.mapValues { it.value.size }
