@@ -47,6 +47,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-logging:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-cache:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
 
 
 	implementation("io.github.oshai:kotlin-logging-jvm:$loggingVersion")

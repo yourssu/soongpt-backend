@@ -31,6 +31,7 @@ private const val SWAP_SAMPLE_POOL_SIZE = 20
 private const val MAX_SWAPPED_COMBINATIONS = 50
 private const val MAX_BASELINE_FOR_SWAPS = 2
 private const val MAX_SWAP_ATTEMPTS = 10
+private const val MAX_MULTI_DELETE = 3
 
 @Component
 class TimetableRecommendationFacade(
@@ -47,7 +48,6 @@ class TimetableRecommendationFacade(
     @Transactional
     fun recommend(command: PrimaryTimetableCommand): FinalTimetableRecommendationResponse {
         val ctx = recommendContextResolver.resolve()
-//        System.err.println("TimetableRecommendationFacade.recommend called with command: $command and userContext: $userContext")
         val mandatoryChapelCandidate = findMandatoryChapelForFreshman(ctx.userGrade, ctx.departmentName)
         val commandWithoutChapel = if (mandatoryChapelCandidate != null) {
             command.copyWithoutCourse(mandatoryChapelCandidate.codes.first())
@@ -55,29 +55,36 @@ class TimetableRecommendationFacade(
             command
         }
 
-//        System.err.println("Mandatory chapel candidate: $mandatoryChapelCandidate")
-        val courseCandidateGroups = courseCandidateProvider.createCourseCandidateGroups(commandWithoutChapel)
-        val combinations = timetableCombinationGenerator.generate(courseCandidateGroups, mandatoryChapelCandidate)
-
-//        System.err.println("Generated ${combinations.size} timetable combinations")
-        if (combinations.isNotEmpty()) {
-//            System.err.println(
-//                "Success path inputs: userId=${command.userId}, totalSelectedCourses=${command.getAllCourseCodes().size}, " +
-//                    "selectedCourseCodes=${command.getAllCourseCodes().map { it.courseCode }}"
-//            )
-            val successResponse = processSuccessCase(combinations, command, mandatoryChapelCandidate)
-
-//            System.err.println("Returning success response with ${successResponse.size} grouped recommendations")
+        val courseCandidateGroups = courseCandidateProvider.createCourseCandidateGroups(
+            commandWithoutChapel,
+            useAllDivisions = true
+        )
+        val combinations = timetableCombinationGenerator.generate(
+            courseCandidateGroups,
+            mandatoryChapelCandidate,
+            maxCandidates = null
+        )
+        val sampledCombinations = sampleTopCombinations(combinations)
+        if (sampledCombinations.isNotEmpty()) {
+            val successResponse = processSuccessCase(sampledCombinations, command, mandatoryChapelCandidate)
             return FinalTimetableRecommendationResponse.success(successResponse)
         }
 
-//        System.err.println("No valid timetable combinations found, checking for single conflict courses")
         val singleConflictCourseCodes = findSingleConflictCourses(commandWithoutChapel, mandatoryChapelCandidate)
         if (singleConflictCourseCodes.isNotEmpty()) {
             return FinalTimetableRecommendationResponse.singleConflict(singleConflictCourseCodes)
         }
 
-//        System.err.println("No single conflict courses found, returning failure response")
+        val multiRemovalCombinations = findMultiConflictCombinations(commandWithoutChapel, mandatoryChapelCandidate)
+        val sampledMultiRemovalCombinations = sampleTopCombinations(multiRemovalCombinations)
+        if (sampledMultiRemovalCombinations.isNotEmpty()) {
+            val successResponse = processSuccessCase(
+                baselineCombinations = sampledMultiRemovalCombinations,
+                command = command,
+                mandatoryChapelCandidate = mandatoryChapelCandidate
+            )
+            return FinalTimetableRecommendationResponse.success(successResponse)
+        }
         return FinalTimetableRecommendationResponse.failure()
     }
 
@@ -165,20 +172,17 @@ class TimetableRecommendationFacade(
             }
         }
         // STEP 2: Master List 생성
-        val masterList = (baselineCombinations + swappedCombinations).distinctBy { it.timeSlot }
-//        System.err.println(
-//            "Master list sizes: baseline=${baselineCombinations.size}, swapped=${swappedCombinations.size}, master=${masterList.size}"
-//        )
+        val masterList = (baselineCombinations + swappedCombinations).distinctBy { it.codesKey() }
 
         // STEP 3: 태그별 그룹화 및 최종 응답 DTO 생성
         val resultGroups = mutableListOf<GroupedTimetableResponse>()
 
         // 3-1. 'DEFAULT' 태그 그룹 처리 (공강 기준 점수)
-        val usedTimeSlots = mutableSetOf<String>()
+        val usedKeys = mutableSetOf<String>()
         val defaultCandidates = baselineCombinations
             .sortedBy { it.timeSlot.cardinality() } // 공강 점수: 채워진 칸이 적을수록 좋음 (오름차순)
             .asSequence()
-            .filter { candidate -> usedTimeSlots.add(candidate.timeSlotKey()) }
+            .filter { candidate -> usedKeys.add(candidate.codesKey()) }
             .take(MAX_RECOMMENDATIONS_PER_TAG)
             .toList()
 
@@ -203,8 +207,8 @@ class TimetableRecommendationFacade(
             val candidatesForTag = rankedCandidates
                 .asSequence()
                 .filter { candidate ->
-                    val key = candidate.timeSlotKey()
-                    allowDuplicateByTag || usedTimeSlots.add(key)
+                    val key = candidate.codesKey()
+                    allowDuplicateByTag || usedKeys.add(key)
                 }
                 .take(MAX_RECOMMENDATIONS_PER_TAG)
                 .toList()
@@ -270,7 +274,10 @@ class TimetableRecommendationFacade(
 
         for (courseToExclude in allSelectedCourses) {
             val modifiedCommand = command.copyWithoutCourse(courseToExclude.courseCode)
-            val courseCandidateGroups = courseCandidateProvider.createCourseCandidateGroups(modifiedCommand)
+        val courseCandidateGroups = courseCandidateProvider.createCourseCandidateGroups(
+            modifiedCommand,
+            useAllDivisions = true
+        )
             val combinations = timetableCombinationGenerator.generate(courseCandidateGroups, baseTimetable)
 
             if (combinations.isNotEmpty()) {
@@ -290,6 +297,59 @@ class TimetableRecommendationFacade(
         }
         return conflictingCourses.distinct()
     }
+
+    private fun sampleTopCombinations(candidates: List<TimetableCandidate>): List<TimetableCandidate> {
+        if (candidates.size <= 50) return candidates
+        val top = candidates
+            .sortedByDescending { timetableRanker.totalScore(it) }
+            .take(100)
+        return top.shuffled().take(50)
+    }
+
+    private fun findMultiConflictCombinations(
+        command: PrimaryTimetableCommand,
+        baseTimetable: TimetableCandidate?
+    ): List<TimetableCandidate> {
+        val selected = command.getAllCourseCodes()
+        if (selected.size < 2) return emptyList()
+
+        val codes = selected.map { it.courseCode }
+        val uniqueByCodes = LinkedHashMap<String, TimetableCandidate>()
+        for (removeCount in 2..MAX_MULTI_DELETE) {
+            if (removeCount > codes.size) break
+            val indices = IntArray(removeCount)
+            fun dfs(start: Int, depth: Int) {
+                if (depth == removeCount) {
+                    val toRemove = indices.map { codes[it] }.toSet()
+                    val modified = command.copyWithoutCourses(toRemove)
+                    val groups = courseCandidateProvider.createCourseCandidateGroups(
+                        modified,
+                        useAllDivisions = true
+                    )
+                    val combinations = timetableCombinationGenerator.generate(
+                        groups,
+                        baseTimetable,
+                        maxCandidates = null
+                    )
+                    combinations.forEach { candidate ->
+                        val key = candidate.codesKey()
+                        if (!uniqueByCodes.containsKey(key)) {
+                            uniqueByCodes[key] = candidate
+                        }
+                    }
+                    return
+                }
+                for (i in start until codes.size - (removeCount - depth) + 1) {
+                    indices[depth] = i
+                    dfs(i + 1, depth + 1)
+                }
+                return
+            }
+            dfs(0, 0)
+        }
+        return uniqueByCodes.values.toList()
+    }
+
 }
 
 private fun PrimaryTimetableCommand.getAllCourseCodes(): List<SelectedCourseCommand> {
@@ -345,6 +405,20 @@ private fun PrimaryTimetableCommand.copyWithoutCourse(courseCode: Long): Primary
         teachingCourses = this.teachingCourses.filterNot { it.courseCode == courseCode },
         generalRequiredCourses = this.generalRequiredCourses.filterNot { it.courseCode == courseCode },
         addedCourses = this.addedCourses.filterNot { it.courseCode == courseCode }
+    )
+}
+
+private fun PrimaryTimetableCommand.copyWithoutCourses(courseCodes: Set<Long>): PrimaryTimetableCommand {
+    return this.copy(
+        retakeCourses = this.retakeCourses.filterNot { it.courseCode in courseCodes },
+        majorRequiredCourses = this.majorRequiredCourses.filterNot { it.courseCode in courseCodes },
+        majorElectiveCourses = this.majorElectiveCourses.filterNot { it.courseCode in courseCodes },
+        majorBasicCourses = this.majorBasicCourses.filterNot { it.courseCode in courseCodes },
+        doubleMajorCourses = this.doubleMajorCourses.filterNot { it.courseCode in courseCodes },
+        minorCourses = this.minorCourses.filterNot { it.courseCode in courseCodes },
+        teachingCourses = this.teachingCourses.filterNot { it.courseCode in courseCodes },
+        generalRequiredCourses = this.generalRequiredCourses.filterNot { it.courseCode in courseCodes },
+        addedCourses = this.addedCourses.filterNot { it.courseCode in courseCodes }
     )
 }
 
@@ -547,8 +621,8 @@ private fun PrimaryTimetableCommand.findCategoryLabel(courseCode: Long): String?
     }
 }
 
-private fun TimetableCandidate.timeSlotKey(): String {
-    return this.timeSlot.toLongArray().joinToString(",")
+private fun TimetableCandidate.codesKey(): String {
+    return this.codes.sorted().joinToString(",")
 }
 
 private fun objParticle(word: String): String {

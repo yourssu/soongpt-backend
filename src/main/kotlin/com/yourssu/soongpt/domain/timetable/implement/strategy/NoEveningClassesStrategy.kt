@@ -7,7 +7,7 @@ import java.util.*
 
 class NoEveningClassesStrategy: TagStrategy {
     companion object {
-        const val EVENING_START = (18 * 60 + 30) / TIMESLOT_UNIT_MINUTES
+        const val EVENING_START = (18 * 60) / TIMESLOT_UNIT_MINUTES
         const val EVENING_RANGE = (5 * 60 + 30) / TIMESLOT_UNIT_MINUTES
     }
     override fun isCorrect(timeSlot: BitSet): Boolean {

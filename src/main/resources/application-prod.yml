@@ -43,3 +43,18 @@ logging:
   level:
     com.yourssu.soongpt.domain.sso: INFO
     root: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
