@@ -142,7 +142,9 @@ jobs:
           scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem .env.green ubuntu@"$HOST_URL":"$GREEN_DIR/.env"
 
           echo "[4/4] Remote blue/green deploy + switch"
-          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@"$HOST_URL" "bash -se" << 'REMOTE'
+          CLEANUP_OLD="${CLEANUP_OLD:-true}"
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@"$HOST_URL" \
+            "PROJECT_NAME='$PROJECT_NAME' BLUE_PORT='$BLUE_PORT' GREEN_PORT='$GREEN_PORT' IMAGE_TAG='$IMAGE_TAG' CLEANUP_OLD='$CLEANUP_OLD' bash -se" << 'REMOTE'
           set -euo pipefail
 
           : "${PROJECT_NAME:?}"
