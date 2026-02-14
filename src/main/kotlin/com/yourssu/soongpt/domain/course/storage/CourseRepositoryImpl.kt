@@ -320,10 +320,12 @@ class CourseRepositoryImpl(
         category: Category,
         departmentId: Long,
         collegeId: Long,
+        userGrade: Int,
         maxGrade: Int,
     ): List<CourseWithTarget> {
         val scopeCondition = buildScopeCondition(departmentId, collegeId)
-        val gradeCondition = buildGradeRangeCondition(maxGrade)
+        val allowGradeCondition = buildGradeRangeCondition(maxGrade)
+        val denyGradeCondition = buildExactGradeCondition(userGrade)
 
         // Allow 과목 조회 (Target 정보 포함, Deny 제외)
         val allowResults = jpaQueryFactory
@@ -344,7 +346,7 @@ class CourseRepositoryImpl(
                 courseEntity.category.eq(category),
                 targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isFalse,
-                gradeCondition,
+                allowGradeCondition,
                 scopeCondition,
             )
             .fetch()
@@ -360,7 +362,7 @@ class CourseRepositoryImpl(
             .where(
                 targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isTrue,
-                gradeCondition,
+                denyGradeCondition,
                 scopeCondition,
             )
             .fetch()
@@ -404,6 +406,7 @@ class CourseRepositoryImpl(
         completionType: SecondaryMajorCompletionType,
         departmentId: Long,
         collegeId: Long,
+        userGrade: Int,
         maxGrade: Int,
     ): List<CourseWithTarget> {
         // 타전공인정과목의 경우 다른 학과의 과목이므로 scopeCondition을 완화
@@ -413,7 +416,8 @@ class CourseRepositoryImpl(
         } else {
             buildScopeCondition(departmentId, collegeId)
         }
-        val gradeCondition = buildGradeRangeCondition(maxGrade)
+        val allowGradeCondition = buildGradeRangeCondition(maxGrade)
+        val denyGradeCondition = buildExactGradeCondition(userGrade)
 
         val allowResults = jpaQueryFactory
             .select(
@@ -437,7 +441,7 @@ class CourseRepositoryImpl(
                 courseSecondaryMajorClassificationEntity.departmentId.eq(departmentId),
                 targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isFalse,
-                gradeCondition,
+                allowGradeCondition,
                 scopeCondition,
             )
             .fetch()
@@ -453,7 +457,7 @@ class CourseRepositoryImpl(
             .where(
                 targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isTrue,
-                gradeCondition,
+                denyGradeCondition,
                 scopeCondition,
             )
             .fetch()
@@ -543,6 +547,16 @@ class CourseRepositoryImpl(
         if (maxGrade >= 4) condition = condition.or(targetEntity.grade4.isTrue)
         if (maxGrade >= 5) condition = condition.or(targetEntity.grade5.isTrue)
         return condition
+    }
+
+    private fun buildExactGradeCondition(grade: Int): BooleanExpression {
+        return when (grade.coerceIn(1, 5)) {
+            1 -> targetEntity.grade1.isTrue
+            2 -> targetEntity.grade2.isTrue
+            3 -> targetEntity.grade3.isTrue
+            4 -> targetEntity.grade4.isTrue
+            else -> targetEntity.grade5.isTrue
+        }
     }
 
     override fun findDepartmentIdsByTrackType(trackType: SecondaryMajorTrackType): List<Long> {

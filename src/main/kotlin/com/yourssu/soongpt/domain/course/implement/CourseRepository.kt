@@ -24,6 +24,7 @@ interface CourseRepository {
         category: Category,
         departmentId: Long,
         collegeId: Long,
+        userGrade: Int,
         maxGrade: Int,
     ): List<CourseWithTarget>
 
@@ -37,6 +38,7 @@ interface CourseRepository {
         completionType: SecondaryMajorCompletionType,
         departmentId: Long,
         collegeId: Long,
+        userGrade: Int,
         maxGrade: Int,
     ): List<CourseWithTarget>
 

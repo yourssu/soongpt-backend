@@ -119,6 +119,7 @@ class CourseReader(
         completionType: SecondaryMajorCompletionType,
         departmentId: Long,
         collegeId: Long,
+        userGrade: Int,
         maxGrade: Int,
     ): List<CourseWithTarget> {
         return courseRepository.findCoursesWithTargetBySecondaryMajor(
@@ -126,6 +127,7 @@ class CourseReader(
             completionType = completionType,
             departmentId = departmentId,
             collegeId = collegeId,
+            userGrade = userGrade,
             maxGrade = maxGrade,
         )
     }

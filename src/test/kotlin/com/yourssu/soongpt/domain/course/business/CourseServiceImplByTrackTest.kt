@@ -102,6 +102,7 @@ class CourseServiceImplByTrackTest : BehaviorSpec({
                     completionType = any(),
                     departmentId = any(),
                     collegeId = any(),
+                    userGrade = any(),
                     maxGrade = any(),
                 )
             }
@@ -137,6 +138,7 @@ class CourseServiceImplByTrackTest : BehaviorSpec({
                     completionType = any(),
                     departmentId = any(),
                     collegeId = any(),
+                    userGrade = any(),
                     maxGrade = any(),
                 )
             }
@@ -189,6 +191,7 @@ class CourseServiceImplByTrackTest : BehaviorSpec({
                             completionType = SecondaryMajorCompletionType.REQUIRED,
                             departmentId = 8L,
                             collegeId = 2L,
+                            userGrade = grade,
                             maxGrade = grade,
                         )
                     ).thenReturn(targetCourses)
@@ -209,6 +212,7 @@ class CourseServiceImplByTrackTest : BehaviorSpec({
                     completionType = eq(SecondaryMajorCompletionType.REQUIRED),
                     departmentId = eq(8L),
                     collegeId = eq(2L),
+                    userGrade = any(),
                     maxGrade = any(),
                 )
                 verify(courseReader, never()).findCoursesBySecondaryMajorClassification(

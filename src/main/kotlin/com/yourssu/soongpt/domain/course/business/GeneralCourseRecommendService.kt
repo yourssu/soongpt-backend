@@ -79,6 +79,7 @@ class GeneralCourseRecommendService(
             category = category,
             departmentId = department.id!!,
             collegeId = department.collegeId,
+            userGrade = userGrade,
             maxGrade = userGrade,
         ).distinctBy { it.course.code }
 
@@ -223,6 +224,7 @@ class GeneralCourseRecommendService(
             category = Category.GENERAL_ELECTIVE,
             departmentId = department.id!!,
             collegeId = department.collegeId,
+            userGrade = userGrade,
             maxGrade = userGrade,
         ).distinctBy { it.course.code }
 

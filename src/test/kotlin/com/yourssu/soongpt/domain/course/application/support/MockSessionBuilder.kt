@@ -115,6 +115,7 @@ class MockSessionBuilder(
                 category = cat,
                 departmentId = dept.id!!,
                 collegeId = dept.collegeId,
+                userGrade = grade,
                 maxGrade = if (cat == Category.MAJOR_ELECTIVE) 5 else grade,
             ).distinctBy { it.course.baseCode() }
             val selected = applyStrategy(courses, strategy, grade)
@@ -134,6 +135,7 @@ class MockSessionBuilder(
                     completionType = completionType,
                     departmentId = dmDept.id!!,
                     collegeId = dmDept.collegeId,
+                    userGrade = grade,
                     maxGrade = if (completionType == SecondaryMajorCompletionType.ELECTIVE) 5 else grade,
                 ).distinctBy { it.course.baseCode() }
                 val selected = applyStrategy(courses, strategy, grade)
@@ -157,6 +159,7 @@ class MockSessionBuilder(
                     completionType = completionType,
                     departmentId = minorDept.id!!,
                     collegeId = minorDept.collegeId,
+                    userGrade = grade,
                     maxGrade = 5,
                 ).distinctBy { it.course.baseCode() }
                 val selected = applyStrategy(courses, TakenStrategy.PARTIAL_ON_TIME, grade)
