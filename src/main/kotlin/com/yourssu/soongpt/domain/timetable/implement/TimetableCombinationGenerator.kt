@@ -10,7 +10,8 @@ private const val MAXIMUM_TIMETABLE_CANDIDATES = 50
 class TimetableCombinationGenerator {
     fun generate(
         courseCandidateGroups: List<List<CourseCandidate>>,
-        baseTimetable: TimetableCandidate? = null
+        baseTimetable: TimetableCandidate? = null,
+        maxCandidates: Int? = MAXIMUM_TIMETABLE_CANDIDATES,
     ): List<TimetableCandidate> {
         val results = mutableListOf<TimetableCandidate>()
         val builder = if (baseTimetable != null) {
@@ -26,7 +27,7 @@ class TimetableCombinationGenerator {
         val validCourseCandidateGroups = courseCandidateGroups.filter { it.isNotEmpty() }
 
         fun findCombinations(depth: Int) {
-            if (results.size >= MAXIMUM_TIMETABLE_CANDIDATES) {
+            if (maxCandidates != null && results.size >= maxCandidates) {
                 return
             }
 
