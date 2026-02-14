@@ -3,6 +3,8 @@ package com.yourssu.soongpt.domain.sso.implement
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.yourssu.soongpt.common.config.SsoProperties
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
@@ -21,10 +23,12 @@ class SyncSessionStore(
         .build()
 
     fun createSession(pseudonym: String): SyncSession {
-        val session = SyncSession(
-            pseudonym = pseudonym,
-            status = SyncStatus.PROCESSING,
-        )
+        val existing = cache.getIfPresent(pseudonym)
+        val session = if (existing?.usaintData != null) {
+            existing.copy(status = SyncStatus.PROCESSING, updatedAt = Instant.now())
+        } else {
+            SyncSession(pseudonym = pseudonym, status = SyncStatus.PROCESSING)
+        }
         cache.put(pseudonym, session)
         logger.info { "세션 생성: pseudonym=${pseudonym.take(8)}..." }
         return session
@@ -62,17 +66,51 @@ class SyncSessionStore(
         new: RusaintUsaintDataResponse,
         pseudonym: String,
     ): RusaintUsaintDataResponse {
+        val mergedSummary = mergeGraduationSummary(existing.graduationSummary, new.graduationSummary, pseudonym)
+
         val keepGraduationReqs = new.graduationRequirements == null && existing.graduationRequirements != null
-        val keepGraduationSummary = new.graduationSummary == null && existing.graduationSummary != null
-        if (keepGraduationReqs || keepGraduationSummary) {
+        if (keepGraduationReqs) {
             logger.warn {
-                "새 usaintData가 null인 필드 있어 기존 값 유지: pseudonym=${pseudonym.take(8)}..., " +
-                    "graduationRequirements 유지=$keepGraduationReqs, graduationSummary 유지=$keepGraduationSummary"
+                "새 graduationRequirements null → 기존 값 유지: pseudonym=${pseudonym.take(8)}..."
             }
         }
         return new.copy(
             graduationRequirements = new.graduationRequirements ?: existing.graduationRequirements,
-            graduationSummary = new.graduationSummary ?: existing.graduationSummary,
+            graduationSummary = mergedSummary,
+        )
+    }
+
+    /**
+     * graduationSummary 필드 단위 merge.
+     * 기존에 유효한 값이 있으면 새 값이 null이거나 0,0,true(유세인트 None→0 변환 결과)일 때 기존 값 유지.
+     */
+    private fun mergeGraduationSummary(
+        existing: RusaintGraduationSummaryDto?,
+        new: RusaintGraduationSummaryDto?,
+        pseudonym: String,
+    ): RusaintGraduationSummaryDto? {
+        if (new == null) return existing
+        if (existing == null) return new
+
+        fun pick(field: String, old: RusaintCreditSummaryItemDto?, fresh: RusaintCreditSummaryItemDto?): RusaintCreditSummaryItemDto? {
+            if (old != null && !old.isEmptyData() && (fresh == null || fresh.isEmptyData())) {
+                logger.warn { "[merge] $field: 새 값이 null/0,0,true → 기존 값 유지 (pseudonym=${pseudonym.take(8)}..., 기존=${old.required}/${old.completed})" }
+                return old
+            }
+            return fresh ?: old
+        }
+
+        return new.copy(
+            generalRequired = pick("generalRequired", existing.generalRequired, new.generalRequired),
+            generalElective = pick("generalElective", existing.generalElective, new.generalElective),
+            majorFoundation = pick("majorFoundation", existing.majorFoundation, new.majorFoundation),
+            majorRequired = pick("majorRequired", existing.majorRequired, new.majorRequired),
+            majorElective = pick("majorElective", existing.majorElective, new.majorElective),
+            minor = pick("minor", existing.minor, new.minor),
+            doubleMajorRequired = pick("doubleMajorRequired", existing.doubleMajorRequired, new.doubleMajorRequired),
+            doubleMajorElective = pick("doubleMajorElective", existing.doubleMajorElective, new.doubleMajorElective),
+            christianCourses = pick("christianCourses", existing.christianCourses, new.christianCourses),
+            chapel = new.chapel ?: existing.chapel,
         )
     }
 

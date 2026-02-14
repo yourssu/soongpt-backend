@@ -39,7 +39,10 @@ data class RusaintCreditSummaryItemDto(
     val required: Int,
     val completed: Int,
     val satisfied: Boolean,
-)
+) {
+    /** 유세인트 원본 데이터가 None이었을 때 Python _safe_int(None)→0 변환 결과 패턴 */
+    fun isEmptyData(): Boolean = required == 0 && completed == 0 && satisfied
+}
 
 /** 채플 요건 요약 (학점 없이 충족 여부만) */
 data class RusaintChapelSummaryItemDto(

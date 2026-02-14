@@ -365,7 +365,8 @@ class GeneralCourseRecommendService(
         val courses = untakenFields.entries
             .flatMap { (rawFieldName, courses) ->
                 val displayField = GeneralElectiveFieldDisplayMapper.mapForCourseField(rawFieldName, admissionYear)
-                buildCoursesWithField(displayField, courses, userGrade)
+                val fieldForResponse = GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix(displayField, admissionYear)
+                buildCoursesWithField(fieldForResponse, courses, userGrade)
             }
 
         return CategoryRecommendResponse(
