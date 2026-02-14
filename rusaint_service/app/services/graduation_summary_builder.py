@@ -30,9 +30,14 @@ def _is_general_required(name: str) -> bool:
     return "교양필수" in name
 
 
+def _is_balance_excluded(name: str) -> bool:
+    """Balance 항목 여부. 'Balance (교양선택) 3개 영역 이상' 등은 학점 요약(graduationSummary) 파싱 범위에서 제외."""
+    return "Balance" in name
+
+
 def _is_general_elective(name: str) -> bool:
-    """교양선택 여부"""
-    return "교양선택" in name
+    """교양선택(학점) 여부. 학부-교양선택 N 항목만 generalElective로 사용."""
+    return "학부-교양선택" in name
 
 
 def _is_major_foundation(name: str) -> bool:
@@ -127,6 +132,10 @@ def build_graduation_summary(
 
     for req in requirements:
         name = req.name
+
+        # Balance (교양선택 3개 영역 등) → 파싱 범위에서 제외
+        if _is_balance_excluded(name):
+            continue
 
         # 1. 교양필수
         if _is_general_required(name):

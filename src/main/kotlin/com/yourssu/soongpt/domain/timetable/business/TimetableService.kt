@@ -43,7 +43,7 @@ class TimetableService(
         val ctx = recommendContextResolver.resolveOptional()
         val summary = ctx?.graduationSummary?.generalElective
         if (ctx != null && ctx.graduationSummary != null && summary == null) {
-            logger.warn { "generalElective null, progress 0/0/true 적용" }
+            logger.warn { "generalElective null, progress 제공 불가(-2,-2,false) 적용" }
         }
         val progress = buildGeneralElectiveProgress(ctx, summary)
         val courses = getAvailableGeneralElectiveCourses(timetableId, ctx?.admissionYear)
@@ -54,11 +54,9 @@ class TimetableService(
         ctx: RecommendContext?,
         summary: RusaintCreditSummaryItemDto?,
     ): GeneralElectiveProgress {
-        if (ctx == null || ctx.graduationSummary == null) {
+        // ctx 없음 / 졸업사정 없음 / generalElective null 또는 0,0,true(유세인트 None→0 변환 잔재) → 제공 불가
+        if (ctx == null || ctx.graduationSummary == null || summary == null || summary.isEmptyData()) {
             return GeneralElectiveProgress(required = -2, completed = -2, satisfied = false, fieldCredits = null)
-        }
-        if (summary == null) {
-            return GeneralElectiveProgress(required = 0, completed = 0, satisfied = true, fieldCredits = null)
         }
         val fieldCredits = if (ctx.admissionYear <= 2019) null
         else {
@@ -83,16 +81,57 @@ class TimetableService(
     private fun getAvailableGeneralElectiveCourses(timetableId: Long, admissionYear: Int?): List<GeneralElectiveDto> {
         val timetableBitSet = timetableBitsetConverter.convert(timetableId)
         val requiredGeMap = untakenCourseCodeService.getUntakenCourseCodesByField(Category.GENERAL_ELECTIVE)
-        val result = mutableListOf<GeneralElectiveDto>()
         val scienceBaseCode = GeneralElectiveFieldDisplayMapper.SCIENCE_HARDCODED_COURSE_CODE.toLong() / 100
 
-        for ((rawTrackName, courseCodes) in requiredGeMap) {
-            val displayTrackName = admissionYear?.let {
-                GeneralElectiveFieldDisplayMapper.mapForCourseField(rawTrackName, it)
-            } ?: rawTrackName
+        // 19학번 이하: track 구분 없이 모든 수강 가능 과목을 flat 한 건으로 전달
+        if (admissionYear != null && admissionYear <= 2019) {
+            val allCodes = requiredGeMap.values.flatten().distinct()
+            val courses = courseReader.findAllByCode(allCodes)
+            val availableCourses = courses.filter { course ->
+                val courseCandidate = courseCandidateFactory.create(course)
+                !timetableBitSet.intersects(courseCandidate.timeSlot)
+            }
+            val availableCourseResponses = availableCourses.map { course ->
+                val courseTimes = CourseTimes.from(course.scheduleRoom).toList()
+                TimetableCourseResponse.from(course, courseTimes)
+            }
+            return listOf(GeneralElectiveDto(trackName = "", courses = availableCourseResponses))
+        }
+
+        // 표시용 trackName 기준으로 묶어서 중복 제거 (raw가 "자연과학공학기술"/"자연과학·공학·기술" 등 여러 형태여도 한 track으로)
+        val byDisplayName = requiredGeMap.entries
+            .map { (raw, codes) ->
+                val display = admissionYear?.let {
+                    GeneralElectiveFieldDisplayMapper.mapForCourseField(raw, it)
+                } ?: raw
+                display to codes
+            }
+            .groupBy({ it.first }, { it.second })
+            .mapValues { (_, listOfCodes) -> listOfCodes.flatten().distinct() }
+
+        // ~22학번: 해당 학번에 속하지 않는 분야(23 전용 "인간언어", "문화예술" 등) 제외
+        val allowedNames = admissionYear?.let { GeneralElectiveFieldDisplayMapper.allowedTrackNamesForDisplay(it) }
+        val filteredEntries = if (!allowedNames.isNullOrEmpty()) {
+            byDisplayName.filter { (displayName, _) -> displayName in allowedNames }
+        } else {
+            byDisplayName
+        }
+
+        // ~22학번(20·21·22): 9개 track 고정 순서 노출. 미수강 과목 없는 분야는 courses=[]
+        val orderedNames = admissionYear?.let { GeneralElectiveFieldDisplayMapper.allowedTrackNamesOrdered(it) }
+        val result = mutableListOf<GeneralElectiveDto>()
+        val entriesMap = filteredEntries
+
+        val trackNamesToIterate = orderedNames?.takeIf { it.isNotEmpty() } ?: entriesMap.keys.toList()
+
+        for (displayTrackName in trackNamesToIterate) {
+            val courseCodes = entriesMap[displayTrackName] ?: emptyList()
+            val trackNameForDto = admissionYear?.let {
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix(displayTrackName, it)
+            } ?: displayTrackName
 
             if (courseCodes.isEmpty()) {
-                result.add(GeneralElectiveDto(displayTrackName, emptyList()))
+                result.add(GeneralElectiveDto(trackNameForDto, emptyList()))
                 continue
             }
 
@@ -101,16 +140,23 @@ class TimetableService(
                 val courseCandidate = courseCandidateFactory.create(course)
                 !timetableBitSet.intersects(courseCandidate.timeSlot)
             }
+            val fieldForTrack = admissionYear?.let {
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix(displayTrackName, it)
+            } ?: displayTrackName
             val availableCourseResponses = availableCourses.map { course ->
                 val courseTimes = CourseTimes.from(course.scheduleRoom).toList()
                 val response = TimetableCourseResponse.from(course, courseTimes)
-                if (admissionYear != null && course.baseCode() == scienceBaseCode) {
-                    response.copy(field = GeneralElectiveFieldDisplayMapper.scienceFieldForCourseDisplay(admissionYear))
+                val field = if (admissionYear != null && course.baseCode() == scienceBaseCode) {
+                    GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix(
+                        GeneralElectiveFieldDisplayMapper.scienceFieldForCourseDisplay(admissionYear),
+                        admissionYear
+                    )
                 } else {
-                    response
+                    fieldForTrack
                 }
+                response.copy(field = field)
             }
-            result.add(GeneralElectiveDto(displayTrackName, availableCourseResponses))
+            result.add(GeneralElectiveDto(trackNameForDto, availableCourseResponses))
         }
         return result
     }

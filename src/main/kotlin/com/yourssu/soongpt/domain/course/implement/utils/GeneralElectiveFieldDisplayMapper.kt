@@ -192,7 +192,41 @@ object GeneralElectiveFieldDisplayMapper {
         "정치·경제·경영" to "정치·경제·경영",
         "사회·문화·심리" to "사회·문화·심리",
         "자연과학·공학·기술" to "자연과학·공학·기술",
+        "자연과학공학기술" to "자연과학·공학·기술",
     )
+
+    /** ~22학번 고정 9개 분야 (표시용). 필터·19학번 이하 전 track 노출용 순서 */
+    private val TRACK_NAMES_ORDERED_22_OR_BELOW = listOf(
+        "인성과 리더십",
+        "자기계발과 진로탐색",
+        "한국어의사소통",
+        "국제어문",
+        "문학·예술",
+        "역사·철학·종교",
+        "정치·경제·경영",
+        "사회·문화·심리",
+        "자연과학·공학·기술",
+    )
+
+    /**
+     * ~22학번용 trackName(표시용 분야) 허용 목록.
+     * 해당 학번에 속하지 않는 분야(예: 23학번 전용 "인간·언어", "문화·예술")가
+     * FieldFinder 등으로 섞여 들어와도 이 목록에 없으면 제외하여 중복·잘못된 track 제거.
+     * 23~: 빈 집합 반환 → 호출부에서 필터 생략(모든 표시용 분야 허용).
+     */
+    fun allowedTrackNamesForDisplay(admissionYear: Int): Set<String> {
+        return if (admissionYear <= 2022) TRACK_NAMES_ORDERED_22_OR_BELOW.toSet() else emptySet()
+    }
+
+    /**
+     * ~22학번(19학번 이하 포함) 수강 가능 교양 API에서 trackName 순서·전체 노출용.
+     * 19학번 이하는 FieldFinder가 학번 미매칭 시 동일 분야로 묶일 수 있어 track이 하나만 나오므로,
+     * 이 순서대로 9개 track을 모두 내려주고, 해당 분야 미수강 과목이 없으면 courses=[] 로 채움.
+     * 23~: 빈 리스트(데이터 기준으로만 노출).
+     */
+    fun allowedTrackNamesOrdered(admissionYear: Int): List<String> {
+        return if (admissionYear <= 2022) TRACK_NAMES_ORDERED_22_OR_BELOW else emptyList()
+    }
 
     // ── 하드코딩: 2150180801 과목 (교양선택 과학 분야 강제 매핑) ──
     // DB field: Bridge교과(수리·물리·화학·생물) → 23학번에서 "수리"로 잘못 파싱되므로
@@ -218,5 +252,43 @@ object GeneralElectiveFieldDisplayMapper {
      */
     fun scienceFieldForCourseDisplay(admissionYear: Int): String {
         return if (admissionYear >= 2023) "과학·기술" else "자연과학·공학·기술"
+    }
+
+    // ── 20·21·22학번 track/field 접두사 (표시용) ──
+    private val PREFIX_20 = mapOf(
+        "인성과 리더십" to "공동체-",
+        "자기계발과 진로탐색" to "공동체-",
+        "한국어의사소통" to "의사소통-",
+        "국제어문" to "의사소통-",
+        "문학·예술" to "창의-",
+        "역사·철학·종교" to "창의-",
+        "정치·경제·경영" to "창의-",
+        "사회·문화·심리" to "창의-",
+        "자연과학·공학·기술" to "창의-",
+    )
+    private val PREFIX_21_22 = mapOf(
+        "인성과 리더십" to "품성-",
+        "자기계발과 진로탐색" to "품성-",
+        "한국어의사소통" to "기초-",
+        "국제어문" to "기초-",
+        "문학·예술" to "균형-",
+        "역사·철학·종교" to "균형-",
+        "정치·경제·경영" to "균형-",
+        "사회·문화·심리" to "균형-",
+        "자연과학·공학·기술" to "균형-",
+    )
+
+    /**
+     * 20학번: 공동체- / 의사소통- / 창의-, 21·22학번: 품성- / 기초- / 균형- 접두사 부여.
+     * trackName·courses[].field 표시용. 19학번 이하·23학번~는 그대로 반환.
+     */
+    fun withTrackOrFieldPrefix(displayName: String, admissionYear: Int): String {
+        if (displayName.isBlank()) return displayName
+        when {
+            admissionYear <= 2019 || admissionYear >= 2023 -> return displayName
+            admissionYear == 2020 -> return PREFIX_20[displayName]?.let { it + displayName } ?: displayName
+            admissionYear in 2021..2022 -> return PREFIX_21_22[displayName]?.let { it + displayName } ?: displayName
+            else -> return displayName
+        }
     }
 }

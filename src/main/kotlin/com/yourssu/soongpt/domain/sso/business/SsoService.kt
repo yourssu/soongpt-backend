@@ -212,7 +212,7 @@ class SsoService(
 
                 val ge = usaintData.graduationSummary?.generalElective
                 logger.info {
-                    "rusaint fetch 완료: pseudonym=${pseudonym.take(8)}..., generalElective=${ge != null} (required=${ge?.required}, completed=${ge?.completed})"
+                    "[GE_DEBUG] rusaint fetch 완료: pseudonym=${pseudonym.take(8)}..., generalElective=${ge != null} (required=${ge?.required}, completed=${ge?.completed})"
                 }
             } catch (e: RusaintServiceException) {
                 if (e.isUnauthorized) {
