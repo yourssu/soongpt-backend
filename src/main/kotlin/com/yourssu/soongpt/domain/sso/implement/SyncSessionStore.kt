@@ -9,11 +9,6 @@ import org.springframework.stereotype.Component
 import java.time.Duration
 import java.time.Instant
 
-/**
- * 동기화 세션을 Caffeine 캐시에 저장하는 저장소.
- * TTL은 sso.session-ttl-minutes로 설정 (기본 60분).
- * 키는 pseudonym.
- */
 @Component
 class SyncSessionStore(
     ssoProperties: SsoProperties,
@@ -22,7 +17,7 @@ class SyncSessionStore(
 
     private val cache: Cache<String, SyncSession> = Caffeine.newBuilder()
         .expireAfterWrite(Duration.ofMinutes(ssoProperties.sessionTtlMinutes))
-        .maximumSize(10_000) // 최대 1만 세션
+        .maximumSize(10_000)
         .build()
 
     fun createSession(pseudonym: String): SyncSession {
@@ -46,14 +41,46 @@ class SyncSessionStore(
         failReason: String? = null,
     ) {
         val existing = cache.getIfPresent(pseudonym) ?: return
+        val existingData = existing.usaintData
+        val finalUsaintData = when {
+            usaintData == null -> existing.usaintData
+            usaintData.graduationSummary == null && existingSummary != null -> {
+                // 병렬 fetch 등으로 나중에 완료된 쪽이 graduation=null이면, 기존 graduationSummary 보존
+                logger.warn {
+                    "새 usaintData의 graduationSummary가 null이라 기존 값 보존: pseudonym=${pseudonym.take(8)}..., " +
+                        "기존 generalElective=${existingSummary.generalElective != null}"
+                }
+                usaintData.copy(graduationSummary = existingSummary)
+            }
+            else -> usaintData
+        }
         val updated = existing.copy(
             status = status,
             updatedAt = Instant.now(),
-            usaintData = usaintData ?: existing.usaintData,
+            usaintData = finalUsaintData ?: existingData,
             failReason = failReason,
         )
         cache.put(pseudonym, updated)
         logger.info { "세션 상태 변경: pseudonym=${pseudonym.take(8)}..., status=$status${failReason?.let { ", reason=$it" } ?: ""}" }
+    }
+
+    private fun mergeNeverOverwriteWithNull(
+        existing: RusaintUsaintDataResponse,
+        new: RusaintUsaintDataResponse,
+        pseudonym: String,
+    ): RusaintUsaintDataResponse {
+        val keepGraduationReqs = new.graduationRequirements == null && existing.graduationRequirements != null
+        val keepGraduationSummary = new.graduationSummary == null && existing.graduationSummary != null
+        if (keepGraduationReqs || keepGraduationSummary) {
+            logger.warn {
+                "새 usaintData가 null인 필드 있어 기존 값 유지: pseudonym=${pseudonym.take(8)}..., " +
+                    "graduationRequirements 유지=$keepGraduationReqs, graduationSummary 유지=$keepGraduationSummary"
+            }
+        }
+        return new.copy(
+            graduationRequirements = new.graduationRequirements ?: existing.graduationRequirements,
+            graduationSummary = new.graduationSummary ?: existing.graduationSummary,
+        )
     }
 
     fun getUsaintData(pseudonym: String): RusaintUsaintDataResponse? {
