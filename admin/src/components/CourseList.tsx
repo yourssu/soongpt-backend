@@ -654,6 +654,27 @@ export const CourseList = () => {
     });
   };
 
+  const handleToggleAllGrades = (index: number) => {
+    if (!editedCourse) return;
+    const current = editedCourse.targets[index];
+    const nextValue = !(current.grade1 && current.grade2 && current.grade3 && current.grade4 && current.grade5);
+
+    const newTargets = [...editedCourse.targets];
+    newTargets[index] = {
+      ...current,
+      grade1: nextValue,
+      grade2: nextValue,
+      grade3: nextValue,
+      grade4: nextValue,
+      grade5: nextValue,
+    };
+
+    setEditedCourse({
+      ...editedCourse,
+      targets: newTargets,
+    });
+  };
+
   const handleAddTarget = () => {
     if (!editedCourse) return;
     const newTarget: TargetInfo = {
@@ -1293,6 +1314,7 @@ export const CourseList = () => {
                             <th>정책 유형</th>
                             <th>적용 범위</th>
                             <th>대상</th>
+                            {editMode && <th>전체학년</th>}
                             <th>1학년</th>
                             <th>2학년</th>
                             <th>3학년</th>
@@ -1306,7 +1328,11 @@ export const CourseList = () => {
                         <tbody>
                           {editMode ? (
                             // Edit Mode: Show all targets with inputs
-                            editedCourse?.targets?.map((target, index) => (
+                            editedCourse?.targets?.map((target, index) => {
+                              const allGradesSelected = target.grade1 && target.grade2 && target.grade3 && target.grade4 && target.grade5;
+                              const anyGradesSelected = target.grade1 || target.grade2 || target.grade3 || target.grade4 || target.grade5;
+
+                              return (
                               <tr key={index} className={target.isDenied ? 'denied-row' : 'allowed-row'}>
                                 {editMode && <td>{target.id || '-'}</td>}
                                 <td>
@@ -1368,6 +1394,18 @@ export const CourseList = () => {
                                   )}
                                 </td>
                                 <td>
+                                  <input
+                                    type="checkbox"
+                                    title="전체 학년 선택/해제"
+                                    checked={allGradesSelected}
+                                    ref={(el) => {
+                                      if (!el) return;
+                                      el.indeterminate = !allGradesSelected && anyGradesSelected;
+                                    }}
+                                    onChange={() => handleToggleAllGrades(index)}
+                                  />
+                                </td>
+                                <td>
                                   <input type="checkbox" checked={target.grade1} onChange={(e) => handleTargetChange(index, 'grade1', e.target.checked)} />
                                 </td>
                                 <td>
@@ -1406,7 +1444,8 @@ export const CourseList = () => {
                                   <button className="delete-button" onClick={() => handleDeleteTarget(index)}>삭제</button>
                                 </td>
                               </tr>
-                            ))
+                            );
+                            })
                           ) : (
                             // View Mode: Existing logic (Sorted by Deny)
                             (selectedCourse.targets || [])
