@@ -3,6 +3,7 @@ package com.yourssu.soongpt.domain.usaint.implement
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAcademicResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 
 /**
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component
  */
 @Component
 class RusaintSnapshotMerger {
+
+    private val logger = KotlinLogging.logger {}
 
     fun merge(
         academic: RusaintAcademicResponseDto,
@@ -30,6 +33,19 @@ class RusaintSnapshotMerger {
             warnings.add("NO_GRADUATION_DATA")
         }
 
+        val summary = graduation?.graduationSummary
+        if (hasGraduation) {
+            val ge = summary?.generalElective
+            if (ge == null) {
+                logger.warn {
+                    "merge 직후 generalElective가 null: pseudonym=${pseudonym.take(8)}..., " +
+                        "graduationSummary 존재=${summary != null}, Python에서 보냈는데 WAS 역직렬화에서 누락 가능성"
+                }
+            } else {
+                logger.info { "merge 직후 generalElective 존재: pseudonym=${pseudonym.take(8)}..., required=${ge.required}, completed=${ge.completed}" }
+            }
+        }
+
         return RusaintUsaintDataResponse(
             pseudonym = pseudonym,
             takenCourses = academic.takenCourses,
@@ -37,7 +53,7 @@ class RusaintSnapshotMerger {
             flags = academic.flags,
             basicInfo = academic.basicInfo,
             graduationRequirements = graduation?.graduationRequirements,
-            graduationSummary = graduation?.graduationSummary,
+            graduationSummary = summary,
             warnings = warnings,
         )
     }
