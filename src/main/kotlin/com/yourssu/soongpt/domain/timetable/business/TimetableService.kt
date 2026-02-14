@@ -42,13 +42,20 @@ class TimetableService(
         val ctx = recommendContextResolver.resolveOptional()
         val summary = ctx?.graduationSummary?.generalElective
         val progress = if (ctx != null && summary != null) {
-            val rawFieldCredits = generalCourseRecommendService.computeTakenFieldCredits(
-                ctx.takenSubjectCodes,
-                ctx.schoolId
-            )
-            val fieldCredits = rawFieldCredits.entries
-                .groupBy { GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits(it.key, ctx.admissionYear, ctx.schoolId) }
-                .mapValues { it.value.sumOf { it.value } }
+            val fieldCredits = if (ctx.admissionYear <= 2019) {
+                // 19학번 이하: fieldCredits null (required/completed/satisfied만, TS에서 if (fieldCredits) 분기)
+                null
+            } else {
+                val rawFieldCounts = generalCourseRecommendService.computeTakenFieldCourseCounts(
+                    ctx.takenSubjectCodes,
+                    ctx.schoolId
+                )
+                GeneralElectiveFieldDisplayMapper.buildFieldCreditsStructure(
+                    ctx.admissionYear,
+                    ctx.schoolId,
+                    rawFieldCounts,
+                )
+            }
             GeneralElectiveProgress(
                 required = summary.required,
                 completed = summary.completed,
@@ -56,7 +63,7 @@ class TimetableService(
                 fieldCredits = fieldCredits
             )
         } else {
-            GeneralElectiveProgress(required = -2, completed = -2, satisfied = false, fieldCredits = emptyMap())
+            GeneralElectiveProgress(required = -2, completed = -2, satisfied = false, fieldCredits = null)
         }
         return AvailableGeneralElectivesResponse(progress = progress, courses = courses)
     }

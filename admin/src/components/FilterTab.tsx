@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { courseApi } from '../api/courseApi';
 import type {
   Course,
@@ -50,8 +50,10 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
   const [error, setError] = useState<string | null>(null);
   const [filterMode, setFilterMode] = useState<FilterMode>('category');
   const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [departmentSearch, setDepartmentSearch] = useState('');
   const [selectedGrade, setSelectedGrade] = useState<number>(1);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [isDepartmentDropdownOpen, setIsDepartmentDropdownOpen] = useState(false);
   const [selectedTrackType, setSelectedTrackType] = useState<SecondaryMajorTrackType>('DOUBLE_MAJOR');
   const [selectedCompletionType, setSelectedCompletionType] = useState<SecondaryMajorCompletionType>('REQUIRED');
   const [selectedTeachingArea, setSelectedTeachingArea] = useState('');
@@ -62,6 +64,8 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
     setFilteredCourses(null);
     setError(null);
     onFilterResults([]);
+    setDepartmentSearch('');
+    setSelectedDepartment('');
   };
 
   const handleTrackTypeChange = (value: SecondaryMajorTrackType) => {
@@ -72,18 +76,30 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
 
   const handleFilterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedDepartment) {
+    const trimmedDepartmentSearch = departmentSearch.trim();
+    const effectiveDepartment = departmentSearchOptions.find(
+      (dept) => dept.toLowerCase() === trimmedDepartmentSearch.toLowerCase(),
+    );
+
+    if (!trimmedDepartmentSearch) {
       alert('학과를 선택해주세요.');
       return;
     }
 
+    if (!effectiveDepartment) {
+      alert('학과를 목록에서 선택해주세요.');
+      return;
+    }
+
     try {
+      setSelectedDepartment(effectiveDepartment);
+      setDepartmentSearch(effectiveDepartment);
       setLoading(true);
       setError(null);
       if (filterMode === 'category') {
         const data = await courseApi.getCoursesByCategory({
           schoolId,
-          department: selectedDepartment,
+          department: effectiveDepartment,
           grade: selectedGrade,
           category: selectedCategory || undefined,
         });
@@ -92,7 +108,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
       } else if (filterMode === 'secondaryMajor') {
         const data = await courseApi.getCoursesByTrack({
           schoolId,
-          department: selectedDepartment,
+          department: effectiveDepartment,
           trackType: selectedTrackType,
           completionType: selectedCompletionType,
         });
@@ -101,7 +117,7 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
       } else if (filterMode === 'teaching') {
         const data = await courseApi.getTeachingCourses({
           schoolId,
-          department: selectedDepartment,
+          department: effectiveDepartment,
           majorArea: selectedTeachingArea || undefined,
         });
         setFilteredCourses(data);
@@ -115,11 +131,79 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
     }
   };
 
+  const parseCoursePoint = (point: string): [string, string, string] => {
+    const parts = (point || '').split('-').map((part) => part.trim());
+    return [
+      parts[0] || '-',
+      parts[1] || '-',
+      parts[2] || '-',
+    ];
+  };
+
+  const normalizedDepartmentSearch = departmentSearch.trim().toLowerCase();
+
+  const filteredColleges = useMemo(() => {
+    return colleges
+      .map((college) => {
+        const availableDepartments =
+          filterMode === 'teaching'
+            ? college.departments.filter((dept) => isTeachingEligible(dept))
+            : college.departments;
+
+        const matchedDepartments = availableDepartments.filter((dept) => {
+          if (!normalizedDepartmentSearch) return true;
+
+          const departmentMatched = dept.toLowerCase().includes(normalizedDepartmentSearch);
+          const collegeMatched = college.name.toLowerCase().includes(normalizedDepartmentSearch);
+          return departmentMatched || collegeMatched;
+        });
+
+        return {
+          name: college.name,
+          departments: matchedDepartments,
+        };
+      })
+      .filter((college): college is { name: string; departments: string[] } => college.departments.length > 0);
+  }, [filterMode, normalizedDepartmentSearch]);
+
+  const departmentSearchOptions = useMemo(() => {
+    const seen = new Set<string>();
+    filteredColleges.forEach((college) => {
+      college.departments.forEach((department) => {
+        seen.add(department);
+      });
+    });
+    return Array.from(seen);
+  }, [filteredColleges]);
+
+  const handleDepartmentSearchChange = (value: string) => {
+    setDepartmentSearch(value);
+    setIsDepartmentDropdownOpen(true);
+    if (!value) {
+      setSelectedDepartment('');
+      return;
+    }
+
+    const exactMatch = departmentSearchOptions.find((dept) => dept.toLowerCase() === value.toLowerCase());
+    setSelectedDepartment(exactMatch || '');
+  };
+
+  const handleDepartmentSelect = (department: string) => {
+    setDepartmentSearch(department);
+    setSelectedDepartment(department);
+    setIsDepartmentDropdownOpen(false);
+
+    if (filterMode === 'teaching' && !isTeachingEligible(department)) {
+      setFilterMode('category');
+      alert('선택한 학과는 교직 이수가 불가능하여 일반 이수구분 필터로 전환되었습니다.');
+    }
+  };
+
   return (
     <>
       <form onSubmit={handleFilterSubmit} className="filter-form">
         <div className="filter-row">
-          <div className="filter-field">
+          <div className="filter-field filter-department-field">
             <label htmlFor="filter-mode">조회 유형</label>
             <select
               id="filter-mode"
@@ -136,44 +220,46 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
           </div>
 
           <div className="filter-field">
-            <label htmlFor="department">학과</label>
-            <select
-              id="department"
-              value={selectedDepartment}
-              onChange={(e) => {
-                const newDepartment = e.target.value;
-                setSelectedDepartment(newDepartment);
-                // 교직 필터 중이고 새로 선택한 학과가 교직 이수 불가능하면 일반 필터로 변경
-                if (filterMode === 'teaching' && newDepartment && !isTeachingEligible(newDepartment)) {
-                  setFilterMode('category');
-                  alert('선택한 학과는 교직 이수가 불가능하여 일반 이수구분 필터로 전환되었습니다.');
-                }
-              }}
-              className="filter-select"
-            >
-              <option value="">학과 선택</option>
-              {colleges.map((college) => {
-                // 교직 필터일 때는 교직 이수 가능 학과만 표시
-                const filteredDepartments = filterMode === 'teaching'
-                  ? college.departments.filter(dept => isTeachingEligible(dept))
-                  : college.departments;
-
-                // 교직 필터일 때 해당 단과대에 교직 이수 가능 학과가 없으면 optgroup 자체를 숨김
-                if (filterMode === 'teaching' && filteredDepartments.length === 0) {
-                  return null;
-                }
-
-                return (
-                  <optgroup key={college.name} label={college.name}>
-                    {filteredDepartments.map((dept) => (
-                      <option key={dept} value={dept}>
-                        {dept}
-                      </option>
-                    ))}
-                  </optgroup>
-                );
-              })}
-            </select>
+            <label htmlFor="department-search">학과명 검색</label>
+            <div className="filter-select-wrapper">
+              <input
+                id="department-search"
+                type="text"
+                value={departmentSearch}
+                onChange={(e) => handleDepartmentSearchChange(e.target.value)}
+                onFocus={() => setIsDepartmentDropdownOpen(true)}
+                onBlur={() => {
+                  setTimeout(() => setIsDepartmentDropdownOpen(false), 120);
+                }}
+                placeholder="학과명 검색"
+                className="filter-select"
+                aria-label="학과명 검색"
+                autoComplete="off"
+              />
+              {isDepartmentDropdownOpen && (
+                <div className="filter-dropdown">
+                  {filteredColleges.length === 0 ? (
+                    <div className="filter-dropdown-empty">검색 결과가 없습니다</div>
+                  ) : (
+                    filteredColleges.map((college) => (
+                      <div key={college.name} className="filter-dropdown-group">
+                        <div className="filter-dropdown-group-label">{college.name}</div>
+                        {college.departments.map((department) => (
+                          <button
+                            key={department}
+                            type="button"
+                            className="filter-dropdown-option"
+                            onMouseDown={() => handleDepartmentSelect(department)}
+                          >
+                            {department}
+                          </button>
+                        ))}
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {filterMode === 'category' && (
@@ -303,24 +389,27 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                 </tr>
               </thead>
               <tbody>
-                {filteredCourses?.map((course: Course, index: number) => (
-                  <tr
-                    key={course.id || course.code}
-                    onClick={() => onCourseClick(course, index)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <td>{course.code}</td>
-                    <td>{course.name}</td>
-                    <td>{course.professor || '-'}</td>
-                    <td>{filterMode === 'secondaryMajor' ? (course.subCategory || '-') : getCategoryLabel(course.category)}</td>
-                    <td>{course.department}</td>
-                    <td>{course.point}</td>
-                    <td>{course.time}</td>
-                    <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.personeel}</td>
-                    <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.scheduleRoom}</td>
-                    {filterMode === 'category' && <td>{course.target}</td>}
-                  </tr>
-                ))}
+                {filteredCourses?.map((course: Course, index: number) => {
+                  const [pointClass, pointTime, pointQuota] = parseCoursePoint(course.point);
+                  return (
+                    <tr
+                      key={course.id || course.code}
+                      onClick={() => onCourseClick(course, index)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <td>{course.code}</td>
+                      <td>{course.name}</td>
+                      <td>{course.professor || '-'}</td>
+                      <td>{filterMode === 'secondaryMajor' ? (course.subCategory || '-') : getCategoryLabel(course.category)}</td>
+                      <td>{course.department}</td>
+                      <td>{pointClass}</td>
+                      <td>{pointTime}</td>
+                      <td>{pointQuota}</td>
+                      <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.scheduleRoom}</td>
+                      {filterMode === 'category' && <td>{course.target}</td>}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

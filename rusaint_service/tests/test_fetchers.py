@@ -31,6 +31,7 @@ class MockClassGrade:
     """수강 과목 정보 mock"""
     code: str
     rank: str = None
+    class_name: str = ""
 
 
 def create_mock_apps(semesters: List[MockSemesterGrade], classes_by_semester: List[List[MockClassGrade]]):
@@ -98,7 +99,7 @@ async def test_chapel_courses_excluded_from_taken_courses():
 
     app1, app2 = create_mock_apps(semesters, classes_by_semester)
 
-    taken_courses, low_grade_codes = await fetch_all_course_data_parallel(
+    taken_courses, low_grade_codes, _ = await fetch_all_course_data_parallel(
         app1, app2, SEMESTER_TYPE_MAP
     )
 
@@ -128,7 +129,7 @@ async def test_chapel_courses_excluded_from_low_grade_codes():
 
     app1, app2 = create_mock_apps(semesters, classes_by_semester)
 
-    _, low_grade_codes = await fetch_all_course_data_parallel(
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
         app1, app2, SEMESTER_TYPE_MAP
     )
 
@@ -154,7 +155,7 @@ async def test_low_grade_codes_no_duplicates():
 
     app1, app2 = create_mock_apps(semesters, classes_by_semester)
 
-    _, low_grade_codes = await fetch_all_course_data_parallel(
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
         app1, app2, SEMESTER_TYPE_MAP
     )
 
@@ -176,7 +177,7 @@ async def test_retake_improved_grade_excluded():
 
     app1, app2 = create_mock_apps(semesters, classes_by_semester)
 
-    _, low_grade_codes = await fetch_all_course_data_parallel(
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
         app1, app2, SEMESTER_TYPE_MAP
     )
 
@@ -200,7 +201,7 @@ async def test_retake_still_low_grade_included_once():
 
     app1, app2 = create_mock_apps(semesters, classes_by_semester)
 
-    _, low_grade_codes = await fetch_all_course_data_parallel(
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
         app1, app2, SEMESTER_TYPE_MAP
     )
 
@@ -233,7 +234,7 @@ async def test_mixed_scenario():
 
     app1, app2 = create_mock_apps(semesters, classes_by_semester)
 
-    taken_courses, low_grade_codes = await fetch_all_course_data_parallel(
+    taken_courses, low_grade_codes, _ = await fetch_all_course_data_parallel(
         app1, app2, SEMESTER_TYPE_MAP
     )
 
@@ -282,7 +283,7 @@ async def test_no_rank_courses_excluded_from_low_grade():
 
     app1, app2 = create_mock_apps(semesters, classes_by_semester)
 
-    _, low_grade_codes = await fetch_all_course_data_parallel(
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
         app1, app2, SEMESTER_TYPE_MAP
     )
 
@@ -291,3 +292,154 @@ async def test_no_rank_courses_excluded_from_low_grade():
     assert "55555555" not in low_grade_codes
     # F는 포함
     assert "66666666" in low_grade_codes
+
+
+# ============================================================
+# 교양필수 재수강 매핑 테스트
+# ============================================================
+
+@pytest.mark.asyncio
+async def test_retake_mapping_adds_replacement_code():
+    """폐강된 교양필수 구과목(현대인과성서)이 저성적이면 대체 신과목 baseCode가 추가된다"""
+    semesters = [
+        MockSemesterGrade(year=2022, semester=rusaint.SemesterType.ONE),
+    ]
+    classes_by_semester = [
+        [
+            MockClassGrade(code="99990001", rank="D0", class_name="현대인과성서"),
+        ],
+    ]
+
+    app1, app2 = create_mock_apps(semesters, classes_by_semester)
+
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
+        app1, app2, SEMESTER_TYPE_MAP
+    )
+
+    # 원본 코드 포함
+    assert "99990001" in low_grade_codes
+    # 대체 신과목 baseCode (현대사회이슈와기독교) 추가
+    assert "21501020" in low_grade_codes
+
+
+@pytest.mark.asyncio
+async def test_retake_mapping_all_old_courses():
+    """모든 구과목 → 신과목 매핑이 정상 동작하는지 검증"""
+    semesters = [
+        MockSemesterGrade(year=2021, semester=rusaint.SemesterType.ONE),
+    ]
+    classes_by_semester = [
+        [
+            MockClassGrade(code="10000001", rank="F", class_name="독서와토론"),
+            MockClassGrade(code="10000002", rank="D0", class_name="대학글쓰기"),
+            MockClassGrade(code="10000003", rank="C0", class_name="기업가정신과행동"),
+            MockClassGrade(code="10000004", rank="D+", class_name="현대인과성서"),
+            MockClassGrade(code="10000005", rank="C+", class_name="컴퓨터사고"),
+            MockClassGrade(code="10000006", rank="F", class_name="AI와데이터사회"),
+        ],
+    ]
+
+    app1, app2 = create_mock_apps(semesters, classes_by_semester)
+
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
+        app1, app2, SEMESTER_TYPE_MAP
+    )
+
+    # 원본 코드 6개 + 대체 baseCode 6개
+    assert "21501003" in low_grade_codes  # 독서와토론 → 고전읽기와상상력
+    assert "21501006" in low_grade_codes  # 대학글쓰기 → 미디어사회와비평적글쓰기
+    assert "21501009" in low_grade_codes  # 기업가정신과행동 → 혁신과기업가정신
+    assert "21501020" in low_grade_codes  # 현대인과성서 → 현대사회이슈와기독교
+    assert "21501028" in low_grade_codes  # 컴퓨터사고 → 컴퓨팅적사고와코딩기초
+    assert "21501034" in low_grade_codes  # AI와데이터사회 → AI와데이터기초
+
+
+@pytest.mark.asyncio
+async def test_retake_mapping_not_added_for_good_grade():
+    """구과목이지만 성적이 B 이상이면 대체 코드가 추가되지 않는다"""
+    semesters = [
+        MockSemesterGrade(year=2022, semester=rusaint.SemesterType.ONE),
+    ]
+    classes_by_semester = [
+        [
+            MockClassGrade(code="99990001", rank="B+", class_name="현대인과성서"),
+        ],
+    ]
+
+    app1, app2 = create_mock_apps(semesters, classes_by_semester)
+
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
+        app1, app2, SEMESTER_TYPE_MAP
+    )
+
+    # B+ → 저성적 아님 → low_grade_codes에 포함 안 됨
+    assert "99990001" not in low_grade_codes
+    # 대체 코드도 추가 안 됨
+    assert "21501020" not in low_grade_codes
+
+
+@pytest.mark.asyncio
+async def test_retake_mapping_no_duplicate_if_already_present():
+    """대체 과목 코드가 이미 low_grade_codes에 있으면 중복 추가하지 않는다"""
+    semesters = [
+        MockSemesterGrade(year=2022, semester=rusaint.SemesterType.ONE),
+    ]
+    classes_by_semester = [
+        [
+            MockClassGrade(code="99990001", rank="D0", class_name="현대인과성서"),
+            MockClassGrade(code="21501020", rank="F", class_name="[인간과성서]현대사회이슈와기독교"),
+        ],
+    ]
+
+    app1, app2 = create_mock_apps(semesters, classes_by_semester)
+
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
+        app1, app2, SEMESTER_TYPE_MAP
+    )
+
+    # 21501020은 이미 low_grade_codes에 직접 포함 → 중복 추가 안 됨
+    assert low_grade_codes.count("21501020") == 1
+
+
+@pytest.mark.asyncio
+async def test_retake_mapping_ignores_non_mapped_courses():
+    """매핑에 없는 과목은 대체 코드가 추가되지 않는다"""
+    semesters = [
+        MockSemesterGrade(year=2024, semester=rusaint.SemesterType.ONE),
+    ]
+    classes_by_semester = [
+        [
+            MockClassGrade(code="12345678", rank="F", class_name="데이터구조"),
+        ],
+    ]
+
+    app1, app2 = create_mock_apps(semesters, classes_by_semester)
+
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
+        app1, app2, SEMESTER_TYPE_MAP
+    )
+
+    # 데이터구조는 매핑에 없으므로 원본 코드만 포함
+    assert low_grade_codes == ["12345678"]
+
+
+@pytest.mark.asyncio
+async def test_retake_mapping_works_without_class_name():
+    """class_name이 없는 과목은 매핑 없이 원본 코드만 포함된다"""
+    semesters = [
+        MockSemesterGrade(year=2022, semester=rusaint.SemesterType.ONE),
+    ]
+    classes_by_semester = [
+        [
+            MockClassGrade(code="99990001", rank="D0"),  # class_name 없음 (기본값 "")
+        ],
+    ]
+
+    app1, app2 = create_mock_apps(semesters, classes_by_semester)
+
+    _, low_grade_codes, _ = await fetch_all_course_data_parallel(
+        app1, app2, SEMESTER_TYPE_MAP
+    )
+
+    # 원본 코드만 포함, 대체 코드 없음
+    assert low_grade_codes == ["99990001"]

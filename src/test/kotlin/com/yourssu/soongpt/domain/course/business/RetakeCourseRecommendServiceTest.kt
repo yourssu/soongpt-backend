@@ -48,6 +48,118 @@ class RetakeCourseRecommendServiceTest : BehaviorSpec({
         }
     }
 
+    /**
+     * 교양필수 재수강 매핑 시나리오:
+     * Python(rusaint_service)에서 "독서와토론"(구과목, baseCode 99990001) 감지 →
+     * 대체 신과목 baseCode "21501003"을 lowGradeSubjectCodes에 추가.
+     * Kotlin은 [구과목코드(매칭 없음), 신과목baseCode(매칭 있음)] 두 개를 받아서
+     * 신과목 "[인문적상상력과소통]고전읽기와상상력"을 재수강 추천 결과에 포함해야 한다.
+     */
+    given("교양필수 재수강 매핑: 구과목(독서와토론) + 대체 신과목 baseCode가 포함된 경우") {
+        // 구과목 코드 99990001 → 현재 DB에 없음 (폐강)
+        // 신과목 baseCode 21501003 → [인문적상상력과소통]고전읽기와상상력 (현재 개설)
+        val replacementSection1 = CourseWithTarget(
+            course = Course(
+                id = 100L,
+                category = Category.GENERAL_REQUIRED,
+                code = 2150100314L,
+                name = "[인문적상상력과소통]고전읽기와상상력",
+                professor = "박준웅",
+                department = "교양교육운영팀",
+                division = null,
+                time = "2.0",
+                point = "2",
+                personeel = 30,
+                scheduleRoom = "토 09:00-09:50 (진리관 11305-박준웅)\n토 10:00-10:50 (진리관 11305-박준웅)",
+                target = "전체학년 미디어경영",
+                credit = 2.0,
+            ),
+            targetGrades = listOf(1, 2, 3, 4),
+            isStrict = false,
+        )
+        val replacementSection2 = CourseWithTarget(
+            course = Course(
+                id = 101L,
+                category = Category.GENERAL_REQUIRED,
+                code = 2150100315L,
+                name = "[인문적상상력과소통]고전읽기와상상력",
+                professor = "김영희",
+                department = "교양교육운영팀",
+                division = null,
+                time = "2.0",
+                point = "2",
+                personeel = 30,
+                scheduleRoom = "토 11:00-11:50 (진리관 11305-김영희)\n토 12:00-12:50 (진리관 11305-김영희)",
+                target = "전체학년 미디어경영",
+                credit = 2.0,
+            ),
+            targetGrades = listOf(1, 2, 3, 4),
+            isStrict = false,
+        )
+
+        // 구과목 코드 99990001 → DB에 없으므로 baseCodes=[99990001, 21501003]으로 조회 시
+        // 21501003에 해당하는 과목만 반환
+        whenever(
+            courseRepository.findCoursesWithTargetByBaseCodes(listOf(99990001L, 21501003L))
+        ).thenReturn(listOf(replacementSection1, replacementSection2))
+
+        `when`("recommend를 호출하면") {
+            // Python에서 추가된 대체 baseCode가 lowGradeSubjectCodes에 포함된 상태
+            val result = service.recommend(listOf("99990001", "21501003"))
+
+            then("대체 신과목이 재수강 추천에 포함된다") {
+                result.category shouldBe "RETAKE"
+                result.courses shouldHaveSize 1
+                result.courses[0].courseName shouldBe "[인문적상상력과소통]고전읽기와상상력"
+                result.courses[0].baseCourseCode shouldBe 21501003L
+                result.courses[0].credits shouldBe 2.0
+                result.courses[0].department shouldBe "교양교육운영팀"
+                result.message.shouldBeNull()
+            }
+
+            then("대체 신과목의 분반이 올바르게 반환된다") {
+                result.courses[0].sections shouldHaveSize 2
+                result.courses[0].professors shouldBe listOf("김영희", "박준웅")
+            }
+        }
+    }
+
+    given("교양필수 재수강 매핑: 현대인과성서 구과목 + 대체 신과목이 함께 있는 경우") {
+        val replacementCourse = CourseWithTarget(
+            course = Course(
+                id = 200L,
+                category = Category.GENERAL_REQUIRED,
+                code = 2150102019L,
+                name = "[인간과성서]현대사회이슈와기독교",
+                professor = "설충수",
+                department = "교양교육운영팀",
+                division = null,
+                time = "2.0",
+                point = "2",
+                personeel = 30,
+                scheduleRoom = "토 09:00-09:50 (진리관 11306-설충수)\n토 10:00-10:50 (진리관 11306-설충수)",
+                target = "전체학년 미디어경영",
+                credit = 2.0,
+            ),
+            targetGrades = listOf(1, 2, 3, 4),
+            isStrict = false,
+        )
+
+        whenever(
+            courseRepository.findCoursesWithTargetByBaseCodes(listOf(88880001L, 21501020L))
+        ).thenReturn(listOf(replacementCourse))
+
+        `when`("recommend를 호출하면") {
+            val result = service.recommend(listOf("88880001", "21501020"))
+
+            then("현대사회이슈와기독교가 재수강 추천에 포함된다") {
+                result.courses shouldHaveSize 1
+                result.courses[0].courseName shouldBe "[인간과성서]현대사회이슈와기독교"
+                result.courses[0].baseCourseCode shouldBe 21501020L
+            }
+        }
+    }
+
     given("매칭 과목이 있을 때") {
         val course1Section1 = CourseWithTarget(
             course = Course(

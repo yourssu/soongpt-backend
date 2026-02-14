@@ -201,6 +201,15 @@ export const CourseList = () => {
     return labels[category] || category;
   };
 
+  const parseCoursePoint = (point: string): [string, string, string] => {
+    const parts = (point || '').split('-').map((part) => part.trim());
+    return [
+      parts[0] || '-',
+      parts[1] || '-',
+      parts[2] || '-',
+    ];
+  };
+
   const handleCourseClick = async (course: Course, index?: number) => {
     try {
       setTargetLoading(true);
@@ -326,9 +335,23 @@ export const CourseList = () => {
     setSelectedCourse(null);
   };
 
+  const isEditableElement = (target: EventTarget | null): boolean => {
+    if (!(target instanceof HTMLElement)) return false;
+
+    const tagName = target.tagName;
+    if (tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT') {
+      return true;
+    }
+
+    return target.isContentEditable;
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!selectedCourse) return;
+      if (isEditableElement(event.target)) return;
+
+      if (editMode) return;
 
       if (event.key === 'Escape') {
         closeModal();
@@ -631,6 +654,27 @@ export const CourseList = () => {
     });
   };
 
+  const handleToggleAllGrades = (index: number) => {
+    if (!editedCourse) return;
+    const current = editedCourse.targets[index];
+    const nextValue = !(current.grade1 && current.grade2 && current.grade3 && current.grade4 && current.grade5);
+
+    const newTargets = [...editedCourse.targets];
+    newTargets[index] = {
+      ...current,
+      grade1: nextValue,
+      grade2: nextValue,
+      grade3: nextValue,
+      grade4: nextValue,
+      grade5: nextValue,
+    };
+
+    setEditedCourse({
+      ...editedCourse,
+      targets: newTargets,
+    });
+  };
+
   const handleAddTarget = () => {
     if (!editedCourse) return;
     const newTarget: TargetInfo = {
@@ -808,24 +852,27 @@ export const CourseList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {courses.content?.map((course: Course, index: number) => (
-                      <tr
-                        key={course.id || course.code}
-                        onClick={() => handleCourseClick(course, index)}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <td>{course.code}</td>
-                        <td>{course.name}</td>
-                        <td>{course.professor || '-'}</td>
-                        <td>{getCategoryLabel(course.category)}</td>
-                        <td>{course.department}</td>
-                        <td>{course.point}</td>
-                        <td>{course.time}</td>
-                        <td>{course.personeel}</td>
-                        <td>{course.scheduleRoom}</td>
-                        <td>{course.target}</td>
-                      </tr>
-                    ))}
+                    {courses.content?.map((course: Course, index: number) => {
+                      const [pointClass, pointTime, pointQuota] = parseCoursePoint(course.point);
+                      return (
+                        <tr
+                          key={course.id || course.code}
+                          onClick={() => handleCourseClick(course, index)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <td>{course.code}</td>
+                          <td>{course.name}</td>
+                          <td>{course.professor || '-'}</td>
+                          <td>{getCategoryLabel(course.category)}</td>
+                          <td>{course.department}</td>
+                          <td>{pointClass}</td>
+                          <td>{pointTime}</td>
+                          <td>{pointQuota}</td>
+                          <td>{course.scheduleRoom}</td>
+                          <td>{course.target}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -1267,6 +1314,7 @@ export const CourseList = () => {
                             <th>정책 유형</th>
                             <th>적용 범위</th>
                             <th>대상</th>
+                            {editMode && <th>전체학년</th>}
                             <th>1학년</th>
                             <th>2학년</th>
                             <th>3학년</th>
@@ -1280,7 +1328,11 @@ export const CourseList = () => {
                         <tbody>
                           {editMode ? (
                             // Edit Mode: Show all targets with inputs
-                            editedCourse?.targets?.map((target, index) => (
+                            editedCourse?.targets?.map((target, index) => {
+                              const allGradesSelected = target.grade1 && target.grade2 && target.grade3 && target.grade4 && target.grade5;
+                              const anyGradesSelected = target.grade1 || target.grade2 || target.grade3 || target.grade4 || target.grade5;
+
+                              return (
                               <tr key={index} className={target.isDenied ? 'denied-row' : 'allowed-row'}>
                                 {editMode && <td>{target.id || '-'}</td>}
                                 <td>
@@ -1342,6 +1394,18 @@ export const CourseList = () => {
                                   )}
                                 </td>
                                 <td>
+                                  <input
+                                    type="checkbox"
+                                    title="전체 학년 선택/해제"
+                                    checked={allGradesSelected}
+                                    ref={(el) => {
+                                      if (!el) return;
+                                      el.indeterminate = !allGradesSelected && anyGradesSelected;
+                                    }}
+                                    onChange={() => handleToggleAllGrades(index)}
+                                  />
+                                </td>
+                                <td>
                                   <input type="checkbox" checked={target.grade1} onChange={(e) => handleTargetChange(index, 'grade1', e.target.checked)} />
                                 </td>
                                 <td>
@@ -1380,7 +1444,8 @@ export const CourseList = () => {
                                   <button className="delete-button" onClick={() => handleDeleteTarget(index)}>삭제</button>
                                 </td>
                               </tr>
-                            ))
+                            );
+                            })
                           ) : (
                             // View Mode: Existing logic (Sorted by Deny)
                             (selectedCourse.targets || [])

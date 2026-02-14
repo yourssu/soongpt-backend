@@ -68,4 +68,96 @@ class GeneralElectiveFieldDisplayMapperTest : BehaviorSpec({
             }
         }
     }
+
+    given("mapForProgressFieldCredits ~20학번") {
+        `when`("rawField가 공동체/리더십, 의사소통/글로벌, 창의/융합에 매칭되고 schoolId <= 20이면") {
+            then("뒤에 역량을 붙여 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("공동체역량", 2020, 15) shouldBe "공동체/리더십역량"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("인성과리더십", 2019, 20) shouldBe "공동체/리더십역량"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("한국어의사소통", 2020, 10) shouldBe "의사소통/글로벌역량"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("글로벌시민의식", 2018, 5) shouldBe "의사소통/글로벌역량"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("창의융합", 2020, 18) shouldBe "창의/융합역량"
+            }
+        }
+        `when`("schoolId > 20이면") {
+            then("역량을 붙이지 않고 base만 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("인성과리더십", 2020, 21) shouldBe "공동체/리더십"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("한국어의사소통", 2019, 25) shouldBe "의사소통/글로벌"
+            }
+        }
+        `when`("매칭되지 않는 rawField면") {
+            then("원문을 그대로 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("알수없는분야", 2020, 15) shouldBe "알수없는분야"
+            }
+        }
+        `when`("창의/융합 raw에 dash가 있으면(세부필드)") {
+            then("세부필드 표시명을 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("창의/융합,균형교양-역사·철학·종교", 2020, 15) shouldBe "역사·철학·종교"
+            }
+        }
+    }
+
+    given("mapForProgressFieldCredits 21~22학번") {
+        `when`("rawField가 숭실품성, 균형교양, 기초역량에 매칭되고 schoolId <= 20이면") {
+            then("뒤에 교과를 붙여 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("숭실품성교과", 2021, 15) shouldBe "숭실품성교과"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("균형교양", 2022, 10) shouldBe "균형교양교과"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("기초역량", 2021, 20) shouldBe "기초역량교과"
+            }
+        }
+        `when`("21~22학번이면 schoolId와 무관하게 교과를 붙인다") {
+            then("항상 교과 접미사를 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("숭실품성", 2022, 25) shouldBe "숭실품성교과"
+            }
+        }
+        `when`("균형교양 raw에 dash가 있으면(세부필드)") {
+            then("세부필드 표시명을 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("창의/융합,균형교양-문학·예술", 2022, 10) shouldBe "문학·예술"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("균형교양-정치·경제·경영", 2021, 15) shouldBe "정치·경제·경영"
+            }
+        }
+    }
+
+    given("mapForProgressFieldCredits 23학번 이상") {
+        `when`("rawField가 · 를 포함하면") {
+            then("· 이전 부분만 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("인간·언어", 2023, 15) shouldBe "인간"
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("문화·예술", 2024, 10) shouldBe "문화"
+            }
+        }
+        `when`("· 이 없으면") {
+            then("raw 그대로 반환한다") {
+                GeneralElectiveFieldDisplayMapper.mapForProgressFieldCredits("자기개발", 2023, 20) shouldBe "자기개발"
+            }
+        }
+    }
+
+    given("buildFieldCreditsStructure") {
+        `when`("21~22학번 raw에 균형교양 세부필드가 있으면") {
+            then("균형교양교과 객체 안에 세부필드별 과목수를 넣는다") {
+                val rawCounts = mapOf(
+                    "창의/융합,균형교양-문학·예술" to 1,
+                    "균형교양-정치·경제·경영" to 2,
+                )
+                val result = GeneralElectiveFieldDisplayMapper.buildFieldCreditsStructure(2021, 10, rawCounts)
+                @Suppress("UNCHECKED_CAST")
+                val balance = result["균형교양교과"] as Map<String, Int>
+                balance["문학·예술"] shouldBe 1
+                balance["정치·경제·경영"] shouldBe 2
+                balance["역사·철학·종교"] shouldBe 0
+                result["숭실품성교과"] shouldBe 0
+                result["기초역량교과"] shouldBe 0
+            }
+        }
+        `when`("20학번 raw에 창의/융합 세부필드가 있으면") {
+            then("창의/융합역량 객체 안에 세부필드별 과목수를 넣는다") {
+                val rawCounts = mapOf("창의/융합,균형교양-사회·문화·심리" to 2)
+                val result = GeneralElectiveFieldDisplayMapper.buildFieldCreditsStructure(2020, 15, rawCounts)
+                @Suppress("UNCHECKED_CAST")
+                val balance = result["창의/융합역량"] as Map<String, Int>
+                balance["사회·문화·심리"] shouldBe 2
+                result["공동체/리더십역량"] shouldBe 0
+            }
+        }
+    }
 })

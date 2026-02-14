@@ -102,6 +102,39 @@ class RusaintDtoDeserializationTest : DescribeSpec({
             dto.graduationSummary.chapel!!.satisfied shouldBe true
         }
 
+        it("graduationSummary 필드가 null인 경우도 역직렬화할 수 있다") {
+            val json = """
+                {
+                    "pseudonym": "test-pseudonym",
+                    "graduationRequirements": {
+                        "requirements": []
+                    },
+                    "graduationSummary": {
+                        "generalRequired": {"required": 19, "completed": 17, "satisfied": false},
+                        "generalElective": null,
+                        "majorFoundation": null,
+                        "majorRequired": {"required": 12, "completed": 15, "satisfied": true},
+                        "majorElective": null,
+                        "doubleMajorRequired": null,
+                        "doubleMajorElective": null,
+                        "minor": null,
+                        "christianCourses": null,
+                        "chapel": null
+                    }
+                }
+            """.trimIndent()
+
+            val dto = objectMapper.readValue<RusaintGraduationResponseDto>(json)
+
+            dto.graduationSummary.generalRequired shouldNotBe null
+            dto.graduationSummary.generalRequired!!.required shouldBe 19
+            dto.graduationSummary.generalElective shouldBe null
+            dto.graduationSummary.majorFoundation shouldBe null
+            dto.graduationSummary.majorRequired shouldNotBe null
+            dto.graduationSummary.majorElective shouldBe null
+            dto.graduationSummary.chapel shouldBe null
+        }
+
         it("requirement/calculation/difference가 null인 경우도 역직렬화할 수 있다") {
             val json = """
                 {

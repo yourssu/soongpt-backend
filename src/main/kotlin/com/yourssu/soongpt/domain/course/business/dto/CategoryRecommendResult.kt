@@ -174,6 +174,7 @@ data class RecommendedCourseResponse(
                 target = representative.course.target,
                 targetGrades = representative.targetGrades,
                 timing = null,
+                field = representative.course.category.group,
                 professors = professors,
                 department = representative.course.department,
                 sections = coursesWithTarget.map { SectionResponse.from(it.course, it.isStrict, divisionFromCourseCode = true) },
@@ -214,12 +215,14 @@ data class SectionResponse(
     val division: String?,
     val schedule: String,
     val isStrictRestriction: Boolean,
+    val target: String,
 ) {
     companion object {
         fun from(
             course: Course,
             isStrictRestriction: Boolean = false,
             divisionFromCourseCode: Boolean = false,
+            target: String = "",
         ): SectionResponse {
             val division = when {
                 divisionFromCourseCode -> "%02d".format(course.code % 100)
@@ -231,6 +234,7 @@ data class SectionResponse(
                 division = division,
                 schedule = course.scheduleWithoutRoom(),
                 isStrictRestriction = isStrictRestriction,
+                target = target,
             )
         }
     }
