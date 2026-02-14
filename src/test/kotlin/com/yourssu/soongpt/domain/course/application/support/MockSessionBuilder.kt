@@ -45,6 +45,7 @@ class MockSessionBuilder(
     private var doubleMajorElectiveStrategy: TakenStrategy = TakenStrategy.NONE
 
     private var lowGradeSubjectCodes: List<String> = emptyList()
+    private var extraTakenCodes: List<String> = emptyList()
 
     /** rusaint 1-1 또는 졸업사정표 미제공 시: graduationSummary = null, 경고(NO_GRADUATION_REPORT) 처리용 */
     private var noGraduationReport: Boolean = false
@@ -78,6 +79,9 @@ class MockSessionBuilder(
     fun doubleMajorElective(s: TakenStrategy) = apply { doubleMajorElectiveStrategy = s }
 
     fun retake(baseCodes: List<String>) = apply { lowGradeSubjectCodes = baseCodes }
+
+    /** 전략 자동 생성 외에 추가로 기이수에 포함시킬 과목코드 (하드코딩 과목 테스트용) */
+    fun extraTakenCodes(codes: List<String>) = apply { extraTakenCodes = codes }
 
     /** 졸업사정표 없음(1-1 또는 rusaint 미제공). graduationSummary = null → 경고 NO_GRADUATION_REPORT, 카테고리별 noDataResponse */
     fun noGraduationReport(value: Boolean = true) = apply { noGraduationReport = value }
@@ -160,6 +164,7 @@ class MockSessionBuilder(
             }
         }
 
+        allTakenCodes.addAll(extraTakenCodes)
         val distinctTaken = allTakenCodes.distinct()
         val takenCourses = distributeBySemester(distinctTaken, admissionYear, currentYear, currentSemester)
 

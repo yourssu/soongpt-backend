@@ -193,4 +193,30 @@ object GeneralElectiveFieldDisplayMapper {
         "사회·문화·심리" to "사회·문화·심리",
         "자연과학·공학·기술" to "자연과학·공학·기술",
     )
+
+    // ── 하드코딩: 2150180801 과목 (교양선택 과학 분야 강제 매핑) ──
+    // DB field: Bridge교과(수리·물리·화학·생물) → 23학번에서 "수리"로 잘못 파싱되므로
+    // 이 과목만 올바른 분야로 override
+
+    /** 하드코딩 대상 과목코드: 이 코드가 기이수에 있으면 교양선택 과학 분야로 매핑 */
+    const val SCIENCE_HARDCODED_COURSE_CODE = "2150180801"
+
+    /**
+     * 하드코딩 과목(2150180801)의 progress.fieldCredits용 raw 분야명 override.
+     * computeTakenFieldCourseCounts에서 DB 필드 대신 사용.
+     * - 23학번~: "과학·기술" (→ resolveProgressFieldEntry에서 "과학"으로 정리됨)
+     * - 20~22학번: null (DB 분야가 정상 매핑되므로 override 불필요)
+     */
+    fun scienceFieldRawOverride(schoolId: Int): String? {
+        return if (schoolId >= 23) "과학·기술" else null
+    }
+
+    /**
+     * 하드코딩 과목(2150180801)의 courses[].field 표시용 분야명 (B)
+     * - 23학번~: "과학·기술"
+     * - 20~22학번: "자연과학·공학·기술"
+     */
+    fun scienceFieldForCourseDisplay(admissionYear: Int): String {
+        return if (admissionYear >= 2023) "과학·기술" else "자연과학·공학·기술"
+    }
 }
