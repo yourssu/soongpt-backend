@@ -22,7 +22,8 @@ class TeachingCourseRecommendService(
 
     fun recommend(ctx: RecommendContext): CategoryRecommendResponse {
         if (!ctx.flags.teaching) {
-            return messageResponse("교직이수 대상이 아닙니다.")
+            // 교직 이수 대상이 아니면 해당 이수구분 없음 → (0, 0, true)
+            return messageResponse("교직이수 대상이 아닙니다.", Progress(required = 0, completed = 0, satisfied = true))
         }
 
         val department = departmentReader.getByName(ctx.departmentName)
@@ -73,9 +74,9 @@ class TeachingCourseRecommendService(
         )
     }
 
-    private fun messageResponse(message: String) = CategoryRecommendResponse(
+    private fun messageResponse(message: String, progress: Progress = Progress.notApplicable()) = CategoryRecommendResponse(
         category = TEACHING_CATEGORY,
-        progress = Progress.notApplicable(),
+        progress = progress,
         message = message,
         userGrade = null,
         courses = emptyList(),
