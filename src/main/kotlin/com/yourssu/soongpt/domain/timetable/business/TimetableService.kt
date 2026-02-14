@@ -83,14 +83,36 @@ class TimetableService(
     private fun getAvailableGeneralElectiveCourses(timetableId: Long, admissionYear: Int?): List<GeneralElectiveDto> {
         val timetableBitSet = timetableBitsetConverter.convert(timetableId)
         val requiredGeMap = untakenCourseCodeService.getUntakenCourseCodesByField(Category.GENERAL_ELECTIVE)
-        val result = mutableListOf<GeneralElectiveDto>()
         val scienceBaseCode = GeneralElectiveFieldDisplayMapper.SCIENCE_HARDCODED_COURSE_CODE.toLong() / 100
 
-        for ((rawTrackName, courseCodes) in requiredGeMap) {
-            val displayTrackName = admissionYear?.let {
-                GeneralElectiveFieldDisplayMapper.mapForCourseField(rawTrackName, it)
-            } ?: rawTrackName
+        // 표시용 trackName 기준으로 묶어서 중복 제거 (raw가 "자연과학공학기술"/"자연과학·공학·기술" 등 여러 형태여도 한 track으로)
+        val byDisplayName = requiredGeMap.entries
+            .map { (raw, codes) ->
+                val display = admissionYear?.let {
+                    GeneralElectiveFieldDisplayMapper.mapForCourseField(raw, it)
+                } ?: raw
+                display to codes
+            }
+            .groupBy({ it.first }, { it.second })
+            .mapValues { (_, listOfCodes) -> listOfCodes.flatten().distinct() }
 
+        // ~22학번: 해당 학번에 속하지 않는 분야(23 전용 "인간언어", "문화예술" 등) 제외
+        val allowedNames = admissionYear?.let { GeneralElectiveFieldDisplayMapper.allowedTrackNamesForDisplay(it) }
+        val filteredEntries = if (!allowedNames.isNullOrEmpty()) {
+            byDisplayName.filter { (displayName, _) -> displayName in allowedNames }
+        } else {
+            byDisplayName
+        }
+
+        // ~22학번(19학번 이하 포함): 9개 track을 고정 순서로 전부 노출. 미수강 과목 없는 분야는 courses=[]
+        val orderedNames = admissionYear?.let { GeneralElectiveFieldDisplayMapper.allowedTrackNamesOrdered(it) }
+        val result = mutableListOf<GeneralElectiveDto>()
+        val entriesMap = filteredEntries
+
+        val trackNamesToIterate = orderedNames?.takeIf { it.isNotEmpty() } ?: entriesMap.keys.toList()
+
+        for (displayTrackName in trackNamesToIterate) {
+            val courseCodes = entriesMap[displayTrackName] ?: emptyList()
             if (courseCodes.isEmpty()) {
                 result.add(GeneralElectiveDto(displayTrackName, emptyList()))
                 continue
