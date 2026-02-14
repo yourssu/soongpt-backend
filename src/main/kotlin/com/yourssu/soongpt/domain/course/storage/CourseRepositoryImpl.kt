@@ -353,14 +353,22 @@ class CourseRepositoryImpl(
             return emptyList()
         }
 
-        // Deny 과목 코드 조회 (같은 scope/grade 조건에서 Deny된 과목 제외)
+        // Deny 과목 코드 조회
+        // - CHAPEL은 현재 학년만 적용 (grade1 deny가 2~4학년까지 확장되는 문제 방지. or로 걸어버리는 문제가 있음.)
+        // - 그 외는 기존처럼 누적 학년 범위 적용
+        val denyGradeCondition = if (category == Category.CHAPEL) {
+            buildGradeExactCondition(maxGrade)
+        } else {
+            gradeCondition
+        }
+
         val denyCodes = jpaQueryFactory
             .select(targetEntity.courseCode)
             .from(targetEntity)
             .where(
                 targetEntity.studentType.eq(StudentType.GENERAL),
                 targetEntity.isDenied.isTrue,
-                gradeCondition,
+                denyGradeCondition,
                 scopeCondition,
             )
             .fetch()
@@ -543,6 +551,17 @@ class CourseRepositoryImpl(
         if (maxGrade >= 4) condition = condition.or(targetEntity.grade4.isTrue)
         if (maxGrade >= 5) condition = condition.or(targetEntity.grade5.isTrue)
         return condition
+    }
+
+    private fun buildGradeExactCondition(grade: Int): BooleanExpression {
+        return when (grade) {
+            1 -> targetEntity.grade1.isTrue
+            2 -> targetEntity.grade2.isTrue
+            3 -> targetEntity.grade3.isTrue
+            4 -> targetEntity.grade4.isTrue
+            5 -> targetEntity.grade5.isTrue
+            else -> targetEntity.grade1.isTrue
+        }
     }
 
     override fun findDepartmentIdsByTrackType(trackType: SecondaryMajorTrackType): List<Long> {
