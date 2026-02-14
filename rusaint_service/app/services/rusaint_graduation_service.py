@@ -69,6 +69,12 @@ class RusaintGraduationService:
             graduation_reqs = await fetchers.fetch_graduation_requirements(grad_app)
             logger.info(f"데이터 조회 완료: {time.time() - data_start:.2f}초")
 
+            if not graduation_reqs.requirements:
+                logger.warning(
+                    "graduationRequirements.requirements가 비어 있음: student_id=%s**** (graduationSummary 전 필드 null 가능)",
+                    student_id[:4],
+                )
+
             total_time = time.time() - start_time
             logger.info(
                 f"유세인트 Graduation 데이터 조회 완료: student_id={student_id[:4]}**** (총 {total_time:.2f}초)"
@@ -76,6 +82,24 @@ class RusaintGraduationService:
 
             # 핵심 요약 생성 (name 기반 분류)
             graduation_summary = build_graduation_summary(graduation_reqs.requirements)
+
+            # null 필드가 있으면 경고 (required:0, completed:0, satisfied:true 원인 추적용)
+            if graduation_summary is None:
+                logger.warning(
+                    "graduationSummary 전체가 null: student_id=%s****",
+                    student_id[:4],
+                )
+            else:
+                null_fields = [
+                    name for name, value in graduation_summary.model_dump().items()
+                    if value is None
+                ]
+                if null_fields:
+                    logger.warning(
+                        "graduationSummary 내 null 필드: student_id=%s****, null_fields=%s",
+                        student_id[:4],
+                        null_fields,
+                    )
 
             pseudonym = generate_pseudonym(student_id, settings.pseudonym_secret)
             return {

@@ -210,7 +210,10 @@ class SsoService(
                     usaintData = usaintData,
                 )
 
-                logger.info { "rusaint fetch 완료: pseudonym=${pseudonym.take(8)}..." }
+                val ge = usaintData.graduationSummary?.generalElective
+                logger.info {
+                    "rusaint fetch 완료: pseudonym=${pseudonym.take(8)}..., generalElective=${ge != null} (required=${ge?.required}, completed=${ge?.completed})"
+                }
             } catch (e: RusaintServiceException) {
                 if (e.isUnauthorized) {
                     logger.warn { "sToken 만료/무효: pseudonym=${pseudonym.take(8)}..." }

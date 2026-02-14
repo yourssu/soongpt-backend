@@ -43,16 +43,9 @@ class SyncSessionStore(
         val existing = cache.getIfPresent(pseudonym) ?: return
         val existingData = existing.usaintData
         val finalUsaintData = when {
-            usaintData == null -> existing.usaintData
-            usaintData.graduationSummary == null && existingSummary != null -> {
-                // 병렬 fetch 등으로 나중에 완료된 쪽이 graduation=null이면, 기존 graduationSummary 보존
-                logger.warn {
-                    "새 usaintData의 graduationSummary가 null이라 기존 값 보존: pseudonym=${pseudonym.take(8)}..., " +
-                        "기존 generalElective=${existingSummary.generalElective != null}"
-                }
-                usaintData.copy(graduationSummary = existingSummary)
-            }
-            else -> usaintData
+            usaintData == null -> existingData
+            existingData == null -> usaintData
+            else -> mergeNeverOverwriteWithNull(existingData, usaintData, pseudonym)
         }
         val updated = existing.copy(
             status = status,
