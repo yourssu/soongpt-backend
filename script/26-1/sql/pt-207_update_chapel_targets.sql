@@ -5,9 +5,8 @@
 -- - Fix chapel recommendation eligibility by adjusting `target` rows
 --
 -- Policy (요청 사항)
--- - 비전채플: 재수강반(…09) 및 수강불가 성격의 10채플(…10)을 제외하고,
---   2~4학년은 나머지 모든 비전채플을 수강 가능 대상으로 본다.
--- - 재수강반 채플(…09)은 4학년 재수강(미이수자) 성격으로 4학년만 열어둔다.
+-- - 10채플(…10)을 제외하고, 01~09 분반은 **2~4학년 전체 수강 가능**하도록 target 정책을 수정한다.
+--   (즉, 단과대/학과별 allow/deny 대신 전교생(UNIVERSITY) allow를 추가해 열어준다)
 --
 -- Notes
 -- - scope_type / student_type 는 코드(ordinal)로 저장됨
@@ -16,18 +15,22 @@
 
 START TRANSACTION;
 
--- 1) 2~4학년 비전채플 전체 허용 (10채플/09 제외)
---    - 기존 UNIVERSITY scope allow(0) 타겟이 있으면 중복을 피하기 위해 삭제 후 재삽입
-DELETE t
-FROM target t
-JOIN course c ON c.code = t.course_code
-WHERE c.category = 'CHAPEL'
-  AND c.division = '비전채플'
-  AND c.code NOT IN (2150101509, 2150101510)
-  AND t.scope_type = 0
-  AND t.student_type = 0
-  AND t.is_denied = 0;
+-- 1) 01~09 분반을 2~4학년 전교생(GENERAL) 수강 가능으로 오픈
+--
+-- 실DB(soongpt_dev) 확인 결과, 해당 분반(course_code=2150101501~1510)은 division 컬럼이 null인 경우가 있어
+-- division 기반 필터 대신 "코드 범위"로 정책을 적용한다.
+--
+-- 적용 대상: 2150101501 ~ 2150101509
+-- 제외:      2150101510 (10채플)
+--
+-- 기존 UNIVERSITY scope GENERAL allow가 있으면 중복을 피하기 위해 삭제 후 재삽입
+DELETE FROM target
+WHERE course_code BETWEEN 2150101501 AND 2150101509
+  AND scope_type = 0
+  AND student_type = 0
+  AND is_denied = 0;
 
+-- 2~4학년 GENERAL 전교생 allow 추가
 INSERT INTO target (
   course_code, scope_type, college_id, department_id,
   grade1, grade2, grade3, grade4, grade5,
@@ -47,53 +50,8 @@ SELECT
   0 AS student_type,
   0 AS is_strict
 FROM course c
-WHERE c.category = 'CHAPEL'
-  AND c.division = '비전채플'
-  AND c.code NOT IN (2150101509, 2150101510);
+WHERE c.code BETWEEN 2150101501 AND 2150101509;
 
--- 2) 재수강반 채플(…09): 4학년만 허용
-DELETE FROM target
-WHERE course_code = 2150101509
-  AND student_type = 0
-  AND scope_type = 0;
-
--- allow: grade4 only
-INSERT INTO target (
-  course_code, scope_type, college_id, department_id,
-  grade1, grade2, grade3, grade4, grade5,
-  is_denied, student_type, is_strict
-) VALUES (
-  2150101509, 0, NULL, NULL,
-  0, 0, 0, 1, 0,
-  0, 0, 0
-);
-
--- deny: block grade1~3
-INSERT INTO target (
-  course_code, scope_type, college_id, department_id,
-  grade1, grade2, grade3, grade4, grade5,
-  is_denied, student_type, is_strict
-) VALUES (
-  2150101509, 0, NULL, NULL,
-  1, 1, 1, 0, 0,
-  1, 0, 0
-);
-
--- 3) 10채플(…10): 2~4학년 GENERAL은 deny 처리 (추천/조회에서 제외되도록)
-DELETE FROM target
-WHERE course_code = 2150101510
-  AND student_type = 0
-  AND scope_type = 0
-  AND is_denied = 1;
-
-INSERT INTO target (
-  course_code, scope_type, college_id, department_id,
-  grade1, grade2, grade3, grade4, grade5,
-  is_denied, student_type, is_strict
-) VALUES (
-  2150101510, 0, NULL, NULL,
-  0, 1, 1, 1, 0,
-  1, 0, 0
-);
+-- 2) 10채플(…10)은 제외: target 변경 없음 (기존 외국인 2~3 허용 등 유지)
 
 COMMIT;
