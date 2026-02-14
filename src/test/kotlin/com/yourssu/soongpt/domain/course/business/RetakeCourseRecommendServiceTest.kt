@@ -160,6 +160,57 @@ class RetakeCourseRecommendServiceTest : BehaviorSpec({
         }
     }
 
+    /**
+     * Kotlin 하드코딩(RETAKE_OLD_TO_REPLACEMENT): 구과목 baseCode만 lowGradeSubjectCodes에 있어도
+     * 치환된 대체 신과목으로 조회해 재수강 추천에 포함된다.
+     */
+    listOf(
+        Triple("독서와토론", "21506685", 21501003L to "[인문적상상력과소통]고전읽기와상상력"),
+        Triple("현대인과성서", "21503037", 21501020L to "[인간과성서]현대사회이슈와기독교"),
+        Triple("기업가정신과행동", "21500898", 21501009L to "[창의적사고와혁신]혁신과기업가정신"),
+        Triple("대학글쓰기", "21500901", 21501006L to "[비판적사고와표현]미디어사회와비평적글쓰기"),
+        Triple("컴퓨터사고", "21500907", 21501028L to "[컴퓨팅적사고]컴퓨팅적사고와코딩기초"),
+        Triple("AI와데이터사회", "21500747", 21501034L to "[SW와AI]AI와데이터기초"),
+    ).forEach { (구과목명, 구과목코드, replacement) ->
+        val (대체BaseCode, 대체과목명) = replacement
+        given("교양필수 재수강 하드코딩: 구과목 $구과목명 ($구과목코드)만 lowGradeSubjectCodes에 있는 경우") {
+            val replacementCourse = CourseWithTarget(
+                course = Course(
+                    id = 300L,
+                    category = Category.GENERAL_REQUIRED,
+                    code = 대체BaseCode * 100 + 1,
+                    name = 대체과목명,
+                    professor = "테스트교수",
+                    department = "교양교육운영팀",
+                    division = null,
+                    time = "2.0",
+                    point = "2",
+                    personeel = 30,
+                    scheduleRoom = "월 09:00-09:50",
+                    target = "전체학년",
+                    credit = 2.0,
+                ),
+                targetGrades = listOf(1, 2, 3, 4),
+                isStrict = false,
+            )
+            whenever(
+                courseRepository.findCoursesWithTargetByBaseCodes(listOf(구과목코드.toLong(), 대체BaseCode))
+            ).thenReturn(listOf(replacementCourse))
+
+            `when`("recommend를 호출하면") {
+                val result = service.recommend(listOf(구과목코드))
+
+                then("치환된 대체 신과목이 재수강 추천에 포함된다") {
+                    result.category shouldBe "RETAKE"
+                    result.courses shouldHaveSize 1
+                    result.courses[0].courseName shouldBe 대체과목명
+                    result.courses[0].baseCourseCode shouldBe 대체BaseCode
+                    result.message.shouldBeNull()
+                }
+            }
+        }
+    }
+
     given("매칭 과목이 있을 때") {
         val course1Section1 = CourseWithTarget(
             course = Course(
