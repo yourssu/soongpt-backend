@@ -42,20 +42,39 @@ jobs:
           registry-type: public
           registries: ${{ vars.ECR_PUBLIC_REGISTRY_ID }}
 
+      - name: Check if image already exists
+        id: check-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          echo "Checking if image exists: $ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}:$IMAGE_TAG"
+          if docker manifest inspect "$ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}:$IMAGE_TAG" > /dev/null 2>&1; then
+            echo "Image exists! Skipping build."
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Image not found. Proceeding with build."
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Set up JDK 21
+        if: steps.check-image.outputs.exists != 'true'
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
       - name: Setup Gradle
+        if: steps.check-image.outputs.exists != 'true'
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Clean Build with Gradle (with Testing)
+      - name: Clean Build with Gradle (without Testing)
+        if: steps.check-image.outputs.exists != 'true'
         run: |
           ./gradlew build -x test
 
       - name: Build, tag, and push WAS image to Amazon ECR
+        if: steps.check-image.outputs.exists != 'true'
         env:
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
           IMAGE_TAG: ${{ github.sha }}
@@ -79,6 +98,7 @@ jobs:
             .
 
       - name: Build, tag, and push rusaint-service image to Amazon ECR
+        if: steps.check-image.outputs.exists != 'true'
         env:
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
           IMAGE_TAG: ${{ github.sha }}
