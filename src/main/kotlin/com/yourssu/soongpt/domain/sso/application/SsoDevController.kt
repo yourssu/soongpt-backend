@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "SSO Dev", description = "로컬/개발 테스트용 (local, dev 프로필에서 활성화)")
-@Profile("local", "dev")
+@Profile("local")
 @RestController
 @RequestMapping("/api/dev")
 class SsoDevController(
