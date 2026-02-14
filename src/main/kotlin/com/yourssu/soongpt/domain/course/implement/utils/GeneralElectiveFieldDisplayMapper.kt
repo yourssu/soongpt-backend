@@ -253,4 +253,42 @@ object GeneralElectiveFieldDisplayMapper {
     fun scienceFieldForCourseDisplay(admissionYear: Int): String {
         return if (admissionYear >= 2023) "과학·기술" else "자연과학·공학·기술"
     }
+
+    // ── 20·21·22학번 track/field 접두사 (표시용) ──
+    private val PREFIX_20 = mapOf(
+        "인성과 리더십" to "공동체-",
+        "자기계발과 진로탐색" to "공동체-",
+        "한국어의사소통" to "의사소통-",
+        "국제어문" to "의사소통-",
+        "문학·예술" to "창의-",
+        "역사·철학·종교" to "창의-",
+        "정치·경제·경영" to "창의-",
+        "사회·문화·심리" to "창의-",
+        "자연과학·공학·기술" to "창의-",
+    )
+    private val PREFIX_21_22 = mapOf(
+        "인성과 리더십" to "품성-",
+        "자기계발과 진로탐색" to "품성-",
+        "한국어의사소통" to "기초-",
+        "국제어문" to "기초-",
+        "문학·예술" to "균형-",
+        "역사·철학·종교" to "균형-",
+        "정치·경제·경영" to "균형-",
+        "사회·문화·심리" to "균형-",
+        "자연과학·공학·기술" to "균형-",
+    )
+
+    /**
+     * 20학번: 공동체- / 의사소통- / 창의-, 21·22학번: 품성- / 기초- / 균형- 접두사 부여.
+     * trackName·courses[].field 표시용. 19학번 이하·23학번~는 그대로 반환.
+     */
+    fun withTrackOrFieldPrefix(displayName: String, admissionYear: Int): String {
+        if (displayName.isBlank()) return displayName
+        when {
+            admissionYear <= 2019 || admissionYear >= 2023 -> return displayName
+            admissionYear == 2020 -> return PREFIX_20[displayName]?.let { it + displayName } ?: displayName
+            admissionYear in 2021..2022 -> return PREFIX_21_22[displayName]?.let { it + displayName } ?: displayName
+            else -> return displayName
+        }
+    }
 }
