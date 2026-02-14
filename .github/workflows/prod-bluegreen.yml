@@ -233,8 +233,8 @@ jobs:
           fi
 
           echo "[3/5] Switch nginx upstream to $TARGET_PORT (graceful reload)"
-          # Escape dots in regex
-          sudo sed -i -E "s#proxy_pass http://127\.0\.0\.1:[0-9]+#proxy_pass http://127.0.0.1:${TARGET_PORT}#g" "$NGINX_CONF"
+          # Escape dots in regex and handle whitespace
+          sudo sed -i -E "s#proxy_pass[[:space:]]+http://127\.0\.0\.1:[0-9]+#proxy_pass http://127.0.0.1:${TARGET_PORT}#g" "$NGINX_CONF"
           
           # Validate and reload
           if sudo nginx -t; then
