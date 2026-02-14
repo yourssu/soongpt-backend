@@ -52,12 +52,22 @@ class UntakenCourseCodeService(
         val maxGrade = if (category == Category.MAJOR_ELECTIVE) MAX_GRADE else usaintData.basicInfo.grade
 
         val coursesWithTarget = getCoursesWithTarget(category, departmentId, department.collegeId, maxGrade)
-
         val takenBaseCodes = extractTakenBaseCodes(usaintData)
 
-        return coursesWithTarget
-            .filter { it.course.baseCode() !in takenBaseCodes }
-            .map { it.course.code }
+        val filteredByGrade = if (category == Category.CHAPEL) {
+            val grade = usaintData.basicInfo.grade
+            coursesWithTarget.filter { it.targetGrades.contains(grade) }
+        } else {
+            coursesWithTarget
+        }
+
+        return if (category == Category.CHAPEL) {
+            filteredByGrade.map { it.course.code }
+        } else {
+            filteredByGrade
+                .filter { it.course.baseCode() !in takenBaseCodes }
+                .map { it.course.code }
+        }
     }
 
     /**
