@@ -174,7 +174,7 @@ data class RecommendedCourseResponse(
                 target = representative.course.target,
                 targetGrades = representative.targetGrades,
                 timing = null,
-                field = representative.course.category.displayName,
+                field = representative.course.category.group,
                 professors = professors,
                 department = representative.course.department,
                 sections = coursesWithTarget.map { SectionResponse.from(it.course, it.isStrict, divisionFromCourseCode = true) },
