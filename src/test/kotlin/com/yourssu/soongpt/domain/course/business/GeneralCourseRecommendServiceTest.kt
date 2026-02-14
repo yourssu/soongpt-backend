@@ -67,6 +67,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                     category = Category.GENERAL_REQUIRED,
                     departmentId = 1L,
                     collegeId = 10L,
+                    userGrade = userGrade,
                     maxGrade = userGrade,
                 )
             ).thenReturn(emptyList())
@@ -164,6 +165,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                     category = Category.GENERAL_REQUIRED,
                     departmentId = 1L,
                     collegeId = 10L,
+                    userGrade = userGrade,
                     maxGrade = userGrade,
                 )
             ).thenReturn(listOf(swCourse1, creativeCourse1, creativeCourse2))
@@ -226,6 +228,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                     category = Category.GENERAL_REQUIRED,
                     departmentId = 1L,
                     collegeId = 10L,
+                    userGrade = userGrade,
                     maxGrade = userGrade,
                 )
             ).thenReturn(listOf(swCourse))
@@ -305,6 +308,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                     category = Category.GENERAL_REQUIRED,
                     departmentId = 1L,
                     collegeId = 10L,
+                    userGrade = userGrade,
                     maxGrade = userGrade,
                 )
             ).thenReturn(listOf(swCourse1, swCourse2))
@@ -383,6 +387,7 @@ class GeneralCourseRecommendServiceTest : BehaviorSpec({
                     category = Category.GENERAL_ELECTIVE,
                     departmentId = 1L,
                     collegeId = 10L,
+                    userGrade = userGrade,
                     maxGrade = userGrade,
                 )
             ).thenReturn(listOf(course1, course2))

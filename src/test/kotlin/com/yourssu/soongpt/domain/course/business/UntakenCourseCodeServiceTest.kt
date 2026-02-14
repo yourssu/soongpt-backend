@@ -76,7 +76,7 @@ class UntakenCourseCodeServiceTest : BehaviorSpec({
         beforeContainer {
             whenever(
                 courseRepository.findCoursesWithTargetByCategory(
-                    category = Category.MAJOR_BASIC, departmentId = 1L, collegeId = 10L, maxGrade = 3,
+                    category = Category.MAJOR_BASIC, departmentId = 1L, collegeId = 10L, userGrade = 3, maxGrade = 3,
                 )
             ).thenReturn(listOf(taken, untaken))
         }
@@ -105,7 +105,7 @@ class UntakenCourseCodeServiceTest : BehaviorSpec({
         beforeContainer {
             whenever(
                 courseRepository.findCoursesWithTargetByCategory(
-                    category = Category.MAJOR_ELECTIVE, departmentId = 1L, collegeId = 10L, maxGrade = 5,
+                    category = Category.MAJOR_ELECTIVE, departmentId = 1L, collegeId = 10L, userGrade = 3, maxGrade = 5,
                 )
             ).thenReturn(listOf(course1))
         }
@@ -145,7 +145,7 @@ class UntakenCourseCodeServiceTest : BehaviorSpec({
         beforeContainer {
             whenever(
                 courseRepository.findCoursesWithTargetByCategory(
-                    category = Category.GENERAL_REQUIRED, departmentId = 1L, collegeId = 10L, maxGrade = 3,
+                    category = Category.GENERAL_REQUIRED, departmentId = 1L, collegeId = 10L, userGrade = 3, maxGrade = 3,
                 )
             ).thenReturn(listOf(swCourse, globalCourse))
         }
@@ -188,7 +188,7 @@ class UntakenCourseCodeServiceTest : BehaviorSpec({
         beforeContainer {
             whenever(
                 courseRepository.findCoursesWithTargetByCategory(
-                    category = Category.GENERAL_ELECTIVE, departmentId = 1L, collegeId = 10L, maxGrade = 3,
+                    category = Category.GENERAL_ELECTIVE, departmentId = 1L, collegeId = 10L, userGrade = 3, maxGrade = 3,
                 )
             ).thenReturn(listOf(course1, course2))
         }

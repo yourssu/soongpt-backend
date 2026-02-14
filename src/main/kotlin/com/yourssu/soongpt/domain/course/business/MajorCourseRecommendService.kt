@@ -55,6 +55,7 @@ class MajorCourseRecommendService(
             category = category,
             departmentId = departmentId,
             collegeId = department.collegeId,
+            userGrade = userGrade,
             maxGrade = userGrade,
             takenSubjectCodes = takenSubjectCodes,
         )
@@ -97,6 +98,7 @@ class MajorCourseRecommendService(
             category = category,
             departmentId = departmentId,
             collegeId = department.collegeId,
+            userGrade = userGrade,
             maxGrade = MAX_GRADE,
             takenSubjectCodes = takenSubjectCodes,
         )
@@ -149,6 +151,7 @@ class MajorCourseRecommendService(
             category = category,
             departmentId = departmentId,
             collegeId = department.collegeId,
+            userGrade = userGrade,
             maxGrade = MAX_GRADE,
             takenSubjectCodes = takenSubjectCodes,
         )
@@ -232,6 +235,7 @@ class MajorCourseRecommendService(
         category: Category,
         departmentId: Long,
         collegeId: Long,
+        userGrade: Int,
         maxGrade: Int,
         takenSubjectCodes: List<String>,
     ): List<CourseWithTarget> {
@@ -239,6 +243,7 @@ class MajorCourseRecommendService(
             category = category,
             departmentId = departmentId,
             collegeId = collegeId,
+            userGrade = userGrade,
             maxGrade = maxGrade,
         )
 

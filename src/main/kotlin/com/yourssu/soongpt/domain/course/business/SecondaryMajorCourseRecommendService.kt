@@ -44,6 +44,7 @@ class SecondaryMajorCourseRecommendService(
             completionType = SecondaryMajorCompletionType.REQUIRED,
             departmentId = department.id!!,
             collegeId = department.collegeId,
+            userGrade = ctx.userGrade,
             maxGrade = ctx.userGrade,
         )
         val takenBaseCodes = toTakenBaseCodeSet(ctx.takenSubjectCodes)
@@ -81,6 +82,7 @@ class SecondaryMajorCourseRecommendService(
             completionType = SecondaryMajorCompletionType.ELECTIVE,
             departmentId = department.id!!,
             collegeId = department.collegeId,
+            userGrade = ctx.userGrade,
             maxGrade = MAX_GRADE,
         )
         val takenBaseCodes = toTakenBaseCodeSet(ctx.takenSubjectCodes)
@@ -120,6 +122,7 @@ class SecondaryMajorCourseRecommendService(
             completionType = SecondaryMajorCompletionType.REQUIRED,
             departmentId = department.id!!,
             collegeId = department.collegeId,
+            userGrade = ctx.userGrade,
             maxGrade = ctx.userGrade,
         ).filter { it.course.baseCode() !in takenBaseCodes }
         val electiveWithTarget = courseRepository.findCoursesWithTargetBySecondaryMajor(
@@ -127,6 +130,7 @@ class SecondaryMajorCourseRecommendService(
             completionType = SecondaryMajorCompletionType.ELECTIVE,
             departmentId = department.id!!,
             collegeId = department.collegeId,
+            userGrade = ctx.userGrade,
             maxGrade = ctx.userGrade,
         ).filter { it.course.baseCode() !in takenBaseCodes }
 
