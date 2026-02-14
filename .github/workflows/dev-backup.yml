@@ -1,4 +1,4 @@
-name: Docker - Build, Push to ECR and Deploy (Dev Backup, Blue/Green)
+name: Deploy (Dev Backup, Blue/Green)
 
 on:
   workflow_dispatch:
