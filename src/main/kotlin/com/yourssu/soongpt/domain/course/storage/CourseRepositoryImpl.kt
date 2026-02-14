@@ -75,15 +75,19 @@ class CourseRepositoryImpl(
         val fetchLimit = pageable.pageSize + 1
         val sanitizedQuery = query.trim()
 
-        val normalizedCodeRangeStart =
-            sanitizedQuery
-                .takeIf { it.length >= 8 && it.all { char -> char.isDigit() } }
-                ?.toLongOrNull()
-                ?.let { (it / DIVISION_DIVISOR) * DIVISION_DIVISOR }
+        // 5자리 이상 10자리 이하 숫자이면 코드 프리픽스로 범위 검색
+        // 10자리 코드 기준 prefix → range 계산
+        // "21500" → 2150000000..2150099999
+        // "21500785" → 2150078500..2150078599 (기존과 동일)
+        val codeDigits = sanitizedQuery.takeIf { it.length in 5..10 && it.all { c -> c.isDigit() } }
 
-        if (normalizedCodeRangeStart != null) {
-            val codeRangeStart = normalizedCodeRangeStart
-            val codeRangeEnd = codeRangeStart + DIVISION_DIVISOR - 1
+        if (codeDigits != null) {
+            val num = codeDigits.toLong()
+            val padLen = 10 - codeDigits.length
+            var multiplier = 1L
+            repeat(padLen) { multiplier *= 10 }
+            val codeRangeStart = num * multiplier
+            val codeRangeEnd = (num + 1) * multiplier - 1
 
             val results =
                 courseJpaRepository
@@ -445,11 +449,12 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
         value = """
             SELECT * FROM course
             WHERE (code BETWEEN :codeRangeStart AND :codeRangeEnd)
-                OR MATCH(name, professor) AGAINST(:query IN BOOLEAN MODE)
+                OR MATCH(name, professor, department) AGAINST(:query IN BOOLEAN MODE)
             ORDER BY
                 CASE WHEN code BETWEEN :codeRangeStart AND :codeRangeEnd THEN 0 ELSE 1 END,
                 CASE WHEN LOWER(name) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
                 CASE WHEN professor IS NOT NULL AND LOWER(professor) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
+                CASE WHEN LOWER(department) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
                 CHAR_LENGTH(name),
                 LOWER(name)
             LIMIT :limit OFFSET :offset
@@ -468,7 +473,7 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
         value = """
             SELECT COUNT(*) FROM course
             WHERE (code BETWEEN :codeRangeStart AND :codeRangeEnd)
-                OR MATCH(name, professor) AGAINST(:query IN BOOLEAN MODE)
+                OR MATCH(name, professor, department) AGAINST(:query IN BOOLEAN MODE)
         """,
         nativeQuery = true
     )
@@ -477,10 +482,11 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
     @Query(
         value = """
             SELECT * FROM course
-            WHERE MATCH(name, professor) AGAINST(:query IN BOOLEAN MODE)
+            WHERE MATCH(name, professor, department) AGAINST(:query IN BOOLEAN MODE)
             ORDER BY
                 CASE WHEN LOWER(name) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
                 CASE WHEN professor IS NOT NULL AND LOWER(professor) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
+                CASE WHEN LOWER(department) LIKE CONCAT(LOWER(:query), '%') THEN 0 ELSE 1 END,
                 CHAR_LENGTH(name),
                 LOWER(name)
             LIMIT :limit OFFSET :offset
@@ -492,7 +498,7 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
     @Query(
         value = """
             SELECT COUNT(*) FROM course
-            WHERE MATCH(name, professor) AGAINST(:query IN BOOLEAN MODE)
+            WHERE MATCH(name, professor, department) AGAINST(:query IN BOOLEAN MODE)
         """,
         nativeQuery = true
     )

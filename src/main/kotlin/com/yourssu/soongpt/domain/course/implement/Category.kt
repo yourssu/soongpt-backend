@@ -4,15 +4,16 @@ import com.yourssu.soongpt.domain.course.implement.exception.InvalidCategoryExce
 
 enum class Category(
     val displayName: String,
+    val group: String,
 ) {
-    MAJOR_REQUIRED("전필"),
-    MAJOR_ELECTIVE("전선"),
-    MAJOR_BASIC("전기"),
-    GENERAL_REQUIRED("교필"),
-    GENERAL_ELECTIVE("교선"),
-    CHAPEL("채플"),
-    TEACHING("교직"),
-    OTHER("기타")
+    MAJOR_REQUIRED("전필", "MAJOR"),
+    MAJOR_ELECTIVE("전선", "MAJOR"),
+    MAJOR_BASIC("전기", "MAJOR"),
+    GENERAL_REQUIRED("교필", "GENERAL"),
+    GENERAL_ELECTIVE("교선", "GENERAL"),
+    CHAPEL("채플", "OTHER"),
+    TEACHING("교직", "OTHER"),
+    OTHER("기타", "OTHER"),
     ;
 
     companion object {

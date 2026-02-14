@@ -6,6 +6,7 @@ import com.yourssu.soongpt.domain.course.implement.baseCode
 data class SearchCourseGroupResponse(
     val baseCourseCode: Long,
     val courseName: String,
+    val category: String,
     val credits: Double?,
     val professors: List<String>,
     val department: String,
@@ -23,6 +24,7 @@ data class SearchCourseGroupResponse(
             return SearchCourseGroupResponse(
                 baseCourseCode = first.baseCode(),
                 courseName = first.name,
+                category = first.category.group,
                 credits = first.credit,
                 professors = professors,
                 department = first.department,
