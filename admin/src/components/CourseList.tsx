@@ -326,9 +326,23 @@ export const CourseList = () => {
     setSelectedCourse(null);
   };
 
+  const isEditableElement = (target: EventTarget | null): boolean => {
+    if (!(target instanceof HTMLElement)) return false;
+
+    const tagName = target.tagName;
+    if (tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT') {
+      return true;
+    }
+
+    return target.isContentEditable;
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!selectedCourse) return;
+      if (isEditableElement(event.target)) return;
+
+      if (editMode) return;
 
       if (event.key === 'Escape') {
         closeModal();
