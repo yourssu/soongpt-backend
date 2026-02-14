@@ -201,6 +201,15 @@ export const CourseList = () => {
     return labels[category] || category;
   };
 
+  const parseCoursePoint = (point: string): [string, string, string] => {
+    const parts = (point || '').split('-').map((part) => part.trim());
+    return [
+      parts[0] || '-',
+      parts[1] || '-',
+      parts[2] || '-',
+    ];
+  };
+
   const handleCourseClick = async (course: Course, index?: number) => {
     try {
       setTargetLoading(true);
@@ -822,24 +831,27 @@ export const CourseList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {courses.content?.map((course: Course, index: number) => (
-                      <tr
-                        key={course.id || course.code}
-                        onClick={() => handleCourseClick(course, index)}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <td>{course.code}</td>
-                        <td>{course.name}</td>
-                        <td>{course.professor || '-'}</td>
-                        <td>{getCategoryLabel(course.category)}</td>
-                        <td>{course.department}</td>
-                        <td>{course.point}</td>
-                        <td>{course.time}</td>
-                        <td>{course.personeel}</td>
-                        <td>{course.scheduleRoom}</td>
-                        <td>{course.target}</td>
-                      </tr>
-                    ))}
+                    {courses.content?.map((course: Course, index: number) => {
+                      const [pointClass, pointTime, pointQuota] = parseCoursePoint(course.point);
+                      return (
+                        <tr
+                          key={course.id || course.code}
+                          onClick={() => handleCourseClick(course, index)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <td>{course.code}</td>
+                          <td>{course.name}</td>
+                          <td>{course.professor || '-'}</td>
+                          <td>{getCategoryLabel(course.category)}</td>
+                          <td>{course.department}</td>
+                          <td>{pointClass}</td>
+                          <td>{pointTime}</td>
+                          <td>{pointQuota}</td>
+                          <td>{course.scheduleRoom}</td>
+                          <td>{course.target}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

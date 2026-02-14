@@ -115,6 +115,15 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
     }
   };
 
+  const parseCoursePoint = (point: string): [string, string, string] => {
+    const parts = (point || '').split('-').map((part) => part.trim());
+    return [
+      parts[0] || '-',
+      parts[1] || '-',
+      parts[2] || '-',
+    ];
+  };
+
   return (
     <>
       <form onSubmit={handleFilterSubmit} className="filter-form">
@@ -303,24 +312,27 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                 </tr>
               </thead>
               <tbody>
-                {filteredCourses?.map((course: Course, index: number) => (
-                  <tr
-                    key={course.id || course.code}
-                    onClick={() => onCourseClick(course, index)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <td>{course.code}</td>
-                    <td>{course.name}</td>
-                    <td>{course.professor || '-'}</td>
-                    <td>{filterMode === 'secondaryMajor' ? (course.subCategory || '-') : getCategoryLabel(course.category)}</td>
-                    <td>{course.department}</td>
-                    <td>{course.point}</td>
-                    <td>{course.time}</td>
-                    <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.personeel}</td>
-                    <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.scheduleRoom}</td>
-                    {filterMode === 'category' && <td>{course.target}</td>}
-                  </tr>
-                ))}
+                {filteredCourses?.map((course: Course, index: number) => {
+                  const [pointClass, pointTime, pointQuota] = parseCoursePoint(course.point);
+                  return (
+                    <tr
+                      key={course.id || course.code}
+                      onClick={() => onCourseClick(course, index)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <td>{course.code}</td>
+                      <td>{course.name}</td>
+                      <td>{course.professor || '-'}</td>
+                      <td>{filterMode === 'secondaryMajor' ? (course.subCategory || '-') : getCategoryLabel(course.category)}</td>
+                      <td>{course.department}</td>
+                      <td>{pointClass}</td>
+                      <td>{pointTime}</td>
+                      <td>{pointQuota}</td>
+                      <td>{(filterMode === 'secondaryMajor' || filterMode === 'teaching') ? '-' : course.scheduleRoom}</td>
+                      {filterMode === 'category' && <td>{course.target}</td>}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
