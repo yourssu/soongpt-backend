@@ -137,6 +137,7 @@ export interface Section {
   division: string | null;
   schedule: string;
   isStrictRestriction: boolean;
+  target: string;
 }
 
 export interface GroupedCourse {

@@ -17,9 +17,26 @@ data class SearchCourseGroupResponse(
         fun from(courses: List<Course>, isStrictByCode: Map<Long, Boolean>): SearchCourseGroupResponse {
             val first = courses.first()
             val professors = courses.mapNotNull { it.professor }.distinct()
+            val sectionTargets = courses.map { it.code to it.target }.toMap()
+            val normalizedTargets = sectionTargets.values
+                .map { it.trim() }
+                .filter { it.isNotBlank() }
+                .distinct()
+
+            val targetText = when (normalizedTargets.size) {
+                0 -> first.target
+                1 -> normalizedTargets.first()
+                else -> normalizedTargets.joinToString(" / ")
+            }
+
             val sections = courses.map { section ->
                 val isStrict = isStrictByCode[section.code] ?: false
-                SectionResponse.from(section, isStrict, divisionFromCourseCode = true)
+                SectionResponse.from(
+                    section,
+                    isStrict,
+                    divisionFromCourseCode = true,
+                    target = section.target,
+                )
             }
             return SearchCourseGroupResponse(
                 baseCourseCode = first.baseCode(),
@@ -28,7 +45,7 @@ data class SearchCourseGroupResponse(
                 credits = first.credit,
                 professors = professors,
                 department = first.department,
-                target = first.target,
+                target = targetText,
                 sections = sections,
             )
         }

@@ -98,7 +98,7 @@ export const courseApi = {
         point: group.credits ? `${group.credits}-${group.credits}-0` : '',
         personeel: 0,
         scheduleRoom: section.schedule,
-        target: group.target,
+        target: section.target || group.target,
       }))
     );
 
