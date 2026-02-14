@@ -48,14 +48,13 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Clean Build with Gradle (with Testing)
         run: |
-          ./gradlew clean build
+          ./gradlew build
 
       - name: Build, tag, and push WAS image to Amazon ECR
         env:
