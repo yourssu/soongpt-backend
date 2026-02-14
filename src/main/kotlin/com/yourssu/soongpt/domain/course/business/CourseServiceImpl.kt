@@ -84,6 +84,7 @@ class CourseServiceImpl(
                                 completionType = query.completionType,
                                 departmentId = department.id!!,
                                 collegeId = college.id!!,
+                                userGrade = grade,
                                 maxGrade = grade,
                         )
                     }
@@ -118,6 +119,7 @@ class CourseServiceImpl(
                                 completionType = completionType,
                                 departmentId = department.id!!,
                                 collegeId = college.id!!,
+                                userGrade = grade,
                                 maxGrade = grade,
                         )
                     }

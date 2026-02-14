@@ -93,6 +93,7 @@ class MajorCourseRecommendServiceTest : BehaviorSpec({
                     category = any(),
                     departmentId = any(),
                     collegeId = any(),
+                    userGrade = any(),
                     maxGrade = any(),
                 )
             }
@@ -136,6 +137,7 @@ class MajorCourseRecommendServiceTest : BehaviorSpec({
                         category = Category.MAJOR_BASIC,
                         departmentId = 1L,
                         collegeId = 10L,
+                        userGrade = 3,
                         maxGrade = 3,
                     )
                 ).thenReturn(listOf(taken, late, onTime))
@@ -187,6 +189,7 @@ class MajorCourseRecommendServiceTest : BehaviorSpec({
                         category = Category.MAJOR_ELECTIVE,
                         departmentId = 1L,
                         collegeId = 10L,
+                        userGrade = 3,
                         maxGrade = 5,
                     )
                 ).thenReturn(listOf(elective))

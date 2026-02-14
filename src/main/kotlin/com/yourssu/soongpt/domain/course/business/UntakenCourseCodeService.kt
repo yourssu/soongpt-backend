@@ -49,14 +49,14 @@ class UntakenCourseCodeService(
         val department = departmentReader.getByName(usaintData.basicInfo.department)
         val departmentId = department.id
             ?: throw IllegalStateException("학과 ID가 없습니다: ${department.name}")
-        val maxGrade = if (category == Category.MAJOR_ELECTIVE) MAX_GRADE else usaintData.basicInfo.grade
+        val userGrade = usaintData.basicInfo.grade
+        val maxGrade = if (category == Category.MAJOR_ELECTIVE) MAX_GRADE else userGrade
 
-        val coursesWithTarget = getCoursesWithTarget(category, departmentId, department.collegeId, maxGrade)
+        val coursesWithTarget = getCoursesWithTarget(category, departmentId, department.collegeId, userGrade, maxGrade)
         val takenBaseCodes = extractTakenBaseCodes(usaintData)
 
         val filteredByGrade = if (category == Category.CHAPEL) {
-            val grade = usaintData.basicInfo.grade
-            coursesWithTarget.filter { it.targetGrades.contains(grade) }
+            coursesWithTarget.filter { it.targetGrades.contains(userGrade) }
         } else {
             coursesWithTarget
         }
@@ -89,6 +89,7 @@ class UntakenCourseCodeService(
             category = category,
             departmentId = departmentId,
             collegeId = department.collegeId,
+            userGrade = usaintData.basicInfo.grade,
             maxGrade = usaintData.basicInfo.grade,
         )
 
@@ -151,14 +152,16 @@ class UntakenCourseCodeService(
         category: Category,
         departmentId: Long,
         collegeId: Long,
+        userGrade: Int,
         maxGrade: Int,
     ): List<CourseWithTarget> {
-        val key = CoursesWithTargetKey(category, departmentId, collegeId, maxGrade)
+        val key = CoursesWithTargetKey(category, departmentId, collegeId, userGrade, maxGrade)
         return coursesWithTargetCache.getOrPut(key) {
             courseRepository.findCoursesWithTargetByCategory(
                 category = category,
                 departmentId = departmentId,
                 collegeId = collegeId,
+                userGrade = userGrade,
                 maxGrade = maxGrade,
             ).distinctBy { it.course.code }
         }
@@ -168,6 +171,7 @@ class UntakenCourseCodeService(
         val category: Category,
         val departmentId: Long,
         val collegeId: Long,
+        val userGrade: Int,
         val maxGrade: Int,
     )
 
