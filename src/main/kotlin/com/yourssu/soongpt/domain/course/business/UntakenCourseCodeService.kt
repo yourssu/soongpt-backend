@@ -8,6 +8,7 @@ import com.yourssu.soongpt.domain.course.implement.CourseWithTarget
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
+import com.yourssu.soongpt.domain.course.implement.utils.GeneralElectiveFieldDisplayMapper
 import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
@@ -109,7 +110,12 @@ class UntakenCourseCodeService(
                     return@mapNotNull null
                 }
 
-                val fieldName = FieldFinder.findFieldBySchoolId(rawField, schoolId)
+                // 하드코딩 과목(2150180801): FieldFinder 결과("수리·물리·화학·생물") 대신 올바른 트랙명 사용
+                val fieldName = if (cwt.course.baseCode() == GeneralElectiveFieldDisplayMapper.SCIENCE_HARDCODED_COURSE_CODE.toLong() / 100) {
+                    GeneralElectiveFieldDisplayMapper.scienceFieldForCourseDisplay(usaintData.basicInfo.year)
+                } else {
+                    FieldFinder.findFieldBySchoolId(rawField, schoolId)
+                }
                 if (fieldName.isBlank()) {
                     logger.warn { "분야 매핑 실패: rawField=$rawField, schoolId=$schoolId, 과목=${cwt.course.name} (${cwt.course.code})" }
                     return@mapNotNull null
