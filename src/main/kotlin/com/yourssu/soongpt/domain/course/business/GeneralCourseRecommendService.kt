@@ -160,6 +160,10 @@ class GeneralCourseRecommendService(
             .distinct()
         if (uniqueBaseCodes.isEmpty()) return emptyMap()
 
+        // course_field 테이블은 10자리 코드이므로 base code lookup map 사용
+        val baseCodeToField: Map<Long, String> = courseFieldReader.findAll()
+            .associate { it.courseCode.toBaseCode() to it.field }
+
         val takenCoursesByBase = courseRepository.findCoursesWithTargetByBaseCodes(uniqueBaseCodes.toList())
             .filter { it.course.category == Category.GENERAL_ELECTIVE }
             .distinctBy { it.course.baseCode() }
@@ -167,7 +171,9 @@ class GeneralCourseRecommendService(
 
         val result = mutableMapOf<String, Int>()
         for (baseCode in uniqueBaseCodes) {
-            val fieldName = courseService.getFieldByCourseCode(baseCode, schoolId)?.takeIf { it.isNotBlank() }
+            val fieldName = baseCodeToField[baseCode]
+                ?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                ?.takeIf { it.isNotBlank() }
                 ?: continue
             val credit = takenCoursesByBase[baseCode]?.course?.credit?.toInt() ?: 0
             result[fieldName] = result.getOrDefault(fieldName, 0) + credit
@@ -186,22 +192,42 @@ class GeneralCourseRecommendService(
      * @return 분야명(raw) → 이수 과목 수 Map
      */
     fun computeTakenFieldCourseCounts(takenSubjectCodes: List<String>, schoolId: Int): Map<String, Int> {
+        logger.info { "computeTakenFieldCourseCounts: takenSubjectCodes.size=${takenSubjectCodes.size}, schoolId=$schoolId" }
+
+        // course_field 테이블은 10자리(분반) 코드를 저장하지만,
+        // takenSubjectCodes는 8자리(base) 코드. base code 기반 lookup map 생성.
+        val baseCodeToField: Map<Long, String> = courseFieldReader.findAll()
+            .associate { it.courseCode.toBaseCode() to it.field }
+
+        val scienceBaseCode = GeneralElectiveFieldDisplayMapper.SCIENCE_HARDCODED_COURSE_CODE
+            .toLong().toBaseCode()
+
         val fieldToBaseCodes = mutableMapOf<String, MutableSet<Long>>()
+        var resolvedCount = 0
+        var skippedCount = 0
         for (codeStr in takenSubjectCodes) {
             val codeLong = codeStr.toLongOrNull() ?: continue
             val baseCode = codeLong.toBaseCode()
-            // 하드코딩 과목(2150180801): DB field(Bridge교과/수리) 대신 올바른 분야로 override
-            val fieldName = if (codeStr == GeneralElectiveFieldDisplayMapper.SCIENCE_HARDCODED_COURSE_CODE) {
+
+            // 하드코딩 과목(21501808): DB field(Bridge교과/수리) 대신 올바른 분야로 override
+            val fieldName = if (baseCode == scienceBaseCode) {
                 GeneralElectiveFieldDisplayMapper.scienceFieldRawOverride(schoolId)
-                    ?: courseService.getFieldByCourseCode(codeLong, schoolId)?.takeIf { it.isNotBlank() }
-                    ?: continue
+                    ?: baseCodeToField[baseCode]?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                        ?.takeIf { it.isNotBlank() }
             } else {
-                courseService.getFieldByCourseCode(codeLong, schoolId)?.takeIf { it.isNotBlank() }
-                    ?: continue
+                baseCodeToField[baseCode]?.let { FieldFinder.findFieldBySchoolId(it, schoolId) }
+                    ?.takeIf { it.isNotBlank() }
             }
+            if (fieldName == null) {
+                skippedCount++
+                continue
+            }
+            resolvedCount++
             fieldToBaseCodes.getOrPut(fieldName) { mutableSetOf() }.add(baseCode)
         }
-        return fieldToBaseCodes.mapValues { it.value.size }
+        val result = fieldToBaseCodes.mapValues { it.value.size }
+        logger.info { "computeTakenFieldCourseCounts: resolved=$resolvedCount, skipped=$skippedCount, result=$result" }
+        return result
     }
 
     /**
