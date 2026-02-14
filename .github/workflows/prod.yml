@@ -261,9 +261,9 @@ jobs:
           GREEN_DIR="${BASE_DIR}/green"
           STATE_FILE="${BASE_DIR}/.active_color"
 
-          NGINX_CONF="/etc/nginx/sites-available/soongpt"
+          NGINX_CONF="/etc/nginx/sites-enabled/soongpt"
           if [ ! -f "$NGINX_CONF" ]; then
-            NGINX_CONF="/etc/nginx/sites-enabled/soongpt"
+            NGINX_CONF="/etc/nginx/sites-available/soongpt"
           fi
 
           if [ ! -f "$NGINX_CONF" ]; then
@@ -310,8 +310,8 @@ jobs:
           echo "[INFO] Target dir:  $TARGET_DIR"
 
 
-          echo "[0/5] Cleanup unused images before pull"
-          docker image prune -af || true
+          echo "[0/5] Cleanup stopped containers and dangling images"
+          docker system prune -f || true
 
           echo "[1/5] Pull & start target stack"
           cd "$TARGET_DIR"
@@ -331,9 +331,11 @@ jobs:
           done
 
           if [ "$ok" != "true" ]; then
-            echo "[ERROR] Target did not become healthy in time"
-            docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml ps || true
+            echo "[ERROR] Target did not become healthy in time — rolling back"
             docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml logs --tail 200 || true
+            echo "[ROLLBACK] Stopping failed target stack"
+            docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml down || true
+            docker image prune -f || true
             exit 1
           fi
 
@@ -349,6 +351,8 @@ jobs:
             echo "[ERROR] Nginx config check failed. Reverting..."
             # Revert regex
              sudo sed -i -E "s#proxy_pass http://127\.0\.0\.1:[0-9]+#proxy_pass http://127.0.0.1:${ACTIVE_PORT}#g" "$NGINX_CONF"
+             echo "[ROLLBACK] Stopping failed target stack"
+             docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml down || true
              exit 1
           fi
 
@@ -361,11 +365,6 @@ jobs:
             if [ -d "$OLD_DIR" ] && [ -f "$OLD_DIR/docker-compose.deploy.yml" ]; then
               (cd "$OLD_DIR" && docker compose -p "$OLD_PROJECT" -f docker-compose.deploy.yml down) || true
             fi
-            
-            # Legacy dir cleanup (if applicable)
-            LEGACY_DIR="$BASE_DIR"
-            # Attempting to stop legacy containers if they exist without project name or with old naming
-            # We skip this complex logic for now as we manually cleaned up.
             
             echo "[INFO] Cleaning up old images after stop"
             docker image prune -af || true
