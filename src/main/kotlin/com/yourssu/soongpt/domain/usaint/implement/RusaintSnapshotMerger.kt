@@ -42,7 +42,7 @@ class RusaintSnapshotMerger {
                         "graduationSummary 존재=${summary != null}, Python에서 보냈는데 WAS 역직렬화에서 누락 가능성"
                 }
             } else {
-                logger.info { "merge 직후 generalElective 존재: pseudonym=${pseudonym.take(8)}..., required=${ge.required}, completed=${ge.completed}" }
+                logger.info { "[GE_DEBUG] merge 직후 generalElective 존재: pseudonym=${pseudonym.take(8)}..., required=${ge.required}, completed=${ge.completed}" }
             }
         }
 

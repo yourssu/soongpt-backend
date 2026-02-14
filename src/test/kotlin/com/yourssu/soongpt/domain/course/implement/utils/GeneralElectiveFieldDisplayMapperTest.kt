@@ -132,6 +132,36 @@ class GeneralElectiveFieldDisplayMapperTest : BehaviorSpec({
         }
     }
 
+    given("withTrackOrFieldPrefix") {
+        `when`("20학번이면") {
+            then("공동체- / 의사소통- / 창의- 접두사를 붙인다") {
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("인성과 리더십", 2020) shouldBe "공동체-인성과 리더십"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("자기계발과 진로탐색", 2020) shouldBe "공동체-자기계발과 진로탐색"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("한국어의사소통", 2020) shouldBe "의사소통-한국어의사소통"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("국제어문", 2020) shouldBe "의사소통-국제어문"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("문학·예술", 2020) shouldBe "창의-문학·예술"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("자연과학·공학·기술", 2020) shouldBe "창의-자연과학·공학·기술"
+            }
+        }
+        `when`("21·22학번이면") {
+            then("품성- / 기초- / 균형- 접두사를 붙인다") {
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("인성과 리더십", 2021) shouldBe "품성-인성과 리더십"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("자기계발과 진로탐색", 2022) shouldBe "품성-자기계발과 진로탐색"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("한국어의사소통", 2021) shouldBe "기초-한국어의사소통"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("국제어문", 2022) shouldBe "기초-국제어문"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("문학·예술", 2021) shouldBe "균형-문학·예술"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("자연과학·공학·기술", 2022) shouldBe "균형-자연과학·공학·기술"
+            }
+        }
+        `when`("19학번 이하 또는 23학번 이상이면") {
+            then("접두사 없이 그대로 반환한다") {
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("인성과 리더십", 2019) shouldBe "인성과 리더십"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("문학·예술", 2023) shouldBe "문학·예술"
+                GeneralElectiveFieldDisplayMapper.withTrackOrFieldPrefix("인간·언어", 2024) shouldBe "인간·언어"
+            }
+        }
+    }
+
     given("buildFieldCreditsStructure") {
         `when`("21~22학번 raw에 균형교양 세부필드가 있으면") {
             then("균형교양교과 객체 안에 세부필드별 과목수를 넣는다") {
