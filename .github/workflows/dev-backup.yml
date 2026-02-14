@@ -1,0 +1,343 @@
+name: Docker - Build, Push to ECR and Deploy (Dev Backup, Blue/Green)
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Image tag to deploy (build+push if missing)'
+        required: false
+        default: 'latest'
+      cleanup_old:
+        description: 'Stop old stack and prune images after switching'
+        required: false
+        type: choice
+        default: 'true'
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    environment: dev-backup
+    permissions:
+      id-token: write
+      contents: read
+
+    defaults:
+      run:
+        working-directory: ./
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: |
+            image=moby/buildkit:latest
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR Public
+        id: login-ecr-public
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
+          registries: ${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+
+      - name: Check if image already exists
+        id: check-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+          IMAGE_TAG: ${{ github.event.inputs.image_tag || 'latest' }}
+        run: |
+          echo "Checking if image exists: $ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}:$IMAGE_TAG"
+          if docker manifest inspect "$ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}:$IMAGE_TAG" > /dev/null 2>&1; then
+            echo "Image exists! Skipping build."
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Image not found. Proceeding with build."
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up JDK 21
+        if: steps.check-image.outputs.exists != 'true'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        if: steps.check-image.outputs.exists != 'true'
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Clean Build with Gradle (without Testing)
+        if: steps.check-image.outputs.exists != 'true'
+        run: |
+          ./gradlew build -x test
+
+      - name: Build, tag, and push WAS image to Amazon ECR (Dual-Arch)
+        if: steps.check-image.outputs.exists != 'true'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+          IMAGE_TAG: ${{ github.event.inputs.image_tag || 'latest' }}
+        run: |
+          echo "ECR_REGISTRY: $ECR_REGISTRY"
+          echo "ECR_REPOSITORY: yourssu/${{ vars.PROJECT_NAME }}"
+
+          docker buildx create --use --name multi-arch-builder
+
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --push \
+            --provenance=false \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            -t $ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}:$IMAGE_TAG \
+            .
+
+      - name: Build, tag, and push rusaint-service image to Amazon ECR (Dual-Arch)
+        if: steps.check-image.outputs.exists != 'true'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+          IMAGE_TAG: ${{ github.event.inputs.image_tag || 'latest' }}
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --push \
+            --provenance=false \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            -t $ECR_REGISTRY/yourssu/${{ vars.PROJECT_NAME }}/rusaint-service:$IMAGE_TAG \
+            -f rusaint_service/Dockerfile \
+            rusaint_service/
+
+      - name: Deploy to EC2 (Blue/Green)
+        env:
+          # SSH
+          YOURSSU_PEM: ${{ secrets.YOURSSU_PEM }}
+          HOST_URL: ${{ vars.HOST_URL }}
+          SSH_PORT: ${{ vars.SSH_PORT }}
+
+          # App/Infra
+          PROJECT_NAME: ${{ vars.PROJECT_NAME }}
+          ENVIRONMENT: ${{ vars.ENVIRONMENT }}
+
+          # Ports (BLUE is the existing SERVER_PORT; GREEN defaults to +1)
+          BLUE_PORT: ${{ vars.SERVER_PORT }}
+
+          CORS_ALLOWED_ORIGIN: ${{ vars.CORS_ALLOWED_ORIGIN }}
+
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+
+          SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
+          SLACK_LOG_CHANNEL: ${{ vars.SLACK_LOG_CHANNEL }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+
+          ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
+
+          RUSAINT_PSEUDONYM_SECRET: ${{ secrets.RUSAINT_PSEUDONYM_SECRET }}
+          RUSAINT_INTERNAL_JWT_SECRET: ${{ secrets.RUSAINT_INTERNAL_JWT_SECRET }}
+
+          SSO_FRONTEND_URL: ${{ vars.SSO_FRONTEND_URL }}
+          SSO_CLIENT_JWT_SECRET: ${{ secrets.SSO_CLIENT_JWT_SECRET }}
+          SSO_ALLOWED_REDIRECT_URLS: ${{ vars.SSO_ALLOWED_REDIRECT_URLS }}
+          SSO_COOKIE_SAME_SITE: ${{ vars.SSO_COOKIE_SAME_SITE }}
+          SSO_COOKIE_SECURE: ${{ vars.SSO_COOKIE_SECURE }}
+
+          IMAGE_TAG: ${{ github.event.inputs.image_tag || 'latest' }}
+          CLEANUP_OLD: ${{ github.event.inputs.cleanup_old || 'true' }}
+        run: |
+          set -euo pipefail
+
+          SSH_PORT="${SSH_PORT:-22}"
+          SSH_COMMON_OPTS="-o ServerAliveInterval=30 -o ServerAliveCountMax=10"
+
+          GREEN_PORT="$((BLUE_PORT + 1))"
+
+          BASE_DIR="/home/ubuntu/${PROJECT_NAME}-api"
+          BLUE_DIR="${BASE_DIR}/blue"
+          GREEN_DIR="${BASE_DIR}/green"
+
+          echo "[INFO] BLUE_PORT=$BLUE_PORT, GREEN_PORT=$GREEN_PORT"
+          echo "[INFO] Deploying IMAGE_TAG=$IMAGE_TAG"
+
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "$SSH_PORT" -H "$HOST_URL" >> ~/.ssh/known_hosts
+          echo "$YOURSSU_PEM" > yourssu.pem
+          chmod 600 yourssu.pem
+
+          echo "[1/4] Create remote directories"
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@"$HOST_URL" \
+            "mkdir -p '$BLUE_DIR/logs' '$GREEN_DIR/logs' '$BASE_DIR'"
+
+          echo "[2/4] Generate env files (blue/green)"
+          : > .env.blue
+          : > .env.green
+
+          for f in .env.blue .env.green; do
+            echo "CORS_ALLOWED_ORIGIN=$CORS_ALLOWED_ORIGIN" >> "$f"
+            echo "DB_URL=$DB_URL" >> "$f"
+            echo "DB_USERNAME=$DB_USERNAME" >> "$f"
+            echo "DB_PASSWORD=$DB_PASSWORD" >> "$f"
+            echo "ADMIN_PASSWORD=$ADMIN_PASSWORD" >> "$f"
+            echo "PROJECT_NAME=$PROJECT_NAME" >> "$f"
+            echo "ENVIRONMENT=$ENVIRONMENT" >> "$f"
+            echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> "$f"
+            echo "SLACK_LOG_CHANNEL=$SLACK_LOG_CHANNEL" >> "$f"
+            echo "SLACK_TOKEN=$SLACK_TOKEN" >> "$f"
+            echo "ECR_REGISTRY=$ECR_REGISTRY" >> "$f"
+            echo "RUSAINT_BASE_URL=http://rusaint-service:8001" >> "$f"
+            echo "RUSAINT_PSEUDONYM_SECRET=$RUSAINT_PSEUDONYM_SECRET" >> "$f"
+            echo "RUSAINT_INTERNAL_JWT_SECRET=$RUSAINT_INTERNAL_JWT_SECRET" >> "$f"
+            echo "SSO_FRONTEND_URL=$SSO_FRONTEND_URL" >> "$f"
+            echo "SSO_CLIENT_JWT_SECRET=$SSO_CLIENT_JWT_SECRET" >> "$f"
+            echo "SSO_ALLOWED_REDIRECT_URLS=${SSO_ALLOWED_REDIRECT_URLS:-}" >> "$f"
+            echo "SSO_COOKIE_SAME_SITE=${SSO_COOKIE_SAME_SITE:-Lax}" >> "$f"
+            echo "SSO_COOKIE_SECURE=${SSO_COOKIE_SECURE:-true}" >> "$f"
+          done
+
+          echo "SERVER_PORT=$BLUE_PORT" >> .env.blue
+          echo "SERVER_PORT=$GREEN_PORT" >> .env.green
+
+          echo "[3/4] Upload compose + env files"
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem docker-compose.deploy.yml ubuntu@"$HOST_URL":"$BLUE_DIR/"
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem docker-compose.deploy.yml ubuntu@"$HOST_URL":"$GREEN_DIR/"
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem .env.blue ubuntu@"$HOST_URL":"$BLUE_DIR/.env"
+          scp $SSH_COMMON_OPTS -P "$SSH_PORT" -i yourssu.pem .env.green ubuntu@"$HOST_URL":"$GREEN_DIR/.env"
+
+          echo "[4/4] Remote blue/green deploy + switch"
+          ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@"$HOST_URL" \
+            "export PROJECT_NAME='$PROJECT_NAME' BLUE_PORT='$BLUE_PORT' GREEN_PORT='$GREEN_PORT' IMAGE_TAG='$IMAGE_TAG' CLEANUP_OLD='$CLEANUP_OLD'; bash -s" << 'REMOTE'
+          set -euo pipefail
+
+          : "${PROJECT_NAME:?PROJECT_NAME is required}"
+          : "${BLUE_PORT:?BLUE_PORT is required}"
+          : "${GREEN_PORT:?GREEN_PORT is required}"
+          : "${IMAGE_TAG:?IMAGE_TAG is required}"
+
+          BASE_DIR="/home/ubuntu/${PROJECT_NAME}-api"
+          BLUE_DIR="${BASE_DIR}/blue"
+          GREEN_DIR="${BASE_DIR}/green"
+          STATE_FILE="${BASE_DIR}/.active_color"
+
+          NGINX_CONF="/etc/nginx/sites-enabled/soongpt"
+          if [ ! -f "$NGINX_CONF" ]; then
+            NGINX_CONF="/etc/nginx/sites-available/soongpt"
+          fi
+
+          if [ ! -f "$NGINX_CONF" ]; then
+            echo "[ERROR] nginx config not found at /etc/nginx/sites-(available|enabled)/soongpt"
+            exit 1
+          fi
+
+          ACTIVE_PORT=""
+          if [ -f "$STATE_FILE" ]; then
+            ACTIVE_COLOR="$(cat "$STATE_FILE" | tr -d ' \n\r\t' || true)"
+            if [ "$ACTIVE_COLOR" = "blue" ]; then
+              ACTIVE_PORT="$BLUE_PORT"
+            elif [ "$ACTIVE_COLOR" = "green" ]; then
+              ACTIVE_PORT="$GREEN_PORT"
+            fi
+          fi
+
+          if [ -z "$ACTIVE_PORT" ]; then
+            ACTIVE_PORT="$(grep -hoE 'proxy_pass http://127\.0\.0\.1:[0-9]+' "$NGINX_CONF" | head -n 1 | sed -E 's/.*:([0-9]+)$/\1/' || true)"
+          fi
+
+          if [ -z "$ACTIVE_PORT" ]; then
+            echo "[WARN] Could not detect active port; defaulting to BLUE_PORT=$BLUE_PORT"
+            ACTIVE_PORT="$BLUE_PORT"
+          fi
+
+          if [ "$ACTIVE_PORT" = "$BLUE_PORT" ]; then
+            TARGET_COLOR="green"
+            TARGET_PORT="$GREEN_PORT"
+            TARGET_DIR="$GREEN_DIR"
+            OLD_COLOR="blue"
+            OLD_DIR="$BLUE_DIR"
+          else
+            TARGET_COLOR="blue"
+            TARGET_PORT="$BLUE_PORT"
+            TARGET_DIR="$BLUE_DIR"
+            OLD_COLOR="green"
+            OLD_DIR="$GREEN_DIR"
+          fi
+
+          echo "[INFO] Active port: $ACTIVE_PORT ($OLD_COLOR)"
+          echo "[INFO] Target port: $TARGET_PORT ($TARGET_COLOR)"
+          echo "[INFO] Target dir:  $TARGET_DIR"
+
+          echo "[0/5] Cleanup stopped containers and dangling images"
+          docker system prune -f || true
+
+          echo "[1/5] Pull & start target stack"
+          cd "$TARGET_DIR"
+          TARGET_PROJECT="${PROJECT_NAME}-${TARGET_COLOR}"
+          IMAGE_TAG="$IMAGE_TAG" docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml pull
+          IMAGE_TAG="$IMAGE_TAG" docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml up -d
+
+          echo "[2/5] Wait for health: http://127.0.0.1:${TARGET_PORT}/actuator/health"
+          ok="false"
+          for i in $(seq 1 30); do
+            if curl -fsS "http://127.0.0.1:${TARGET_PORT}/actuator/health" | grep -q '"status"[[:space:]]*:[[:space:]]*"UP"'; then
+              ok="true"
+              break
+            fi
+            sleep 5
+          done
+
+          if [ "$ok" != "true" ]; then
+            echo "[ERROR] Target did not become healthy in time — rolling back"
+            docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml logs --tail 200 || true
+            echo "[ROLLBACK] Stopping failed target stack"
+            docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml down || true
+            docker image prune -f || true
+            exit 1
+          fi
+
+          echo "[3/5] Switch nginx upstream to $TARGET_PORT (graceful reload)"
+          sudo sed -i -E "s#proxy_pass[[:space:]]+http://127\\.0\\.0\\.1:[0-9]+#proxy_pass http://127.0.0.1:${TARGET_PORT}#g" "$NGINX_CONF"
+
+          if sudo nginx -t; then
+            sudo systemctl reload nginx
+            echo "[DONE] Nginx reloaded with port $TARGET_PORT"
+          else
+            echo "[ERROR] Nginx config check failed. Reverting..."
+            sudo sed -i -E "s#proxy_pass http://127\\.0\\.0\\.1:[0-9]+#proxy_pass http://127.0.0.1:${ACTIVE_PORT}#g" "$NGINX_CONF"
+            echo "[ROLLBACK] Stopping failed target stack"
+            docker compose -p "$TARGET_PROJECT" -f docker-compose.deploy.yml down || true
+            exit 1
+          fi
+
+          echo "[4/5] Persist active color"
+          echo "$TARGET_COLOR" | sudo tee "$STATE_FILE" >/dev/null
+
+          if [ "${CLEANUP_OLD:-true}" = "true" ]; then
+            echo "[5/5] Stop old stack (best effort): $OLD_DIR"
+            OLD_PROJECT="${PROJECT_NAME}-${OLD_COLOR}"
+            if [ -d "$OLD_DIR" ] && [ -f "$OLD_DIR/docker-compose.deploy.yml" ]; then
+              (cd "$OLD_DIR" && docker compose -p "$OLD_PROJECT" -f docker-compose.deploy.yml down) || true
+            fi
+
+            echo "[INFO] Cleaning up old images after stop"
+            docker image prune -af || true
+          else
+            echo "[INFO] CLEANUP_OLD=false (keeping old stack running)"
+          fi
+
+          echo "[DONE] Blue/green switch completed successfully"
+          REMOTE
+
