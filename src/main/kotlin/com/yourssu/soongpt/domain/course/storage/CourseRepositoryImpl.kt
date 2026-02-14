@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Component
+import org.springframework.orm.jpa.JpaSystemException
 
 @Component
 class CourseRepositoryImpl(
@@ -74,6 +75,9 @@ class CourseRepositoryImpl(
     ): Page<Course> {
         val fetchLimit = pageable.pageSize + 1
         val sanitizedQuery = query.trim()
+        if (sanitizedQuery.isBlank()) {
+            return findAll(pageable)
+        }
 
         val normalizedCodeRangeStart =
             sanitizedQuery
@@ -85,47 +89,214 @@ class CourseRepositoryImpl(
             val codeRangeStart = normalizedCodeRangeStart
             val codeRangeEnd = codeRangeStart + DIVISION_DIVISOR - 1
 
-            val results =
-                courseJpaRepository
-                    .searchCoursesWithFulltextByCodeRange(
-                        sanitizedQuery,
-                        codeRangeStart,
-                        codeRangeEnd,
-                        fetchLimit,
-                        pageable.offset,
-                    ).map { it.toDomain() }
-
-            val hasNext = results.size > pageable.pageSize
-            val content = if (hasNext) results.dropLast(1) else results
-
-            val total =
-                if (hasNext || pageable.offset > 0) {
-                    courseJpaRepository.countCoursesWithFulltextByCodeRange(
-                        sanitizedQuery,
-                        codeRangeStart,
-                        codeRangeEnd,
-                    )
-                } else {
-                    content.size.toLong()
-                }
-
-            return PageImpl(content, pageable, total)
+            try {
+                return loadSearchResultPage(
+                    pageable = pageable,
+                    fetch = {
+                        courseJpaRepository
+                            .searchCoursesWithFulltextByCodeRange(
+                                sanitizedQuery,
+                                codeRangeStart,
+                                codeRangeEnd,
+                                fetchLimit,
+                                pageable.offset,
+                            )
+                            .map { it.toDomain() }
+                    },
+                    count = {
+                        courseJpaRepository.countCoursesWithFulltextByCodeRange(
+                            sanitizedQuery,
+                            codeRangeStart,
+                            codeRangeEnd,
+                        )
+                    },
+                )
+            } catch (exception: JpaSystemException) {
+                if (!isFulltextIndexMissingException(exception)) throw exception
+                logger.warn { "Course search with FULLTEXT index failed for code-range query, fallback to LIKE query: ${exception.message}" }
+                return searchCoursesByLikeFallbackWithCodeRange(
+                    query = sanitizedQuery,
+                    codeRangeStart = codeRangeStart,
+                    codeRangeEnd = codeRangeEnd,
+                    fetchLimit = fetchLimit,
+                    pageable = pageable,
+                )
+            }
         }
+        try {
+            return loadSearchResultPage(
+                pageable = pageable,
+                fetch = {
+                    courseJpaRepository
+                        .searchCoursesWithFulltext(sanitizedQuery, fetchLimit, pageable.offset)
+                        .map { it.toDomain() }
+                },
+                count = {
+                    courseJpaRepository.countCoursesWithFulltext(sanitizedQuery)
+                },
+            )
+        } catch (exception: JpaSystemException) {
+            if (!isFulltextIndexMissingException(exception)) throw exception
+            logger.warn { "Course search with FULLTEXT index failed, fallback to LIKE query: ${exception.message}" }
+            return searchCoursesByLikeFallback(
+                query = sanitizedQuery,
+                fetchLimit = fetchLimit,
+                pageable = pageable,
+            )
+        }
+    }
 
-        val results = courseJpaRepository
-            .searchCoursesWithFulltext(query, fetchLimit, pageable.offset)
-            .map { it.toDomain() }
+    private fun isFulltextIndexMissingException(exception: JpaSystemException): Boolean {
+        val messageContainsFulltextError = "can't find fulltext index matching the column list"
+        return generateSequence<Throwable>(exception) { it.cause }
+            .mapNotNull { it.message?.lowercase() }
+            .any { it.contains(messageContainsFulltextError) }
+    }
 
+    private fun loadSearchResultPage(
+        pageable: Pageable,
+        fetch: () -> List<Course>,
+        count: () -> Long,
+    ): PageImpl<Course> {
+        val results = fetch()
         val hasNext = results.size > pageable.pageSize
         val content = if (hasNext) results.dropLast(1) else results
-
-        val total = if (hasNext || pageable.offset > 0) {
-            courseJpaRepository.countCoursesWithFulltext(query)
-        } else {
-            content.size.toLong()
-        }
-
+        val total = if (hasNext || pageable.offset > 0) count() else content.size.toLong()
         return PageImpl(content, pageable, total)
+    }
+
+    private fun searchCoursesByLikeFallbackWithCodeRange(
+        query: String,
+        codeRangeStart: Long,
+        codeRangeEnd: Long,
+        fetchLimit: Int,
+        pageable: Pageable,
+    ): PageImpl<Course> {
+        return loadSearchResultPage(
+            pageable = pageable,
+            fetch = {
+                searchCoursesFallbackByCodeRange(
+                    query = query,
+                    codeRangeStart = codeRangeStart,
+                    codeRangeEnd = codeRangeEnd,
+                    fetchLimit = fetchLimit,
+                    offset = pageable.offset,
+                )
+            },
+            count = {
+                countCoursesFallbackByCodeRange(
+                    query = query,
+                    codeRangeStart = codeRangeStart,
+                    codeRangeEnd = codeRangeEnd,
+                )
+            },
+        )
+    }
+
+    private fun searchCoursesByLikeFallback(
+        query: String,
+        fetchLimit: Int,
+        pageable: Pageable,
+    ): PageImpl<Course> {
+        return loadSearchResultPage(
+            pageable = pageable,
+            fetch = {
+                searchCoursesFallback(
+                    query = query,
+                    fetchLimit = fetchLimit,
+                    offset = pageable.offset,
+                )
+            },
+            count = {
+                countCoursesFallback(query)
+            },
+        )
+    }
+
+    private fun searchCoursesFallbackByCodeRange(
+        query: String,
+        codeRangeStart: Long,
+        codeRangeEnd: Long,
+        fetchLimit: Int,
+        offset: Long,
+    ): List<Course> {
+        return jpaQueryFactory
+            .selectFrom(courseEntity)
+            .where(
+                courseEntity.code.between(codeRangeStart, codeRangeEnd)
+                    .or(courseEntity.name.containsIgnoreCase(query))
+                    .or(courseEntity.professor.containsIgnoreCase(query)),
+            )
+            .orderBy(
+                com.querydsl.core.types.dsl.CaseBuilder()
+                    .`when`(courseEntity.code.between(codeRangeStart, codeRangeEnd)).then(0).otherwise(1).asc(),
+                com.querydsl.core.types.dsl.CaseBuilder()
+                    .`when`(courseEntity.name.lower().startsWith(query.lowercase())).then(0).otherwise(1).asc(),
+                com.querydsl.core.types.dsl.CaseBuilder()
+                    .`when`(courseEntity.professor.lower().startsWith(query.lowercase())).then(0).otherwise(1).asc(),
+                courseEntity.name.length().asc(),
+                courseEntity.name.asc(),
+            )
+            .limit(fetchLimit.toLong())
+            .offset(offset)
+            .fetch()
+            .map { it.toDomain() }
+    }
+
+    private fun countCoursesFallbackByCodeRange(
+        query: String,
+        codeRangeStart: Long,
+        codeRangeEnd: Long,
+    ): Long {
+        return jpaQueryFactory
+            .selectFrom(courseEntity)
+            .where(
+                courseEntity.code.between(codeRangeStart, codeRangeEnd)
+                    .or(courseEntity.name.containsIgnoreCase(query))
+                    .or(courseEntity.professor.containsIgnoreCase(query)),
+            )
+            .fetch()
+            .size
+            .toLong()
+    }
+
+    private fun searchCoursesFallback(
+        query: String,
+        fetchLimit: Int,
+        offset: Long,
+    ): List<Course> {
+        return jpaQueryFactory
+            .selectFrom(courseEntity)
+            .where(
+                courseEntity.name.containsIgnoreCase(query)
+                    .or(courseEntity.professor.containsIgnoreCase(query)),
+            )
+            .orderBy(
+                com.querydsl.core.types.dsl.CaseBuilder()
+                    .`when`(courseEntity.name.lower().startsWith(query.lowercase())).then(0).otherwise(1).asc(),
+                com.querydsl.core.types.dsl.CaseBuilder()
+                    .`when`(courseEntity.professor.lower().startsWith(query.lowercase())).then(0).otherwise(1).asc(),
+                courseEntity.name.length().asc(),
+                courseEntity.name.asc(),
+            )
+            .limit(fetchLimit.toLong())
+            .offset(offset)
+            .fetch()
+            .map { it.toDomain() }
+    }
+
+    private fun countCoursesFallback(
+        query: String,
+    ): Long {
+        return jpaQueryFactory
+            .selectFrom(courseEntity)
+            .where(
+                courseEntity.name.containsIgnoreCase(query)
+                    .or(courseEntity.professor.containsIgnoreCase(query)),
+            )
+            .fetch()
+            .size
+            .toLong()
     }
 
     override fun findAllByClass(code: Long): List<Course> {
