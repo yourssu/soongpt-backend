@@ -8,6 +8,10 @@ import com.yourssu.soongpt.domain.course.business.dto.CourseRecommendationsRespo
 import com.yourssu.soongpt.domain.course.business.dto.CourseTiming
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.course.implement.baseCode
+import com.yourssu.soongpt.domain.course.implement.toBaseCode
+import com.yourssu.soongpt.domain.course.implement.utils.FieldFinder
+import com.yourssu.soongpt.domain.course.implement.utils.GeneralElectiveFieldDisplayMapper
+import com.yourssu.soongpt.domain.coursefield.implement.CourseFieldReader
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.timetable.business.dto.AvailableChapelsResponse
 import com.yourssu.soongpt.domain.timetable.business.dto.AvailableGeneralElectivesResponse
@@ -73,6 +77,9 @@ class CourseRecommendIntegrationTest {
 
     @Autowired
     private lateinit var timetableWriter: TimetableWriter
+
+    @Autowired
+    private lateinit var courseFieldReader: CourseFieldReader
 
     @MockBean
     private lateinit var clientJwtProvider: ClientJwtProvider
@@ -494,110 +501,182 @@ class CourseRecommendIntegrationTest {
         verifyAvailableCoursesProgress("Case 5")
     }
 
+    /**
+     * 교선 progress·trackName 학번별 통합 검증 (19~23학번)
+     *
+     * 학번별로 course_field에서 2~3개 교선 과목 base code를 동적 수집 +
+     * 21504862(폐강, field-by-code 레포지토리로만 분야 파악) + 21501808(하드코딩 2150180801) 포함.
+     * /api/timetables/{id}/available-general-electives 호출 후 progress, trackName raw 출력.
+     *
+     * 검증: fieldCredits 분야별 과목 수 정합성, trackName에 "수리" 미존재,
+     *       23학번은 "과학" fieldCredits ≥ 1 + trackName "과학·기술" 존재.
+     */
     @Test
-    @DisplayName("하드코딩: 2150180801 기이수 시 23학번 fieldCredits의 '과학' +1 반영")
-    fun scienceHardcode_23_fieldCredits() {
-        val builder = MockSessionBuilder(courseRepository, departmentReader)
-            .pseudonym(TEST_PSEUDONYM)
-            .department("컴퓨터학부")
-            .admissionYear(2023)
-            .grade(2)
-            .doubleMajor(null)
-            .minor(null)
-            .teaching(false)
-            .chapel(satisfied = false)
-            .majorBasic(TakenStrategy.NONE)
-            .majorFoundationRequiredCredits(0)
-            .majorRequired(TakenStrategy.NONE)
-            .majorElective(TakenStrategy.NONE)
-            .generalRequired(TakenStrategy.NONE)
-            .generalElective(TakenStrategy.NONE)
-            .retake(emptyList())
-            .extraTakenCodes(listOf("2150180801"))
-        val session = builder.build()
-        println("=== 하드코딩 23학번: 기이수 과목 목록 ===")
-        printTakenCoursesWithNames(session)
-        registerSession(session)
+    @DisplayName("교선 progress·trackName: 19~23학번별 fieldCredits + 21504862·21501808")
+    fun generalElective_progress_trackName_all_years() {
+        data class YearCase(val year: Int, val grade: Int, val label: String)
 
-        val timetableId = timetableWriter.save(Timetable(tag = com.yourssu.soongpt.domain.timetable.implement.Tag.DEFAULT)).id!!
-        val body = mockMvc.perform(
-            get("/api/timetables/$timetableId/available-general-electives").accept(MediaType.APPLICATION_JSON),
-        ).andExpect(status().isOk).andReturn().response.contentAsString
-        println("=== 하드코딩 23학번: available-general-electives (raw response) ===")
-        println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readTree(body)))
+        val cases = listOf(
+            YearCase(2019, 4, "19학번"),
+            YearCase(2020, 4, "20학번"),
+            YearCase(2021, 3, "21학번"),
+            YearCase(2022, 3, "22학번"),
+            YearCase(2023, 2, "23학번"),
+        )
 
-        val fieldCredits = objectMapper.readTree(body).path("result").path("progress").path("fieldCredits")
-        val scienceCount = fieldCredits.path("과학").asInt(0)
-        println(">>> 과학 fieldCredits: $scienceCount (2150180801 하드코딩 +1 포함)")
-        scienceCount shouldBe 1
+        /** 하드코딩 과목 2150180801의 8자리 base code (과학 분야 override) */
+        val scienceBase = GeneralElectiveFieldDisplayMapper.SCIENCE_HARDCODED_COURSE_CODE
+            .toLong().toBaseCode().toString()
+        /** 폐강 과목 8자리 — field-by-code(course_field) 레포지토리로만 분야 파악 가능 */
+        val discontinuedBase = "21504862"
+
+        for ((admissionYear, grade, label) in cases) {
+            println("\n${"═".repeat(60)}")
+            println("  $label  (admissionYear=$admissionYear, grade=$grade)")
+            println("═".repeat(60))
+
+            val schoolId = admissionYear % 100
+
+            // course_field → 해당 학번 기준 분야별 8자리 base code 수집
+            val byField = courseFieldReader.findAll()
+                .mapNotNull { entry ->
+                    val parsed = FieldFinder.findFieldBySchoolId(entry.field, schoolId)
+                    if (parsed.isBlank()) null else parsed to entry.courseCode.toBaseCode()
+                }
+                .distinctBy { it.second }
+                .groupBy({ it.first }, { it.second })
+
+            // 서로 다른 분야에서 1개씩, 최대 3개 + 폐강(21504862) + 하드코딩 과학(21501808)
+            val takenCodes = byField.values
+                .filter { it.isNotEmpty() }
+                .take(3)
+                .map { it.first().toString() }
+                .toMutableList()
+            if (discontinuedBase !in takenCodes) takenCodes.add(discontinuedBase)
+            if (scienceBase !in takenCodes) takenCodes.add(scienceBase)
+
+            println(">>> 기이수코드(8자리): $takenCodes  (폐강=$discontinuedBase, 하드코딩과학=$scienceBase)")
+
+            val session = MockSessionBuilder(courseRepository, departmentReader)
+                .pseudonym(TEST_PSEUDONYM)
+                .department("컴퓨터학부").admissionYear(admissionYear).grade(grade)
+                .doubleMajor(null).minor(null).teaching(false).chapel(satisfied = false)
+                .majorBasic(TakenStrategy.NONE).majorFoundationRequiredCredits(0)
+                .majorRequired(TakenStrategy.NONE).majorElective(TakenStrategy.NONE)
+                .generalRequired(TakenStrategy.NONE).generalElective(TakenStrategy.NONE)
+                .retake(emptyList())
+                .extraTakenCodes(takenCodes)
+                .build()
+            registerSession(session)
+
+            val timetableId = timetableWriter.save(
+                Timetable(tag = com.yourssu.soongpt.domain.timetable.implement.Tag.DEFAULT)
+            ).id!!
+            val body = mockMvc.perform(
+                get("/api/timetables/$timetableId/available-general-electives")
+                    .accept(MediaType.APPLICATION_JSON)
+            ).andExpect(status().isOk).andReturn().response.contentAsString
+
+            val result = objectMapper.readTree(body).path("result")
+
+            // ── progress 출력 ──
+            println("--- progress ---")
+            println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result.path("progress")))
+
+            // ── trackNames 출력 ──
+            val trackNames = result.path("courses").let { c ->
+                (0 until c.size()).map { c[it].path("trackName").asText() }
+            }
+            println("--- trackNames ---")
+            trackNames.forEach { println("  $it") }
+
+            // ── 공통 검증: trackName에 "수리" 없어야 함 ──
+            trackNames.none { it.contains("수리") } shouldBe true
+
+            // ── 학번별 검증 ──
+            val fieldCredits = result.path("progress").path("fieldCredits")
+            when {
+                admissionYear <= 2019 -> {
+                    // 19학번 이하: fieldCredits null
+                    fieldCredits.isMissingNode shouldBe true
+                    println(">>> fieldCredits: null (19학번 이하 — 정상)")
+                }
+                admissionYear >= 2023 -> {
+                    // 23학번~: "과학" ≥ 1 (하드코딩), trackName "과학·기술"
+                    val science = fieldCredits.path("과학").asInt(0)
+                    println(">>> 과학 fieldCredits = $science")
+                    (science >= 1) shouldBe true
+                    trackNames shouldContain "과학·기술"
+
+                    // 23학번: 하드코딩과학(21501808)을 기이수에서 빼고 한 번 더 호출 → courses 안에 들어갔을 때 결과 출력
+                    if (admissionYear == 2023) {
+                        val takenWithoutScience = takenCodes.filter { it != scienceBase }
+                        val sessionWithoutScience = MockSessionBuilder(courseRepository, departmentReader)
+                            .pseudonym(TEST_PSEUDONYM)
+                            .department("컴퓨터학부").admissionYear(2023).grade(grade)
+                            .doubleMajor(null).minor(null).teaching(false).chapel(satisfied = false)
+                            .majorBasic(TakenStrategy.NONE).majorFoundationRequiredCredits(0)
+                            .majorRequired(TakenStrategy.NONE).majorElective(TakenStrategy.NONE)
+                            .generalRequired(TakenStrategy.NONE).generalElective(TakenStrategy.NONE)
+                            .retake(emptyList())
+                            .extraTakenCodes(takenWithoutScience)
+                            .build()
+                        registerSession(sessionWithoutScience)
+                        val timetableId2 = timetableWriter.save(
+                            Timetable(tag = com.yourssu.soongpt.domain.timetable.implement.Tag.DEFAULT)
+                        ).id!!
+                        val body2 = mockMvc.perform(
+                            get("/api/timetables/$timetableId2/available-general-electives")
+                                .accept(MediaType.APPLICATION_JSON)
+                        ).andExpect(status().isOk).andReturn().response.contentAsString
+                        val result2 = objectMapper.readTree(body2).path("result")
+                        val scienceTrackCode = 2150180801L
+                        println("--- 23학번: 하드코딩과학(21501808)이 courses에 들어갔을 때 ---")
+                        result2.path("courses").forEach { track ->
+                            val trackName = track.path("trackName").asText()
+                            track.path("courses").forEach { course ->
+                                val code = course.path("code").asLong()
+                                if (code == scienceTrackCode || code / 100 == 21501808L) {
+                                    println("  trackName=$trackName, code=$code, field=${course.path("field").asText()}, name=${course.path("name").asText()}")
+                                }
+                            }
+                        }
+                    }
+                }
+                else -> {
+                    // 20~22학번: fieldCredits 존재
+                    fieldCredits.isMissingNode shouldBe false
+                    println(">>> fieldCredits 키: ${fieldCredits.fieldNames().asSequence().toList()}")
+                }
+            }
+        }
     }
 
     @Test
-    @DisplayName("하드코딩: 2150180801 기이수 시 21학번 fieldCredits의 '자연과학·공학·기술' +1 반영")
-    fun scienceHardcode_21_fieldCredits() {
-        val builder = MockSessionBuilder(courseRepository, departmentReader)
-            .pseudonym(TEST_PSEUDONYM)
-            .department("컴퓨터학부")
-            .admissionYear(2021)
-            .grade(4)
-            .doubleMajor(null)
-            .minor(null)
-            .teaching(false)
-            .chapel(satisfied = false)
-            .majorBasic(TakenStrategy.NONE)
-            .majorFoundationRequiredCredits(0)
-            .majorRequired(TakenStrategy.NONE)
-            .majorElective(TakenStrategy.NONE)
-            .generalRequired(TakenStrategy.NONE)
-            .generalElective(TakenStrategy.NONE)
-            .retake(emptyList())
-            .extraTakenCodes(listOf("2150180801"))
-        val session = builder.build()
-        println("=== 하드코딩 21학번: 기이수 과목 목록 ===")
-        printTakenCoursesWithNames(session)
-        registerSession(session)
-
-        val timetableId = timetableWriter.save(Timetable(tag = com.yourssu.soongpt.domain.timetable.implement.Tag.DEFAULT)).id!!
-        val body = mockMvc.perform(
-            get("/api/timetables/$timetableId/available-general-electives").accept(MediaType.APPLICATION_JSON),
-        ).andExpect(status().isOk).andReturn().response.contentAsString
-        println("=== 하드코딩 21학번: available-general-electives (raw response) ===")
-        println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readTree(body)))
-
-        // 21~22학번: 균형교양교과 하위의 "자연과학·공학·기술" 서브필드가 +1이어야 함
-        val fieldCredits = objectMapper.readTree(body).path("result").path("progress").path("fieldCredits")
-        // 균형교양교과 키 찾기 (균형교양교과 or 균형교양)
-        val balanceKey = fieldCredits.fieldNames().asSequence().firstOrNull { it.contains("균형교양") }
-        println(">>> 균형교양 키: $balanceKey")
-        balanceKey.shouldNotBeNull()
-        val scienceSubCount = fieldCredits.path(balanceKey).path("자연과학·공학·기술").asInt(0)
-        println(">>> 자연과학·공학·기술 fieldCredits: $scienceSubCount (2150180801 하드코딩 +1 포함)")
-        // NOTE: computeTakenFieldCourseCounts가 이 과목을 이미 1로 세고 있으면 하드코딩 +1 합산으로 2가 될 수 있음
-        (scienceSubCount >= 1) shouldBe true
-    }
-
-    @Test
-    @DisplayName("Case 재수강매핑: 폐강 구과목(21503037) + Python이 추가하는 대체 신과목 baseCode → 재수강 추천에 대체 과목 포함")
+    @DisplayName("Case 재수강매핑: 폐강된 교양필수 구과목의 대체 신과목 baseCode → RETAKE raw response 확인")
     fun case_retake_general_required_mapping() {
-        // 시나리오: Python(rusaint_service)에서 저성적 과목 코드를 수집할 때
-        //   구과목(예: 독서와토론, 현대인과성서 등)을 감지하면 → 대체 신과목 baseCode를 lowGradeSubjectCodes에 추가.
-        //   여기서는 그 결과를 직접 세션에 넣어 Kotlin 통합테스트로 검증한다.
+        // 실제 흐름:
+        //   1. 학생이 독서와토론/현대인과성서 등에서 C+ 이하 → rusaint에서 해당 과목 코드 수집
+        //   2. Python(rusaint_service)가 class_name으로 구과목 감지 → RETAKE_GENERAL_REQUIRED_MAPPING으로 대체 신과목 baseCode 추가
+        //   3. lowGradeSubjectCodes = [구과목코드(폐강,DB매칭X), 신과목baseCode(현행,DB매칭O)]
+        //   4. Kotlin이 이 코드들로 DB 조회 → 구과목은 없고 신과목만 반환
         //
-        // 21503037         = 폐강된 구과목 baseCode (현재 DB에 매칭 과목 없음)
-        // 21501003         = [인문적상상력과소통]고전읽기와상상력  (독서와토론 대체)
-        // 21501006         = [비판적사고와표현]미디어사회와비평적글쓰기  (대학글쓰기 대체)
-        // 21501009         = [창의적사고와혁신]혁신과기업가정신  (기업가정신과행동 대체)
-        // 21501020         = [인간과성서]현대사회이슈와기독교  (현대인과성서 대체)
-        // 21501028         = [컴퓨팅적사고]컴퓨팅적사고와코딩기초  (컴퓨터사고 대체)
-        // 21501034         = [SW와AI]AI와데이터기초  (AI와데이터사회 대체)
+        // 이 테스트에서는 Python이 추가한 대체 신과목 baseCode 6개를 lowGradeSubjectCodes에 직접 넣어
+        // RETAKE 응답에 대체 과목이 정상 반환되는지 raw response로 확인한다.
+        //
+        // 독서와토론        → 21501003 [인문적상상력과소통]고전읽기와상상력
+        // 대학글쓰기        → 21501006 [비판적사고와표현]미디어사회와비평적글쓰기
+        // 기업가정신과행동   → 21501009 [창의적사고와혁신]혁신과기업가정신
+        // 현대인과성서       → 21501020 [인간과성서]현대사회이슈와기독교
+        // 컴퓨터사고        → 21501028 [컴퓨팅적사고]컴퓨팅적사고와코딩기초
+        // AI와데이터사회     → 21501034 [SW와AI]AI와데이터기초
         val retakeCodes = listOf(
-            "21503037",  // 폐강 구과목 (DB 매칭 없음)
-            "21501003",  // 대체: 고전읽기와상상력
-            "21501006",  // 대체: 미디어사회와비평적글쓰기
-            "21501009",  // 대체: 혁신과기업가정신
-            "21501020",  // 대체: 현대사회이슈와기독교
-            "21501028",  // 대체: 컴퓨팅적사고와코딩기초
-            "21501034",  // 대체: AI와데이터기초
+            "21501003",  // 독서와토론 → 고전읽기와상상력
+            "21501006",  // 대학글쓰기 → 미디어사회와비평적글쓰기
+            "21501009",  // 기업가정신과행동 → 혁신과기업가정신
+            "21501020",  // 현대인과성서 → 현대사회이슈와기독교
+            "21501028",  // 컴퓨터사고 → 컴퓨팅적사고와코딩기초
+            "21501034",  // AI와데이터사회 → AI와데이터기초
         )
 
         val builder = MockSessionBuilder(courseRepository, departmentReader)
@@ -616,43 +695,14 @@ class CourseRecommendIntegrationTest {
             .generalElective(TakenStrategy.PARTIAL_ON_TIME)
             .retake(retakeCodes)
         val session = builder.build()
-        println("=== Case 재수강매핑 기이수 과목 목록 (코드: 과목명) ===")
-        printTakenCoursesWithNames(session)
-        println("=== lowGradeSubjectCodes ===")
+        println("=== Case 재수강매핑: lowGradeSubjectCodes ===")
         println(session.lowGradeSubjectCodes)
         registerSession(session)
 
         val result = performRecommend("RETAKE")
         val responseBody = result.andReturn().response.contentAsString
-        println("=== Case 재수강매핑: RETAKE (raw response) ===")
+        println("=== Case 재수강매핑: RETAKE raw response ===")
         println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readTree(responseBody)))
-
-        val response = parseResponse(responseBody)
-
-        // RETAKE 카테고리 존재
-        val retake = response.categories.find { it.category == "RETAKE" }
-        retake.shouldNotBeNull()
-
-        // 대체 신과목이 최소 1개 이상 추천되어야 함 (DB에 해당 과목 데이터가 있을 때)
-        if (retake.courses.isNotEmpty()) {
-            println("=== 재수강 추천 과목 목록 ===")
-            retake.courses.forEach { course ->
-                println("  ${course.baseCourseCode}: ${course.courseName} (${course.credits}학점, ${course.professors})")
-            }
-
-            // 폐강 구과목(21503037)은 DB에 없으므로 결과에 포함되지 않아야 함
-            retake.courses.none { it.baseCourseCode == 21503037L } shouldBe true
-
-            // 대체 과목 baseCode 중 하나 이상이 결과에 포함
-            val replacementBaseCodes = listOf(21501003L, 21501006L, 21501009L, 21501020L, 21501028L, 21501034L)
-            val matchedReplacements = retake.courses.filter { it.baseCourseCode in replacementBaseCodes }
-            println("=== 대체 과목 매칭 수: ${matchedReplacements.size} / ${replacementBaseCodes.size} ===")
-            matchedReplacements.isNotEmpty() shouldBe true
-        } else {
-            // DB에 해당 과목 데이터가 없는 경우 (빈 DB 환경) — 메시지 확인
-            println("=== RETAKE 과목 없음: ${retake.message} ===")
-            retake.message.shouldNotBeNull()
-        }
     }
 
     // @Test

@@ -6,6 +6,7 @@ import com.yourssu.soongpt.domain.course.application.RecommendContextResolver
 import com.yourssu.soongpt.domain.course.business.GeneralCourseRecommendService
 import com.yourssu.soongpt.domain.course.business.UntakenCourseCodeService
 import com.yourssu.soongpt.domain.course.implement.Category
+import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.utils.GeneralElectiveFieldDisplayMapper
 import com.yourssu.soongpt.domain.course.implement.CourseReader
 import com.yourssu.soongpt.domain.courseTime.implement.CourseTimes
@@ -35,13 +36,13 @@ class TimetableService(
 
     fun getAvailableGeneralElectives(timetableId: Long): AvailableGeneralElectivesResponse {
         ensureTimetableExists(timetableId)
-        // 기존 타임테이블 로직: courses 조회
-        val courses = getAvailableGeneralElectiveCourses(timetableId)
-
         // 이수현황 조립: progress는 항상 반환. rusaint/졸업사정 없으면 -2/-2/false/빈 맵(recommend/all과 동일 센티널)
         val ctx = recommendContextResolver.resolveOptional()
+
+        // 기존 타임테이블 로직: courses 조회 (하드코딩 과목 field override를 위해 admissionYear 전달)
+        val courses = getAvailableGeneralElectiveCourses(timetableId, ctx?.admissionYear)
         val summary = ctx?.graduationSummary?.generalElective
-        val progress = if (ctx != null && summary != null) {
+        val progress = if (ctx != null && ctx.graduationSummary != null && summary != null) {
             val fieldCredits = if (ctx.admissionYear <= 2019) {
                 // 19학번 이하: fieldCredits null (required/completed/satisfied만, TS에서 if (fieldCredits) 분기)
                 null
@@ -62,21 +63,30 @@ class TimetableService(
                 satisfied = summary.satisfied,
                 fieldCredits = fieldCredits
             )
+        } else if (ctx != null && ctx.graduationSummary != null && summary == null) {
+            // 졸업사정표는 있지만 교양선택 항목이 없음 → 해당 이수구분 없음
+            GeneralElectiveProgress(required = 0, completed = 0, satisfied = true, fieldCredits = null)
         } else {
+            // 졸업사정표 자체가 없음 (rusaint 미제공 등) → 제공 불가
             GeneralElectiveProgress(required = -2, completed = -2, satisfied = false, fieldCredits = null)
         }
         return AvailableGeneralElectivesResponse(progress = progress, courses = courses)
     }
 
-    private fun getAvailableGeneralElectiveCourses(timetableId: Long): List<GeneralElectiveDto> {
+    private fun getAvailableGeneralElectiveCourses(timetableId: Long, admissionYear: Int?): List<GeneralElectiveDto> {
         val timetableBitSet = timetableBitsetConverter.convert(timetableId)
         val requiredGeMap = untakenCourseCodeService.getUntakenCourseCodesByField(Category.GENERAL_ELECTIVE)
         val result = mutableListOf<GeneralElectiveDto>()
+        val scienceBaseCode = GeneralElectiveFieldDisplayMapper.SCIENCE_HARDCODED_COURSE_CODE.toLong() / 100
 
-        // 트랙별로 순회하며 시간 충돌 검사
-        for ((trackName, courseCodes) in requiredGeMap) {
+        // 트랙별로 순회하며 시간 충돌 검사 + trackName 표시용 매핑
+        for ((rawTrackName, courseCodes) in requiredGeMap) {
+            val displayTrackName = admissionYear?.let {
+                GeneralElectiveFieldDisplayMapper.mapForCourseField(rawTrackName, it)
+            } ?: rawTrackName
+
             if (courseCodes.isEmpty()) {
-                result.add(GeneralElectiveDto(trackName, emptyList()))
+                result.add(GeneralElectiveDto(displayTrackName, emptyList()))
                 continue
             }
 
@@ -87,9 +97,15 @@ class TimetableService(
             }
             val availableCourseResponses = availableCourses.map { course ->
                 val courseTimes = CourseTimes.from(course.scheduleRoom).toList()
-                TimetableCourseResponse.from(course, courseTimes)
+                val response = TimetableCourseResponse.from(course, courseTimes)
+                // 하드코딩 과목(2150180801): courses[].field도 올바른 분야명으로 override
+                if (admissionYear != null && course.baseCode() == scienceBaseCode) {
+                    response.copy(field = GeneralElectiveFieldDisplayMapper.scienceFieldForCourseDisplay(admissionYear))
+                } else {
+                    response
+                }
             }
-            result.add(GeneralElectiveDto(trackName, availableCourseResponses))
+            result.add(GeneralElectiveDto(displayTrackName, availableCourseResponses))
         }
         return result
     }
