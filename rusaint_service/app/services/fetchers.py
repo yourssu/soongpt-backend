@@ -11,7 +11,7 @@ from typing import Any, Dict
 import rusaint
 
 from app.core.config import settings
-from app.services.constants import CHAPEL_CODES
+from app.services.constants import CHAPEL_CODES, RETAKE_GENERAL_REQUIRED_MAPPING
 from app.schemas.usaint_schemas import (
     BasicInfo,
     Flags,
@@ -170,6 +170,8 @@ async def fetch_all_course_data_parallel(
         # 과목코드별 최신 성적 추적: {code: (year, semester_index, rank_str)}
         # semester_index는 semesters 리스트 내 인덱스 (시간순 비교용)
         latest_grades: Dict[str, tuple[int, int, str]] = {}
+        # 과목코드 → 과목명 매핑 (재수강 매핑용, 가장 최근 학기 기준)
+        code_to_name: Dict[str, str] = {}
 
         for idx, (semester_grade, classes) in enumerate(zip(semesters, all_semester_classes)):
             # 채플 과목 제외
@@ -189,6 +191,11 @@ async def fetch_all_course_data_parallel(
                 # 채플 과목 제외
                 if code in CHAPEL_CODES:
                     continue
+
+                # 과목명 캐시 (최신 학기 기준으로 갱신)
+                class_name = getattr(cls, "class_name", None) or ""
+                if class_name:
+                    code_to_name[code] = class_name
 
                 rank = getattr(cls, "rank", None)
                 if not rank:
@@ -210,6 +217,16 @@ async def fetch_all_course_data_parallel(
         for code, (_, _, rank_str) in latest_grades.items():
             if rank_str == settings.FAIL_GRADE or rank_str in settings.LOW_GRADE_RANKS:
                 low_grade_codes.append(code)
+
+        # 교양필수 재수강 매핑: 폐강된 구과목 → 대체 신과목 baseCode 추가
+        # 구과목 코드로는 현재 학기 DB에 매칭 안 되므로, 신과목 baseCode를 함께 전달
+        low_grade_code_set = set(low_grade_codes)
+        for code in list(low_grade_codes):
+            name = code_to_name.get(code, "")
+            replacement_code = RETAKE_GENERAL_REQUIRED_MAPPING.get(name)
+            if replacement_code and replacement_code not in low_grade_code_set:
+                low_grade_codes.append(replacement_code)
+                low_grade_code_set.add(replacement_code)
 
         return taken_courses, low_grade_codes, []
 
