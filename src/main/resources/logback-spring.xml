@@ -15,9 +15,10 @@
         </encoder>
     </appender>
 
-    <!-- 파일로그 (observer.py가 이 파일을 감시함) -->
+    <!-- 파일로그 (observer.py가 이 파일을 감시함). LOG_DIR은 bootRun에서 프로젝트 루트로 설정 -->
+    <property name="LOG_DIR" value="${sys:LOG_DIR:-.}"/>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/spring.log</file>
+        <file>${LOG_DIR}/logs/spring.log</file>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
@@ -26,7 +27,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 로그파일명 패턴 -->
             <!-- 날짜별로 기록되며 maxFileSize를 넘기면 인덱스(i)를 증가시켜 새로운 이름의 로그파일에 기록을 이어간다 -->
-            <fileNamePattern>logs/%d{yyyy-MM-dd}/%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/logs/%d{yyyy-MM-dd}/%i.log</fileNamePattern>
             <!-- 로그파일 최대사이즈 -->
             <maxFileSize>100MB</maxFileSize>
             <!-- 생성한 로그파일 관리 일수 -->
