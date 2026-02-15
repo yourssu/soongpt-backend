@@ -2,8 +2,10 @@ package com.yourssu.soongpt.domain.course.application
 
 import com.yourssu.soongpt.common.auth.CurrentPseudonymHolder
 import com.yourssu.soongpt.common.config.ClientJwtProvider
+import com.yourssu.soongpt.common.handler.ForbiddenException
 import com.yourssu.soongpt.common.handler.UnauthorizedException
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
+import com.yourssu.soongpt.domain.sso.implement.SyncStatus
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationRequirementsDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
@@ -77,6 +79,16 @@ class RecommendContextResolver(
     private fun resolveFromPseudonym(pseudonym: String): RecommendContext {
         val usaintData = syncSessionStore.getUsaintData(pseudonym)
         if (usaintData == null) {
+            val session = syncSessionStore.getSession(pseudonym)
+            if (session?.status == SyncStatus.REQUIRES_USER_INPUT) {
+                logger.warn {
+                    "학생 정보 매칭 미완료: pseudonym=${pseudonym.take(8)}..., " +
+                        "reason=${session.failReason ?: "student_info_mapping_failed"}"
+                }
+                throw ForbiddenException(
+                    message = "학생 정보 확인이 필요합니다. SSO 동기화 상태를 확인해 주세요.",
+                )
+            }
             logger.warn {
                 "캐시 미스: pseudonym=${pseudonym.take(8)}..., " +
                     "캐시 크기=${syncSessionStore.size()}, " +
