@@ -4,6 +4,7 @@ import com.yourssu.soongpt.common.auth.CurrentPseudonymHolder
 import com.yourssu.soongpt.common.config.ClientJwtProvider
 import com.yourssu.soongpt.common.handler.UnauthorizedException
 import com.yourssu.soongpt.domain.sso.implement.SyncSessionStore
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationRequirementsDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationSummaryDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -19,6 +20,8 @@ data class RecommendContext(
     val takenSubjectCodes: List<String>,
     val lowGradeSubjectCodes: List<String>,
     val graduationSummary: RusaintGraduationSummaryDto?,
+    /** 졸업 요건 원본 (파싱 실패 시 슬랙 알림에 raw 데이터 첨부용) */
+    val graduationRequirements: RusaintGraduationRequirementsDto?,
     val flags: RusaintStudentFlagsDto,
     val warnings: List<String>,
 )
@@ -97,6 +100,7 @@ class RecommendContextResolver(
             takenSubjectCodes = takenSubjectCodes,
             lowGradeSubjectCodes = usaintData.lowGradeSubjectCodes,
             graduationSummary = usaintData.graduationSummary,
+            graduationRequirements = usaintData.graduationRequirements,
             flags = usaintData.flags,
             warnings = usaintData.warnings,
         )

@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.course.application
 
-import com.yourssu.soongpt.common.infrastructure.slack.SlackWebhookClient
+import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.domain.course.application.dto.RecommendCategory
 import com.yourssu.soongpt.domain.course.application.dto.RecommendCoursesRequest
 import com.yourssu.soongpt.domain.course.business.GeneralCourseRecommendService
@@ -13,7 +13,6 @@ import com.yourssu.soongpt.domain.course.business.dto.CourseRecommendationsRespo
 import com.yourssu.soongpt.domain.course.business.dto.Progress
 import com.yourssu.soongpt.domain.course.business.dto.toCategoryResponse
 import com.yourssu.soongpt.domain.course.implement.Category
-import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Service
 
@@ -30,9 +29,7 @@ class CourseRecommendApplicationService(
     private val retakeCourseRecommendService: RetakeCourseRecommendService,
     private val secondaryMajorCourseRecommendService: SecondaryMajorCourseRecommendService,
     private val teachingCourseRecommendService: TeachingCourseRecommendService,
-    private val slackWebhookClient: SlackWebhookClient,
 ) {
-    private val logger = KotlinLogging.logger {}
 
     fun recommend(
         request: HttpServletRequest,
@@ -44,6 +41,9 @@ class CourseRecommendApplicationService(
 
         if (ctx.graduationSummary == null) {
             warnings.add("NO_GRADUATION_REPORT")
+        }
+        if (ctx.graduationSummary?.majorRequiredElectiveCombined == true) {
+            warnings.add("MAJOR_REQUIRED_ELECTIVE_COMBINED")
         }
 
         val results = categories.map { category ->
@@ -85,6 +85,12 @@ class CourseRecommendApplicationService(
 
             RecommendCategory.MAJOR_ELECTIVE -> {
                 val progress = progressOrUnavailable(ctx.graduationSummary?.majorElective)
+                if (progress.isUnavailable() && ctx.graduationSummary != null) {
+                    Notification.notifyGraduationSummaryParsingFailed(
+                        ctx.departmentName, ctx.userGrade, listOf("전공선택(MAJOR_ELECTIVE)"),
+                        ctx.graduationRequirements?.requirements,
+                    )
+                }
                 majorCourseRecommendService.recommendMajorElectiveWithGroups(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -95,6 +101,12 @@ class CourseRecommendApplicationService(
 
             RecommendCategory.GENERAL_REQUIRED -> {
                 val progress = progressOrUnavailable(ctx.graduationSummary?.generalRequired)
+                if (progress.isUnavailable() && ctx.graduationSummary != null) {
+                    Notification.notifyGraduationSummaryParsingFailed(
+                        ctx.departmentName, ctx.userGrade, listOf("교양필수(GENERAL_REQUIRED)"),
+                        ctx.graduationRequirements?.requirements,
+                    )
+                }
                 generalCourseRecommendService.recommend(
                     category = Category.GENERAL_REQUIRED,
                     departmentName = ctx.departmentName,

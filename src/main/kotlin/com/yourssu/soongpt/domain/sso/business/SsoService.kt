@@ -4,7 +4,7 @@ import com.yourssu.soongpt.common.config.ClientJwtProvider
 import com.yourssu.soongpt.common.config.SsoProperties
 import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
 import com.yourssu.soongpt.common.infrastructure.exception.StudentInfoMappingException
-import com.yourssu.soongpt.common.infrastructure.slack.SlackWebhookClient
+import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.common.util.DepartmentNameNormalizer
 import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoResponse
 import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoUpdateRequest
@@ -33,7 +33,6 @@ class SsoService(
     private val clientJwtProvider: ClientJwtProvider,
     private val syncSessionStore: SyncSessionStore,
     private val rusaintServiceClient: RusaintServiceClient,
-    private val slackWebhookClient: SlackWebhookClient,
 ) : DisposableBean {
     private val logger = KotlinLogging.logger {}
     private val asyncScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -261,16 +260,7 @@ class SsoService(
 
         if (missingItems.isEmpty()) return
 
-        logger.warn {
-            "졸업사정표 파싱 실패: $department ${grade}학년 - 누락 항목: ${missingItems.joinToString(", ")}. " +
-                "graduation_summary_builder 파서 점검 필요"
-        }
-        missingItems.forEach { item ->
-            slackWebhookClient.notifyGraduationSummaryParsingFailed(
-                departmentName = department,
-                userGrade = grade,
-                category = item,
-            )
-        }
+        val rawRequirements = usaintData.graduationRequirements?.requirements
+        Notification.notifyGraduationSummaryParsingFailed(department, grade, missingItems, rawRequirements)
     }
 }
