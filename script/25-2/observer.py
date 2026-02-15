@@ -23,7 +23,7 @@ class Config:
 class SlackNotifier:
     def __init__(self, config):
         self.config = config
-        
+
     def _send_notification(self, channel: str, message: str):
         payload = {
             'channel': channel,
@@ -35,10 +35,10 @@ class SlackNotifier:
         }
         response = requests.post(self.config.slack_webhook_url, json=payload, headers=headers)
         print(response.text)
-        
+
     def send_notification(self, message: str):
         self._send_notification(self.config.slack_channel, message)
-        
+
     def send_log_notification(self, message: str):
         self._send_notification(self.config.slack_log_channel, message)
 

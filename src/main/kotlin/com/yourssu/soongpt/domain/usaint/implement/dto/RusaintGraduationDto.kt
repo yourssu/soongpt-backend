@@ -20,13 +20,17 @@ data class RusaintGraduationRequirementsDto(
     val requirements: List<RusaintGraduationRequirementItemDto>,
 )
 
-/** 졸업사정표 핵심 요약 (name 기반 분류 결과). rusaint-service에서 매칭되지 않은 항목은 null. */
+/**
+ * 졸업사정표 핵심 요약 (name 기반 분류 결과). rusaint-service에서 매칭되지 않은 항목은 null.
+ * majorRequiredElectiveCombined == true 이면 전필·전선 복합필드, majorRequired == majorElective 동일값, 공통응답에 warning.
+ */
 data class RusaintGraduationSummaryDto(
     val generalRequired: RusaintCreditSummaryItemDto? = null,
     val generalElective: RusaintCreditSummaryItemDto? = null,
     val majorFoundation: RusaintCreditSummaryItemDto? = null,
     val majorRequired: RusaintCreditSummaryItemDto? = null,
     val majorElective: RusaintCreditSummaryItemDto? = null,
+    val majorRequiredElectiveCombined: Boolean? = null,
     val minor: RusaintCreditSummaryItemDto? = null,
     val doubleMajorRequired: RusaintCreditSummaryItemDto? = null,
     val doubleMajorElective: RusaintCreditSummaryItemDto? = null,

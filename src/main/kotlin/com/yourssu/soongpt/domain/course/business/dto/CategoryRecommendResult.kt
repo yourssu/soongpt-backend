@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.business.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.yourssu.soongpt.domain.course.implement.Category
 import com.yourssu.soongpt.domain.course.implement.Course
 import com.yourssu.soongpt.domain.course.implement.TeachingMajorArea
@@ -30,6 +31,9 @@ data class Progress(
     val completed: Int,
     val satisfied: Boolean,
 ) {
+    @JsonIgnore
+    fun isUnavailable(): Boolean = required == -2 && completed == -2 && !satisfied
+
     companion object {
         fun from(summary: RusaintCreditSummaryItemDto): Progress =
             Progress(

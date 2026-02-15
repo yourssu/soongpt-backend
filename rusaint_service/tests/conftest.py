@@ -2,11 +2,17 @@
 Pytest 설정 및 공통 픽스처.
 """
 
-import pytest
 import os
 import sys
-import jwt
 from pathlib import Path
+
+# 테스트 수집 전에 환경 변수 설정 (config.Settings()가 임포트 시점에 검증되므로 픽스처보다 먼저 필요)
+os.environ.setdefault("DEBUG", "true")
+os.environ.setdefault("INTERNAL_JWT_SECRET", "test-secret-key-for-testing")
+os.environ.setdefault("PSEUDONYM_SECRET", "test-pseudonym-secret")
+
+import pytest
+import jwt
 from datetime import datetime, timedelta, timezone
 from fastapi.testclient import TestClient
 
@@ -17,11 +23,7 @@ sys.path.insert(0, str(root_dir))
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
-    """테스트 환경 설정"""
-    # 테스트용 환경 변수 설정 (PSEUDONYM_SECRET 미설정 시 서버 기동 실패)
-    os.environ["DEBUG"] = "true"
-    os.environ["INTERNAL_JWT_SECRET"] = "test-secret-key-for-testing"
-    os.environ["PSEUDONYM_SECRET"] = "test-pseudonym-secret"
+    """테스트 환경 설정 (수집 단계 대비는 상단 env 설정으로 처리)"""
     yield
 
 
