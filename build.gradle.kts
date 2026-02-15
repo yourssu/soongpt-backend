@@ -24,6 +24,7 @@ val swaggerVersion = "2.8.3"
 val querydslVersion = "5.0.0"
 val springCloudVersion = "2024.0.0"
 val mockitoKotlinVersion = "3.2.0"
+val mockkVersion = "1.13.17"
 val loggingVersion = "7.0.3"
 val jjwtVersion = "0.12.6"
 val coroutinesVersion = "1.8.0"
@@ -81,6 +82,7 @@ dependencies {
 	testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
+	testImplementation("io.mockk:mockk:$mockkVersion")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitPlatformVersion")
 
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0")
@@ -113,6 +115,11 @@ allOpen {
 jacoco {
 	// Java 21 지원을 위해 0.8.11 이상 권장
 	toolVersion = "0.8.11"
+}
+
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+	// observer.py가 감시하는 logs/ 경로와 맞추기 위해 프로젝트 루트 고정
+	systemProperty("LOG_DIR", project.layout.projectDirectory.asFile.absolutePath)
 }
 
 tasks.withType<Test> {
