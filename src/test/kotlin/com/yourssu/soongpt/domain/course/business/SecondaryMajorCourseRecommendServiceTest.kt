@@ -48,6 +48,7 @@ class SecondaryMajorCourseRecommendServiceTest : BehaviorSpec({
             takenSubjectCodes = emptyList(),
             lowGradeSubjectCodes = emptyList(),
             graduationSummary = summary,
+            graduationRequirements = null,
             flags = RusaintStudentFlagsDto(
                 doubleMajorDepartment = doubleMajorDepartment,
                 minorDepartment = minorDepartment,

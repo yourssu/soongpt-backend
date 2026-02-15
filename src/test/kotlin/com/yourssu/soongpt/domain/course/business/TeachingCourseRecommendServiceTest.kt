@@ -49,6 +49,7 @@ class TeachingCourseRecommendServiceTest : BehaviorSpec({
             takenSubjectCodes = takenSubjectCodes,
             lowGradeSubjectCodes = emptyList(),
             graduationSummary = null,
+            graduationRequirements = null,
             flags = RusaintStudentFlagsDto(
                 doubleMajorDepartment = null,
                 minorDepartment = null,
