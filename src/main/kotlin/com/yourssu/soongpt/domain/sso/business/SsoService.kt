@@ -223,9 +223,10 @@ class SsoService(
             } catch (e: StudentInfoMappingException) {
                 logger.warn { "학생 정보 매칭 실패: pseudonym=${pseudonym.take(8)}..., validation=${e.validationError}" }
                 syncSessionStore.updateStatus(
-                    pseudonym,
-                    SyncStatus.REQUIRES_USER_INPUT,
-                    failReason = "student_info_mapping_failed: ${e.validationError}"
+                    pseudonym = pseudonym,
+                    status = SyncStatus.REQUIRES_USER_INPUT,
+                    usaintData = e.partialUsaintData,
+                    failReason = "student_info_mapping_failed: ${e.validationError}",
                 )
             } catch (e: RusaintServiceException) {
                 if (e.isUnauthorized) {

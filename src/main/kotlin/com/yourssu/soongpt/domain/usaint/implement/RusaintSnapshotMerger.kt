@@ -52,16 +52,16 @@ class RusaintSnapshotMerger(
             )
         )
 
+        val data = merge(academic, graduation)
+
         if (!validationResult.isValid) {
             logger.error { "학생 정보 검증 실패: $studentIdPrefix****, 사유: ${validationResult.failureReason}" }
             return MergeResult(
-                data = null,
+                data = data,
                 validationError = validationResult.failureReason,
             )
         }
 
-        // 검증 통과 시 기존 로직 수행
-        val data = merge(academic, graduation)
         return MergeResult(data = data)
     }
 
