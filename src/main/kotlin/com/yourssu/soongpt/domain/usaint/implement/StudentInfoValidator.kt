@@ -1,6 +1,6 @@
 package com.yourssu.soongpt.domain.usaint.implement
 
-import com.yourssu.soongpt.common.infrastructure.slack.SlackWebhookClient
+import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.common.util.DepartmentNameNormalizer
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
@@ -12,13 +12,12 @@ import org.springframework.stereotype.Component
  *
  * 검증 항목:
  * - 학년 (grade): 1~5 범위
- * - 학기 (semester): 1 또는 2만 허용
+ * - 학기 (semester): 1~12 범위
  * - 입학년도 (year): 2015~2026 범위
  * - 학과 (department): DB에 존재하는 학과인지 확인 (DepartmentReader 사용)
  */
 @Component
 class StudentInfoValidator(
-    private val slackWebhookClient: SlackWebhookClient,
     private val departmentReader: DepartmentReader,
 ) {
     private val logger = KotlinLogging.logger {}
@@ -44,9 +43,9 @@ class StudentInfoValidator(
             errors.add("학년이 유효하지 않음: ${basicInfo.grade} (예상 범위: 1~5)")
         }
 
-        // 학기 검증: 1 또는 2만 허용
-        if (basicInfo.semester !in listOf(1, 2)) {
-            errors.add("학기가 유효하지 않음: ${basicInfo.semester} (허용값: 1, 2)")
+        // 학기 검증: 1~12 범위
+        if (basicInfo.semester !in 1..12) {
+            errors.add("학기가 유효하지 않음: ${basicInfo.semester} (예상 범위: 1~12)")
         }
 
         // 입학년도 검증: 2015~2026
@@ -75,13 +74,10 @@ class StudentInfoValidator(
             val failureReason = errors.joinToString(", ")
             logger.warn { "학생 정보 매칭 실패: $studentIdPrefix****, 사유: $failureReason" }
 
-            // Slack 알림 전송
-            sendSlackNotification(
+            // 로그 출력 → observer.py가 감지 후 Slack 전송 (기존 방식)
+            Notification.notifyStudentInfoMappingFailed(
                 studentIdPrefix = studentIdPrefix,
-                basicInfo = basicInfo,
                 failureReason = failureReason,
-                rawDataForLogging = rawDataForLogging,
-                normalizedDepartment = normalizedDepartment,
             )
 
             return ValidationResult(
@@ -92,27 +88,5 @@ class StudentInfoValidator(
 
         logger.info { "학생 정보 검증 성공: $studentIdPrefix****, 학년=${basicInfo.grade}, 학과=${basicInfo.department} (정규화: $normalizedDepartment)" }
         return ValidationResult(isValid = true)
-    }
-
-    private fun sendSlackNotification(
-        studentIdPrefix: String,
-        basicInfo: RusaintBasicInfoDto,
-        failureReason: String,
-        rawDataForLogging: Map<String, Any?>,
-        normalizedDepartment: String,
-    ) {
-        val enrichedRawData = rawDataForLogging.toMutableMap().apply {
-            put("parsed_grade", basicInfo.grade)
-            put("parsed_semester", basicInfo.semester)
-            put("parsed_year", basicInfo.year)
-            put("parsed_department", basicInfo.department)
-            put("normalized_department", normalizedDepartment)
-        }
-
-        slackWebhookClient.notifyStudentInfoMappingFailed(
-            studentIdPrefix = studentIdPrefix,
-            rawData = enrichedRawData,
-            failureReason = failureReason,
-        )
     }
 }
