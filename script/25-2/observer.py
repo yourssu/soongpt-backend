@@ -9,14 +9,14 @@ from dotenv import load_dotenv
 from log_handlers import LogHandlers
 from soongpt_handler import SoongptHandler
 
-
 class Config:
     def __init__(self):
-        load_dotenv(override=True)  # 기존 환경변수 덮어쓰기
+        load_dotenv(override=True)
         self.environment = os.getenv('ENVIRONMENT')
         self.slack_token = os.getenv('SLACK_TOKEN')
         self.slack_channel = os.getenv('SLACK_CHANNEL')
         self.slack_log_channel = os.getenv('SLACK_LOG_CHANNEL')
+        self.slack_error_channel = os.getenv('SLACK_ERROR_CHANNEL') or os.getenv('SLACK_LOG_CHANNEL')
         self.slack_webhook_url = 'https://slack.com/api/chat.postMessage'
 
 
@@ -41,6 +41,10 @@ class SlackNotifier:
         
     def send_log_notification(self, message: str):
         self._send_notification(self.config.slack_log_channel, message)
+
+    def send_error_notification(self, message: str):
+        """에러·추가 알림 (Rusaint 에러, 학생정보 매칭 실패, 졸업사정표 파싱 실패 등) → SLACK_ERROR_CHANNEL"""
+        self._send_notification(self.config.slack_error_channel, message)
 
 
 class TimeUtils:
@@ -70,27 +74,32 @@ def process_line_with_handlers(line, handlers):
         if prefix in line:
             try:
                 handler_func(line)
+                print(f"[Observer] Matched prefix -> Slack 전송 완료: {prefix[:50]}...")
             except Exception as e:
                 error_message = f"🚨ALERT ERROR - {config.environment.upper()} SERVER🚨\nlogging: {line}\nError: {str(e)}"
                 print(error_message)
-                notifier.send_log_notification(error_message)
+                notifier.send_error_notification(error_message)
             break
 
 
 def check(file_path):
     global last_checked_line
 
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
-        if file_path not in last_checked_line:
-            last_checked_line[file_path] = len(lines)
-        lines = lines[last_checked_line.get(file_path):]
+    if not lines:
+        return
+    # 파일을 처음 볼 때: 방금 append로 추가된 마지막 줄을 놓치지 않도록 (len-1)부터 읽음
+    if file_path not in last_checked_line:
+        last_checked_line[file_path] = max(0, len(lines) - 1)
+    from_idx = last_checked_line[file_path]
+    to_process = lines[from_idx:]
 
-    for line in lines:
+    for line in to_process:
         process_line_with_handlers(line, log_handlers.handlers)
         process_line_with_handlers(line, soongpt_handler.handlers)
 
-    last_checked_line[file_path] += len(lines)
+    last_checked_line[file_path] += len(to_process)
 
 
 class LogHandler(FileSystemEventHandler):
@@ -104,12 +113,16 @@ class LogHandler(FileSystemEventHandler):
 
 
 if __name__ == "__main__":
-    path = "logs/"
+    # 프로젝트 루트에서 실행 시 logs/ 감시. OBSERVER_LOG_DIR 있으면 그 경로 사용.
+    watch_log_dir = os.environ.get("OBSERVER_LOG_DIR", "").strip() or "logs/"
+    watch_log_dir = os.path.abspath(os.path.expanduser(watch_log_dir))
+    os.makedirs(watch_log_dir, exist_ok=True)
     event_handler = LogHandler()
     observer = Observer()
-    observer.schedule(event_handler, path, recursive=True)
+    observer.schedule(event_handler, watch_log_dir, recursive=True)
     observer.start()
     start_message = f"Observer started: {TimeUtils.get_kst_now()}"
+    print(f"Watching: {watch_log_dir}")
     print(start_message)
     notifier.send_log_notification(start_message)
     try:
