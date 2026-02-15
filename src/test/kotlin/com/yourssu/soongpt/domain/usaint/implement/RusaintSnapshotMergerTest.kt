@@ -82,8 +82,8 @@ class RusaintSnapshotMergerTest : BehaviorSpec({
                 studentIdPrefix = "2010"
             )
 
-            then("병합 실패") {
-                result.data.shouldBeNull()
+            then("validationError 존재, data는 merge된 스냅샷(수동 수정 플로우용)") {
+                result.data.shouldNotBeNull()
                 result.validationError.shouldNotBeNull()
             }
         }
@@ -113,8 +113,8 @@ class RusaintSnapshotMergerTest : BehaviorSpec({
                 studentIdPrefix = "2022"
             )
 
-            then("병합 실패") {
-                result.data.shouldBeNull()
+            then("validationError 존재, data는 merge된 스냅샷(수동 수정 플로우용)") {
+                result.data.shouldNotBeNull()
                 result.validationError shouldBe "학과 매칭 실패: '알수없는학과' (정규화: '알수없는학과', DB에서 찾을 수 없음)"
             }
         }

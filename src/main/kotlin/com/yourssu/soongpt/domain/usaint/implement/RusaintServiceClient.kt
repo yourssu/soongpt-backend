@@ -106,12 +106,14 @@ class RusaintServiceClient(
             studentIdPrefix = studentId.take(4),
         )
 
-        if (mergeResult.data == null) {
+        if (mergeResult.validationError != null) {
             throw StudentInfoMappingException(
-                validationError = mergeResult.validationError ?: "Unknown validation error",
+                validationError = mergeResult.validationError,
+                partialUsaintData = mergeResult.data,
             )
         }
 
+        requireNotNull(mergeResult.data) { "mergeResult.data is null despite validation success" }
         mergeResult.data
     }
 
