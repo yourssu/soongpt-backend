@@ -30,6 +30,8 @@ data class Progress(
     val completed: Int,
     val satisfied: Boolean,
 ) {
+    fun isUnavailable(): Boolean = required == -2 && completed == -2 && !satisfied
+
     companion object {
         fun from(summary: RusaintCreditSummaryItemDto): Progress =
             Progress(
