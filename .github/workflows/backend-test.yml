@@ -7,12 +7,32 @@ on:
       - 'src/**'
       - 'build.gradle.kts'
       - 'settings.gradle.kts'
+      - 'rusaint_service/**'
       - '.github/workflows/backend-test.yml'
 
 jobs:
-  test-and-build:
+  changes:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.base.ref == 'main'
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      rusaint: ${{ steps.filter.outputs.rusaint }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'src/**'
+              - 'build.gradle.kts'
+              - 'settings.gradle.kts'
+            rusaint:
+              - 'rusaint_service/**'
+
+  test-and-build:
+    needs: changes
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.base.ref == 'main' && needs.changes.outputs.backend == 'true'
 
     steps:
       - name: Checkout repository
@@ -111,3 +131,27 @@ jobs:
       - name: Fail workflow if tests failed
         if: steps.test.outputs.status != '0'
         run: exit 1
+
+  rusaint-service-test:
+    needs: changes
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.base.ref == 'main' && needs.changes.outputs.rusaint == 'true'
+
+    defaults:
+      run:
+        working-directory: rusaint_service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-test.txt
+
+      - name: Run rusaint_service tests
+        run: pytest -v
