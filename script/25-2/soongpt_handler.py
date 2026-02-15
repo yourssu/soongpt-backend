@@ -17,7 +17,10 @@ class SoongptHandler:
         # 핸들러 매핑
         self.handlers = {
             self.CREATE_CONTACT_PREFIX: self.create_contact,
-            self.CREATE_TIMETABLE_PREFIX: self.create_timetable
+            self.CREATE_TIMETABLE_PREFIX: self.create_timetable,
+            self.GRADUATION_SUMMARY_ALERT_PREFIX: self.graduation_summary_alert,
+            self.STUDENT_INFO_MAPPING_ALERT_PREFIX: self.student_info_mapping_alert,
+            self.RUSAINT_SERVICE_ERROR_PREFIX: self.rusaint_service_error,
         }
 
     def create_contact(self, line):

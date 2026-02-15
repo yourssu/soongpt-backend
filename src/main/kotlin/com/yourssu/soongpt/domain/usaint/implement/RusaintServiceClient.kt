@@ -2,6 +2,8 @@ package com.yourssu.soongpt.domain.usaint.implement
 
 import com.yourssu.soongpt.common.config.RusaintProperties
 import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
+import com.yourssu.soongpt.common.infrastructure.notification.Notification
+import com.yourssu.soongpt.common.infrastructure.exception.StudentInfoMappingException
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAcademicResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
@@ -38,8 +40,8 @@ class RusaintServiceClient(
         .requestFactory(
             Supplier {
                 val simple = SimpleClientHttpRequestFactory().apply {
-                    setConnectTimeout(Duration.ofSeconds(3))
-                    setReadTimeout(Duration.ofSeconds(15))
+                    setConnectTimeout(Duration.ofSeconds(15))
+                    setReadTimeout(Duration.ofSeconds(60))
                 }
                 BufferingClientHttpRequestFactory(simple)
             },
@@ -51,7 +53,7 @@ class RusaintServiceClient(
         sToken: String,
     ): RusaintAcademicResponseDto {
         val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
-        return executeRusaintCall("academic") {
+        return executeRusaintCall("academic", studentId.take(4)) {
             val responseEntity = restTemplate.postForEntity<RusaintAcademicResponseDto>(
                 "/api/usaint/snapshot/academic",
                 requestEntity,
@@ -66,7 +68,7 @@ class RusaintServiceClient(
     ): RusaintGraduationResponseDto? {
         val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
         return try {
-            executeRusaintCall("graduation") {
+            executeRusaintCall("graduation", studentId.take(4)) {
                 val responseEntity = restTemplate.postForEntity<RusaintGraduationResponseDto>(
                     "/api/usaint/snapshot/graduation",
                     requestEntity,
@@ -93,10 +95,26 @@ class RusaintServiceClient(
         val academicDeferred = async(Dispatchers.IO) { getAcademicSnapshot(studentId, sToken) }
         delay(500)
         val graduationDeferred = async(Dispatchers.IO) { getGraduationSnapshot(studentId, sToken) }
-        rusaintSnapshotMerger.merge(
-            academicDeferred.await(),
-            graduationDeferred.await(),
+
+        val academic = academicDeferred.await()
+        val graduation = graduationDeferred.await()
+
+        // 학생 정보 검증 포함 병합
+        val mergeResult = rusaintSnapshotMerger.mergeWithValidation(
+            academic = academic,
+            graduation = graduation,
+            studentIdPrefix = studentId.take(4),
         )
+
+        if (mergeResult.validationError != null) {
+            throw StudentInfoMappingException(
+                validationError = mergeResult.validationError,
+                partialUsaintData = mergeResult.data,
+            )
+        }
+
+        requireNotNull(mergeResult.data) { "mergeResult.data is null despite validation success" }
+        mergeResult.data
     }
 
     /**
@@ -110,7 +128,7 @@ class RusaintServiceClient(
         sToken: String,
     ) {
         val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
-        executeRusaintCall("validate-token") {
+        executeRusaintCall("validate-token", studentId.take(4)) {
             restTemplate.postForEntity<Map<String, Any>>(
                 "/api/usaint/validate-token",
                 requestEntity,
@@ -118,21 +136,35 @@ class RusaintServiceClient(
         }
     }
 
-    private fun <T> executeRusaintCall(callName: String, block: () -> T): T {
+    private fun <T> executeRusaintCall(callName: String, studentIdPrefix: String, block: () -> T): T {
         return try {
             block()
         } catch (e: HttpStatusCodeException) {
             val detail = extractDetail(e)
+            val errorMessage = detail ?: e.message ?: "rusaint 서비스 호출 실패"
             logger.error(e) {
                 "rusaint-service 호출 실패: call=$callName, status=${e.statusCode.value()}, detail=$detail"
             }
+            Notification.notifyRusaintServiceError(
+                operation = callName,
+                statusCode = e.statusCode.value(),
+                errorMessage = errorMessage,
+                studentIdPrefix = studentIdPrefix,
+            )
             throw RusaintServiceException(
                 message = "rusaint 서비스 호출이 실패했습니다. (status=${e.statusCode.value()})",
                 serviceStatusCode = e.statusCode.value(),
                 serviceDetail = detail,
             )
         } catch (e: RestClientException) {
+            val errorMessage = "WAS ↔ rusaint-service 연결 실패: ${e.message}"
             logger.error(e) { "rusaint-service 통신 중 예외 발생: call=$callName" }
+            Notification.notifyRusaintServiceError(
+                operation = callName,
+                statusCode = null,
+                errorMessage = errorMessage,
+                studentIdPrefix = studentIdPrefix,
+            )
             throw RusaintServiceException(
                 message = "rusaint 서비스와 통신할 수 없습니다. (${e.message})",
             )

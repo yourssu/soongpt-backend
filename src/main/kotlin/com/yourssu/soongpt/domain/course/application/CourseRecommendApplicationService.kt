@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.application
 
+import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.domain.course.application.dto.RecommendCategory
 import com.yourssu.soongpt.domain.course.application.dto.RecommendCoursesRequest
 import com.yourssu.soongpt.domain.course.business.GeneralCourseRecommendService
@@ -41,6 +42,9 @@ class CourseRecommendApplicationService(
         if (ctx.graduationSummary == null) {
             warnings.add("NO_GRADUATION_REPORT")
         }
+        if (ctx.graduationSummary?.majorRequiredElectiveCombined == true) {
+            warnings.add("MAJOR_REQUIRED_ELECTIVE_COMBINED")
+        }
 
         val results = categories.map { category ->
             dispatch(category, ctx)
@@ -58,9 +62,7 @@ class CourseRecommendApplicationService(
     ): CategoryRecommendResponse {
         return when (category) {
             RecommendCategory.MAJOR_BASIC -> {
-                val summaryItem = ctx.graduationSummary?.majorFoundation
-                    ?: return noDataResponse(category, ctx.graduationSummary != null)
-                val progress = Progress.from(summaryItem)
+                val progress = progressOrUnavailable(ctx.graduationSummary?.majorFoundation)
                 majorCourseRecommendService.recommendMajorBasicOrRequired(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -71,9 +73,7 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.MAJOR_REQUIRED -> {
-                val summaryItem = ctx.graduationSummary?.majorRequired
-                    ?: return noDataResponse(category, ctx.graduationSummary != null)
-                val progress = Progress.from(summaryItem)
+                val progress = progressOrUnavailable(ctx.graduationSummary?.majorRequired)
                 majorCourseRecommendService.recommendMajorBasicOrRequired(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -84,9 +84,13 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.MAJOR_ELECTIVE -> {
-                val summaryItem = ctx.graduationSummary?.majorElective
-                    ?: return noDataResponse(category, ctx.graduationSummary != null)
-                val progress = Progress.from(summaryItem)
+                val progress = progressOrUnavailable(ctx.graduationSummary?.majorElective)
+                if (progress.isUnavailable() && ctx.graduationSummary != null) {
+                    Notification.notifyGraduationSummaryParsingFailed(
+                        ctx.departmentName, ctx.userGrade, listOf("전공선택(MAJOR_ELECTIVE)"),
+                        ctx.graduationRequirements?.requirements,
+                    )
+                }
                 majorCourseRecommendService.recommendMajorElectiveWithGroups(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -96,9 +100,13 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.GENERAL_REQUIRED -> {
-                val summaryItem = ctx.graduationSummary?.generalRequired
-                    ?: return noDataResponse(category, ctx.graduationSummary != null)
-                val progress = Progress.from(summaryItem)
+                val progress = progressOrUnavailable(ctx.graduationSummary?.generalRequired)
+                if (progress.isUnavailable() && ctx.graduationSummary != null) {
+                    Notification.notifyGraduationSummaryParsingFailed(
+                        ctx.departmentName, ctx.userGrade, listOf("교양필수(GENERAL_REQUIRED)"),
+                        ctx.graduationRequirements?.requirements,
+                    )
+                }
                 generalCourseRecommendService.recommend(
                     category = Category.GENERAL_REQUIRED,
                     departmentName = ctx.departmentName,
@@ -111,105 +119,35 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.RETAKE -> {
-                if (ctx.graduationSummary == null) {
-                    return noGraduationUnavailableResponse(RecommendCategory.RETAKE)
-                }
                 retakeCourseRecommendService.recommend(
                     lowGradeSubjectCodes = ctx.lowGradeSubjectCodes,
                 )
             }
 
             RecommendCategory.DOUBLE_MAJOR_REQUIRED -> {
-                if (ctx.graduationSummary == null) {
-                    return noGraduationUnavailableResponse(RecommendCategory.DOUBLE_MAJOR_REQUIRED)
-                }
                 secondaryMajorCourseRecommendService.recommendDoubleMajorRequired(ctx)
             }
 
             RecommendCategory.DOUBLE_MAJOR_ELECTIVE -> {
-                if (ctx.graduationSummary == null) {
-                    return noGraduationUnavailableResponse(RecommendCategory.DOUBLE_MAJOR_ELECTIVE)
-                }
                 secondaryMajorCourseRecommendService.recommendDoubleMajorElective(ctx)
             }
 
             RecommendCategory.MINOR -> {
-                if (ctx.graduationSummary == null) {
-                    return noGraduationUnavailableResponse(RecommendCategory.MINOR)
-                }
                 secondaryMajorCourseRecommendService.recommendMinor(ctx)
             }
 
             RecommendCategory.TEACHING -> {
-                if (ctx.graduationSummary == null) {
-                    return noGraduationUnavailableResponse(RecommendCategory.TEACHING)
-                }
                 teachingCourseRecommendService.recommend(ctx)
             }
         }
     }
 
-    /** 졸업사정표가 없을 때 재수강/교직 등도 "제공 불가"로 통일 (progress -2) */
-    private fun noGraduationUnavailableResponse(category: RecommendCategory): CategoryRecommendResponse {
-        val message = when (category) {
-            RecommendCategory.RETAKE -> "졸업사정표가 없어 재수강 추천을 제공할 수 없습니다."
-            RecommendCategory.TEACHING -> "졸업사정표가 없어 교직이수 추천을 제공할 수 없습니다."
-            RecommendCategory.DOUBLE_MAJOR_REQUIRED -> "졸업사정표가 없어 복수전공필수 추천을 제공할 수 없습니다."
-            RecommendCategory.DOUBLE_MAJOR_ELECTIVE -> "졸업사정표가 없어 복수전공선택 추천을 제공할 수 없습니다."
-            RecommendCategory.MINOR -> "졸업사정표가 없어 부전공 추천을 제공할 수 없습니다."
-            else -> "졸업사정표가 없어 해당 추천을 제공할 수 없습니다."
-        }
-        return CategoryRecommendResponse(
-            category = category.name,
-            progress = Progress.unavailable(),
-            message = message,
-            userGrade = null,
-            courses = emptyList(),
-            lateFields = null,
-        )
-    }
-
-    private fun progressOnlyResponse(
-        category: RecommendCategory,
-        progress: Progress,
-    ): CategoryRecommendResponse {
-        val message = if (progress.satisfied) {
-            "${category.displayName} 학점을 이미 모두 이수하셨습니다."
-        } else {
-            "${category.displayName} 과목 추천 기능은 준비 중입니다."
-        }
-        return CategoryRecommendResponse(
-            category = category.name,
-            progress = progress,
-            message = message,
-            userGrade = null,
-            courses = emptyList(),
-            lateFields = null,
-        )
-    }
-
-    private fun noDataResponse(
-        category: RecommendCategory,
-        graduationSummaryExists: Boolean = true,
-    ): CategoryRecommendResponse {
-        val message = when (category) {
-            RecommendCategory.MAJOR_BASIC -> "졸업사정표에 전공기초 항목이 없습니다."
-            RecommendCategory.MAJOR_REQUIRED -> "졸업사정표에 전공필수 항목이 없습니다."
-            RecommendCategory.MAJOR_ELECTIVE -> "졸업사정표에 전공선택 항목이 없습니다."
-            else -> "졸업사정표에 해당 항목이 없습니다."
-        }
-        val progress = if (graduationSummaryExists) {
-            Progress(required = 0, completed = 0, satisfied = true)
+    private fun progressOrUnavailable(summaryItem: com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto?): Progress {
+        return if (summaryItem != null) {
+            Progress.from(summaryItem)
         } else {
             Progress.unavailable()
         }
-        return CategoryRecommendResponse(
-            category = category.name,
-            progress = progress,
-            message = message,
-            userGrade = null,
-            courses = emptyList(),
-            lateFields = null,
-        )
     }
+
 }

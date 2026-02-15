@@ -3,6 +3,8 @@ package com.yourssu.soongpt.domain.sso.business
 import com.yourssu.soongpt.common.config.ClientJwtProvider
 import com.yourssu.soongpt.common.config.SsoProperties
 import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
+import com.yourssu.soongpt.common.infrastructure.exception.StudentInfoMappingException
+import com.yourssu.soongpt.common.infrastructure.notification.Notification
 import com.yourssu.soongpt.common.util.DepartmentNameNormalizer
 import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoResponse
 import com.yourssu.soongpt.domain.sso.application.dto.StudentInfoUpdateRequest
@@ -13,6 +15,7 @@ import com.yourssu.soongpt.domain.usaint.implement.PseudonymGenerator
 import com.yourssu.soongpt.domain.usaint.implement.RusaintServiceClient
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintStudentFlagsDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.Cookie
 import kotlinx.coroutines.CoroutineScope
@@ -214,6 +217,17 @@ class SsoService(
                 logger.info {
                     "[GE_DEBUG] rusaint fetch 완료: pseudonym=${pseudonym.take(8)}..., generalElective=${ge != null} (required=${ge?.required}, completed=${ge?.completed})"
                 }
+
+                // 졸업사정표에 반드시 있어야 하는 항목 누락 검증
+                validateRequiredSummaryItems(usaintData)
+            } catch (e: StudentInfoMappingException) {
+                logger.warn { "학생 정보 매칭 실패: pseudonym=${pseudonym.take(8)}..., validation=${e.validationError}" }
+                syncSessionStore.updateStatus(
+                    pseudonym = pseudonym,
+                    status = SyncStatus.REQUIRES_USER_INPUT,
+                    usaintData = e.partialUsaintData,
+                    failReason = "student_info_mapping_failed: ${e.validationError}",
+                )
             } catch (e: RusaintServiceException) {
                 if (e.isUnauthorized) {
                     logger.warn { "sToken 만료/무효: pseudonym=${pseudonym.take(8)}..." }
@@ -228,5 +242,26 @@ class SsoService(
                 syncSessionStore.updateStatus(pseudonym, SyncStatus.FAILED, failReason = "internal_error")
             }
         }
+    }
+
+    /**
+     * 졸업사정표에 반드시 있어야 하는 항목(전선/교필/교선)이 누락된 경우
+     * 경고 로그 + 슬랙 알림 발송.
+     * rusaint fetch 시점에 1회만 호출되어 중복 알림을 방지한다.
+     */
+    private fun validateRequiredSummaryItems(usaintData: RusaintUsaintDataResponse) {
+        val summary = usaintData.graduationSummary ?: return // 졸업사정표 자체가 없으면 별도 처리
+        val department = usaintData.basicInfo.department
+        val grade = usaintData.basicInfo.grade
+
+        val missingItems = mutableListOf<String>()
+        if (summary.majorElective == null) missingItems.add("전공선택(MAJOR_ELECTIVE)")
+        if (summary.generalRequired == null) missingItems.add("교양필수(GENERAL_REQUIRED)")
+        if (summary.generalElective == null) missingItems.add("교양선택(GENERAL_ELECTIVE)")
+
+        if (missingItems.isEmpty()) return
+
+        val rawRequirements = usaintData.graduationRequirements?.requirements
+        Notification.notifyGraduationSummaryParsingFailed(department, grade, missingItems, rawRequirements)
     }
 }

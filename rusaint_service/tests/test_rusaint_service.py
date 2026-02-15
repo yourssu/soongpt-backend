@@ -2,22 +2,31 @@
 RusaintService 관련 테스트.
 """
 
+import asyncio
+
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
+
+from app.services.exceptions import SSOTokenError
 from app.services.rusaint_service import RusaintService
-import asyncio
 
 
 @pytest.mark.asyncio
 async def test_fetch_usaint_snapshot_with_invalid_token():
-    """유효하지 않은 SSO 토큰 처리 테스트"""
+    """유효하지 않은 SSO 토큰 시 create_session이 SSOTokenError를 발생시키고, 서비스가 이를 그대로 전파하는지 테스트."""
     service = RusaintService()
+    expected_message = "SSO 토큰이 유효하지 않거나 만료되었습니다."
 
-    with pytest.raises(ValueError) as exc_info:
-        await service.fetch_usaint_snapshot(
-            student_id="20231234",
-            s_token="invalid-token",
-        )
+    with patch(
+        "app.services.rusaint_service.session_module.create_session",
+        new_callable=AsyncMock,
+        side_effect=SSOTokenError(expected_message),
+    ):
+        with pytest.raises(SSOTokenError) as exc_info:
+            await service.fetch_usaint_snapshot(
+                student_id="20231234",
+                s_token="invalid-token",
+            )
 
     assert "SSO 토큰" in str(exc_info.value) or "유효하지 않" in str(exc_info.value)
 

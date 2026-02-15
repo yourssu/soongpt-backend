@@ -126,6 +126,7 @@ class SsoController(
             - 200 PROCESSING: 동기화 진행 중 (계속 폴링)
             - 200 COMPLETED: 동기화 완료 (studentInfo 포함)
             - 200 REQUIRES_REAUTH: sToken 만료, 재인증 필요 (reason: token_expired)
+            - 200 REQUIRES_USER_INPUT: 학생 정보 매칭 실패, 사용자 입력 필요 (reason: student_info_mapping_failed)
             - 200 FAILED: 동기화 실패 (reason: server_unreachable | server_timeout | internal_error)
             - 401 ERROR: 쿠키/JWT 문제 (reason: invalid_session | session_expired)
 
@@ -133,6 +134,7 @@ class SsoController(
             - invalid_session: 쿠키가 없거나 JWT가 유효하지 않음 → 재로그인
             - session_expired: 동기화 세션 TTL 만료 → 재로그인
             - token_expired: 유세인트 sToken 만료 → SSO 재인증
+            - student_info_mapping_failed: 학년/학과/입학년도 매칭 실패 → 사용자 직접 입력
             - server_unreachable: 유세인트 서버 접속 불가 → 잠시 후 재시도
             - server_timeout: 유세인트 서버 응답 시간 초과 → 잠시 후 재시도
             - internal_error: 내부 서버 오류 → 관리자 문의
@@ -142,7 +144,7 @@ class SsoController(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "동기화 상태 (result.status: PROCESSING | COMPLETED | REQUIRES_REAUTH | FAILED)",
+                description = "동기화 상태 (result.status: PROCESSING | COMPLETED | REQUIRES_REAUTH | REQUIRES_USER_INPUT | FAILED)",
                 content = [Content(mediaType = "application/json", schema = Schema(implementation = SyncStatusResponse::class))],
             ),
             ApiResponse(
@@ -194,6 +196,7 @@ class SsoController(
                 jsonResponse(HttpStatus.OK, "COMPLETED", studentInfo = studentInfo, warnings = warnings)
             }
             SyncStatus.REQUIRES_REAUTH -> jsonResponse(HttpStatus.OK, "REQUIRES_REAUTH", reason = session.failReason ?: "token_expired")
+            SyncStatus.REQUIRES_USER_INPUT -> jsonResponse(HttpStatus.OK, "REQUIRES_USER_INPUT", reason = session.failReason ?: "student_info_mapping_failed")
             SyncStatus.FAILED -> jsonResponse(HttpStatus.OK, "FAILED", reason = session.failReason ?: "internal_error")
         }
     }

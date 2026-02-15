@@ -19,12 +19,12 @@ class RetakeCourseRecommendService(
 
     fun recommend(lowGradeSubjectCodes: List<String>): CategoryRecommendResponse {
         if (lowGradeSubjectCodes.isEmpty()) {
-            return retakeEmpty("재수강 가능한 C+ 이하 과목이 없습니다.")
+            return retakeNoData("재수강 가능한 C+ 이하 과목이 없습니다.")
         }
 
         val baseCodes = lowGradeSubjectCodes.mapNotNull { it.toLongOrNull() }
         if (baseCodes.isEmpty()) {
-            return retakeEmpty("재수강 가능한 C+ 이하 과목이 없습니다.")
+            return retakeNoData("재수강 가능한 C+ 이하 과목이 없습니다.")
         }
 
         // 폐강 구과목 baseCode → 대체 신과목 baseCode (재수강교필_하드코딩.md). 구과목은 DB에 없으므로 치환 후 조회
@@ -56,6 +56,17 @@ class RetakeCourseRecommendService(
         )
     }
 
+    /** lowGradeSubjectCodes가 비어있어 재수강 데이터 자체가 없는 경우 → progress 제공 불가(-2) */
+    private fun retakeNoData(message: String) = CategoryRecommendResponse(
+        category = RETAKE_CATEGORY,
+        progress = Progress.unavailable(),
+        message = message,
+        userGrade = null,
+        courses = emptyList(),
+        lateFields = null,
+    )
+
+    /** lowGradeSubjectCodes는 있으나 이번 학기 개설 과목이 없는 경우 → progress bar 미표시(-1) */
     private fun retakeEmpty(message: String) = CategoryRecommendResponse(
         category = RETAKE_CATEGORY,
         progress = Progress.notApplicable(),

@@ -57,7 +57,11 @@ def _is_major_elective_only(name: str) -> bool:
 
 
 def _is_major_combined(name: str) -> bool:
-    """전필+전선 복합 여부 (예: "전필·전선", "전필전선")"""
+    """전필+전선 또는 전필+전기+전선 복합 여부.
+
+    예: "전필·전선", "전필전선", "전필·전기·전선" (전기 단독 + 이 복합인 학과도 있음).
+    복합 행은 전공기초(전기)보다 먼저 매칭되어, "전필·전기·전선"이 전기로만 분류되지 않도록 함.
+    """
     has_required = "전필" in name
     has_elective = "전선" in name or "진선" in name
     return has_required and has_elective
@@ -155,7 +159,19 @@ def build_graduation_summary(
             )
             continue
 
-        # 3. 전공기초
+        # 3. 전필+전선 복합 / 전필+전기+전선 복합 (전공기초보다 먼저 처리)
+        # "전필·전기·전선" 한 줄인 학과: 이 행을 전기로 매칭하면 안 되므로 복합으로 먼저 매칭.
+        # progress에는 전필+전선 이수현황(majorElective)을 보내며, 후처리에서 복합-전기로 역산.
+        if _is_major_combined(name):
+            major_combined = req
+            continue
+
+        # 4. "전공" 복합 총합 (전기+전선 또는 전필+전선, 학과별 상이)
+        if _is_major_total(name):
+            major_combined = req
+            continue
+
+        # 5. 전공기초 (전기 단독만 매칭; 위에서 복합 행은 이미 처리됨)
         if _is_major_foundation(name):
             major_foundation = CreditSummaryItem(
                 required=_safe_int(req.requirement),
@@ -164,12 +180,7 @@ def build_graduation_summary(
             )
             continue
 
-        # 4. 전필+전선 복합 (우선 처리)
-        if _is_major_combined(name):
-            major_combined = req
-            continue
-
-        # 5. 전공필수 단독
+        # 6. 전공필수 단독
         if _is_major_required_only(name):
             major_required = CreditSummaryItem(
                 required=_safe_int(req.requirement),
@@ -178,7 +189,7 @@ def build_graduation_summary(
             )
             continue
 
-        # 6. 전공선택 단독
+        # 7. 전공선택 단독
         if _is_major_elective_only(name):
             major_elective = CreditSummaryItem(
                 required=_safe_int(req.requirement),
@@ -187,17 +198,12 @@ def build_graduation_summary(
             )
             continue
 
-        # 6-1. "전공" 복합 총합 (전기+전선 또는 전필+전선, 학과별 상이)
-        if _is_major_total(name):
-            major_combined = req
-            continue
-
-        # 7. 복수전공 복합 (복필+복선 합계)
+        # 8. 복수전공 복합 (복필+복선 합계)
         if _is_double_major_combined(name):
             double_major_combined = req
             continue
 
-        # 8. 복수전공필수 단독
+        # 9. 복수전공필수 단독
         if _is_double_major_required_only(name):
             double_major_required = CreditSummaryItem(
                 required=_safe_int(req.requirement),
@@ -206,7 +212,7 @@ def build_graduation_summary(
             )
             continue
 
-        # 9. 부전공 (필수/선택 구분 없이 전체 부전공)
+        # 10. 부전공 (필수/선택 구분 없이 전체 부전공)
         if _is_minor(name):
             minor = CreditSummaryItem(
                 required=_safe_int(req.requirement),
@@ -215,7 +221,7 @@ def build_graduation_summary(
             )
             continue
 
-        # 10. 기독교과목
+        # 11. 기독교과목
         if _is_christian(name):
             christian = CreditSummaryItem(
                 required=_safe_int(req.requirement),
@@ -224,18 +230,22 @@ def build_graduation_summary(
             )
             continue
 
-        # 11. 채플 (학점 없이 충족 여부만)
+        # 12. 채플 (학점 없이 충족 여부만)
         if _is_chapel(name):
             chapel = ChapelSummaryItem(satisfied=_safe_bool(req.result))
             continue
 
-    # 복합 항목 후처리: 전공 복합 → 전선 역산
+    # 복합 항목 후처리: 전공 복합 → 전선(또는 전필+전선) 역산
     #
-    # "전공" 또는 "전필·전선" 복합 필드에서 단독 필드를 빼서 전선을 구한다.
     # - 전필 존재 → 복합 = 전필+전선, 전필을 빼서 전선
-    # - 전필 없고 전기 존재 → 복합 = 전기+전선, 전기를 빼서 전선
+    # - 전필 없고 전기 존재:
+    #   - 복합 행 이름에 "전기" 포함(전필·전기·전선, 전공=전기+전선) → 전기를 빼서 전선
+    #   - 복합 행이 "전필·전선"만(전기 미포함) → 빼지 않음, 복합 전체 = 전필+전선
     # - 둘 다 없음 → 복합 전체가 전선
-    # 전선 satisfied는 항상 completed >= required 로 계산
+    # 복합으로 전필+전선만 나오는 경우(전필 단독 없음): majorRequired = majorElective = 같은값, warning 플래그
+    major_required_elective_combined = False
+    combined_name = major_combined.name if major_combined else ""
+
     if major_combined is not None:
         combined_req = _safe_int(major_combined.requirement)
         combined_calc = _safe_int(major_combined.calculation)
@@ -245,19 +255,35 @@ def build_graduation_summary(
             elective_req = max(0, combined_req - major_required.required)
             elective_calc = max(0, combined_calc - major_required.completed)
         elif major_foundation is not None:
-            # 전기만 존재 (전필 없음) → 전기+전선 복합, 전기를 빼서 전선
-            elective_req = max(0, combined_req - major_foundation.required)
-            elective_calc = max(0, combined_calc - major_foundation.completed)
+            # 전기만 존재 (전필 없음)
+            # 복합 행이 "전기" 포함(전필·전기·전선) 또는 "전공 N"(전기+전선 의미) → 전기 빼기
+            # 복합 행이 "전필·전선"만(전기 미포함) → 빼지 않음, 복합 전체 = 전필+전선
+            combined_includes_foundation = (
+                "전기" in combined_name
+                or ("전공" in combined_name and "전필" not in combined_name and "전선" not in combined_name)
+            )
+            if combined_includes_foundation:
+                elective_req = max(0, combined_req - major_foundation.required)
+                elective_calc = max(0, combined_calc - major_foundation.completed)
+            else:
+                elective_req = combined_req
+                elective_calc = combined_calc
+            major_required_elective_combined = True  # 전필 단독 없음 → 복합 응답, 같은값 둘 다 전송
         else:
             # 단독 필드 없음 → 복합 전체가 전선
             elective_req = combined_req
             elective_calc = combined_calc
+            major_required_elective_combined = True
 
         major_elective = CreditSummaryItem(
             required=elective_req,
             completed=elective_calc,
             satisfied=elective_calc >= elective_req,
         )
+
+        # 복합일 때 WAS/프론트 편의: majorRequired = majorElective = 같은값, warning으로 "전필·전선 복합"
+        if major_required_elective_combined and major_required is None:
+            major_required = major_elective
 
     # 복합 항목 후처리: 복수전공
     # 복필 단독 필드가 있으면 복합에서 빼서 복선 역산.
@@ -286,6 +312,7 @@ def build_graduation_summary(
         majorFoundation=major_foundation,
         majorRequired=major_required,
         majorElective=major_elective,
+        majorRequiredElectiveCombined=major_required_elective_combined,
         minor=minor,
         doubleMajorRequired=double_major_required,
         doubleMajorElective=double_major_elective,
