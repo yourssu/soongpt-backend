@@ -23,8 +23,8 @@ class RetakeCourseRecommendServiceTest : BehaviorSpec({
 
             then("RETAKE 카테고리와 빈 과목 목록, 안내 메시지를 반환한다") {
                 result.category shouldBe "RETAKE"
-                result.progress.required shouldBe -1
-                result.progress.completed shouldBe -1
+                result.progress.required shouldBe -2
+                result.progress.completed shouldBe -2
                 result.progress.satisfied shouldBe false
                 result.courses shouldHaveSize 0
                 result.message shouldBe "재수강 가능한 C+ 이하 과목이 없습니다."
