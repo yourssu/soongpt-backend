@@ -56,3 +56,7 @@ sso:
 logging:
   level:
     com.yourssu.soongpt.domain.sso: DEBUG
+
+slack:
+  enabled: ${SLACK_ENABLED:false}
+  webhook-url: ${SLACK_WEBHOOK_URL:}

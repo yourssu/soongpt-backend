@@ -11,6 +11,7 @@ import com.yourssu.soongpt.domain.course.implement.SecondaryMajorTrackType
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toTakenBaseCodeSet
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto
 import org.springframework.stereotype.Service
 
 /**
@@ -32,9 +33,7 @@ class SecondaryMajorCourseRecommendService(
     fun recommendDoubleMajorRequired(ctx: RecommendContext): CategoryRecommendResponse {
         val departmentName = ctx.flags.doubleMajorDepartment
             ?: return notRegisteredResponse("DOUBLE_MAJOR_REQUIRED", "복수전공을 등록하지 않았습니다.")
-        val summaryItem = ctx.graduationSummary?.doubleMajorRequired
-            ?: return noDataResponse("DOUBLE_MAJOR_REQUIRED", "졸업사정표에 복수전공필수 항목이 없습니다.")
-        val progress = Progress.from(summaryItem)
+        val progress = progressOrUnavailable(ctx.graduationSummary?.doubleMajorRequired)
         if (progress.satisfied) {
             return satisfiedResponse("DOUBLE_MAJOR_REQUIRED", progress, "복수전공필수 학점을 이미 모두 이수하셨습니다.")
         }
@@ -70,9 +69,7 @@ class SecondaryMajorCourseRecommendService(
     fun recommendDoubleMajorElective(ctx: RecommendContext): CategoryRecommendResponse {
         val departmentName = ctx.flags.doubleMajorDepartment
             ?: return notRegisteredResponse("DOUBLE_MAJOR_ELECTIVE", "복수전공을 등록하지 않았습니다.")
-        val summaryItem = ctx.graduationSummary?.doubleMajorElective
-            ?: return noDataResponse("DOUBLE_MAJOR_ELECTIVE", "졸업사정표에 복수전공선택 항목이 없습니다.")
-        val progress = Progress.from(summaryItem)
+        val progress = progressOrUnavailable(ctx.graduationSummary?.doubleMajorElective)
         if (progress.satisfied) {
             return satisfiedResponse("DOUBLE_MAJOR_ELECTIVE", progress, "복수전공선택 학점을 이미 모두 이수하셨습니다.")
         }
@@ -108,9 +105,7 @@ class SecondaryMajorCourseRecommendService(
     fun recommendMinor(ctx: RecommendContext): CategoryRecommendResponse {
         val departmentName = ctx.flags.minorDepartment
             ?: return notRegisteredResponse("MINOR", "부전공을 등록하지 않았습니다.")
-        val summaryItem = ctx.graduationSummary?.minor
-            ?: return noDataResponse("MINOR", "졸업사정표에 부전공 항목이 없습니다.")
-        val progress = Progress.from(summaryItem)
+        val progress = progressOrUnavailable(ctx.graduationSummary?.minor)
         if (progress.satisfied) {
             return satisfiedResponse("MINOR", progress, "부전공 학점을 이미 모두 이수하셨습니다.")
         }
@@ -184,15 +179,6 @@ class SecondaryMajorCourseRecommendService(
         lateFields = null,
     )
 
-    private fun noDataResponse(category: String, message: String) = CategoryRecommendResponse(
-        category = category,
-        progress = Progress(required = 0, completed = 0, satisfied = true),
-        message = message,
-        userGrade = null,
-        courses = emptyList(),
-        lateFields = null,
-    )
-
     private fun satisfiedResponse(category: String, progress: Progress, message: String) = CategoryRecommendResponse(
         category = category,
         progress = progress,
@@ -210,6 +196,14 @@ class SecondaryMajorCourseRecommendService(
         courses = emptyList(),
         lateFields = null,
     )
+
+    private fun progressOrUnavailable(summaryItem: RusaintCreditSummaryItemDto?): Progress {
+        return if (summaryItem != null && !summaryItem.isEmptyData()) {
+            Progress.from(summaryItem)
+        } else {
+            Progress.unavailable()
+        }
+    }
 
     companion object {
         private const val MAX_GRADE = 5

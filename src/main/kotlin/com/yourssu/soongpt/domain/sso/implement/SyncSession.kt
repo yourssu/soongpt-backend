@@ -25,6 +25,9 @@ enum class SyncStatus {
     /** 토큰 만료/무효 - 재인증 필요 */
     REQUIRES_REAUTH,
 
+    /** 학생 정보 매칭 실패 - 사용자 입력 필요 (학년, 학과, 입학년도 등) */
+    REQUIRES_USER_INPUT,
+
     /** 동기화 실패 (서버 에러 등) */
     FAILED,
 }
