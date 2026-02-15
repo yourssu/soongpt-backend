@@ -15,12 +15,13 @@
         </encoder>
     </appender>
 
-    <!-- 파일로그 -->
+    <!-- 파일로그 (observer.py가 이 파일을 감시함) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/spring.log</file>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
-        <!-- RollingPocliy: 로그를 나눠서 기록 -->
+        <!-- RollingPolicy: 로그를 나눠서 기록 -->
         <!-- SizeAndTimeBasedRollingPolicy: 로그파일을 크기, 시간 기반으로 관리 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 로그파일명 패턴 -->
@@ -33,11 +34,12 @@
         </rollingPolicy>
     </appender>
 
-    <!-- local -->
+    <!-- local (observer.py로 Slack 알림 테스트 시 FILE도 필요) -->
     <springProfile name="local">
         <!-- 전체적인 로그는 INFO 레벨 부터 출력 -->
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
         </root>
     </springProfile>
     <!-- prod  -->
