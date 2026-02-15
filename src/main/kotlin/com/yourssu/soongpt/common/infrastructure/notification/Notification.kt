@@ -37,4 +37,36 @@ object Notification {
         }
         logger.warn { payload }
     }
+
+    /**
+     * 학생 정보 매칭 실패 알림 (기존 방식: 로그 출력 → observer.py가 감지 후 Slack 전송)
+     */
+    fun notifyStudentInfoMappingFailed(
+        studentIdPrefix: String,
+        failureReason: String,
+    ) {
+        val payload = "StudentInfoMappingAlert&${mapper.writeValueAsString(mapOf(
+            "studentIdPrefix" to studentIdPrefix,
+            "failureReason" to failureReason,
+        ))}"
+        logger.warn { payload }
+    }
+
+    /**
+     * Rusaint 서비스 에러/연결 실패 알림 (기존 방식: 로그 출력 → observer.py가 감지 후 Slack 전송)
+     */
+    fun notifyRusaintServiceError(
+        operation: String,
+        statusCode: Int?,
+        errorMessage: String,
+        studentIdPrefix: String? = null,
+    ) {
+        val payload = "RusaintServiceError&${mapper.writeValueAsString(mapOf(
+            "operation" to operation,
+            "statusCode" to statusCode,
+            "errorMessage" to errorMessage,
+            "studentIdPrefix" to studentIdPrefix,
+        ))}"
+        logger.warn { payload }
+    }
 }
