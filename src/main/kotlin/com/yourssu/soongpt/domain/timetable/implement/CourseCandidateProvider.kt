@@ -109,6 +109,7 @@ private fun PrimaryTimetableCommand.getAllSelectedCourseCommands(): List<Triple<
     return this.retakeCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
             this.addedCourses.map { Triple(it, Category.MAJOR_ELECTIVE, true) } +
             this.majorRequiredCourses.map { Triple(it, Category.MAJOR_REQUIRED, false) } +
+            this.majorBasicCourses.map { Triple(it, Category.MAJOR_BASIC, true) } +
             this.generalRequiredCourses.map { Triple(it, Category.GENERAL_REQUIRED, false) } +
             this.majorElectiveCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
             this.doubleMajorCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
