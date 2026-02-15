@@ -2,6 +2,7 @@ package com.yourssu.soongpt.domain.usaint.implement
 
 import com.yourssu.soongpt.common.config.RusaintProperties
 import com.yourssu.soongpt.common.infrastructure.exception.RusaintServiceException
+import com.yourssu.soongpt.common.infrastructure.exception.StudentInfoMappingException
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAcademicResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
@@ -39,7 +40,7 @@ class RusaintServiceClient(
             Supplier {
                 val simple = SimpleClientHttpRequestFactory().apply {
                     setConnectTimeout(Duration.ofSeconds(3))
-                    setReadTimeout(Duration.ofSeconds(15))
+                    setReadTimeout(Duration.ofSeconds(60))
                 }
                 BufferingClientHttpRequestFactory(simple)
             },
@@ -93,10 +94,24 @@ class RusaintServiceClient(
         val academicDeferred = async(Dispatchers.IO) { getAcademicSnapshot(studentId, sToken) }
         delay(500)
         val graduationDeferred = async(Dispatchers.IO) { getGraduationSnapshot(studentId, sToken) }
-        rusaintSnapshotMerger.merge(
-            academicDeferred.await(),
-            graduationDeferred.await(),
+
+        val academic = academicDeferred.await()
+        val graduation = graduationDeferred.await()
+
+        // 학생 정보 검증 포함 병합
+        val mergeResult = rusaintSnapshotMerger.mergeWithValidation(
+            academic = academic,
+            graduation = graduation,
+            studentIdPrefix = studentId.take(4),
         )
+
+        if (mergeResult.data == null) {
+            throw StudentInfoMappingException(
+                validationError = mergeResult.validationError ?: "Unknown validation error",
+            )
+        }
+
+        mergeResult.data
     }
 
     /**
