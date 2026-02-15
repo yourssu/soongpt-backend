@@ -10,11 +10,11 @@ class SoongptHandler:
         # 숭피티 관련 로그 패턴
         self.CREATE_CONTACT_PREFIX = 'INFO com.yourssu.soongpt.common.infrastructure.notification.Notification - ContactCreated'
         self.CREATE_TIMETABLE_PREFIX = 'INFO com.yourssu.soongpt.common.infrastructure.notification.Notification - TimetableCreated'
-        self.GRADUATION_SUMMARY_ALERT_PREFIX = 'WARN com.yourssu.soongpt.common.infrastructure.notification.Notification - GraduationSummaryAlert'
+        self.GRADUATION_SUMMARY_ALERT_PREFIX = 'GraduationSummaryAlert'
         self.STUDENT_INFO_MAPPING_ALERT_PREFIX = 'StudentInfoMappingAlert'
         self.RUSAINT_SERVICE_ERROR_PREFIX = 'RusaintServiceError'
 
-        # 핸들러 매핑
+        # 핸들러 매핑 (에러 채널용 alert는 SLACK_ERROR_CHANNEL로 전달)
         self.handlers = {
             self.CREATE_CONTACT_PREFIX: self.create_contact,
             self.CREATE_TIMETABLE_PREFIX: self.create_timetable,
@@ -62,7 +62,7 @@ class SoongptHandler:
         self.notifier.send_notification(message)
 
     def graduation_summary_alert(self, line):
-        """졸업사정표 파싱 실패 알림 → SLACK_LOG_CHANNEL (raw 데이터 있으면 코드블럭으로 포함)"""
+        """졸업사정표 파싱 실패 알림 → SLACK_ERROR_CHANNEL (raw 데이터 있으면 코드블럭으로 포함)"""
         data_part = line[line.find('&') + 1:].strip()
         if data_part.startswith('{') and data_part.endswith('}'):
             data_part = data_part[1:-1]
@@ -95,19 +95,19 @@ class SoongptHandler:
                 raw_json = base64.b64decode(raw_b64).decode('utf-8')
                 raw_pretty = json.dumps(json.loads(raw_json), ensure_ascii=False, indent=2)
                 message += f"\n\n*graduationRequirements.requirements (raw)*\n```\n{raw_pretty}\n```"
-                self.notifier.send_log_notification(message)
+                self.notifier.send_error_notification(message)
             except Exception as e:
-                self.notifier.send_log_notification(f"{message}\n\n⚠️ raw 데이터 디코딩 실패: {e}")
+                self.notifier.send_error_notification(f"{message}\n\n⚠️ raw 데이터 디코딩 실패: {e}")
         else:
-            self.notifier.send_log_notification(message)
+            self.notifier.send_error_notification(message)
 
     def student_info_mapping_alert(self, line):
-        """학생 정보 매칭 실패 알림 → SLACK_LOG_CHANNEL"""
+        """학생 정보 매칭 실패 알림 → SLACK_ERROR_CHANNEL"""
         data_part = line[line.find('&') + 1:].strip()
         try:
             data = json.loads(data_part)
         except json.JSONDecodeError:
-            self.notifier.send_log_notification(f"🟡 *[학생 정보 매칭 실패]*\n파싱 오류: {data_part[:200]}")
+            self.notifier.send_error_notification(f"🟡 *[학생 정보 매칭 실패]*\n파싱 오류: {data_part[:200]}")
             return
         prefix = data.get('studentIdPrefix', 'N/A')
         reason = data.get('failureReason', 'N/A')
@@ -118,15 +118,15 @@ class SoongptHandler:
             f"❌실패 사유 : {reason}\n"
             f"⏰ 발생시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"
         )
-        self.notifier.send_log_notification(message)
+        self.notifier.send_error_notification(message)
 
     def rusaint_service_error(self, line):
-        """Rusaint 서비스 에러/연결 실패 알림 → SLACK_LOG_CHANNEL"""
+        """Rusaint 서비스 에러/연결 실패 알림 → SLACK_ERROR_CHANNEL"""
         data_part = line[line.find('&') + 1:].strip()
         try:
             data = json.loads(data_part)
         except json.JSONDecodeError:
-            self.notifier.send_log_notification(f"🔴 *[Rusaint 서비스 에러]*\n파싱 오류: {data_part[:200]}")
+            self.notifier.send_error_notification(f"🔴 *[Rusaint 서비스 에러]*\n파싱 오류: {data_part[:200]}")
             return
         op = data.get('operation', 'N/A')
         status = data.get('statusCode')
@@ -143,4 +143,4 @@ class SoongptHandler:
         if prefix:
             message += f"👤학번 : {prefix}****\n"
         message += f"⏰ 발생시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"
-        self.notifier.send_log_notification(message)
+        self.notifier.send_error_notification(message)

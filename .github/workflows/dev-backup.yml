@@ -144,6 +144,7 @@ jobs:
 
           SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
           SLACK_LOG_CHANNEL: ${{ vars.SLACK_LOG_CHANNEL }}
+          SLACK_ERROR_CHANNEL: ${{ vars.SLACK_ERROR_CHANNEL }}
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
@@ -197,6 +198,7 @@ jobs:
             echo "ENVIRONMENT=$ENVIRONMENT" >> "$f"
             echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> "$f"
             echo "SLACK_LOG_CHANNEL=$SLACK_LOG_CHANNEL" >> "$f"
+            echo "SLACK_ERROR_CHANNEL=$SLACK_ERROR_CHANNEL" >> "$f"
             echo "SLACK_TOKEN=$SLACK_TOKEN" >> "$f"
             echo "ECR_REGISTRY=$ECR_REGISTRY" >> "$f"
             echo "RUSAINT_BASE_URL=http://rusaint-service:8001" >> "$f"
@@ -340,4 +342,3 @@ jobs:
 
           echo "[DONE] Blue/green switch completed successfully"
           REMOTE
-

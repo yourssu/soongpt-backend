@@ -166,6 +166,7 @@ jobs:
 
           SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
           SLACK_LOG_CHANNEL: ${{ vars.SLACK_LOG_CHANNEL }}
+          SLACK_ERROR_CHANNEL: ${{ vars.SLACK_ERROR_CHANNEL }}
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}/${{ vars.ECR_PUBLIC_REGISTRY_ID }}
@@ -220,6 +221,7 @@ jobs:
             echo "ENVIRONMENT=$ENVIRONMENT" >> "$f"
             echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> "$f"
             echo "SLACK_LOG_CHANNEL=$SLACK_LOG_CHANNEL" >> "$f"
+            echo "SLACK_ERROR_CHANNEL=$SLACK_ERROR_CHANNEL" >> "$f"
             echo "SLACK_TOKEN=$SLACK_TOKEN" >> "$f"
             echo "ECR_REGISTRY=$ECR_REGISTRY" >> "$f"
             echo "RUSAINT_BASE_URL=http://rusaint-service:8001" >> "$f"
@@ -244,7 +246,7 @@ jobs:
 
           echo "[4/4] Remote blue/green deploy + switch"
           CLEANUP_OLD="${CLEANUP_OLD:-true}"
-          
+
           # We pass variables by exporting them in the remote shell command
           ssh $SSH_COMMON_OPTS -p "$SSH_PORT" -i yourssu.pem ubuntu@"$HOST_URL" \
             "export PROJECT_NAME='$PROJECT_NAME' BLUE_PORT='$BLUE_PORT' GREEN_PORT='$GREEN_PORT' IMAGE_TAG='$IMAGE_TAG' CLEANUP_OLD='$CLEANUP_OLD'; bash -s" << 'REMOTE'
@@ -342,7 +344,7 @@ jobs:
           echo "[3/5] Switch nginx upstream to $TARGET_PORT (graceful reload)"
           # Escape dots in regex and handle whitespace
           sudo sed -i -E "s#proxy_pass[[:space:]]+http://127\.0\.0\.1:[0-9]+#proxy_pass http://127.0.0.1:${TARGET_PORT}#g" "$NGINX_CONF"
-          
+
           # Validate and reload
           if sudo nginx -t; then
             sudo systemctl reload nginx
@@ -365,7 +367,7 @@ jobs:
             if [ -d "$OLD_DIR" ] && [ -f "$OLD_DIR/docker-compose.deploy.yml" ]; then
               (cd "$OLD_DIR" && docker compose -p "$OLD_PROJECT" -f docker-compose.deploy.yml down) || true
             fi
-            
+
             echo "[INFO] Cleaning up old images after stop"
             docker image prune -af || true
           else
