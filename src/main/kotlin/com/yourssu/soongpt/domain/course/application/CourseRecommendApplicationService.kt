@@ -143,7 +143,7 @@ class CourseRecommendApplicationService(
     }
 
     private fun progressOrUnavailable(summaryItem: com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto?): Progress {
-        return if (summaryItem != null && !summaryItem.isEmptyData()) {
+        return if (summaryItem != null) {
             Progress.from(summaryItem)
         } else {
             Progress.unavailable()

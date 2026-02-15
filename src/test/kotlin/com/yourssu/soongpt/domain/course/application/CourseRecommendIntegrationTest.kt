@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.application
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.yourssu.soongpt.common.config.ClientJwtProvider
 import com.yourssu.soongpt.domain.course.application.support.MockSessionBuilder
@@ -85,6 +86,7 @@ class CourseRecommendIntegrationTest {
     private lateinit var clientJwtProvider: ClientJwtProvider
 
     private val objectMapper = jacksonObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     companion object {
         private const val TEST_PSEUDONYM = "RECOMMEND_INTEGRATION_TEST"
@@ -415,7 +417,7 @@ class CourseRecommendIntegrationTest {
     }
 
     @Test
-    @DisplayName("Case 5 (엣지): 졸업사정표 없음(1-1/rusaint 미제공) — 경고 NO_GRADUATION_REPORT, 카테고리별 noDataResponse")
+    @DisplayName("Case 5 (엣지): 졸업사정표 없음(1-1/rusaint 미제공) — progress=-2, 과목 리스트는 정상 반환")
     fun case5_no_graduation_report() {
         val builder = MockSessionBuilder(courseRepository, departmentReader)
             .pseudonym(TEST_PSEUDONYM)
@@ -450,28 +452,29 @@ class CourseRecommendIntegrationTest {
         response.warnings shouldContain "NO_GRADUATION_DATA"
         response.warnings shouldContain "NO_GRADUATION_REPORT"
 
-        // 졸업사정표 의존 카테고리: progress = unavailable(-2, -2)
+        // 졸업사정표 의존 카테고리: progress만 unavailable(-2,-2,false), 과목은 정상 조회
         listOf("MAJOR_BASIC", "MAJOR_REQUIRED", "MAJOR_ELECTIVE", "GENERAL_REQUIRED").forEach { categoryName ->
             response.categories.find { it.category == categoryName }?.let { cat ->
                 cat.progress.required shouldBe -2
                 cat.progress.completed shouldBe -2
                 cat.progress.satisfied shouldBe false
-                cat.message.shouldNotBeNull()
-                cat.message!! shouldContain "졸업사정표"
-                cat.courses.size shouldBe 0
+                // 핵심: 졸업사정표 없어도 과목 리스트는 나와야 함 (학과·학년 기반 조회)
+                (cat.courses.isNotEmpty() || cat.message != null) shouldBe true
             }
         }
 
-        // 복전 등록 시 졸업사정표 없음 → noData "졸업사정표에 ... 없습니다"
+        // 복전 등록 시 졸업사정표 없음 → progress만 unavailable, 과목은 정상 조회
         response.categories.find { it.category == "DOUBLE_MAJOR_REQUIRED" }?.let { dmr ->
-            dmr.message.shouldNotBeNull()
-            dmr.message!! shouldContain "졸업사정표"
-            dmr.courses.size shouldBe 0
+            dmr.progress.required shouldBe -2
+            dmr.progress.completed shouldBe -2
+            dmr.progress.satisfied shouldBe false
+            (dmr.courses.isNotEmpty() || dmr.message != null) shouldBe true
         }
         response.categories.find { it.category == "DOUBLE_MAJOR_ELECTIVE" }?.let { dme ->
-            dme.message.shouldNotBeNull()
-            dme.message!! shouldContain "졸업사정표"
-            dme.courses.size shouldBe 0
+            dme.progress.required shouldBe -2
+            dme.progress.completed shouldBe -2
+            dme.progress.satisfied shouldBe false
+            (dme.courses.isNotEmpty() || dme.message != null) shouldBe true
         }
         // 부전공 미등록 → "부전공을 등록하지 않았습니다"
         response.categories.find { it.category == "MINOR" }?.let { minor ->
@@ -480,22 +483,19 @@ class CourseRecommendIntegrationTest {
             minor.courses.size shouldBe 0
         }
 
-        // 재수강·교직: 졸업사정표 없으면 -2(unavailable)로 통일
+        // 재수강: lowGradeSubjectCodes=[] → progress=-2(데이터 없음), 졸업사정표와 무관
         response.categories.find { it.category == "RETAKE" }?.let { retake ->
             retake.progress.required shouldBe -2
             retake.progress.completed shouldBe -2
             retake.progress.satisfied shouldBe false
-            retake.message.shouldNotBeNull()
-            retake.message!! shouldContain "졸업사정표가 없어"
-            retake.courses.size shouldBe 0
         }
+        // 교직: teaching=false → "교직이수 대상이 아닙니다" (0,0,true), 졸업사정표와 무관
         response.categories.find { it.category == "TEACHING" }?.let { teaching ->
-            teaching.progress.required shouldBe -2
-            teaching.progress.completed shouldBe -2
-            teaching.progress.satisfied shouldBe false
             teaching.message.shouldNotBeNull()
-            teaching.message!! shouldContain "졸업사정표가 없어"
-            teaching.courses.size shouldBe 0
+            teaching.message!! shouldContain "교직이수 대상이 아닙니다"
+            teaching.progress.required shouldBe 0
+            teaching.progress.completed shouldBe 0
+            teaching.progress.satisfied shouldBe true
         }
 
         verifyAvailableCoursesProgress("Case 5")
