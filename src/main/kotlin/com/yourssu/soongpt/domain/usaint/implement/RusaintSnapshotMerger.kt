@@ -76,12 +76,15 @@ class RusaintSnapshotMerger(
             academic.pseudonym
         }
 
+        val summary = graduation?.graduationSummary
         val warnings = academic.warnings.toMutableList()
         if (!hasGraduation) {
             warnings.add("NO_GRADUATION_DATA")
         }
+        if (summary?.majorRequiredElectiveCombined == true) {
+            warnings.add("MAJOR_REQUIRED_ELECTIVE_COMBINED")
+        }
 
-        val summary = graduation?.graduationSummary
         if (hasGraduation) {
             val ge = summary?.generalElective
             if (ge == null) {

@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.course.business
 
 import com.yourssu.soongpt.domain.course.application.RecommendContext
+import com.yourssu.soongpt.domain.department.implement.Department
 import com.yourssu.soongpt.domain.course.implement.CourseRepository
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto
@@ -76,15 +77,16 @@ class SecondaryMajorCourseRecommendServiceTest : BehaviorSpec({
 
     given("복수전공필수 - 졸업사정표에 항목 없음") {
         `when`("graduationSummary가 null이면") {
+            whenever(departmentReader.getByName("경영학부")).thenReturn(Department(id = 1L, name = "경영학부", collegeId = 1L))
+            whenever(courseRepository.findCoursesWithTargetBySecondaryMajor(any(), any(), any(), any(), any(), any()))
+                .thenReturn(emptyList())
             val ctx = context(doubleMajorDepartment = "경영학부").copy(graduationSummary = null)
             val result = service.recommendDoubleMajorRequired(ctx)
 
-            then("noData 메시지를 반환한다") {
-                result.message shouldBe "졸업사정표에 복수전공필수 항목이 없습니다."
-                result.progress.required shouldBe 0
-                result.progress.completed shouldBe 0
-                result.progress.satisfied shouldBe true
-                result.courses shouldHaveSize 0
+            then("progress는 unavailable(-2,-2,false)이고 추천 과목은 정상 조회한다") {
+                result.progress.required shouldBe -2
+                result.progress.completed shouldBe -2
+                result.progress.satisfied shouldBe false
             }
         }
     }

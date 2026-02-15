@@ -195,9 +195,25 @@ class CourseRecommendApplicationServiceTest : BehaviorSpec({
 
     given("MAJOR_REQUIRED 요청") {
         `when`("졸업사정표가 없으면") {
-            then("noData 응답을 반환하고 major 서비스를 호출하지 않는다") {
+            then("progress만 unavailable(-2,-2,false)이고 major 서비스로 추천 과목을 조회한다") {
                 whenever(contextResolver.resolve(request)).thenReturn(
                     context(graduationSummary = null)
+                )
+                whenever(
+                    majorCourseRecommendService.recommendMajorBasicOrRequired(
+                        departmentName = "컴퓨터학부",
+                        userGrade = 3,
+                        category = Category.MAJOR_REQUIRED,
+                        takenSubjectCodes = listOf("21500118", "21500234"),
+                        progress = Progress.unavailable(),
+                    )
+                ).thenReturn(
+                    CategoryRecommendResult.of(
+                        category = Category.MAJOR_REQUIRED,
+                        progress = Progress.unavailable(),
+                        courses = emptyList(),
+                        message = "이번 학기에 수강 가능한 전공필수 과목이 없습니다.",
+                    )
                 )
 
                 val result = service.recommend(
@@ -206,13 +222,11 @@ class CourseRecommendApplicationServiceTest : BehaviorSpec({
                 )
 
                 result.categories shouldHaveSize 1
-                result.categories.first() shouldBe categoryResponse(
-                    category = "MAJOR_REQUIRED",
-                    progress = Progress.unavailable(),
-                    message = "졸업사정표에 전공필수 항목이 없습니다.",
-                )
+                result.categories.first().progress.required shouldBe -2
+                result.categories.first().progress.completed shouldBe -2
+                result.categories.first().progress.satisfied shouldBe false
 
-                verify(majorCourseRecommendService, never()).recommendMajorBasicOrRequired(
+                verify(majorCourseRecommendService, times(1)).recommendMajorBasicOrRequired(
                     departmentName = "컴퓨터학부",
                     userGrade = 3,
                     category = Category.MAJOR_REQUIRED,

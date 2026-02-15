@@ -1,7 +1,6 @@
 package com.yourssu.soongpt.domain.usaint.implement
 
 import com.yourssu.soongpt.common.infrastructure.exception.StudentInfoMappingException
-import com.yourssu.soongpt.common.infrastructure.slack.SlackWebhookClient
 import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAcademicResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
@@ -16,12 +15,11 @@ import io.mockk.*
 
 class RusaintSnapshotMergerTest : BehaviorSpec({
 
-    val slackWebhookClient = mockk<SlackWebhookClient>(relaxed = true)
     val departmentReader = mockk<DepartmentReader>()
-    val studentInfoValidator = StudentInfoValidator(slackWebhookClient, departmentReader)
+    val studentInfoValidator = StudentInfoValidator(departmentReader)
     val merger = RusaintSnapshotMerger(studentInfoValidator)
 
-    val mockDepartment = mockk<com.yourssu.soongpt.domain.department.model.Department>()
+    val mockDepartment = mockk<com.yourssu.soongpt.domain.department.implement.Department>()
 
     beforeEach {
         clearAllMocks()
@@ -59,12 +57,6 @@ class RusaintSnapshotMergerTest : BehaviorSpec({
                 result.data!!.basicInfo.grade shouldBe 3
                 result.data!!.basicInfo.department shouldBe "컴퓨터학부"
             }
-
-            then("Slack 알림이 가지 않음") {
-                verify(exactly = 0) {
-                    slackWebhookClient.notifyStudentInfoMappingFailed(any(), any(), any(), any())
-                }
-            }
         }
     }
 
@@ -94,21 +86,6 @@ class RusaintSnapshotMergerTest : BehaviorSpec({
                 result.data.shouldBeNull()
                 result.validationError.shouldNotBeNull()
             }
-
-            then("Slack 알림 전송") {
-                verify(exactly = 1) {
-                    slackWebhookClient.notifyStudentInfoMappingFailed(
-                        studentIdPrefix = "2010",
-                        rawData = match { data ->
-                            data["parsed_grade"] == 0 &&
-                            data["parsed_semester"] == 99 &&
-                            data["parsed_year"] == 2010 &&
-                            data["parsed_department"] == ""
-                        },
-                        failureReason = match { it.contains("학년이 유효하지 않음") }
-                    )
-                }
-            }
         }
     }
 
@@ -127,7 +104,7 @@ class RusaintSnapshotMergerTest : BehaviorSpec({
             warnings = emptyList()
         )
 
-        every { departmentReader.getByName("알수없는학과") } returns null
+        every { departmentReader.getByName("알수없는학과") } throws RuntimeException("학과 없음")
 
         `when`("검증 포함 병합하면") {
             val result = merger.mergeWithValidation(
@@ -139,16 +116,6 @@ class RusaintSnapshotMergerTest : BehaviorSpec({
             then("병합 실패") {
                 result.data.shouldBeNull()
                 result.validationError shouldBe "학과 매칭 실패: '알수없는학과' (정규화: '알수없는학과', DB에서 찾을 수 없음)"
-            }
-
-            then("Slack 알림 전송") {
-                verify(exactly = 1) {
-                    slackWebhookClient.notifyStudentInfoMappingFailed(
-                        studentIdPrefix = "2022",
-                        rawData = any(),
-                        failureReason = "학과 매칭 실패: '알수없는학과' (정규화: '알수없는학과', DB에서 찾을 수 없음)"
-                    )
-                }
             }
         }
     }

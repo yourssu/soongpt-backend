@@ -198,7 +198,7 @@ class SecondaryMajorCourseRecommendService(
     )
 
     private fun progressOrUnavailable(summaryItem: RusaintCreditSummaryItemDto?): Progress {
-        return if (summaryItem != null && !summaryItem.isEmptyData()) {
+        return if (summaryItem != null) {
             Progress.from(summaryItem)
         } else {
             Progress.unavailable()
