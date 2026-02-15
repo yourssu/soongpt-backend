@@ -99,12 +99,66 @@ class TestCase3_전기_전선_전필없음:
         assert summary.majorFoundation is not None
         assert summary.majorFoundation.required == 15
 
-        assert summary.majorRequired is None  # 전필 없음
-
+        # 복합: majorRequired = majorElective 동일값, warning 플래그
+        assert summary.majorRequired is not None
+        assert summary.majorRequired.required == 27
+        assert summary.majorRequired.completed == 15
         assert summary.majorElective is not None
         assert summary.majorElective.required == 27  # 42 - 15
         assert summary.majorElective.completed == 15  # 30 - 15
         assert summary.majorElective.satisfied is False  # 15 < 27
+        assert summary.majorRequiredElectiveCombined is True
+
+
+# ======================================================================
+# Case 3-1: 전기 단독 + 전필·전기·전선 한 줄 복합 (전필 단독 없음)
+# 예: 일부 학과 — "전기 15", "전필·전기·전선 66"
+# progress에는 전필+전선 이수현황(majorElective) 전송. 복합-전기 역산 → 전필+전선
+# ======================================================================
+class TestCase3_1_전기_단독_전필전기전선_복합:
+    def test_전기_단독과_전필전기전선_복합에서_전필전선_역산(self):
+        reqs = [
+            _req("학부-전기 15", 15, 15, True),
+            _req("학부-전필·전기·전선 66", 66, 50, False),
+        ]
+        summary = build_graduation_summary(reqs)
+
+        assert summary.majorFoundation is not None
+        assert summary.majorFoundation.required == 15
+        assert summary.majorFoundation.completed == 15
+        assert summary.majorFoundation.satisfied is True
+
+        # 복합: majorRequired = majorElective 동일값
+        assert summary.majorRequired is not None
+        assert summary.majorRequired.required == 51
+        assert summary.majorRequired.completed == 35
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 51  # 66 - 15
+        assert summary.majorElective.completed == 35  # 50 - 15
+        assert summary.majorElective.satisfied is False  # 35 < 51
+        assert summary.majorRequiredElectiveCombined is True
+
+
+# ======================================================================
+# Case 3-2: 전기 + 전필·전선 (복합 행에 전기 없음 → 빼지 않음, 복합 전체 = 전필+전선)
+# ======================================================================
+class TestCase3_2_전기_전필전선_복합:
+    def test_전기와_전필전선_복합에서_복합_전체가_전필전선(self):
+        reqs = [
+            _req("학부-전기 15", 15, 15, True),
+            _req("학부-전필·전선 51", 51, 33, False),
+        ]
+        summary = build_graduation_summary(reqs)
+
+        assert summary.majorFoundation is not None
+        assert summary.majorFoundation.required == 15
+        assert summary.majorRequired is not None
+        assert summary.majorRequired.required == 51  # 복합 전체
+        assert summary.majorRequired.completed == 33
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 51
+        assert summary.majorElective.completed == 33
+        assert summary.majorRequiredElectiveCombined is True
 
 
 # ======================================================================
@@ -160,6 +214,122 @@ class TestCase5_전선_satisfied_계산:
         assert summary.majorElective.required == 40  # 50 - 10
         assert summary.majorElective.completed == 10  # 50 - 40
         assert summary.majorElective.satisfied is False  # 10 < 40
+
+
+# ======================================================================
+# Case 5-1: "전공" 복합 한 줄만 (전기/전필 단독 없음)
+# 복합 전체가 전선으로 처리됨
+# ======================================================================
+class TestCase5_1_전공_한줄만:
+    def test_전공_복합만_있으면_전체가_전선(self):
+        reqs = [_req("학부-전공 42", 42, 30, False)]
+        summary = build_graduation_summary(reqs)
+
+        assert summary.majorFoundation is None
+        assert summary.majorRequired is not None
+        assert summary.majorRequired.required == 42
+        assert summary.majorRequired.completed == 30
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 42
+        assert summary.majorElective.completed == 30
+        assert summary.majorElective.satisfied is False
+        assert summary.majorRequiredElectiveCombined is True
+
+
+# ======================================================================
+# "없는 것도 조건" — "전공" 해석은 전기/전필 존재 여부에 따라 달라짐. 모두 탐색 검증.
+# ======================================================================
+class Test_없는것도_조건_전공_해석:
+    """같은 '전공 N' 행이라도 전기/전필 유무에 따라 해석이 달라짐. 없음도 조건으로 탐색."""
+
+    def test_전공만_있으면_전공_전체가_전선(self):
+        """전기 없음, 전필 없음 → 전공 = 전체 전선."""
+        reqs = [_req("학부-전공 42", 42, 30, False)]
+        summary = build_graduation_summary(reqs)
+        assert summary.majorFoundation is None
+        assert summary.majorRequired is not None
+        assert summary.majorRequired.required == 42
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 42
+        assert summary.majorRequiredElectiveCombined is True
+
+    def test_전공_전기만_있으면_전공은_전기플러스전선(self):
+        """전필 없음, 전기 있음 → '전공' = 전기+전선, 전기 빼서 전선."""
+        reqs = [
+            _req("학부-전기 15", 15, 15, True),
+            _req("학부-전공 42", 42, 30, False),
+        ]
+        summary = build_graduation_summary(reqs)
+        assert summary.majorFoundation is not None
+        assert summary.majorFoundation.required == 15
+        assert summary.majorRequired is not None
+        assert summary.majorRequired.required == 27  # 42 - 15
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 27
+        assert summary.majorElective.completed == 15  # 30 - 15
+        assert summary.majorRequiredElectiveCombined is True
+
+    def test_전공_전필만_있으면_전공은_전필플러스전선(self):
+        """전기 없음, 전필 있음 → '전공' = 전필+전선, 전필 빼서 전선."""
+        reqs = [
+            _req("학부-전필 21", 21, 15, False),
+            _req("학부-전공 51", 51, 33, False),
+        ]
+        summary = build_graduation_summary(reqs)
+        assert summary.majorFoundation is None
+        assert summary.majorRequired is not None
+        assert summary.majorRequired.required == 21
+        assert summary.majorRequired.completed == 15
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 30  # 51 - 21
+        assert summary.majorElective.completed == 18  # 33 - 15
+        assert summary.majorRequiredElectiveCombined is False
+
+    def test_전공_전기_전필_둘다_있으면_전필_우선_전공은_전필플러스전선(self):
+        """전기 있음, 전필 있음 → 전필이 우선, '전공' = 전필+전선 (전기 아님)."""
+        reqs = [
+            _req("학부-전기 15", 15, 15, True),
+            _req("학부-전필 21", 21, 18, False),
+            _req("학부-전공 51", 51, 33, False),
+        ]
+        summary = build_graduation_summary(reqs)
+        assert summary.majorFoundation is not None
+        assert summary.majorFoundation.required == 15
+        assert summary.majorRequired is not None
+        assert summary.majorRequired.required == 21
+        assert summary.majorRequired.completed == 18
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 30  # 51 - 21 (전필 기준)
+        assert summary.majorElective.completed == 15  # 33 - 18
+        assert summary.majorRequiredElectiveCombined is False
+
+
+class Test_없는것도_조건_복합행_이름:
+    """복합 행 이름에 '전기'가 있으면 전기를 빼고, 없으면 빼지 않음. 없음도 조건."""
+
+    def test_복합행_이름에_전기_있으면_전기_빼기(self):
+        """전필·전기·전선 → 복합에 전기 포함이므로 전기 빼서 전필+전선."""
+        reqs = [
+            _req("학부-전기 15", 15, 15, True),
+            _req("학부-전필·전기·전선 66", 66, 50, False),
+        ]
+        summary = build_graduation_summary(reqs)
+        assert summary.majorFoundation is not None
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 51  # 66 - 15
+        assert summary.majorElective.completed == 35  # 50 - 15
+
+    def test_복합행_이름에_전기_없으면_전기_안_빼기(self):
+        """전필·전선(전기 글자 없음) → 전기 빼지 않음, 복합 전체 = 전필+전선."""
+        reqs = [
+            _req("학부-전기 15", 15, 15, True),
+            _req("학부-전필·전선 51", 51, 33, False),
+        ]
+        summary = build_graduation_summary(reqs)
+        assert summary.majorFoundation is not None
+        assert summary.majorElective is not None
+        assert summary.majorElective.required == 51  # 51 그대로 (전기 안 뺌)
+        assert summary.majorElective.completed == 33
 
 
 # ======================================================================

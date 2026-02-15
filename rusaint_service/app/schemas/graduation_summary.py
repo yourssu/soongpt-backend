@@ -42,6 +42,10 @@ class GraduationSummary(BaseModel):
     majorElective: Optional[CreditSummaryItem] = Field(
         None, description="전공선택"
     )
+    majorRequiredElectiveCombined: bool = Field(
+        False,
+        description="전필·전선이 복합필드인 경우 True. majorRequired=majorElective 동일값, WAS는 warning으로 전달.",
+    )
     minor: Optional[CreditSummaryItem] = Field(
         None, description="부전공"
     )
