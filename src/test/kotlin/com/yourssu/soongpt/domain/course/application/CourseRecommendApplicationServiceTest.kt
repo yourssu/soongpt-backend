@@ -91,6 +91,7 @@ class CourseRecommendApplicationServiceTest : BehaviorSpec({
             takenSubjectCodes = listOf("21500118", "21500234"),
             lowGradeSubjectCodes = lowGradeSubjectCodes,
             graduationSummary = graduationSummary,
+            graduationRequirements = null,
             flags = RusaintStudentFlagsDto(
                 doubleMajorDepartment = "글로벌미디어학부",
                 minorDepartment = "수학과",

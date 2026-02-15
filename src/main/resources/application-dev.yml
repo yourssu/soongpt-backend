@@ -53,7 +53,8 @@ logging:
 
 slack:
   enabled: ${SLACK_ENABLED:true}
-  webhook-url: ${SLACK_WEBHOOK_URL}
+  token: ${SLACK_TOKEN:}
+  channel: ${SLACK_CHANNEL:}
 
 springdoc:
   packages-to-scan: com.yourssu.soongpt
