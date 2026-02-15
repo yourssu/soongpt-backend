@@ -56,8 +56,3 @@ sso:
 logging:
   level:
     com.yourssu.soongpt.domain.sso: DEBUG
-
-slack:
-  enabled: ${SLACK_ENABLED:false}
-  token: ${SLACK_TOKEN:}
-  channel: ${SLACK_CHANNEL:}
