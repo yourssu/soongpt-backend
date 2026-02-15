@@ -13,9 +13,57 @@ import org.springframework.stereotype.Component
  * rusaint 응답은 그대로 전달한다. requirements가 비어 있어도(복수전공 미등록 등), graduationSummary는 항상 사용.
  */
 @Component
-class RusaintSnapshotMerger {
+class RusaintSnapshotMerger(
+    private val studentInfoValidator: StudentInfoValidator,
+) {
 
     private val logger = KotlinLogging.logger {}
+
+    data class MergeResult(
+        val data: RusaintUsaintDataResponse?,
+        val validationError: String? = null,
+    )
+
+    /**
+     * 학생 정보 검증 포함하여 병합.
+     * 검증 실패 시 null 반환하고 validationError에 사유 포함.
+     */
+    fun mergeWithValidation(
+        academic: RusaintAcademicResponseDto,
+        graduation: RusaintGraduationResponseDto?,
+        studentIdPrefix: String,
+    ): MergeResult {
+        // 학생 정보 검증
+        val validationResult = studentInfoValidator.validate(
+            basicInfo = academic.basicInfo,
+            studentIdPrefix = studentIdPrefix,
+            rawDataForLogging = mapOf(
+                "academic_pseudonym" to academic.pseudonym,
+                "graduation_pseudonym" to (graduation?.pseudonym ?: "null"),
+                "grade" to academic.basicInfo.grade,
+                "semester" to academic.basicInfo.semester,
+                "year" to academic.basicInfo.year,
+                "department" to academic.basicInfo.department,
+                "double_major" to (academic.flags.doubleMajorDepartment ?: "null"),
+                "minor" to (academic.flags.minorDepartment ?: "null"),
+                "teaching" to academic.flags.teaching,
+                "taken_courses_count" to academic.takenCourses.size,
+                "has_graduation_data" to (graduation != null),
+            )
+        )
+
+        if (!validationResult.isValid) {
+            logger.error { "학생 정보 검증 실패: $studentIdPrefix****, 사유: ${validationResult.failureReason}" }
+            return MergeResult(
+                data = null,
+                validationError = validationResult.failureReason,
+            )
+        }
+
+        // 검증 통과 시 기존 로직 수행
+        val data = merge(academic, graduation)
+        return MergeResult(data = data)
+    }
 
     fun merge(
         academic: RusaintAcademicResponseDto,
