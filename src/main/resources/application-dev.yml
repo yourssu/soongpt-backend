@@ -51,11 +51,6 @@ logging:
     com.yourssu.soongpt.domain.sso: DEBUG
     root: INFO
 
-slack:
-  enabled: ${SLACK_ENABLED:true}
-  token: ${SLACK_TOKEN:}
-  channel: ${SLACK_CHANNEL:}
-
 springdoc:
   packages-to-scan: com.yourssu.soongpt
   default-consumes-media-type: application/json;charset=UTF-8
