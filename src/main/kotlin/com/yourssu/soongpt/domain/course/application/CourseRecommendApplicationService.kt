@@ -16,6 +16,9 @@ import com.yourssu.soongpt.domain.course.implement.Category
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Service
 
+/** 전기/전필/전선 progress를 이수현황 미제공(0, 0, false)으로 고정하는 학과 */
+private const val DEPARTMENT_MAJOR_PROGRESS_FIXED_ZERO = "AI소프트웨어학부"
+
 /**
  * 통합 과목 추천 애플리케이션 서비스
  * - GET /api/courses/recommend/all 엔드포인트용
@@ -62,7 +65,7 @@ class CourseRecommendApplicationService(
     ): CategoryRecommendResponse {
         return when (category) {
             RecommendCategory.MAJOR_BASIC -> {
-                val progress = progressOrUnavailable(ctx.graduationSummary?.majorFoundation)
+                val progress = majorProgressForCategory(ctx, ctx.graduationSummary?.majorFoundation)
                 majorCourseRecommendService.recommendMajorBasicOrRequired(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -73,7 +76,7 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.MAJOR_REQUIRED -> {
-                val progress = progressOrUnavailable(ctx.graduationSummary?.majorRequired)
+                val progress = majorProgressForCategory(ctx, ctx.graduationSummary?.majorRequired)
                 majorCourseRecommendService.recommendMajorBasicOrRequired(
                     departmentName = ctx.departmentName,
                     userGrade = ctx.userGrade,
@@ -84,7 +87,7 @@ class CourseRecommendApplicationService(
             }
 
             RecommendCategory.MAJOR_ELECTIVE -> {
-                val progress = progressOrUnavailable(ctx.graduationSummary?.majorElective)
+                val progress = majorProgressForCategory(ctx, ctx.graduationSummary?.majorElective)
                 if (progress.isUnavailable() && ctx.graduationSummary != null) {
                     Notification.notifyGraduationSummaryParsingFailed(
                         ctx.departmentName, ctx.userGrade, listOf("전공선택(MAJOR_ELECTIVE)"),
@@ -140,6 +143,20 @@ class CourseRecommendApplicationService(
                 teachingCourseRecommendService.recommend(ctx)
             }
         }
+    }
+
+    /**
+     * 전공(전기/전필/전선) progress 결정.
+     * AI소프트웨어학부는 전기/전필/전선 한정으로 항상 (0, 0, false)를 반환한다.
+     */
+    private fun majorProgressForCategory(
+        ctx: RecommendContext,
+        summaryItem: com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto?,
+    ): Progress {
+        if (ctx.departmentName == DEPARTMENT_MAJOR_PROGRESS_FIXED_ZERO) {
+            return Progress(required = 0, completed = 0, satisfied = false)
+        }
+        return progressOrUnavailable(summaryItem)
     }
 
     private fun progressOrUnavailable(summaryItem: com.yourssu.soongpt.domain.usaint.implement.dto.RusaintCreditSummaryItemDto?): Progress {
