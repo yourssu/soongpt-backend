@@ -203,3 +203,27 @@ Cookie: soongpt_auth={JWT}
   }
 }
 ```
+
+---
+
+## 코드 기준: rusaint에서 안 가져왔을 때
+
+아래는 **현재 코드**(`RusaintServiceClient`, `SsoService.startAsyncRusaintFetch`, `mapFailReason`) 기준 동작이다.
+
+| rusaint 상황 | HTTP status 처리 | 비동기 결과 (GET /api/sync/status) | studentInfo |
+|--------------|------------------|-------------------------------------|-------------|
+| **academic 500/503** (학적 조회 실패·파싱 실패) | 500/503 → `getAcademicSnapshot`에서 **null 반환** (throw 안 함) | **200 REQUIRES_USER_INPUT**<br>`reason=student_info_mapping_failed: basic_info_unavailable` | null |
+| **academic 502** | 502 → **RusaintServiceException** throw | **200 FAILED** `reason=server_unreachable` | null |
+| **academic 504** | 504 → **RusaintServiceException** throw | **200 FAILED** `reason=server_timeout` | null |
+| **graduation 500/503** (졸업사정만 없음) | 500/503 → `getGraduationSnapshot`에서 **null 반환** | **200 COMPLETED** (merge 성공, academic 있음)<br>`warnings`에 `NO_GRADUATION_DATA` | 있음 |
+| **graduation 502/504** | 502/504 → **RusaintServiceException** throw | **200 FAILED** `reason=server_unreachable` / `server_timeout` | null |
+| **401** (비동기 fetch 중 sToken 만료) | 401 → **RusaintServiceException** throw, `isUnauthorized` | **200 REQUIRES_REAUTH** `reason=token_expired` | null |
+| **연결 실패** (네트워크·연결 거부 등) | `RestClientException` → **RusaintServiceException**(statusCode=null) throw | **200 FAILED** `reason=internal_error` | null |
+| **merge 검증 실패** (학과 미매칭 등) | `mergeWithValidation`에서 `validationError` 설정 → **StudentInfoMappingException** | **200 REQUIRES_USER_INPUT**<br>`reason=student_info_mapping_failed: {검증사유}` | null 또는 partialUsaintData |
+
+요약:
+
+- **학적(academic)을 못 가져오면** (500/503 등): **REQUIRES_USER_INPUT**, `basic_info_unavailable`. FAILED가 아님.
+- **졸업사정(graduation)만 못 가져오면** (500/503): **COMPLETED** + `NO_GRADUATION_DATA`. 실패 아님.
+- **502/504**만 **FAILED** (server_unreachable / server_timeout).
+- **internal_error**는 **502/504/401이 아닌** rusaint 예외가 아닐 때: 연결 실패(statusCode 없음) 또는 WAS 내부 예외(merge 등).

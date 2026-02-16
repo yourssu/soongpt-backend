@@ -200,6 +200,32 @@ class SsoService(
         else -> "internal_error"
     }
 
+    /**
+     * academic 500 등으로 rusaint에서 데이터를 못 받았을 때, 학번만으로 최소 partial 데이터 생성.
+     * 입학년도는 학번 앞 4자리로 채우고, 나머지는 기본값(새내기 가정)으로 채워 사용자 입력을 최소화.
+     */
+    private fun buildMinimalPartialFromStudentId(
+        pseudonym: String,
+        studentId: String,
+    ): RusaintUsaintDataResponse {
+        val yearFromPrefix = studentId.take(4).toIntOrNull()?.takeIf { it in 2015..2030 } ?: 0
+        return RusaintUsaintDataResponse(
+            pseudonym = pseudonym,
+            takenCourses = emptyList(),
+            lowGradeSubjectCodes = emptyList(),
+            flags = RusaintStudentFlagsDto(null, null, false),
+            basicInfo = RusaintBasicInfoDto(
+                year = yearFromPrefix,
+                semester = 1,
+                grade = 1,
+                department = "",
+            ),
+            graduationRequirements = null,
+            graduationSummary = null,
+            warnings = listOf("NO_GRADUATION_DATA", "basic_info_unavailable"),
+        )
+    }
+
     private fun isValidSTokenFormat(sToken: String): Boolean {
         // sToken은 Base64 인코딩된 문자열, 길이는 200~600자 정도
         return sToken.length in 200..700 &&
@@ -231,10 +257,12 @@ class SsoService(
                 validateRequiredSummaryItems(usaintData)
             } catch (e: StudentInfoMappingException) {
                 logger.warn { "학생 정보 매칭 실패: pseudonym=${pseudonym.take(8)}..., validation=${e.validationError}" }
+                // partial이 null이어도 학번은 있으므로 입학년도(학번 앞 4자리) 등 채울 수 있는 것만 채워서 전달 (사용자 입력 최소화)
+                val partialToStore = e.partialUsaintData ?: buildMinimalPartialFromStudentId(pseudonym, studentId)
                 syncSessionStore.updateStatus(
                     pseudonym = pseudonym,
                     status = SyncStatus.REQUIRES_USER_INPUT,
-                    usaintData = e.partialUsaintData,
+                    usaintData = partialToStore,
                     failReason = "student_info_mapping_failed: ${e.validationError}",
                 )
             } catch (e: RusaintServiceException) {

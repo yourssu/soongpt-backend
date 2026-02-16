@@ -89,6 +89,38 @@ class RusaintSnapshotMergerTest : BehaviorSpec({
         }
     }
 
+    given("입학년도가 비어있고(0) 학번 앞 4자리가 2026일 때") {
+        val academicResponse = RusaintAcademicResponseDto(
+            pseudonym = "test-pseudonym",
+            takenCourses = emptyList(),
+            lowGradeSubjectCodes = emptyList(),
+            flags = RusaintStudentFlagsDto(null, null, false),
+            basicInfo = RusaintBasicInfoDto(
+                year = 0,           // 유세인트에서 비어서 0으로 온 경우
+                semester = 1,
+                grade = 1,
+                department = "컴퓨터학부"
+            ),
+            warnings = emptyList()
+        )
+
+        every { departmentReader.getByName("컴퓨터학부") } returns mockDepartment
+
+        `when`("검증 포함 병합하면") {
+            val result = merger.mergeWithValidation(
+                academic = academicResponse,
+                graduation = null,
+                studentIdPrefix = "2026"
+            )
+
+            then("입학년도를 학번 앞 4자리(2026)로 채워서 병합 성공") {
+                result.data.shouldNotBeNull()
+                result.validationError.shouldBeNull()
+                result.data!!.basicInfo.year shouldBe 2026
+            }
+        }
+    }
+
     given("학과 매칭만 실패했을 때") {
         val academicResponse = RusaintAcademicResponseDto(
             pseudonym = "test-pseudonym",

@@ -197,7 +197,21 @@ class SsoController(
                 jsonResponse(HttpStatus.OK, "COMPLETED", studentInfo = studentInfo, warnings = warnings)
             }
             SyncStatus.REQUIRES_REAUTH -> jsonResponse(HttpStatus.OK, "REQUIRES_REAUTH", reason = session.failReason ?: "token_expired")
-            SyncStatus.REQUIRES_USER_INPUT -> jsonResponse(HttpStatus.OK, "REQUIRES_USER_INPUT", reason = session.failReason ?: "student_info_mapping_failed")
+            SyncStatus.REQUIRES_USER_INPUT -> {
+                val partialData = session.usaintData
+                val studentInfo = partialData?.let {
+                    StudentInfoResponse(
+                        grade = it.basicInfo.grade,
+                        semester = it.basicInfo.semester,
+                        year = it.basicInfo.year,
+                        department = it.basicInfo.department,
+                        doubleMajorDepartment = it.flags.doubleMajorDepartment,
+                        minorDepartment = it.flags.minorDepartment,
+                        teaching = it.flags.teaching,
+                    )
+                }
+                jsonResponse(HttpStatus.OK, "REQUIRES_USER_INPUT", reason = session.failReason ?: "student_info_mapping_failed", studentInfo = studentInfo)
+            }
             SyncStatus.FAILED -> jsonResponse(HttpStatus.OK, "FAILED", reason = session.failReason ?: "internal_error")
         }
     }
