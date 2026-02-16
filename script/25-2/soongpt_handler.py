@@ -138,8 +138,8 @@ class SoongptHandler:
             return
         op = data.get('operation', 'N/A')
         status = data.get('statusCode')
-        # validate-token 401(토큰 만료)는 슬랙 알림 제외. 연결 에러(statusCode null)만 알림
-        if op == 'validate-token' and status is not None:
+        # validate-token 401(토큰 만료)만 슬랙 알림 제외. 500/502/504 등 실제 장애는 알림 유지
+        if op == 'validate-token' and status == 401:
             return
         status_str = str(status) if status is not None else 'N/A'
         err = data.get('errorMessage', 'N/A')
