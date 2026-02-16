@@ -70,7 +70,8 @@ class GeneralCourseRecommendService(
             "Category must be GENERAL_REQUIRED or GENERAL_ELECTIVE"
         }
 
-        if (progress.satisfied) {
+        // required > 0 인 경우에만 "다 들음"으로 확정. (0,0,true)는 "해당 없음" 또는 파싱 오류일 수 있어 과목 쿼리 수행
+        if (progress.satisfied && progress.required > 0) {
             return satisfied(category, progress)
         }
 
