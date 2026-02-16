@@ -62,7 +62,7 @@ class SoongptHandler:
         self.notifier.send_notification(message)
 
     def graduation_summary_alert(self, line):
-        """졸업사정표 파싱 실패 알림 → SLACK_ERROR_CHANNEL (raw 데이터 있으면 코드블럭으로 포함)"""
+        """졸업사정표 파싱 실패 알림 → SLACK_ERROR_CHANNEL (1학년 제외, raw 데이터 있으면 graduationRequirements.requirement 코드블럭 포함)"""
         data_part = line[line.find('&') + 1:].strip()
         if data_part.startswith('{') and data_part.endswith('}'):
             data_part = data_part[1:-1]
@@ -75,26 +75,34 @@ class SoongptHandler:
             kv_dict[key.strip()] = val.strip()
 
         department = kv_dict.get('departmentName', 'N/A')
-        grade = kv_dict.get('userGrade', 'N/A')
+        grade_raw = kv_dict.get('userGrade', 'N/A')
         missing = kv_dict.get('missingItems', 'N/A')
         raw_b64 = kv_dict.get('rawDataBase64', '')
+
+        # 1학년(또는 학년 null/미표시)은 슬랙 알림 제외 (서버 로그에는 이미 찍힘)
+        try:
+            grade_num = int(grade_raw) if grade_raw and str(grade_raw).strip() not in ('', 'N/A') else None
+        except (ValueError, TypeError):
+            grade_num = None
+        if grade_num == 1 or grade_num is None:
+            return
 
         message = (
             f"🟠 *졸업사정표 파싱 실패*\n"
             f"--------------------------\n"
-            f"📚학과 : {department}\n"
-            f"📖학년 : {grade}학년\n"
-            f"❌누락 항목 : {missing.replace(';', ', ')}\n"
-            f"💡영향 : 이수현황 미표시(progress -2), 과목 추천은 정상 제공\n"
-            f"🔧조치 : graduation_summary_builder.py 파서 점검 필요\n"
-            f"⏰ 발생시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"
+            f"학과 : {department}\n"
+            f"학년 : {grade_raw}학년\n"
+            f"누락 항목 : {missing.replace(';', ', ')}\n"
+            f"영향 : 이수현황 미표시(progress -2), 과목 추천은 정상 제공\n"
+            f"조치 : graduation_summary_builder.py 파서 점검 필요\n"
+            f"발생시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"
         )
 
         if raw_b64:
             try:
                 raw_json = base64.b64decode(raw_b64).decode('utf-8')
                 raw_pretty = json.dumps(json.loads(raw_json), ensure_ascii=False, indent=2)
-                message += f"\n\n*graduationRequirements.requirements (raw)*\n```\n{raw_pretty}\n```"
+                message += f"\n\n*graduationRequirements.requirement*\n```\n{raw_pretty}\n```"
                 self.notifier.send_error_notification(message)
             except Exception as e:
                 self.notifier.send_error_notification(f"{message}\n\n⚠️ raw 데이터 디코딩 실패: {e}")
@@ -114,14 +122,14 @@ class SoongptHandler:
         message = (
             f"🟡 *[학생 정보 매칭 실패]* 사용자가 직접 입력해야 함\n"
             f"--------------------------\n"
-            f"👤학번 : {prefix}****\n"
-            f"❌실패 사유 : {reason}\n"
-            f"⏰ 발생시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"
+            f"학번 : {prefix}****\n"
+            f"실패 사유 : {reason}\n"
+            f"발생시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"
         )
         self.notifier.send_error_notification(message)
 
     def rusaint_service_error(self, line):
-        """Rusaint 서비스 에러/연결 실패 알림 → SLACK_ERROR_CHANNEL"""
+        """Rusaint 서비스 에러/연결 실패 알림 → SLACK_ERROR_CHANNEL (validate-token 401 만료는 제외, 연결 에러만)"""
         data_part = line[line.find('&') + 1:].strip()
         try:
             data = json.loads(data_part)
@@ -130,17 +138,20 @@ class SoongptHandler:
             return
         op = data.get('operation', 'N/A')
         status = data.get('statusCode')
+        # validate-token 401(토큰 만료)는 슬랙 알림 제외. 연결 에러(statusCode null)만 알림
+        if op == 'validate-token' and status is not None:
+            return
         status_str = str(status) if status is not None else 'N/A'
         err = data.get('errorMessage', 'N/A')
         prefix = data.get('studentIdPrefix')
         message = (
             f"🔴 *[Rusaint 서비스 에러]*\n"
             f"--------------------------\n"
-            f"📌 Operation : {op}\n"
-            f"📌 Status Code : {status_str}\n"
-            f"📌 Error : {err}\n"
+            f"Operation : {op}\n"
+            f"Status Code : {status_str}\n"
+            f"Error : {err}\n"
         )
         if prefix:
-            message += f"👤학번 : {prefix}****\n"
-        message += f"⏰ 발생시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"
+            message += f"학번 : {prefix}****\n"
+        message += f"발생시간: {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}"
         self.notifier.send_error_notification(message)

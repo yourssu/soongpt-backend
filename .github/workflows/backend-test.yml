@@ -28,6 +28,7 @@ jobs:
               - 'settings.gradle.kts'
             rusaint:
               - 'rusaint_service/**'
+              - '.github/workflows/backend-test.yml'
 
   test-and-build:
     needs: changes
