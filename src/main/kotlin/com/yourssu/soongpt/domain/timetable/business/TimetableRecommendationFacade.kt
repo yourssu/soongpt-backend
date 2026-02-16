@@ -64,7 +64,7 @@ class TimetableRecommendationFacade(
             mandatoryChapelCandidate,
             maxCandidates = null
         )
-        val sampledCombinations = sampleTopCombinations(combinations)
+        val sampledCombinations = sampleTopCombinations(filterByMaxCourseCount(combinations))
         if (sampledCombinations.isNotEmpty()) {
             val successResponse = processSuccessCase(sampledCombinations, command, mandatoryChapelCandidate)
             return FinalTimetableRecommendationResponse.success(successResponse)
@@ -76,7 +76,7 @@ class TimetableRecommendationFacade(
         }
 
         val multiRemovalCombinations = findMultiConflictCombinations(commandWithoutChapel, mandatoryChapelCandidate)
-        val sampledMultiRemovalCombinations = sampleTopCombinations(multiRemovalCombinations)
+        val sampledMultiRemovalCombinations = sampleTopCombinations(filterByMaxCourseCount(multiRemovalCombinations))
         if (sampledMultiRemovalCombinations.isNotEmpty()) {
             val successResponse = processSuccessCase(
                 baselineCombinations = sampledMultiRemovalCombinations,
@@ -156,7 +156,10 @@ class TimetableRecommendationFacade(
                     val altCourse = queue.removeFirst()
                     val swappedCommand = fixedCommand.copyAndSwap(selectedCourse.courseCode, track, altCourse.code)
                     val swappedGroups = courseCandidateProvider.createCourseCandidateGroups(swappedCommand)
-                    val newCombinations = timetableCombinationGenerator.generate(swappedGroups, mandatoryChapelCandidate)
+                    val newCombinations = timetableCombinationGenerator.generate(
+                        swappedGroups,
+                        mandatoryChapelCandidate
+                    )
                     swappedCombinations.addAll(newCombinations)
                     swapAttempts++
                     picked++
@@ -301,9 +304,18 @@ class TimetableRecommendationFacade(
     private fun sampleTopCombinations(candidates: List<TimetableCandidate>): List<TimetableCandidate> {
         if (candidates.size <= 50) return candidates
         val top = candidates
-            .sortedByDescending { timetableRanker.totalScore(it) }
+            .sortedWith(
+                compareByDescending<TimetableCandidate> { it.codes.size }
+                    .thenByDescending { timetableRanker.totalScore(it) }
+            )
             .take(100)
         return top.shuffled().take(50)
+    }
+
+    private fun filterByMaxCourseCount(candidates: List<TimetableCandidate>): List<TimetableCandidate> {
+        if (candidates.isEmpty()) return emptyList()
+        val maxCount = candidates.maxOf { it.codes.size }
+        return candidates.filter { it.codes.size == maxCount }
     }
 
     private fun findMultiConflictCombinations(

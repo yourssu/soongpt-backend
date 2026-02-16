@@ -1,8 +1,11 @@
 package com.yourssu.soongpt.domain.timetable.implement
 
+import com.yourssu.soongpt.domain.timetable.implement.constant.TIMESLOT_SIZE
 import com.yourssu.soongpt.domain.timetable.implement.dto.CourseCandidate
 import com.yourssu.soongpt.domain.timetable.implement.dto.TimetableCandidate
 import org.springframework.stereotype.Component
+import java.util.*
+import kotlin.collections.ArrayList
 
 private const val MAXIMUM_TIMETABLE_CANDIDATES = 50
 
@@ -25,6 +28,7 @@ class TimetableCombinationGenerator {
 
         // 비어있는 과목 그룹(선택한 분반이 모두 기수강 과목인 경우 등)은 조합에서 제외
         val validCourseCandidateGroups = courseCandidateGroups.filter { it.isNotEmpty() }
+        if (validCourseCandidateGroups.isEmpty()) return emptyList()
 
         fun findCombinations(depth: Int) {
             if (maxCandidates != null && results.size >= maxCandidates) {
