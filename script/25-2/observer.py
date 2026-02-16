@@ -76,7 +76,8 @@ def process_line_with_handlers(line, handlers):
                 handler_func(line)
                 print(f"[Observer] Matched prefix -> Slack 전송 완료: {prefix[:50]}...")
             except Exception as e:
-                error_message = f"🚨ALERT ERROR - {config.environment.upper()} SERVER🚨\nlogging: {line}\nError: {str(e)}"
+                env = (config.environment or "").strip().upper() or "???"
+                error_message = f"서버: *{env}*\n🚨ALERT ERROR - SERVER🚨\nlogging: {line}\nError: {str(e)}"
                 print(error_message)
                 notifier.send_error_notification(error_message)
             break
