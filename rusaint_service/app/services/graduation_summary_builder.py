@@ -268,12 +268,10 @@ def build_graduation_summary(
             else:
                 elective_req = combined_req
                 elective_calc = combined_calc
-            major_required_elective_combined = True  # 전필 단독 없음 → 복합 응답, 같은값 둘 다 전송
         else:
             # 단독 필드 없음 → 복합 전체가 전선
             elective_req = combined_req
             elective_calc = combined_calc
-            major_required_elective_combined = True
 
         major_elective = CreditSummaryItem(
             required=elective_req,
@@ -281,8 +279,15 @@ def build_graduation_summary(
             satisfied=elective_calc >= elective_req,
         )
 
-        # 복합일 때 WAS/프론트 편의: majorRequired = majorElective = 같은값, warning으로 "전필·전선 복합"
-        if major_required_elective_combined and major_required is None:
+        # MAJOR_REQUIRED_ELECTIVE_COMBINED: 복합 행 이름이 "전필+전선" 형태이고 전필/전선 단독 행이 없을 때만 True.
+        # 예: 학부-전필+전선-문예창작 42 (전필·전선, 전필·전기·전선 등). "학부-전기" & "학부-전공" 별도 행은 False.
+        major_required_elective_combined = (
+            major_required is None
+            and "전필" in combined_name
+            and ("전선" in combined_name or "진선" in combined_name)
+        )
+        # 복합일 때 전필 단독 없음 → WAS/프론트 편의로 majorRequired = majorElective
+        if major_required is None:
             major_required = major_elective
 
     # 복합 항목 후처리: 복수전공
