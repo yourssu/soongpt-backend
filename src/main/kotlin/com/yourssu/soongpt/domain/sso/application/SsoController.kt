@@ -126,7 +126,7 @@ class SsoController(
             - 200 PROCESSING: 동기화 진행 중 (계속 폴링)
             - 200 COMPLETED: 동기화 완료 (studentInfo 포함)
             - 200 REQUIRES_REAUTH: sToken 만료, 재인증 필요 (reason: token_expired)
-            - 200 REQUIRES_USER_INPUT: 학생 정보 매칭 실패, 사용자 입력 필요 (reason: student_info_mapping_failed)
+            - 200 REQUIRES_USER_INPUT: 학적 정보 없음/매칭 실패, 사용자 입력 필요 (reason: student_info_mapping_failed 또는 student_info_mapping_failed: basic_info_unavailable)
             - 200 FAILED: 동기화 실패 (reason: server_unreachable | server_timeout | internal_error)
             - 401 ERROR: 쿠키/JWT 문제 (reason: invalid_session | session_expired)
 
@@ -135,6 +135,7 @@ class SsoController(
             - session_expired: 동기화 세션 TTL 만료 → 재로그인
             - token_expired: 유세인트 sToken 만료 → SSO 재인증
             - student_info_mapping_failed: 학년/학과/입학년도 매칭 실패 → 사용자 직접 입력
+            - student_info_mapping_failed: basic_info_unavailable: 유세인트에서 기본 학적 정보 조회 실패(데이터 없음 등) → 사용자 직접 입력
             - server_unreachable: 유세인트 서버 접속 불가 → 잠시 후 재시도
             - server_timeout: 유세인트 서버 응답 시간 초과 → 잠시 후 재시도
             - internal_error: 내부 서버 오류 → 관리자 문의

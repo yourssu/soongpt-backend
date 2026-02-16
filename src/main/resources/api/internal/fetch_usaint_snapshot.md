@@ -32,6 +32,10 @@
 
 warnings가 없으면 필드 자체가 생략됩니다. 있을 때만 `"warnings": [...]`가 응답에 포함됩니다.
 
+### academic 응답의 실패 처리 (기본 학적 정보 조회 실패)
+
+학적/성적 스냅샷 조회 실패(500) 시 WAS가 catch하여 academic을 null로 처리하고, **REQUIRES_USER_INPUT** 상태로 세션을 저장합니다. `usaintData`는 null이며, 클라이언트는 동기화 상태 조회 시 `status: REQUIRES_USER_INPUT`, `reason: student_info_mapping_failed: basic_info_unavailable` 를 받습니다. 401/502/504 인프라 에러는 그대로 throw됩니다.
+
 ### graduation 응답의 실패 처리
 
 졸업사정표 조회 실패(500) 시 WAS가 catch하여 null로 처리하고, `NO_GRADUATION_DATA` warning을 병합합니다.
