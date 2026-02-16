@@ -412,8 +412,30 @@ export const FilterTab = ({ onCourseClick, getCategoryLabel, onFilterResults }: 
                 })}
               </tbody>
             </table>
-          </div>
-        </>
+                <div className="course-row-cards">
+                  {filteredCourses?.map((course: Course, index: number) => {
+                return (
+                  <button
+                    key={`card-${course.id || course.code}`}
+                    type="button"
+                    className="course-row-card"
+                    onClick={() => onCourseClick(course, index)}
+                  >
+                    <div className="course-row-card__header">
+                      <span className="course-row-card__code">[{course.code}]</span>
+                      <span className="course-row-card__name">{course.name}</span>
+                    </div>
+                    <div className="course-row-card__meta">
+                        <span>
+                          이수구분: {filterMode === 'secondaryMajor' ? (course.subCategory || '-') : getCategoryLabel(course.category)}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+                </div>
+              </div>
+            </>
       )}
     </>
   );
