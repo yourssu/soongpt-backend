@@ -112,3 +112,10 @@ node_modules/
 .vite/
 
 cookies.txt
+
+# script/25-2 data files
+script/25-2/course/result/
+script/25-2/course/data.yml
+
+# script/26-1 dump data
+script/26-1/dump/
