@@ -2006,35 +2006,13 @@ h1 {
 
 @media (max-width: 390px) {
   .course-table {
-    display: none;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
   }
 
   .course-row-cards {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    scroll-padding: 0 10px;
-    gap: 12px;
-    padding: 2px 2px 10px;
-    margin-top: 10px;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-
-  .course-row-cards::-webkit-scrollbar {
     display: none;
-  }
-
-  .course-row-card {
-    min-width: min(85vw, 340px);
-    max-width: min(85vw, 340px);
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
   }
 
   .search-form,
