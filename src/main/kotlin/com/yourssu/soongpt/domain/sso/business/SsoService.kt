@@ -208,7 +208,7 @@ class SsoService(
         pseudonym: String,
         studentId: String,
     ): RusaintUsaintDataResponse {
-        val yearFromPrefix = studentId.take(4).toIntOrNull()?.takeIf { it in 2015..2030 } ?: 0
+        val yearFromPrefix = studentId.take(4).toIntOrNull()?.takeIf { it in 2015..2026 } ?: 0
         return RusaintUsaintDataResponse(
             pseudonym = pseudonym,
             takenCourses = emptyList(),
