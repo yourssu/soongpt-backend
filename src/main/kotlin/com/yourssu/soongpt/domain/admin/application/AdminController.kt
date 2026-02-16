@@ -43,7 +43,9 @@ class AdminController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
         @RequestParam(defaultValue = "ASC") sort: String,
+        @RequestHeader("X-Admin-Password", required = false) password: String?,
     ): ResponseEntity<Response<SearchCoursesResponse>> {
+        requireAdminAuth(password)
         val query = SearchCoursesQuery(
             query = q,
             page = page,
@@ -65,8 +67,10 @@ class AdminController(
     )
     @GetMapping("/{code}/target")
     fun getCourseTarget(
-        @PathVariable code: Long
+        @PathVariable code: Long,
+        @RequestHeader("X-Admin-Password", required = false) password: String?,
     ): ResponseEntity<Response<CourseTargetResponse>> {
+        requireAdminAuth(password)
         val response = adminCourseService.getTargetsByCode(code)
         return ResponseEntity.ok().body(Response(result = response))
     }
