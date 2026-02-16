@@ -1246,6 +1246,10 @@ h1 {
     padding: 0 10px;
   }
 
+  .page-jump {
+    display: none !important;
+  }
+
   .page-jump-label {
     display: none;
   }
