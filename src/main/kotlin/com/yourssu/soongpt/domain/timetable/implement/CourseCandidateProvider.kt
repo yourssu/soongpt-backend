@@ -20,6 +20,7 @@ class CourseCandidateProvider(
     companion object {
         private const val MAX_DIVISIONS_PER_COURSE = 4
     }
+
     fun createCourseCandidateGroups(
         command: PrimaryTimetableCommand,
         useAllDivisions: Boolean = false
@@ -110,6 +111,7 @@ private fun PrimaryTimetableCommand.getAllSelectedCourseCommands(): List<Triple<
             this.addedCourses.map { Triple(it, Category.MAJOR_ELECTIVE, true) } +
             this.majorRequiredCourses.map { Triple(it, Category.MAJOR_REQUIRED, false) } +
             this.generalRequiredCourses.map { Triple(it, Category.GENERAL_REQUIRED, false) } +
+            this.majorBasicCourses.map { Triple(it, Category.MAJOR_BASIC, false) } +
             this.majorElectiveCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
             this.doubleMajorCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
             this.minorCourses.map { Triple(it, Category.MAJOR_ELECTIVE, false) } +
