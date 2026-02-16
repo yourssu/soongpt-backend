@@ -26,6 +26,7 @@ jobs:
               - 'src/**'
               - 'build.gradle.kts'
               - 'settings.gradle.kts'
+              - '.github/workflows/backend-test.yml'
             rusaint:
               - 'rusaint_service/**'
               - '.github/workflows/backend-test.yml'
