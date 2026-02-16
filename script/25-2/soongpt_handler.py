@@ -23,6 +23,13 @@ class SoongptHandler:
             self.RUSAINT_SERVICE_ERROR_PREFIX: self.rusaint_service_error,
         }
 
+    def _env_header(self):
+        """dev/prod 구분용 첫 줄. ENVIRONMENT=dev|prod 기준으로 명확히 표시."""
+        env = (self.config.environment or "").strip().upper()
+        if env in ("DEV", "PROD"):
+            return f"서버: *{env}*\n"
+        return f"서버: *{env or '???'}*\n"
+
     def create_contact(self, line):
         id_part = line[line.find('&') + 1:].strip()
         message = f"""🚀 숭피티 사전 예약 등록 알림 🚀
@@ -87,8 +94,9 @@ class SoongptHandler:
         if grade_num == 1 or grade_num is None:
             return
 
+        header = self._env_header()
         message = (
-            f"🟠 *졸업사정표 파싱 실패*\n"
+            f"{header}🟠 *졸업사정표 파싱 실패*\n"
             f"--------------------------\n"
             f"학과 : {department}\n"
             f"학년 : {grade_raw}학년\n"
@@ -115,12 +123,13 @@ class SoongptHandler:
         try:
             data = json.loads(data_part)
         except json.JSONDecodeError:
-            self.notifier.send_error_notification(f"🟡 *[학생 정보 매칭 실패]*\n파싱 오류: {data_part[:200]}")
+            self.notifier.send_error_notification(f"{self._env_header()}🟡 *[학생 정보 매칭 실패]*\n파싱 오류: {data_part[:200]}")
             return
         prefix = data.get('studentIdPrefix', 'N/A')
         reason = data.get('failureReason', 'N/A')
+        header = self._env_header()
         message = (
-            f"🟡 *[학생 정보 매칭 실패]* 사용자가 직접 입력해야 함\n"
+            f"{header}🟡 *[학생 정보 매칭 실패]* 사용자가 직접 입력해야 함\n"
             f"--------------------------\n"
             f"학번 : {prefix}****\n"
             f"실패 사유 : {reason}\n"
@@ -134,7 +143,7 @@ class SoongptHandler:
         try:
             data = json.loads(data_part)
         except json.JSONDecodeError:
-            self.notifier.send_error_notification(f"🔴 *[Rusaint 서비스 에러]*\n파싱 오류: {data_part[:200]}")
+            self.notifier.send_error_notification(f"{self._env_header()}🔴 *[Rusaint 서비스 에러]*\n파싱 오류: {data_part[:200]}")
             return
         op = data.get('operation', 'N/A')
         status = data.get('statusCode')
@@ -144,8 +153,9 @@ class SoongptHandler:
         status_str = str(status) if status is not None else 'N/A'
         err = data.get('errorMessage', 'N/A')
         prefix = data.get('studentIdPrefix')
+        header = self._env_header()
         message = (
-            f"🔴 *[Rusaint 서비스 에러]*\n"
+            f"{header}🔴 *[Rusaint 서비스 에러]*\n"
             f"--------------------------\n"
             f"Operation : {op}\n"
             f"Status Code : {status_str}\n"
