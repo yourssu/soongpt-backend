@@ -34,8 +34,8 @@ Cookie: soongpt_auth={JWT}
 {
   "timestamp": "...",
   "result": {
-    "status": "PROCESSING | COMPLETED | REQUIRES_REAUTH | FAILED",
-    "reason": "string (에러 시에만)",
+    "status": "PROCESSING | COMPLETED | REQUIRES_REAUTH | REQUIRES_USER_INPUT | FAILED",
+    "reason": "string (에러/실패 시에만)",
     "studentInfo": { ... },  // COMPLETED 시에만
     "warnings": ["..."]      // COMPLETED 시에만, 빈 데이터 경고 (nullable)
   }
@@ -142,16 +142,43 @@ Cookie: soongpt_auth={JWT}
 }
 ```
 
+### 200 OK — REQUIRES_USER_INPUT (학적 정보 없음/매칭 실패, 사용자 입력 필요)
+
+유세인트에서 기본 학적 정보를 조회하지 못했거나, 학년/학과/입학년도 등이 DB와 매칭되지 않은 경우. 프론트: 학적 정보 직접 입력 화면으로 유도한다. `studentInfo`는 null이다.
+
+| reason | 의미 |
+|--------|------|
+| `student_info_mapping_failed` | 학년/학과/입학년도 매칭 실패 (데이터는 왔으나 DB 매칭 실패) |
+| `student_info_mapping_failed: basic_info_unavailable` | 유세인트에서 기본 학적 정보 조회 실패(데이터 없음·파싱 실패 등) |
+
+```json
+{
+  "timestamp": "2025-05-18 15:14:00",
+  "result": {
+    "status": "REQUIRES_USER_INPUT",
+    "reason": "student_info_mapping_failed: basic_info_unavailable",
+    "studentInfo": null,
+    "warnings": null
+  }
+}
+```
+
 ### 200 OK — FAILED (동기화 실패)
 
 프론트: 에러 안내 및 재시도 유도.
+
+| reason | 의미 |
+|--------|------|
+| `server_unreachable` | 유세인트 서버 접속 불가 |
+| `server_timeout` | 유세인트 서버 응답 시간 초과 |
+| `internal_error` | 내부 서버 오류 |
 
 ```json
 {
   "timestamp": "2025-05-18 15:14:00",
   "result": {
     "status": "FAILED",
-    "reason": "sync_failed",
+    "reason": "server_timeout",
     "studentInfo": null
   }
 }

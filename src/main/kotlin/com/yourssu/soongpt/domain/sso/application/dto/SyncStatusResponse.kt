@@ -12,12 +12,13 @@ data class SyncStatusResponse(
             - session_expired: 동기화 세션 만료 (재로그인 필요)
             - token_expired: sToken 만료 (재인증 필요, REQUIRES_REAUTH)
             - student_info_mapping_failed: 학년/학과/입학년도 매칭 실패 (사용자 입력 필요, REQUIRES_USER_INPUT)
+            - student_info_mapping_failed: basic_info_unavailable: 유세인트 기본 학적 정보 조회 실패(데이터 없음 등) → 사용자 직접 입력 (REQUIRES_USER_INPUT)
             - server_unreachable: 유세인트 서버 접속 불가
             - server_timeout: 유세인트 서버 응답 시간 초과
             - internal_error: 내부 서버 오류""",
         example = "token_expired",
         nullable = true,
-        allowableValues = ["invalid_session", "session_expired", "token_expired", "student_info_mapping_failed", "server_unreachable", "server_timeout", "internal_error"],
+        allowableValues = ["invalid_session", "session_expired", "token_expired", "student_info_mapping_failed", "student_info_mapping_failed: basic_info_unavailable", "server_unreachable", "server_timeout", "internal_error"],
     )
     val reason: String? = null,
     @Schema(description = "학적정보 (COMPLETED 시에만 포함)", nullable = true)
