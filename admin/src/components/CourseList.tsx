@@ -16,7 +16,6 @@ export const CourseList = () => {
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(20);
-  const [pageInput, setPageInput] = useState('');
   const [selectedCourse, setSelectedCourse] = useState<CourseTargetResponse | null>(null);
   const [targetLoading, setTargetLoading] = useState(false);
   const [showPolicyInfo, setShowPolicyInfo] = useState(false);
@@ -29,6 +28,20 @@ export const CourseList = () => {
   const [_isAuthenticated, setIsAuthenticated] = useState(false);
   const [canSkipPassword, setCanSkipPassword] = useState(false);
   const [showResetButton, setShowResetButton] = useState(false);
+  const [isCompactPagination, setIsCompactPagination] = useState(false);
+  const [pageInput, setPageInput] = useState('');
+
+  // Check mobile pagination density
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 390px)');
+    const handleMediaChange = () => setIsCompactPagination(media.matches);
+    handleMediaChange();
+    media.addEventListener('change', handleMediaChange);
+
+    return () => {
+      media.removeEventListener('change', handleMediaChange);
+    };
+  }, []);
 
   // Check if password is set on mount
   useEffect(() => {
@@ -96,19 +109,6 @@ export const CourseList = () => {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    setPageInput('');
-  };
-
-  const handlePageInputSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!courses) return;
-
-    const page = parseInt(pageInput, 10);
-    if (!isNaN(page) && page >= 1 && page <= courses.totalPages) {
-      setCurrentPage(page - 1);
-    } else {
-      alert(`1부터 ${courses.totalPages}까지의 숫자를 입력해주세요.`);
-    }
   };
 
   const handlePageJump = (offset: number) => {
@@ -119,50 +119,98 @@ export const CourseList = () => {
     }
   };
 
+  const handlePageInputSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!courses) return;
+
+    const targetPage = Number(pageInput.trim());
+    if (!Number.isFinite(targetPage) || !Number.isInteger(targetPage) || targetPage < 1 || targetPage > courses.totalPages) {
+      return;
+    }
+
+    handlePageChange(targetPage - 1);
+    setPageInput('');
+  };
+
   const renderPageNumbers = () => {
     if (!courses) return null;
 
     const totalPages = courses.totalPages;
     const current = currentPage;
+    const isCompact = isCompactPagination && totalPages > 9;
     const pageNumbers: (number | string)[] = [];
-    const minDisplay = 5; // 최소 5개 표시
 
-    if (totalPages <= 7) {
-      // 전체 페이지가 7개 이하면 모두 표시
-      for (let i = 0; i < totalPages; i++) {
-        pageNumbers.push(i);
+    const addNumber = (num: number) => {
+      if (num >= 0 && num < totalPages && !pageNumbers.includes(num)) {
+        pageNumbers.push(num);
       }
-    } else {
-      // 첫 페이지는 항상 표시
-      pageNumbers.push(0);
+    };
 
-      // 현재 페이지 기준으로 최소 5개 표시
-      let start = Math.max(1, current - 2);
-      let end = Math.min(totalPages - 2, current + 2);
-
-      // 최소 5개를 보장
-      if (end - start + 1 < minDisplay) {
-        if (start === 1) {
-          end = Math.min(totalPages - 2, start + minDisplay - 1);
-        } else if (end === totalPages - 2) {
-          start = Math.max(1, end - minDisplay + 1);
-        }
-      }
-
-      if (start > 1) {
+    const addEllipsis = () => {
+      if (pageNumbers[pageNumbers.length - 1] !== '...') {
         pageNumbers.push('...');
       }
+    };
 
+    if (isCompact) {
+      const minDisplay = 3;
+      addNumber(0);
+
+      if (current - minDisplay > 1) {
+        addEllipsis();
+      }
+
+      const start = Math.max(1, current - 1);
+      const end = Math.min(totalPages - 2, current + 1);
       for (let i = start; i <= end; i++) {
-        pageNumbers.push(i);
+        addNumber(i);
       }
 
       if (end < totalPages - 2) {
-        pageNumbers.push('...');
+        addEllipsis();
       }
 
-      // 마지막 페이지는 항상 표시
-      pageNumbers.push(totalPages - 1);
+      addNumber(totalPages - 1);
+    } else {
+      const minDisplay = 5; // 최소 5개 표시
+
+      if (totalPages <= 7) {
+        // 전체 페이지가 7개 이하면 모두 표시
+        for (let i = 0; i < totalPages; i++) {
+          pageNumbers.push(i);
+        }
+      } else {
+        // 첫 페이지는 항상 표시
+        pageNumbers.push(0);
+
+        // 현재 페이지 기준으로 최소 5개 표시
+        let start = Math.max(1, current - 2);
+        let end = Math.min(totalPages - 2, current + 2);
+
+        // 최소 5개를 보장
+        if (end - start + 1 < minDisplay) {
+          if (start === 1) {
+            end = Math.min(totalPages - 2, start + minDisplay - 1);
+          } else if (end === totalPages - 2) {
+            start = Math.max(1, end - minDisplay + 1);
+          }
+        }
+
+        if (start > 1) {
+          pageNumbers.push('...');
+        }
+
+        for (let i = start; i <= end; i++) {
+          pageNumbers.push(i);
+        }
+
+        if (end < totalPages - 2) {
+          pageNumbers.push('...');
+        }
+
+        // 마지막 페이지는 항상 표시
+        pageNumbers.push(totalPages - 1);
+      }
     }
 
     return pageNumbers.map((pageNum, index) => {
@@ -174,16 +222,16 @@ export const CourseList = () => {
         );
       }
 
-      const page = pageNum as number;
-      return (
-        <button
-          key={page}
-          onClick={() => handlePageChange(page)}
-          className={`pagination-number ${current === page ? 'active' : ''}`}
-        >
-          {page + 1}
-        </button>
-      );
+        const page = pageNum as number;
+        return (
+          <button
+            key={page}
+            onClick={() => handlePageChange(page)}
+            className={`pagination-number ${current === page ? 'active' : ''}${isCompactPagination ? ' pagination-number-compact' : ''}`}
+          >
+            {page + 1}
+          </button>
+        );
     });
   };
 
@@ -875,6 +923,27 @@ export const CourseList = () => {
                     })}
                   </tbody>
                 </table>
+
+                <div className="course-row-cards">
+                  {courses.content?.map((course: Course, index: number) => {
+                    return (
+                      <button
+                        key={`card-${course.id || course.code}`}
+                        type="button"
+                        className="course-row-card"
+                        onClick={() => handleCourseClick(course, index)}
+                      >
+                        <div className="course-row-card__header">
+                          <span className="course-row-card__code">[{course.code}]</span>
+                          <span className="course-row-card__name">{course.name}</span>
+                        </div>
+                        <div className="course-row-card__meta">
+                          <span>이수구분: {getCategoryLabel(course.category)}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               <div className="pagination-wrapper">
@@ -882,10 +951,9 @@ export const CourseList = () => {
                   <button
                     onClick={() => handlePageJump(-10)}
                     disabled={currentPage < 10}
-                    className="pagination-button"
-                    title="10페이지 이전"
+                    className="pagination-button pagination-jump"
                   >
-                    ≪
+                    <span className="pagination-jump-icon" aria-hidden="true">⟪</span>
                   </button>
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
@@ -909,26 +977,31 @@ export const CourseList = () => {
                   <button
                     onClick={() => handlePageJump(10)}
                     disabled={currentPage >= courses.totalPages - 10}
-                    className="pagination-button"
-                    title="10페이지 다음"
+                    className="pagination-button pagination-jump"
                   >
-                    ≫
+                    <span className="pagination-jump-icon" aria-hidden="true">⟫</span>
                   </button>
                 </div>
 
-                <form onSubmit={handlePageInputSubmit} className="page-jump">
-                  <span className="page-jump-label">페이지 이동:</span>
+                <form className="page-jump" onSubmit={handlePageInputSubmit}>
+                  <span className="page-jump-label">페이지 이동</span>
                   <input
                     type="number"
-                    min="1"
-                    max={courses.totalPages}
-                    placeholder={String(currentPage + 1)}
-                    value={pageInput || currentPage + 1}
-                    onChange={(e) => setPageInput(e.target.value)}
                     className="page-input"
+                    min={1}
+                    max={courses.totalPages}
+                    value={pageInput}
+                    onChange={(e) => setPageInput(e.target.value)}
+                    aria-label="이동할 페이지 번호 입력"
                   />
-                  <button type="submit" className="page-jump-button">이동</button>
+                  <button type="submit" className="page-jump-button">
+                    이동
+                  </button>
                 </form>
+
+                <div className="pagination-info">
+                  {currentPage + 1} / {courses.totalPages} 페이지
+                </div>
               </div>
             </>
           )}
@@ -954,6 +1027,14 @@ export const CourseList = () => {
                 ←
               </button>
               <div className="modal-title-container">
+                <button
+                  type="button"
+                  className="mobile-close-button"
+                  onClick={closeModal}
+                  aria-label="수강 대상 정보 닫기"
+                >
+                  ×
+                </button>
                 <h2>{editMode ? '과목 정보 수정' : '수강 대상 정보'}</h2>
                 {activeTab === 'filter' && filteredCourses && currentCourseIndex >= 0 && (
                   <span className="course-counter">
@@ -1307,7 +1388,7 @@ export const CourseList = () => {
                         </div>
                       )
                     ) : (
-                      <table className="target-table">
+                      <table className={`target-table${editMode ? ' editing' : ''}`}>
                         <thead>
                           <tr>
                             {editMode && <th>ID</th>}
