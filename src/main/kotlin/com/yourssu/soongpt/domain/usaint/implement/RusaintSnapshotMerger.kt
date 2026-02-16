@@ -1,6 +1,7 @@
 package com.yourssu.soongpt.domain.usaint.implement
 
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintAcademicResponseDto
+import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintBasicInfoDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintGraduationResponseDto
 import com.yourssu.soongpt.domain.usaint.implement.dto.RusaintUsaintDataResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -26,16 +27,20 @@ class RusaintSnapshotMerger(
 
     /**
      * 학생 정보 검증 포함하여 병합.
-     * 검증 실패 시 null 반환하고 validationError에 사유 포함.
+     * 검증 실패 시 data는 반환하고 validationError에 사유 포함 (실패한 것만 null이 아닌 partial 데이터 유지).
+     * 입학년도(year)가 비어있거나 유효 범위 밖이면 학번 앞 4자리로 채운 basicInfo로 검증·병합.
      */
     fun mergeWithValidation(
         academic: RusaintAcademicResponseDto,
         graduation: RusaintGraduationResponseDto?,
         studentIdPrefix: String,
     ): MergeResult {
-        // 학생 정보 검증
+        // 입학년도 비어있거나 유효 범위 밖이면 학번 앞 4자리(입학년도)로 채움 (26학번 등 새내기)
+        val basicInfoToUse = fillYearFromStudentIdPrefixIfNeeded(academic.basicInfo, studentIdPrefix)
+
+        // 학생 정보 검증 (채워진 basicInfo 사용)
         val validationResult = studentInfoValidator.validate(
-            basicInfo = academic.basicInfo,
+            basicInfo = basicInfoToUse,
             studentIdPrefix = studentIdPrefix,
             rawDataForLogging = mapOf(
                 "academic_pseudonym" to academic.pseudonym,
@@ -52,7 +57,8 @@ class RusaintSnapshotMerger(
             )
         )
 
-        val data = merge(academic, graduation)
+        val academicWithFilledBasicInfo = academic.copy(basicInfo = basicInfoToUse)
+        val data = merge(academicWithFilledBasicInfo, graduation)
 
         if (!validationResult.isValid) {
             logger.error { "학생 정보 검증 실패: $studentIdPrefix****, 사유: ${validationResult.failureReason}" }
@@ -63,6 +69,19 @@ class RusaintSnapshotMerger(
         }
 
         return MergeResult(data = data)
+    }
+
+    /**
+     * 입학년도가 비어있거나 유효 범위(2015..2030) 밖이면 학번 앞 4자리를 입학년도로 사용.
+     * 26학번 등 새내기에서 유세인트가 year를 비워서 보내는 경우 대비.
+     */
+    private fun fillYearFromStudentIdPrefixIfNeeded(
+        basicInfo: RusaintBasicInfoDto,
+        studentIdPrefix: String,
+    ): RusaintBasicInfoDto {
+        if (basicInfo.year in 2015..2030) return basicInfo
+        val yearFromPrefix = studentIdPrefix.toIntOrNull()?.takeIf { it in 2015..2030 } ?: return basicInfo
+        return basicInfo.copy(year = yearFromPrefix)
     }
 
     fun merge(

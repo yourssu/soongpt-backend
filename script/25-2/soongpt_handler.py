@@ -138,7 +138,7 @@ class SoongptHandler:
         self.notifier.send_error_notification(message)
 
     def rusaint_service_error(self, line):
-        """Rusaint 서비스 에러/연결 실패 알림 → SLACK_ERROR_CHANNEL (validate-token 401 만료는 제외, 연결 에러만)"""
+        """Rusaint 서비스 에러/연결 실패 알림 → SLACK_ERROR_CHANNEL (validate-token 401 만료 제외, 26학번(2026) 제외)"""
         data_part = line[line.find('&') + 1:].strip()
         try:
             data = json.loads(data_part)
@@ -147,12 +147,15 @@ class SoongptHandler:
             return
         op = data.get('operation', 'N/A')
         status = data.get('statusCode')
+        prefix = data.get('studentIdPrefix')
         # validate-token 401(토큰 만료)만 슬랙 알림 제외. 500/502/504 등 실제 장애는 알림 유지
         if op == 'validate-token' and status == 401:
             return
+        # 26학번(2026 입학): 로깅은 WAS에서 그대로 하고, 슬랙 알림만 제외 (새내기 academic 파싱 실패 다수 예상)
+        if prefix == '2026':
+            return
         status_str = str(status) if status is not None else 'N/A'
         err = data.get('errorMessage', 'N/A')
-        prefix = data.get('studentIdPrefix')
         header = self._env_header()
         message = (
             f"{header}🔴 *[Rusaint 서비스 에러]*\n"
