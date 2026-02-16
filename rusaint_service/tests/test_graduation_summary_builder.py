@@ -99,7 +99,7 @@ class TestCase3_전기_전선_전필없음:
         assert summary.majorFoundation is not None
         assert summary.majorFoundation.required == 15
 
-        # 복합: majorRequired = majorElective 동일값, warning 플래그
+        # 전공 = 전기+전선 해석 → 전선 역산. WAS 편의로 majorRequired = majorElective
         assert summary.majorRequired is not None
         assert summary.majorRequired.required == 27
         assert summary.majorRequired.completed == 15
@@ -107,7 +107,8 @@ class TestCase3_전기_전선_전필없음:
         assert summary.majorElective.required == 27  # 42 - 15
         assert summary.majorElective.completed == 15  # 30 - 15
         assert summary.majorElective.satisfied is False  # 15 < 27
-        assert summary.majorRequiredElectiveCombined is True
+        # 복합 행이 "전필+전선" 형태가 아님(학부-전공만 있음) → False
+        assert summary.majorRequiredElectiveCombined is False
 
 
 # ======================================================================
@@ -233,7 +234,8 @@ class TestCase5_1_전공_한줄만:
         assert summary.majorElective.required == 42
         assert summary.majorElective.completed == 30
         assert summary.majorElective.satisfied is False
-        assert summary.majorRequiredElectiveCombined is True
+        # "전공" 한 줄만 있음 → 복합 행 이름에 전필/전선 없음 → False
+        assert summary.majorRequiredElectiveCombined is False
 
 
 # ======================================================================
@@ -251,7 +253,7 @@ class Test_없는것도_조건_전공_해석:
         assert summary.majorRequired.required == 42
         assert summary.majorElective is not None
         assert summary.majorElective.required == 42
-        assert summary.majorRequiredElectiveCombined is True
+        assert summary.majorRequiredElectiveCombined is False
 
     def test_전공_전기만_있으면_전공은_전기플러스전선(self):
         """전필 없음, 전기 있음 → '전공' = 전기+전선, 전기 빼서 전선."""
@@ -263,11 +265,11 @@ class Test_없는것도_조건_전공_해석:
         assert summary.majorFoundation is not None
         assert summary.majorFoundation.required == 15
         assert summary.majorRequired is not None
-        assert summary.majorRequired.required == 27  # 42 - 15
+        assert summary.majorRequired.required == 27
         assert summary.majorElective is not None
         assert summary.majorElective.required == 27
         assert summary.majorElective.completed == 15  # 30 - 15
-        assert summary.majorRequiredElectiveCombined is True
+        assert summary.majorRequiredElectiveCombined is False
 
     def test_전공_전필만_있으면_전공은_전필플러스전선(self):
         """전기 없음, 전필 있음 → '전공' = 전필+전선, 전필 빼서 전선."""
