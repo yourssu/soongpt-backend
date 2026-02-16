@@ -5,6 +5,7 @@
 | Case                    | required | completed | satisfied |         message         |     courses     | FE 동작                       |
 | ----------------------- | :------: | :-------: | :-------: | :---------------------: | :--------------: | ----------------------------- |
 | **1** 해당없음    |  `0`  |   `0`   | `true` |        있음/없음        |      `[]`      | `required==0` → 숨김       |
+| **1'** AI소프트 전기/전필/전선 |  `0`  |   `0`   | `false` |     있음/없음/메시지     | `[]`/`[...]` | progress 0/0 표시, 과목/메시지는 기존 로직 |
 | **2** 안열림      |  `>0`  |     N     | `false` |    `"...없습니다"`    |      `[]`      | 메시지+progress bar           |
 | **3** 다들음      |  `>0`  |     N     | `true` | `"...이수하셨습니다"` |      `[]`      | 메시지+progress bar           |
 | **4** 재수강/교직 |  `-1`  |  `-1`  | `false` |     `null`/메시지     | `[]`/`[...]` | progress bar 미표시           |
@@ -22,6 +23,12 @@
 - ex) 24학번 경영학부는 전공기초 자체가 없음, 복수전공/부전공 미등록자
 - `progress = { required: 0, completed: 0, satisfied: true }`
 - FE: `required == 0` → 해당 카테고리 숨김
+
+### Case 1': AI소프트웨어학부 — 전기/전필/전선 progress 고정
+
+- 사용자 학과가 **AI소프트웨어학부**인 경우, **전공기초(MAJOR_BASIC)·전공필수(MAJOR_REQUIRED)·전공선택(MAJOR_ELECTIVE)** 에 한해 progress를 항상 `{ required: 0, completed: 0, satisfied: false }` 로 내려준다.
+- 교양필수·재수강·복전·부전공·교직 등 다른 이수구분은 기존 규칙 그대로.
+- FE: `required === 0 && satisfied === false` 인 전기/전필/전선일 때 0/0 bar 또는 안내 문구 표시, 과목/메시지는 기존 분기 유지.
 
 ### Case 2: 안열림
 

@@ -100,10 +100,12 @@ Response<CourseRecommendationsResponse>
 | required | completed | satisfied | 의미 |
 |:---:|:---:|:---:|---|
 | `0` | `0` | `true` | 해당 없는 이수구분 (FE에서 숨김) |
+| `0` | `0` | `false` | **AI소프트웨어학부 한정** 전기/전필/전선 — 이수현황 미제공, 항상 이 값으로 내려감 |
 | `-1` | `-1` | `false` | 재수강/교직 — progress bar 미표시, 과목은 있을 수 있음 |
 | `-2` | `-2` | `false` | 졸업사정표 없음 — 제공 불가, bar 미표시 |
 
 **프론트 해석 우선순위:** `-2`(제공 불가) → `-1`(bar 미표시) → `0,0,true`(해당 없음) → 그 외(정상 bar 표시).
+**학과 예외:** 사용자 학과가 **AI소프트웨어학부**일 때는 전공기초·전공필수·전공선택의 progress만 위 표의 `0, 0, false`로 고정됩니다. 자세한 내용은 [progress 프론트 가이드](../requirements/progress_프론트_가이드.md) 참고.
 
 **progress 공통 규약:** `progress`는 이 API뿐 아니라 `GET /api/timetables/{id}/available-general-electives`, `GET /api/timetables/{id}/available-chapels`에서도 **항상 non-null**로 사용됩니다. API마다 필드 구조는 다르나 의미는 "이수현황"으로 동일합니다. → [progress 프론트 가이드](../requirements/progress_프론트_가이드.md)
 
