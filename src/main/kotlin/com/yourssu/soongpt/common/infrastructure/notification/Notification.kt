@@ -55,7 +55,7 @@ object Notification {
     /**
      * Rusaint 서비스 에러/연결 실패 알림 (기존 방식: 로그 출력 → observer.py가 감지 후 Slack 전송).
      * 26학번(studentIdPrefix=2026)은 observer에서 슬랙 알림만 제외, 로깅은 그대로.
-     * admissionYear: 학번 앞 4자리가 2015..2030이면 입학년도로 포함 (비어있을 때 대비).
+     * admissionYear: 학번 앞 4자리가 2015..2026이면 입학년도로 포함 (StudentInfoValidator와 동일 범위).
      */
     fun notifyRusaintServiceError(
         operation: String,
@@ -63,7 +63,7 @@ object Notification {
         errorMessage: String,
         studentIdPrefix: String? = null,
     ) {
-        val admissionYear = studentIdPrefix?.take(4)?.toIntOrNull()?.takeIf { it in 2015..2030 }
+        val admissionYear = studentIdPrefix?.take(4)?.toIntOrNull()?.takeIf { it in 2015..2026 }
         val map = mutableMapOf<String, Any?>(
             "operation" to operation,
             "statusCode" to statusCode,
