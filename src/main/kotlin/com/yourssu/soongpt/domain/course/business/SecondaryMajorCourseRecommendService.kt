@@ -34,7 +34,8 @@ class SecondaryMajorCourseRecommendService(
         val departmentName = ctx.flags.doubleMajorDepartment
             ?: return notRegisteredResponse("DOUBLE_MAJOR_REQUIRED", "복수전공을 등록하지 않았습니다.")
         val progress = progressOrUnavailable(ctx.graduationSummary?.doubleMajorRequired)
-        if (progress.satisfied) {
+        // required > 0 인 경우에만 "다 들음"으로 확정. (0,0,true)는 과목 쿼리 수행
+        if (progress.satisfied && progress.required > 0) {
             return satisfiedResponse("DOUBLE_MAJOR_REQUIRED", progress, "복수전공필수 학점을 이미 모두 이수하셨습니다.")
         }
         val department = departmentReader.getByName(departmentName)
@@ -70,7 +71,8 @@ class SecondaryMajorCourseRecommendService(
         val departmentName = ctx.flags.doubleMajorDepartment
             ?: return notRegisteredResponse("DOUBLE_MAJOR_ELECTIVE", "복수전공을 등록하지 않았습니다.")
         val progress = progressOrUnavailable(ctx.graduationSummary?.doubleMajorElective)
-        if (progress.satisfied) {
+        // required > 0 인 경우에만 "다 들음"으로 확정. (0,0,true)는 과목 쿼리 수행
+        if (progress.satisfied && progress.required > 0) {
             return satisfiedResponse("DOUBLE_MAJOR_ELECTIVE", progress, "복수전공선택 학점을 이미 모두 이수하셨습니다.")
         }
         val department = departmentReader.getByName(departmentName)
@@ -106,7 +108,8 @@ class SecondaryMajorCourseRecommendService(
         val departmentName = ctx.flags.minorDepartment
             ?: return notRegisteredResponse("MINOR", "부전공을 등록하지 않았습니다.")
         val progress = progressOrUnavailable(ctx.graduationSummary?.minor)
-        if (progress.satisfied) {
+        // required > 0 인 경우에만 "다 들음"으로 확정. (0,0,true)는 과목 쿼리 수행
+        if (progress.satisfied && progress.required > 0) {
             return satisfiedResponse("MINOR", progress, "부전공 학점을 이미 모두 이수하셨습니다.")
         }
         val department = departmentReader.getByName(departmentName)

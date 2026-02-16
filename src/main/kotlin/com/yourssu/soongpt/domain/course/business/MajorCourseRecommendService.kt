@@ -43,7 +43,8 @@ class MajorCourseRecommendService(
             "Category must be MAJOR_BASIC or MAJOR_REQUIRED"
         }
 
-        if (progress.satisfied) {
+        // required > 0 인 경우에만 "다 들음"으로 확정. (0,0,true)는 "해당 없음" 또는 파싱 오류일 수 있어 과목 쿼리 수행
+        if (progress.satisfied && progress.required > 0) {
             return CategoryRecommendResult.satisfied(category, progress)
         }
 
@@ -86,7 +87,8 @@ class MajorCourseRecommendService(
     ): CategoryRecommendResult {
         val category = Category.MAJOR_ELECTIVE
 
-        if (progress.satisfied) {
+        // required > 0 인 경우에만 "다 들음"으로 확정. (0,0,true)는 과목 쿼리 수행
+        if (progress.satisfied && progress.required > 0) {
             return CategoryRecommendResult.satisfied(category, progress)
         }
 
@@ -129,7 +131,8 @@ class MajorCourseRecommendService(
     ): CategoryRecommendResponse {
         val category = Category.MAJOR_ELECTIVE
 
-        if (progress.satisfied) {
+        // required > 0 인 경우에만 "다 들음"으로 확정. (0,0,true)는 과목 쿼리 수행
+        if (progress.satisfied && progress.required > 0) {
             return CategoryRecommendResponse(
                 category = category.name,
                 progress = progress,
