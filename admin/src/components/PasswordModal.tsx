@@ -4,10 +4,10 @@ import './PasswordModal.css';
 interface PasswordModalProps {
   isOpen: boolean;
   onSubmit: (password: string) => void;
-  onSkip?: () => void;
+  message?: string;
 }
 
-export const PasswordModal = ({ isOpen, onSubmit, onSkip }: PasswordModalProps) => {
+export const PasswordModal = ({ isOpen, onSubmit, message }: PasswordModalProps) => {
   const [password, setPassword] = useState('');
 
   if (!isOpen) return null;
@@ -25,7 +25,8 @@ export const PasswordModal = ({ isOpen, onSubmit, onSkip }: PasswordModalProps) 
       <div className="password-modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>관리자 인증</h2>
         <p className="password-modal-description">
-          과목 수정/삭제/추가 기능을 사용하려면 관리자 비밀번호를 입력하세요.
+          {message ||
+            '관리자 전용 페이지입니다. 조회/수정/삭제/생성 기능 사용을 위해 관리자 비밀번호가 필요합니다.'}
         </p>
         <form onSubmit={handleSubmit}>
           <input
@@ -40,11 +41,6 @@ export const PasswordModal = ({ isOpen, onSubmit, onSkip }: PasswordModalProps) 
             <button type="submit" className="password-submit-button">
               확인
             </button>
-            {onSkip && (
-              <button type="button" onClick={onSkip} className="password-skip-button">
-                나중에하기
-              </button>
-            )}
           </div>
         </form>
       </div>

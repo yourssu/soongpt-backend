@@ -26,7 +26,7 @@ export const CourseList = () => {
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [_isAuthenticated, setIsAuthenticated] = useState(false);
-  const [canSkipPassword, setCanSkipPassword] = useState(false);
+  const [authMessage, setAuthMessage] = useState<string | null>(null);
   const [showResetButton, setShowResetButton] = useState(false);
   const [isCompactPagination, setIsCompactPagination] = useState(false);
   const [pageInput, setPageInput] = useState('');
@@ -48,19 +48,19 @@ export const CourseList = () => {
     const savedPassword = localStorage.getItem('adminPassword');
     if (!savedPassword) {
       setShowPasswordModal(true);
-      setCanSkipPassword(true); // Allow skipping on initial load
+      setAuthMessage('관리자 전용 페이지입니다. 조회를 위해 관리자 비밀번호가 필요합니다.');
       setShowResetButton(false);
     } else {
       setIsAuthenticated(true);
       setShowResetButton(true);
+      setAuthMessage(null);
     }
 
     // Listen for auth failures
     const handleAuthFailed = () => {
       setIsAuthenticated(false);
       setShowPasswordModal(true);
-      setCanSkipPassword(true); // Allow skipping on auth failure
-      alert('비밀번호가 올바르지 않습니다. 다시 입력해주세요.');
+      setAuthMessage('비밀번호가 올바르지 않거나 만료되었습니다. 다시 입력해주세요.');
     };
 
     window.addEventListener('admin-auth-failed', handleAuthFailed);
@@ -80,6 +80,9 @@ export const CourseList = () => {
   }, [searchQuery]);
 
   const fetchCourses = async (page: number, query: string) => {
+    if (!_isAuthenticated) {
+      return;
+    }
     try {
       setLoading(true);
       setError(null);
@@ -100,7 +103,7 @@ export const CourseList = () => {
 
   useEffect(() => {
     fetchCourses(currentPage, debouncedQuery);
-  }, [currentPage, debouncedQuery]);
+  }, [currentPage, debouncedQuery, _isAuthenticated]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -664,21 +667,15 @@ export const CourseList = () => {
     localStorage.setItem('adminPassword', password);
     setIsAuthenticated(true);
     setShowPasswordModal(false);
-    setCanSkipPassword(false);
+    setAuthMessage(null);
     setShowResetButton(true);
-  };
-
-  const handleSkipPassword = () => {
-    setShowPasswordModal(false);
-    setCanSkipPassword(false);
-    setShowResetButton(true); // Show reset button after skipping
   };
 
   const handleResetPassword = () => {
     localStorage.removeItem('adminPassword');
     setIsAuthenticated(false);
     setShowPasswordModal(true);
-    setCanSkipPassword(true);
+    setAuthMessage('관리자 전용 페이지입니다. 조회를 위해 관리자 비밀번호를 입력해주세요.');
   };
 
   const handleInputChange = (field: keyof CourseTargetResponse, value: any) => {
@@ -820,7 +817,7 @@ export const CourseList = () => {
       <PasswordModal
         isOpen={showPasswordModal}
         onSubmit={handlePasswordSubmit}
-        onSkip={canSkipPassword ? handleSkipPassword : undefined}
+        message={authMessage || '관리자 전용 페이지입니다. 조회를 위해 관리자 비밀번호가 입력되어야 합니다.'}
       />
 
       <div className="header-with-button">
