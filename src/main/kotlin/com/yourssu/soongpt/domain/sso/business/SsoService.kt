@@ -222,7 +222,7 @@ class SsoService(
             ),
             graduationRequirements = null,
             graduationSummary = null,
-            warnings = listOf("NO_GRADUATION_DATA", "basic_info_unavailable"),
+            warnings = listOf("NO_COURSE_HISTORY", "NO_GRADUATION_DATA"),
         )
     }
 
