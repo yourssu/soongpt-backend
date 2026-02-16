@@ -58,16 +58,10 @@ class UntakenCourseCodeService(
         val coursesWithTarget = getCoursesWithTarget(category, departmentId, department.collegeId, userGrade, maxGrade)
         val takenBaseCodes = extractTakenBaseCodes(usaintData)
 
-        val filteredByGrade = if (category == Category.CHAPEL) {
-            coursesWithTarget.filter { it.targetGrades.contains(userGrade) }
+        return if (category == Category.CHAPEL) {
+            coursesWithTarget.map { it.course.code }
         } else {
             coursesWithTarget
-        }
-
-        return if (category == Category.CHAPEL) {
-            filteredByGrade.map { it.course.code }
-        } else {
-            filteredByGrade
                 .filter { it.course.baseCode() !in takenBaseCodes }
                 .map { it.course.code }
         }

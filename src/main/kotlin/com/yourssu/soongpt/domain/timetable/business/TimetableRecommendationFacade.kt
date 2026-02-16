@@ -2,6 +2,8 @@ package com.yourssu.soongpt.domain.timetable.business
 
 import com.yourssu.soongpt.domain.course.application.RecommendContextResolver
 import com.yourssu.soongpt.domain.course.implement.CourseReader
+import com.yourssu.soongpt.domain.college.implement.CollegeReader
+import com.yourssu.soongpt.domain.department.implement.DepartmentReader
 import com.yourssu.soongpt.domain.course.business.UntakenCourseCodeService
 import com.yourssu.soongpt.domain.course.implement.baseCode
 import com.yourssu.soongpt.domain.course.implement.toBaseCode
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 private val EXCLUDED_DEPARTMENTS_FOR_CHAPEL = setOf("국제법무학과", "금융학부", "자유전공학부")
+private val EXCLUDED_COLLEGES_FOR_FRESHMAN_CHAPEL = setOf("IT대학", "AI대학", "자연과학대학", "공과대학")
 private const val MAX_RECOMMENDATIONS_PER_TAG = 4
 private const val MAX_SWAP_ALTERNATIVES = 2
 private const val SWAP_SAMPLE_POOL_SIZE = 20
@@ -44,6 +47,8 @@ class TimetableRecommendationFacade(
     private val swapCourseProvider: SwapCourseProvider,
     private val untakenCourseCodeService: UntakenCourseCodeService,
     private val recommendContextResolver: RecommendContextResolver,
+    private val departmentReader: DepartmentReader,
+    private val collegeReader: CollegeReader,
 ) {
     @Transactional
     fun recommend(command: PrimaryTimetableCommand): FinalTimetableRecommendationResponse {
@@ -90,6 +95,9 @@ class TimetableRecommendationFacade(
 
     private fun findMandatoryChapelForFreshman(userGrade: Int, departmentName: String): TimetableCandidate? {
         if (userGrade != 1 || departmentName in EXCLUDED_DEPARTMENTS_FOR_CHAPEL) return null
+        val department = departmentReader.getByName(departmentName)
+        val college = collegeReader.get(department.collegeId)
+        if (college.name in EXCLUDED_COLLEGES_FOR_FRESHMAN_CHAPEL) return null
 
         val chapelCode = untakenCourseCodeService.getUntakenCourseCodes(Category.CHAPEL).firstOrNull()
             ?: return null
@@ -263,8 +271,6 @@ class TimetableRecommendationFacade(
                 resultGroups.add(GroupedTimetableResponse(tag.description, recommendationsForTag))
             }
         }
-
-        // TODO: 태그 우선순위에 따라 resultGroups 정렬하는 로직 추가
         return resultGroups
     }
 
@@ -293,7 +299,6 @@ class TimetableRecommendationFacade(
                 }
 
                 if (resolvedCourse != null) {
-                    // TODO: rename field to baseCode in response contract
                     conflictingCourses.add(DeletableCourseDto(resolvedCourse.code, resolvedCourse.category))
                 }
             }
