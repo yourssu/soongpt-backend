@@ -33,6 +33,7 @@ API마다 **필드 구조는 다르지만**, 의미는 "이수현황"으로 동�
 | required | completed | satisfied | 의미 |
 |:---:|:---:|:---:|---|
 | `0` | `0` | `true` | 해당 없는 이수구분 (FE에서 숨김) |
+| `0` | `0` | `false` | **AI소프트웨어학부 한정** 전공기초/전공필수/전공선택 — 이수현황 미제공, bar는 0/0으로 표시 가능 |
 | `-1` | `-1` | `false` | 재수강/교직 — progress bar 미표시, 과목은 있을 수 있음 |
 | `-2` | `-2` | `false` | 졸업사정표 없음 — 제공 불가, bar 미표시 |
 
@@ -70,6 +71,7 @@ API마다 **필드 구조는 다르지만**, 의미는 "이수현황"으로 동�
    - `progress.satisfied === true` → 이미 충족, 과목 목록 빈 배열 가능.
    - `progress.satisfied === false` → 미충족 또는 판단 불가(rusaint 없음).
 4. **recommend/all** 상세 분기: [recommend_edge_cases.md](recommend_edge_cases.md), [get_recommend_all.md](../course/get_recommend_all.md) 참고.
+5. **학과별 예외**: 사용자 학과가 **AI소프트웨어학부**인 경우, **전공기초(MAJOR_BASIC)·전공필수(MAJOR_REQUIRED)·전공선택(MAJOR_ELECTIVE)** 세 카테고리에 한해 progress는 항상 `{ required: 0, completed: 0, satisfied: false }` 로 내려갑니다. 교필/재수강/복전 등 다른 이수구분은 기존 규칙대로입니다.
 
 ---
 

@@ -98,7 +98,7 @@ RecommendContext
 ```
 
 - `warnings` — rusaint 동기화 경고 메시지 (top-level)
-- `progress` — 항상 non-null. 졸업사정표 없으면 `required/completed = -2`, `satisfied = false` (제공 불가)
+- `progress` — 항상 non-null. 졸업사정표 없으면 `required/completed = -2`, `satisfied = false` (제공 불가). **학과가 AI소프트웨어학부**인 경우 전공기초/전공필수/전공선택은 progress가 항상 `(0, 0, false)` 로 고정됨 (전기/전필/전선 한정).
 - `message == null` → 정상 (과목 있음)
 - `message != null` → 에지케이스 (이미 이수 / 개설 없음)
 
@@ -140,7 +140,7 @@ RecommendContext
 
 **입력**: departmentName, userGrade, takenSubjectCodes, progress (from graduationSummary.majorFoundation)
 
-**progress**: `{ required, completed, satisfied }` from 졸업사정표
+**progress**: `{ required, completed, satisfied }` from 졸업사정표. 단, **학과가 AI소프트웨어학부**이면 항상 `(0, 0, false)` 로 고정.
 
 **비즈니스 로직**:
 
@@ -170,7 +170,7 @@ RecommendContext
 
 **입력**: departmentName, userGrade, takenSubjectCodes, progress (from graduationSummary.majorRequired)
 
-**전기와 동일한 로직**, category만 `MAJOR_REQUIRED`로 변경.
+**전기와 동일한 로직**, category만 `MAJOR_REQUIRED`로 변경. **AI소프트웨어학부**일 때 progress는 전기와 동일하게 `(0, 0, false)` 고정.
 
 **프론트 판단 포인트**:
 
@@ -184,7 +184,7 @@ RecommendContext
 
 **서비스**: `MajorCourseRecommendService.recommendMajorElectiveWithGroups()`
 
-**입력**: departmentName, userGrade, takenSubjectCodes, progress (from graduationSummary.majorElective)
+**입력**: departmentName, userGrade, takenSubjectCodes, progress (from graduationSummary.majorElective). **AI소프트웨어학부**일 때 progress는 항상 `(0, 0, false)` 고정.
 
 **비즈니스 로직**:
 
