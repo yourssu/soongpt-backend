@@ -147,10 +147,10 @@ class SsoService(
 
     /**
      * 사용자가 학적정보를 수정하면 캐시의 basicInfo/flags를 업데이트합니다.
+     * REQUIRES_USER_INPUT(usaintData=null) 상태에서도 호출 가능: 사용자 입력만으로 최소 세션 데이터를 생성해 COMPLETED로 전환합니다.
      */
     fun updateStudentInfo(pseudonym: String, request: StudentInfoUpdateRequest): StudentInfoResponse? {
         val session = syncSessionStore.getSession(pseudonym) ?: return null
-        val data = session.usaintData ?: return null
 
         val normalizedDepartment = DepartmentNameNormalizer.normalize(request.department)
         val normalizedDoubleMajorDepartment =
@@ -158,18 +158,27 @@ class SsoService(
         val normalizedMinorDepartment =
             DepartmentNameNormalizer.normalizeNullable(request.minorDepartment)
 
-        val updatedData = data.copy(
-            basicInfo = RusaintBasicInfoDto(
-                grade = request.grade,
-                semester = request.semester,
-                year = request.year,
-                department = normalizedDepartment,
-            ),
-            flags = RusaintStudentFlagsDto(
-                doubleMajorDepartment = normalizedDoubleMajorDepartment,
-                minorDepartment = normalizedMinorDepartment,
-                teaching = request.teaching,
-            ),
+        val basicInfo = RusaintBasicInfoDto(
+            grade = request.grade,
+            semester = request.semester,
+            year = request.year,
+            department = normalizedDepartment,
+        )
+        val flags = RusaintStudentFlagsDto(
+            doubleMajorDepartment = normalizedDoubleMajorDepartment,
+            minorDepartment = normalizedMinorDepartment,
+            teaching = request.teaching,
+        )
+        val existing = session.usaintData
+        val updatedData = RusaintUsaintDataResponse(
+            pseudonym = pseudonym,
+            takenCourses = existing?.takenCourses ?: emptyList(),
+            lowGradeSubjectCodes = existing?.lowGradeSubjectCodes ?: emptyList(),
+            flags = flags,
+            basicInfo = basicInfo,
+            graduationRequirements = existing?.graduationRequirements,
+            graduationSummary = existing?.graduationSummary,
+            warnings = existing?.warnings ?: listOf("NO_COURSE_HISTORY", "NO_GRADUATION_DATA"),
         )
 
         syncSessionStore.updateStatus(pseudonym, SyncStatus.COMPLETED, updatedData)
