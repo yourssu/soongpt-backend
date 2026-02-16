@@ -924,26 +924,6 @@ export const CourseList = () => {
                   </tbody>
                 </table>
 
-                <div className="course-row-cards">
-                  {courses.content?.map((course: Course, index: number) => {
-                    return (
-                      <button
-                        key={`card-${course.id || course.code}`}
-                        type="button"
-                        className="course-row-card"
-                        onClick={() => handleCourseClick(course, index)}
-                      >
-                        <div className="course-row-card__header">
-                          <span className="course-row-card__code">[{course.code}]</span>
-                          <span className="course-row-card__name">{course.name}</span>
-                        </div>
-                        <div className="course-row-card__meta">
-                          <span>이수구분: {getCategoryLabel(course.category)}</span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
               </div>
 
               <div className="pagination-wrapper">
