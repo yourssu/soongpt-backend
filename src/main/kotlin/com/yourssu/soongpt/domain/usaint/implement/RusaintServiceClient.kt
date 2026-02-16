@@ -51,14 +51,23 @@ class RusaintServiceClient(
     fun getAcademicSnapshot(
         studentId: String,
         sToken: String,
-    ): RusaintAcademicResponseDto {
+    ): RusaintAcademicResponseDto? {
         val requestEntity = rusaintRequestBuilder.buildRequestEntity(studentId, sToken)
-        return executeRusaintCall("academic", studentId.take(4)) {
-            val responseEntity = restTemplate.postForEntity<RusaintAcademicResponseDto>(
-                "/api/usaint/snapshot/academic",
-                requestEntity,
-            )
-            requireNotNull(responseEntity.body) { "Empty response from rusaint-service (academic)" }
+        return try {
+            executeRusaintCall("academic", studentId.take(4)) {
+                val responseEntity = restTemplate.postForEntity<RusaintAcademicResponseDto>(
+                    "/api/usaint/snapshot/academic",
+                    requestEntity,
+                )
+                requireNotNull(responseEntity.body) { "Empty response from rusaint-service (academic)" }
+            }
+        } catch (e: RusaintServiceException) {
+            if (e.isUnauthorized || e.serviceStatusCode in listOf(502, 504)) {
+                throw e
+            }
+            // 500 등 기본 학적 정보 파싱 실패(데이터 없음) → null 반환 → REQUIRES_USER_INPUT 처리
+            logger.warn { "학적/성적 조회 실패 (기본 정보 없음 가능성), null 반환: status=${e.serviceStatusCode}, detail=${e.serviceDetail}" }
+            null
         }
     }
 
@@ -98,6 +107,14 @@ class RusaintServiceClient(
 
         val academic = academicDeferred.await()
         val graduation = graduationDeferred.await()
+
+        if (academic == null) {
+            throw StudentInfoMappingException(
+                validationError = "basic_info_unavailable",
+                partialUsaintData = null,
+                message = "기본 학적 정보를 조회할 수 없습니다. 직접 정보를 입력해주세요.",
+            )
+        }
 
         // 학생 정보 검증 포함 병합
         val mergeResult = rusaintSnapshotMerger.mergeWithValidation(
