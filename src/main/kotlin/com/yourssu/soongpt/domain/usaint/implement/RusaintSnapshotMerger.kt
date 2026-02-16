@@ -72,15 +72,15 @@ class RusaintSnapshotMerger(
     }
 
     /**
-     * 입학년도가 비어있거나 유효 범위(2015..2030) 밖이면 학번 앞 4자리를 입학년도로 사용.
+     * 입학년도가 비어있거나 유효 범위(2015..2026) 밖이면 학번 앞 4자리를 입학년도로 사용.
      * 26학번 등 새내기에서 유세인트가 year를 비워서 보내는 경우 대비.
      */
     private fun fillYearFromStudentIdPrefixIfNeeded(
         basicInfo: RusaintBasicInfoDto,
         studentIdPrefix: String,
     ): RusaintBasicInfoDto {
-        if (basicInfo.year in 2015..2030) return basicInfo
-        val yearFromPrefix = studentIdPrefix.toIntOrNull()?.takeIf { it in 2015..2030 } ?: return basicInfo
+        if (basicInfo.year in 2015..2026) return basicInfo
+        val yearFromPrefix = studentIdPrefix.toIntOrNull()?.takeIf { it in 2015..2026 } ?: return basicInfo
         return basicInfo.copy(year = yearFromPrefix)
     }
 
