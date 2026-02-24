@@ -1,5 +1,7 @@
 # soongpt-backend
 
+https://soongpt.yourssu.com/
+
 ## 역사
 
 - 2026.01.29
