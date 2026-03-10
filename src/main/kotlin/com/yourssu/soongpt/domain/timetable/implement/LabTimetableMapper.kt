@@ -11,13 +11,15 @@ import org.springframework.stereotype.Component
 class LabTimetableMapper {
 
     fun mapToFrontend(timetable: Timetable, courses: List<Course>): LabTimetableResponse {
-        val labCourses = courses.map { course ->
+        val labCourses = courses.mapNotNull { course ->
+            val courseTimes = mapCourseTimes(course.scheduleRoom).filter { it.week in WEEKDAYS }
+            if (courseTimes.isEmpty()) return@mapNotNull null
             LabCourseItem(
                 courseName = course.name,
                 professorName = course.professor,
                 classification = course.category.name,
                 credit = parseCreditFromTime(course.time),
-                courseTime = mapCourseTimes(course.scheduleRoom),
+                courseTime = courseTimes,
             )
         }
         return LabTimetableResponse(
@@ -54,6 +56,7 @@ class LabTimetableMapper {
     }
 
     companion object {
+        private val WEEKDAYS = setOf("월", "화", "수", "목", "금")
         private val LAB_TAG_WHITELIST = setOf(
             "DEFAULT", "HAS_FREE_DAY", "NO_MORNING_CLASSES", "NO_LONG_BREAKS",
             "EVENLY_DISTRIBUTED", "GUARANTEED_LUNCH_TIME", "NO_EVENING_CLASSES",
