@@ -38,6 +38,7 @@ API 요구 사항
 응답 데이터에는 시간이 겹치는 수업이 없으니 시간 중복에 대한 예외 처리는 고려하지 않아도 돼요
 API 응답 데이터
 API 응답 데이터는 아래와 같은 형식이에요.
+- `timestamp`는 `YYYY-MM-dd HH:mm:ss` 형식이에요. (연도는 ISO 주차 기준입니다.)
 {
   "timestamp": "2025-09-02 01:35:43",
   "result": {
@@ -179,6 +180,10 @@ API 응답 데이터는 아래와 같은 형식이에요.
 응답 데이터의 classification은 아래와 같은 값을 가질 수 있어요.
   | "MAJOR_REQUIRED" // 전공필수
   | "MAJOR_ELECTIVE" // 전공선택
+  | "MAJOR_BASIC" // 전공기초
   | "GENERAL_REQUIRED" // 교양필수
   | "GENERAL_ELECTIVE" // 교양선택
   | "CHAPEL" // 채플
+  | "TEACHING" // 교직
+  | "OTHER" // 기타
+응답 데이터의 courseTime 내 `week`는 월·화·수·목·금만 내려가요. (토·일은 응답에서 제외됩니다.)

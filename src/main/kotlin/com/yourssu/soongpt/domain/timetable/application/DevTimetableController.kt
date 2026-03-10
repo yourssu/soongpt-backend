@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,7 +21,11 @@ import org.springframework.web.bind.annotation.RestController
 class DevTimetableController(
     private val timetableService: TimetableService,
 ) {
-    @Operation(summary = "랜덤 시간표 조회 (lab)", description = "채플 포함, 싸강 제외, 태그 다양화된 랜덤 시간표 1건 반환. 인증 불필요.")
+    @Operation(
+        summary = "랜덤 시간표 조회 (lab)",
+        description = "채플 포함, 싸강 제외, 태그 다양화된 랜덤 시간표 1건 반환. 인증·세션 불필요 (DB 조건만으로 조회).",
+    )
+    @SecurityRequirements
     @ApiResponses(
         value = [
             ApiResponse(
