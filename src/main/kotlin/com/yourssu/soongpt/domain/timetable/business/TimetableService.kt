@@ -31,6 +31,8 @@ class TimetableService(
     private val recommendContextResolver: RecommendContextResolver,
     private val generalCourseRecommendService: GeneralCourseRecommendService,
     private val untakenCourseCodeService: UntakenCourseCodeService,
+    private val labTimetableReader: LabTimetableReader,
+    private val labTimetableMapper: LabTimetableMapper,
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -232,5 +234,19 @@ class TimetableService(
             departmentName = departmentName,
             times = timetableId
         )
+    }
+
+    fun getRandomLabTimetable(): LabTimetableResponse {
+        val result = labTimetableReader.getValidRandomTimetable()
+        val response = labTimetableMapper.mapToFrontend(result.timetable, result.courses)
+        val ssang = courseReader.findOneRandomWithEmptyScheduleRoom()
+        if (ssang != null) {
+            val ssangItem = labTimetableMapper.toLabCourseItemForSsang(ssang)
+            return response.copy(
+                courses = response.courses + ssangItem,
+                totalCredit = response.totalCredit + ssangItem.credit,
+            )
+        }
+        return response
     }
 }
