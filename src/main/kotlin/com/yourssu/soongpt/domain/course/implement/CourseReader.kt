@@ -106,6 +106,11 @@ class CourseReader(
         return courseRepository.get(code)
     }
 
+    /** lab 전용: courseTime이 비어 있는 과목(싸강) 중 랜덤 1건 */
+    fun findOneRandomWithEmptyScheduleRoom(): Course? {
+        return courseRepository.findOneRandomWithEmptyScheduleRoom()
+    }
+
     fun save(course: Course): Course {
         return courseRepository.save(course)
     }

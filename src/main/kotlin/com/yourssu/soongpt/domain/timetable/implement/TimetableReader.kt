@@ -17,4 +17,8 @@ class TimetableReader (
     fun getRandom(): Timetable? {
         return timetableRepository.findRandom()
     }
+
+    fun getRandomByTag(tag: Tag): Timetable? {
+        return timetableRepository.findRandomByTag(tag)
+    }
 }

@@ -1,5 +1,6 @@
 package com.yourssu.soongpt.domain.course.storage
 
+import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
@@ -621,6 +622,16 @@ class CourseRepositoryImpl(
         courseJpaRepository.delete(entity)
     }
 
+    override fun findOneRandomWithEmptyScheduleRoom(): Course? {
+        val randomOrder = Expressions.numberTemplate(Double::class.java, "function('RAND')")
+        return jpaQueryFactory
+            .selectFrom(courseEntity)
+            .where(courseEntity.scheduleRoom.eq("").or(courseEntity.scheduleRoom.trim().isEmpty()))
+            .orderBy(randomOrder.asc())
+            .limit(1)
+            .fetchOne()
+            ?.toDomain()
+    }
 }
 
 interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
@@ -689,3 +700,4 @@ interface CourseJpaRepository: JpaRepository<CourseEntity, Long> {
     )
     fun countCoursesWithFulltext(query: String): Long
 }
+

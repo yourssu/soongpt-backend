@@ -48,7 +48,16 @@ class TimetableRepositoryImpl(
             ?.toDomain()
     }
 
-
+    override fun findRandomByTag(tag: Tag): Timetable? {
+        val randomOrder = Expressions.numberTemplate(Double::class.java, "function('RAND')")
+        return jpaQueryFactory
+            .selectFrom(timetableEntity)
+            .where(timetableEntity.tag.eq(tag))
+            .orderBy(randomOrder.asc())
+            .limit(1)
+            .fetchOne()
+            ?.toDomain()
+    }
 }
 
 interface TimetableJpaRepository: JpaRepository<TimetableEntity, Long> {

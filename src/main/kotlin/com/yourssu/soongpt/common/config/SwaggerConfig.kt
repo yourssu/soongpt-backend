@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
 import io.swagger.v3.oas.models.servers.Server
+import io.swagger.v3.oas.models.tags.Tag
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -26,6 +27,11 @@ class SwaggerConfig {
                     )
             )
             .servers(listOf(Server().apply { url = "/" }))
+            .tags(
+                listOf(
+                    Tag().name("LAB").description("리크루팅/과제용 lab 전용 API (추후 삭제 예정)"),
+                )
+            )
             .info(
                 Info()
                     .title("Soongpt API Document")

@@ -67,4 +67,7 @@ interface CourseRepository {
 
     fun save(course: Course): Course
     fun delete(code: Long)
+
+    /** lab 전용: courseTime이 비어 있는 과목(싸강) 중 랜덤 1건 */
+    fun findOneRandomWithEmptyScheduleRoom(): Course?
 }
